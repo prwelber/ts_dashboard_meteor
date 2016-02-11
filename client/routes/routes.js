@@ -1,14 +1,14 @@
 FlowRouter.route('/', {
     name: 'index',
     action: function () {
-        BlazeLayout.render('landing');
+        BlazeLayout.render('landing', {main: 'accounts'});
     }
 });
 
 FlowRouter.route('/accounts/:_id', {
-    name: 'account',
+    name: 'accountOverview',
     action: function (params) {
         console.log(params._id)
-        BlazeLayout.render('', {mongoId: params._id})
+        BlazeLayout.render('landing', {main: 'accountOverview', test: 'passing data through render function'})
     }
 });

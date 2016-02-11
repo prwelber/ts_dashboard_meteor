@@ -1,5 +1,5 @@
 if (Meteor.isServer) {
-token = 'CAAN4vFUE2ZAgBALDTMkwUWzQKd920fQHZBNBPJwu5FW2x8PyU3rCMt5ZCZAf10jp3Dw2yqBu4ThCuGI6fk0setXSVwf5Ny2evqZCjpoZCAlRrb2h2q72nShZCPIQXGBqS4lonbZCU5JtaW6R4zJHNXcjZBLg0KEsvZC4SiLzW5Sm5aJYBeuA3NlOiNSd7Xt1ZAXkKh2T4wpabaGdQQpz9IlVint'
+
     Meteor.methods({
         'refreshAccountList': function () {
 
