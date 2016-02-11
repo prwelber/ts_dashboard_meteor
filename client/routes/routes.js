@@ -5,3 +5,10 @@ FlowRouter.route('/', {
     }
 });
 
+FlowRouter.route('/accounts/:_id', {
+    name: 'account',
+    action: function (params) {
+        console.log(params._id)
+        BlazeLayout.render('', {mongoId: params._id})
+    }
+});

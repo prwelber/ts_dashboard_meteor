@@ -2,5 +2,13 @@
 <template name="accounts">
 
     <h3>Here is a list of all TS Accounts:</h3>
+    <button class="refresh-accounts">Refresh Accounts</button>
+    <br />
+
+    {{#each accountList}}
+        <h4> <a href="/accounts/{{_id}}"> {{name}} </a> </h4>
+        <p>Inserted: {{inserted}}</p>
+        <p>Account ID: {{account_id}}</p>
+    {{/each}}
 
 </template>
