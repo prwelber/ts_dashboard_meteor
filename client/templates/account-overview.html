@@ -1,28 +1,23 @@
 <template name="accountOverview">
     <h2>Single Account Overview</h2>
-    {{getName.name}}
+
+    <p class='account-name'>{{getName.name}}</p>
     <p class="account-id">{{getName.account_id}}</p>
     <br />
-    {{lookupCampaign}}
-    {{#unless displayCampaignBasics}}
-        <p>no campaigns to show</p>
-    {{else}}
-        {{#each displayCampaignBasics}}
-            <h4><a href="/accounts/{{_id}}/insights">{{name}}</a></h4>
-            <p>{{start_time}} -- {{stop_time}}</p>
-            <p>Objective: {{objective}}</p>
-            <p>Created: {{created_time}}</p>
-            <p>Inserted: {{inserted}}</p>
-            {{#unless received_creative}}
-                <p>no creative received</p>
-            {{else}}
-                <p>creative received: {{received_creative}}</p>
-            {{/unless}}
-            {{!-- <p>Received Creative: {{received_creative}}</p> --}}
-            <p>Signed IO: {{signed_IO}}</p>
-            <p>Approved Targeting: {{approved_targeting}}</p>
-            <p>Received Tracking: {{received_tracking}}</p>
-        {{/each}}
-    {{/unless}}
-
+    {{#each displayCampaignBasics}}
+        <h4>{{name}}</h4>
+        <p><a href="/accounts/{{campaign_id}}/insights">Get Insights</a></p>
+        <p>{{start_time}} -- {{stop_time}}</p>
+        <p>Objective: {{objective}}</p>
+        <p>Created: {{created_time}}</p>
+        <p>Inserted: {{inserted}}</p>
+        {{#unless received_creative}}
+            <p>no creative received</p>
+        {{else}}
+            <p>creative received: {{received_creative}}</p>
+        {{/unless}}
+        <p>Signed IO: {{signed_IO}}</p>
+        <p>Approved Targeting: {{approved_targeting}}</p>
+        <p>Received Tracking: {{received_tracking}}</p>
+    {{/each}}
 </template>

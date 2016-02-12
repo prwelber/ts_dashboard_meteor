@@ -2,8 +2,10 @@ if (Meteor.isServer) {
 
     // this is so that I can clean out the collection from the browser console
     // just call Meteor.call('removeCampaign')
+    // remove all can only be done from server
     Meteor.methods({
         'removeCampaign': function () {
+            console.log('removing CampaignBasicsList collection')
             CampaignBasicsList.remove( {} )
         }
     });
@@ -13,7 +15,7 @@ if (Meteor.isServer) {
             let campaignOverviewArray = [];
             let campaignOverview;
             try{
-                let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/act_'+accountNumber+'/campaigns?fields=name,created_time,start_time,stop_time,updated_time,objective,id&limit=50&access_token='+token+'', {});
+                let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/act_'+accountNumber+'/campaigns?fields=name,created_time,start_time,stop_time,updated_time,objective,id,account_id&limit=50&access_token='+token+'', {});
                 campaignOverview = result;
                 campaignOverviewArray.push(campaignOverview.data.data);
 
@@ -45,7 +47,9 @@ if (Meteor.isServer) {
                             received_creative: false,
                             signed_IO: false,
                             approved_targeting: false,
-                            received_tracking: false
+                            received_tracking: false,
+                            sort_time_start: campaignOverviewArray[i][j].start_time,
+                            account_id: campaignOverviewArray[i][j].account_id
                         });
                     }
                 }

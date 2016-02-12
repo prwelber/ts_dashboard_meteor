@@ -4,7 +4,7 @@
     <button class="refresh-accounts">Refresh Accounts</button>
     <br />{{sessionSetter}}
     {{#each accountList}}
-        <h4> <a href="/accounts/{{_id}}" class="account-link"> {{name}} </a> </h4>
+        <h4> <a href="/accounts/{{account_id}}" class="account-link"> {{name}} </a> </h4>
         <p>Inserted: {{inserted}}</p>
         <p>Account ID: {{account_id}}</p>
     {{/each}}

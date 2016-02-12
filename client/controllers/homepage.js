@@ -13,10 +13,10 @@ if (Meteor.isClient) {
                 let inserted = account.inserted;
                 let timeDelta = moment(now, "MM-DD-YYYY").diff(moment(inserted, "MM-DD-YYYY"), 'hours');
                 if (timeDelta >= 168) {
-                    alert('accounts have not been updated in over one week');
+                    alert('accounts have not been updated in over one week and it has been '+timeDelta+' hours since the last update');
                     Meteor.call('refreshAccountList')
                 } else {
-                    alert('accounts are less than one week old')
+                    alert('accounts are less than one week old and it has been '+timeDelta+' hours since the last update')
                 }
             }
         },
