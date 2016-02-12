@@ -1,7 +1,7 @@
 
 Meteor.startup( function () {
-    process.env.MAIL_URL = "smtp://prwelber:gators4114@smtp.sendgrid.net:587"
-
+    process.env.MAIL_URL = "smtp://prwelber:"+process.env.SENDGRID_PW+"@smtp.sendgrid.net:587"
+    console.log(process.env.SENDGRID_PW)
     let toAddress = 'prwelber@gmail.com'
     // Email.send({
     //     to: toAddress,

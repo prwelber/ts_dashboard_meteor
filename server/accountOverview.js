@@ -1,5 +1,7 @@
 if (Meteor.isServer) {
 
+    // this is so that I can clean out the collection from the browser console
+    // just call Meteor.call('removeCampaign')
     Meteor.methods({
         'removeCampaign': function () {
             CampaignBasicsList.remove( {} )
