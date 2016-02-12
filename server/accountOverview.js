@@ -1,10 +1,10 @@
 if (Meteor.isServer) {
 
     // this is so that I can clean out the collection from the browser console
-    // just call Meteor.call('removeCampaign')
+    // just call Meteor.call('removeCampaignBasics')
     // remove all can only be done from server
     Meteor.methods({
-        'removeCampaign': function () {
+        'removeCampaignBasics': function () {
             console.log('removing CampaignBasicsList collection')
             CampaignBasicsList.remove( {} )
         }
@@ -43,7 +43,7 @@ if (Meteor.isServer) {
                             updated_time: moment(campaignOverviewArray[i][j].updated_time).format("MM-DD-YYYY HH:MM"),
                             objective: campaignOverviewArray[i][j].objective,
                             campaign_id: campaignOverviewArray[i][j].id,
-                            inserted: moment().format("MM-DD-YYYY"),
+                            inserted: moment().format("MM-DD-YYYY HH:MM"),
                             received_creative: false,
                             signed_IO: false,
                             approved_targeting: false,
