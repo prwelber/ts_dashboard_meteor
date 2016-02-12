@@ -3,6 +3,7 @@ Meteor.startup( function () {
     let pword = process.env.SENDGRID_PW;
     process.env.MAIL_URL = "smtp://prwelber:"+pword+"@smtp.sendgrid.net:587"
     console.log("SENDGRID_PW:", pword)
+    console.log('test for gitignore')
     let toAddress = 'prwelber@gmail.com'
     // Email.send({
     //     to: toAddress,
