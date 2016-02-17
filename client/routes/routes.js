@@ -20,3 +20,11 @@ FlowRouter.route('/accounts/:campaign_id/insights', {
         BlazeLayout.render('landing', {main: 'campaignInsights'})
     }
 });
+
+FlowRouter.route('/accounts/:campaign_id/breakdowns', {
+    name: 'insightsBreakdown',
+    action: function (params) {
+        console.log(params);
+        BlazeLayout.render('landing', {main: 'insightsBreakdown'})
+    }
+});

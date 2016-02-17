@@ -19,7 +19,7 @@ if (Meteor.isClient) {
             // notice how to structure the sort and limit options
 
             //TODO - need to write logic here to check for campaign and if not, then meteor.call to method
-            if (CampaignBasicsList.findOne()) {
+            if (CampaignBasicsList.findOne({account_id: accountId})) {
                 console.log('you should be seeing campaigns');
                 return CampaignBasicsList.find({account_id: accountId}, {sort: {sort_time_start: -1}, limit: 10})
             } else {

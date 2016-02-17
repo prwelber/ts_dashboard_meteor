@@ -1,6 +1,13 @@
 if (Meteor.isServer) {
 
     Meteor.methods({
+        'removeAccountsCollection': function () {
+            console.log('removing Accounts collection')
+            FacebookAccountList.remove( {} )
+        }
+    });
+
+    Meteor.methods({
         'refreshAccountList': function () {
 
             let accountsDataArray = [];

@@ -6,11 +6,17 @@ if (Meteor.isClient){
         // console.log(this)
     });
 
+    Template.campaignInsights.events({
+        'getBreakdowns': function () {
+
+        }
+    });
+
     Template.campaignInsights.helpers({
         'fetchInsights': function () {
             console.log('checking for insights');
             let campaignNumber = FlowRouter.current().params.campaign_id;
-            if (CampaignInsightList.findOne()) {
+            if (CampaignInsightList.findOne({campaign_id: campaignNumber})) {
                 console.log('you should be seeing insights')
                 return CampaignInsightList.find({campaign_id: campaignNumber})
             } else {
@@ -31,10 +37,12 @@ if (Meteor.isClient){
         },
         'cleanText': function (text) {
             return text.replace("_", " ").toLowerCase();
+        },
+        'goBack': function () {
+            let campaignNumber = FlowRouter.current().params.campaign_id;
+            let camp = CampaignInsightList.findOne({campaign_id: campaignNumber})
+            return camp.account_id;
         }
-        // 'goBack': function () {
-        //     return FlowRouter.current().params
-        // }
     });
 
 

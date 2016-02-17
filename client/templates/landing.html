@@ -5,8 +5,10 @@
     <body>
         <a href="/">Home</a>
         {{> loginButtons}}
+        <p>Today is <span class=date>{{getDate}}</span></p>
         <h1>This is a Meteor app.</h1>
         {{> Template.dynamic template=main}}
+        <button class="cron-tester">cron tester</button>
     </body>
 </template>
 

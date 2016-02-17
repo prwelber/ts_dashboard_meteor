@@ -28,3 +28,5 @@ momentjs:moment
 vsivsi:job-collection
 email
 ejson
+percolate:synced-cron
+sacha:spin

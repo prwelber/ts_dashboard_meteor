@@ -1,9 +1,10 @@
 <template name="campaignInsights">
-    <a href="">Back to Campaign List</a>
+    <a href="/accounts/{{goBack}}">Back to Campaign List</a>
     <h2>Campaign Insights</h2>
 
     {{#each fetchInsights}}
         <h3>Insights for {{campaign_name}} with an objective of <i>{{cleanText objective}}</i>.</h3>
+        <p><a href="/accounts/{{campaign_id}}/breakdowns">Get breakdown by age and gender</a></p>
         <h4>Flight Dates: {{date_start}} -- {{date_stop}}</h4>
         <p><strong>Often Viewed</strong></p>
         <p>CPM: {{currencyFormat cpm}}</p>
