@@ -5,6 +5,8 @@
     <body>
         <a href="/">Home</a>
         {{> loginButtons}}
+        <a href="/newinitiative">New Initiative</a>
+        <p>Today is <span class=date>{{getDate}}</span></p>
         <h1>This is a Meteor app.</h1>
         {{> Template.dynamic template=main}}
     </body>

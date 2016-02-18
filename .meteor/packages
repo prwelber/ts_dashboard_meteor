@@ -27,3 +27,9 @@ kadira:blaze-layout
 momentjs:moment
 vsivsi:job-collection
 email
+ejson
+percolate:synced-cron
+sacha:spin
+rajit:bootstrap3-datepicker
+tsega:bootstrap3-datetimepicker
+twbs:bootstrap

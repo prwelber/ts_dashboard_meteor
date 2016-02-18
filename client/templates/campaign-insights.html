@@ -1,0 +1,63 @@
+<template name="campaignInsights">
+    <a href="/accounts/{{goBack}}">Back to Campaign List</a>
+    <h2>Campaign Insights</h2>
+
+    {{#each fetchInsights}}
+        <h3>Lifetime insights for <span class="campName">{{campaign_name}}</span> with an objective of <i>{{cleanText objective}}</i>.</h3>
+        <p><a href="/accounts/{{campaign_id}}/breakdowns">Get breakdown by age and gender</a></p>
+        <h4>Flight Dates: {{date_start}} -- {{date_stop}}</h4>
+        <p><strong>Often Viewed</strong></p>
+        <p>CPM: {{currencyFormat cpm}}</p>
+        <p>CPP: {{currencyFormat cpp}}</p>
+        <p>CTR: {{ctr}}%</p>
+        <p>Reach: {{numFormat reach}}</p>
+        <p>Impressions: {{numFormat impressions}}</p>
+        <p>Spend: {{currencyFormat spend}}</p>
+        <br />
+        <p><strong>Core Insights</strong></p>
+        <p>Comments: {{comment}}</p>
+        <p>Likes: {{numFormat like}}</p>
+        <p>Link Click: {{link_click}}</p>
+        <p>Website Clicks: {{website_clicks}}</p>
+        <p>Photo View: {{photo_view}}</p>
+        <p>Post: {{post}}</p>
+        <p>Post Likes: {{post_like}}</p>
+        <p>Unlikes: {{unlike}}</p>
+        <p>Video Play: {{video_play}}</p>
+        <p>Video View: {{video_view}}</p>
+        <p>CP Comment: {{currencyFormat cost_per_comment}}</p>
+        <p>CP Like: {{currencyFormat cost_per_like}}</p>
+        <p>CP Link Click: {{currencyFormat cost_per_link_click}}</p>
+        <p>CP Photo View: {{currencyFormat cost_per_photo_view}}</p>
+        <p>CP Post: {{currencyFormat cost_per_post}}</p>
+        <p>CP Post Like: {{currencyFormat cost_per_post_like}}</p>
+        <p>CP Unlike: {{currencyFormat cost_per_unlike}}</p>
+        <p>CP Video Play: {{currencyFormat cost_per_video_play}}</p>
+        <p>CP Video View: {{currencyFormat cost_per_video_view}}</p>
+        <p>CP Page Engagement: {{currencyFormat cost_per_page_engagement}}</p>
+        <p>CP Post Engagement: {{currencyFormat cost_per_post_engagement}}</p>
+
+        <br /><br />
+        <p>CP Unique Click: {{currencyFormat cost_per_unique_click}}</p>
+        <p>CP Total Action: {{currencyFormat cost_per_total_action}}</p>
+        <p>Unique Impressions: {{unique_impressions}}</p>
+        <p>Total Actions: {{total_actions}}</p>
+        <p>Total Unique Actions: {{total_unique_actions}}</p>
+        <p>Unique Clicks: {{unique_clicks}}</p>
+        <p>Estimated Ad Recall Rate: {{estimated_ad_recall_rate}}</p>
+        <p>CP Estimated Ad Recallers: {{currencyFormat cost_per_estimated_ad_recallers}}</p>
+    {{/each}}
+
+    {{#with showInitiative}}
+        <h3>IO Details for {{name}}</h3>
+        <p>Date Range: {{startDate}} -- {{endDate}}</p>
+        <p>Agency: {{agency}}</p>
+        <p>Brand: {{brand}}</p>
+        <p>Budget: ${{budget}}</p>
+        <p>Deal Type: {{dealType}}</p>
+        <p>Notes: {{notes}}</p>
+        <p>Date IO Created: {{inserted_date}}</p>
+    {{else}}
+        <h3>There is no IO</h3>
+    {{/with}}
+</template>
