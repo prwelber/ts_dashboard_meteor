@@ -10,18 +10,19 @@
         <p>CPM: {{currencyFormat cpm}}</p>
         <p>CPP: {{currencyFormat cpp}}</p>
         <p>CTR: {{ctr}}%</p>
-        <p>Reach: {{reach}}</p>
-        <p>Impressions: {{impressions}}</p>
+        <p>Reach: {{numFormat reach}}</p>
+        <p>Impressions: {{numFormat impressions}}</p>
         <p>Spend: {{currencyFormat spend}}</p>
         <br />
         <p><strong>Core Insights</strong></p>
         <p>Comments: {{comment}}</p>
-        <p>Like: {{like}}</p>
+        <p>Likes: {{numFormat like}}</p>
         <p>Link Click: {{link_click}}</p>
+        <p>Website Clicks: {{website_clicks}}</p>
         <p>Photo View: {{photo_view}}</p>
         <p>Post: {{post}}</p>
-        <p>Post Like: {{post_like}}</p>
-        <p>Unlike: {{unlike}}</p>
+        <p>Post Likes: {{post_like}}</p>
+        <p>Unlikes: {{unlike}}</p>
         <p>Video Play: {{video_play}}</p>
         <p>Video View: {{video_view}}</p>
         <p>CP Comment: {{currencyFormat cost_per_comment}}</p>
@@ -39,7 +40,6 @@
         <br /><br />
         <p>CP Unique Click: {{currencyFormat cost_per_unique_click}}</p>
         <p>CP Total Action: {{currencyFormat cost_per_total_action}}</p>
-        <p>Impressions: {{impressions}}</p>
         <p>Unique Impressions: {{unique_impressions}}</p>
         <p>Total Actions: {{total_actions}}</p>
         <p>Total Unique Actions: {{total_unique_actions}}</p>
@@ -47,13 +47,17 @@
         <p>Estimated Ad Recall Rate: {{estimated_ad_recall_rate}}</p>
         <p>CP Estimated Ad Recallers: {{currencyFormat cost_per_estimated_ad_recallers}}</p>
     {{/each}}
-    <h3>IO Details for {{showInitiative.name}}</h3>
-        <p>Date Range: {{showInitiative.startDate}} -- {{showInitiative.endDate}}</p>
-        <p>Agency: {{showInitiative.agency}}</p>
-        <p>Brand: {{showInitiative.brand}}</p>
-        <p>Budget: {{showInitiative.budget}}</p>
-        <p>Deal Type: {{showInitiative.dealType}}</p>
-        <p>Notes: {{showInitiative.notes}}</p>
-        <p>Date IO Created: {{showInitiative.inserted_date}}</p>
 
+    {{#with showInitiative}}
+        <h3>IO Details for {{name}}</h3>
+        <p>Date Range: {{startDate}} -- {{endDate}}</p>
+        <p>Agency: {{agency}}</p>
+        <p>Brand: {{brand}}</p>
+        <p>Budget: ${{budget}}</p>
+        <p>Deal Type: {{dealType}}</p>
+        <p>Notes: {{notes}}</p>
+        <p>Date IO Created: {{inserted_date}}</p>
+    {{else}}
+        <h3>There is no IO</h3>
+    {{/with}}
 </template>
