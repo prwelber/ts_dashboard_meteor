@@ -27,7 +27,9 @@ if (Meteor.isClient) {
             newInitiative['notes']     = event.target.notes.value;
             console.log(newInitiative);
 
-            Meteor.call('insertNewInitiative', newInitiative)
+            Meteor.call('insertNewInitiative', newInitiative);
+            alert('Initiative successfully submitted');
+
         },
         'blur #new-init-budget': function (event, template) {
             let re = /[^0-9.]/

@@ -1,15 +1,9 @@
 if (Meteor.isServer) {
 
     Meteor.methods({
-        'removeAccountsCollection': function () {
-            console.log('removing Accounts collection')
-            FacebookAccountList.remove( {} )
-        }
-    });
-
-    Meteor.methods({
         'refreshAccountList': function () {
-
+            // delete all accounts and then refresh them
+            FacebookAccountList.remove( {} )
             let accountsDataArray = [];
             let accountsData;
             try {
@@ -37,6 +31,7 @@ if (Meteor.isServer) {
                         FacebookAccountList.insert({
                             name: accountsDataArray[i][j].name,
                             account_id: accountsDataArray[i][j].account_id,
+                            amount_spent: accountsDataArray[i][j].amount_spent,
                             inserted: moment().format("MM-DD-YYYY")
                         });
                     }

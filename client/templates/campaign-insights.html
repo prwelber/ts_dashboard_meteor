@@ -3,7 +3,7 @@
     <h2>Campaign Insights</h2>
 
     {{#each fetchInsights}}
-        <h3>Insights for {{campaign_name}} with an objective of <i>{{cleanText objective}}</i>.</h3>
+        <h3>Lifetime insights for <span class="campName">{{campaign_name}}</span> with an objective of <i>{{cleanText objective}}</i>.</h3>
         <p><a href="/accounts/{{campaign_id}}/breakdowns">Get breakdown by age and gender</a></p>
         <h4>Flight Dates: {{date_start}} -- {{date_stop}}</h4>
         <p><strong>Often Viewed</strong></p>
@@ -46,7 +46,14 @@
         <p>Unique Clicks: {{unique_clicks}}</p>
         <p>Estimated Ad Recall Rate: {{estimated_ad_recall_rate}}</p>
         <p>CP Estimated Ad Recallers: {{currencyFormat cost_per_estimated_ad_recallers}}</p>
-
-
     {{/each}}
+    <h3>IO Details for {{showInitiative.name}}</h3>
+        <p>Date Range: {{showInitiative.startDate}} -- {{showInitiative.endDate}}</p>
+        <p>Agency: {{showInitiative.agency}}</p>
+        <p>Brand: {{showInitiative.brand}}</p>
+        <p>Budget: {{showInitiative.budget}}</p>
+        <p>Deal Type: {{showInitiative.dealType}}</p>
+        <p>Notes: {{showInitiative.notes}}</p>
+        <p>Date IO Created: {{showInitiative.inserted_date}}</p>
+
 </template>

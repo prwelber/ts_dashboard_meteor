@@ -16,8 +16,11 @@ if (Meteor.isClient){
         'fetchInsights': function () {
             console.log('checking for insights');
             let campaignNumber = FlowRouter.current().params.campaign_id;
-            if (CampaignInsightList.findOne({campaign_id: campaignNumber})) {
-                console.log('you should be seeing insights')
+            let camp = CampaignInsightList.findOne({campaign_id: campaignNumber});
+            if (camp) {
+                console.log('you should be seeing insights');
+                let name = camp.campaign_name;
+                initiative = NewInitiativeList.findOne({name: name});
                 return CampaignInsightList.find({campaign_id: campaignNumber})
             } else {
                 console.log('gotta get insights for this one', campaignNumber);
@@ -42,6 +45,9 @@ if (Meteor.isClient){
             let campaignNumber = FlowRouter.current().params.campaign_id;
             let camp = CampaignInsightList.findOne({campaign_id: campaignNumber})
             return camp.account_id;
+        },
+        'showInitiative': function () {
+            return initiative
         }
     });
 
