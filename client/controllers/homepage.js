@@ -35,7 +35,7 @@ Template.accounts.helpers({
     'accountList': function () {
         let userId = Meteor.userId();
         if (userId) {
-            return FacebookAccountList.find({})
+            return Accounts.find({})
         }
     },
     'formatSpend': function (num) {

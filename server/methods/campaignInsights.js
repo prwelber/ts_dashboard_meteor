@@ -3,7 +3,7 @@ if (Meteor.isServer) {
     Meteor.methods({
         'removeInsightCollection': function () {
             console.log('removing CampaignInsightList collection')
-            CampaignInsightList.remove( {} )
+            CampaignInsights.remove( {} )
         }
     });
 
@@ -35,7 +35,7 @@ if (Meteor.isServer) {
             }
 
             try {
-                    CampaignInsightList.insert({
+                    CampaignInsights.insert({
                         inserted: moment().format("MM-DD-YYYY hh:mm a"),
                         account_id: campaignInsights.account_id,
                         campaign_name: campaignInsights.campaign_name,
@@ -92,7 +92,7 @@ if (Meteor.isServer) {
 
 
     Meteor.publish('campaignInsightList', function () {
-        return CampaignInsightList.find({}); //publish all insights
+        return CampaignInsights.find({}); //publish all insights
     })
 
 };

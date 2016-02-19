@@ -1,7 +1,7 @@
 Meteor.methods({
     'removeBreakdownCollection': function () {
         console.log('removing InsightsBreakdown collection')
-        InsightsBreakdownList.remove( {} )
+        InsightsBreakdowns.remove( {} )
     }
 });
 
@@ -51,7 +51,7 @@ Meteor.methods({
         } finally {
             // console.log(breakdownArray);
             breakdownArray.forEach(el => {
-                    InsightsBreakdownList.insert({
+                    InsightsBreakdowns.insert({
                         age: el.age,
                         gender: el.gender,
                         total_actions: el.total_actions,
@@ -81,5 +81,5 @@ Meteor.methods({
 });
 
 Meteor.publish('insightsBreakdownList', function () {
-    return InsightsBreakdownList.find({}); //publish all breakdowns
+    return InsightsBreakdowns.find({}); //publish all breakdowns
 })

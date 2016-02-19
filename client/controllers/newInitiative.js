@@ -2,7 +2,7 @@ if (Meteor.isClient) {
 
     Template.newInitiative.helpers({
         'getBrands': function () {
-            return FacebookAccountList.find()
+            return Accounts.find()
         }
     });
 

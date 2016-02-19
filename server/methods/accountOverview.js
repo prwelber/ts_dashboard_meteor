@@ -6,7 +6,7 @@ if (Meteor.isServer) {
     Meteor.methods({
         'removeCampaignBasics': function () {
             console.log('removing CampaignBasicsList collection')
-            CampaignBasicsList.remove( {} )
+            CampaignBasics.remove( {} )
         }
     });
 
@@ -35,7 +35,7 @@ if (Meteor.isServer) {
             try {
                 for (let i = 0; i < campaignOverviewArray.length; i++) {
                     for (let j = 0; j < campaignOverviewArray[i].length; j++) {
-                        CampaignBasicsList.insert({
+                        CampaignBasics.insert({
                             name: campaignOverviewArray[i][j].name,
                             created_time: moment(campaignOverviewArray[i][j].created_time).format("MM-DD-YYYY HH:MM"),
                             start_time: moment(campaignOverviewArray[i][j].start_time).format("MM-DD-YYYY HH:MM"),
@@ -60,6 +60,8 @@ if (Meteor.isServer) {
             }
         }
     });
+
+    // need a meteor.publish here
 
 
 };

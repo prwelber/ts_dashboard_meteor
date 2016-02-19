@@ -3,7 +3,7 @@ if (Meteor.isServer) {
     Meteor.methods({
         'refreshAccountList': function () {
             // delete all accounts and then refresh them
-            FacebookAccountList.remove( {} )
+            Accounts.remove( {} )
             let accountsDataArray = [];
             let accountsData;
             try {
@@ -28,7 +28,7 @@ if (Meteor.isServer) {
             try {
                 for (let i = 0; i < accountsDataArray.length; i++) {
                     for (let j = 0; j < accountsDataArray[i].length; j++) {
-                        FacebookAccountList.insert({
+                        Accounts.insert({
                             name: accountsDataArray[i][j].name,
                             account_id: accountsDataArray[i][j].account_id,
                             amount_spent: accountsDataArray[i][j].amount_spent,
@@ -45,7 +45,7 @@ if (Meteor.isServer) {
     });
 
     Meteor.publish('fbAccountList', function () {
-        return FacebookAccountList.find({}); //publish all accounts
+        return Accounts.find({}); //publish all accounts
     })
 
 };

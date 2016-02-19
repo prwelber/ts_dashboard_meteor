@@ -2,7 +2,7 @@ if (Meteor.isServer) {
 
     Meteor.methods({
         'insertNewInitiative': function (dataObj) {
-            NewInitiativeList.insert({
+            Initiatives.insert({
                 inserted_date: moment().format("MM-DD-YYYY hh:mm a"),
                 brand: dataObj.brand,
                 agency: dataObj.agency,
@@ -18,7 +18,7 @@ if (Meteor.isServer) {
     });
 
 
-
+//need a meteor.publish
 
 
 }
