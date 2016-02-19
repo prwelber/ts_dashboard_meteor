@@ -1,12 +1,19 @@
-
-<template name="accounts">
-    <h3>Here is a list of all TS Accounts:</h3>
-    <button class="refresh-accounts">Refresh Accounts</button>
-    <br />{{sessionSetter}}
-    {{#each accountList}}
-        <h4> <a href="/accounts/{{account_id}}" class="account-link"> {{name}} </a> </h4>
-        <p>Last Refresh: {{inserted}}</p>
-        <p>Account ID: {{account_id}}</p>
-        <p>Amount Spent: {{formatSpend amount_spent}}</p>
-    {{/each}}
+<head>
+  <title>stats_prototyping</title>
+</head>
+<template name="index">
+    <body>
+        <header>
+            <a href="/">Home</a>
+            {{> loginButtons}}
+            <a href="/newinitiative">New Initiative</a>
+            Today is <span class=date>{{getDate}}</span>
+        </header>
+        <h1>This is a Meteor app.</h1>
+        <main>
+            {{> Template.dynamic template=main}}
+        </main>
+    </body>
 </template>
+
+
