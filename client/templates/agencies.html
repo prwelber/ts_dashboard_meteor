@@ -1,0 +1,12 @@
+<template name="agencies">
+    <h2>All Agencies</h2>
+    {{#each getAgencies}}
+        <h4>{{name}}</h4>
+        <p>{{location}}</p>
+        <p><strong>Brands:</strong></p>
+        {{#each thing in brands}}
+            <p>{{thing}}</p>
+        {{/each}}
+        <br><br>
+    {{/each}}
+</template>

@@ -35,7 +35,14 @@ Template.accounts.helpers({
     'accountList': function () {
         let userId = Meteor.userId();
         if (userId) {
-            return Accounts.find({})
+            return Accounts.find({
+                "name": { "$in": [
+                    "Ruffino",
+                    "Tom Gore",
+                    "Mouton Cadet",
+                    "Robert Mondavi Winery"
+                ]}
+            })
         }
     },
     'formatSpend': function (num) {

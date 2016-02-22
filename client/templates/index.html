@@ -6,13 +6,17 @@
         <header>
             <a href="/">Home</a>
             {{> loginButtons}}
-            <a href="/newinitiative">New Initiative</a>
+            <a href="/initiatives/new">New Initiative</a>
+            <a href="/agencies/new">New Agency</a>
             Today is <span class=date>{{getDate}}</span>
         </header>
         <h1>This is a Meteor app.</h1>
         <main>
             {{> Template.dynamic template=main}}
         </main>
+        <footer>
+            <p><strong>This is for the footer.</strong></p>
+        </footer>
     </body>
 </template>
 
