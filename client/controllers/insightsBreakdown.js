@@ -20,6 +20,6 @@ Template.insightsBreakdown.helpers({
     'campaignInfo': function () {
         return CampaignInsights.findOne({campaign_id: FlowRouter.current().params.campaign_id});
     }
-})
+});
 
 

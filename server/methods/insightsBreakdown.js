@@ -14,7 +14,6 @@ Meteor.methods({
             breakdown = result.data.data;
             // breakdown is now an array of objects
 
-
             // in the below forEach we are creating an array of objects
             // we instantiate an empty object at the beginning of each loop
             // and we push that object into the array at the end of the loop
@@ -28,17 +27,18 @@ Meteor.methods({
                 dataObj['ctr'] = el.ctr;
                 dataObj['cpm'] = el.cpm;
                 dataObj['cpp'] = el.cpp;
+                dataObj['spend'] = el.spend;
                 try {
                     el.actions.forEach(el => {
                         dataObj[el.action_type] = el.value;
-                    })
+                    });
                 } catch(e) {
                     console.log(e);
                 }
                 try {
                     el.cost_per_action_type.forEach(el => {
                         dataObj["cost_per_"+el.action_type] = el.value;
-                    })
+                    });
                 } catch(e) {
                     console.log(e)
                 }
@@ -47,9 +47,9 @@ Meteor.methods({
                 breakdownArray.push(dataObj)
             });
         } catch(e) {
-            console.log("Here's the error:", e);
-        } finally {
-            // console.log(breakdownArray);
+            console.log("Error pulling Insights Breakdown, here's the error:", e);
+        }
+        try {
             breakdownArray.forEach(el => {
                     InsightsBreakdowns.insert({
                         age: el.age,
@@ -57,6 +57,7 @@ Meteor.methods({
                         total_actions: el.total_actions,
                         impressions: el.impressions,
                         reach: el.reach,
+                        spend: el.spend,
                         ctr: el.ctr,
                         cpm: el.cpm,
                         cpp: el.cpp,
@@ -74,12 +75,14 @@ Meteor.methods({
                         cost_per_post_engagement: el.cost_per_post_engagement,
                         campaign_name: el.campaign_name,
                         campaign_mongo_reference: el.campaign_mongo_reference
-                    })
-            })
+                    });
+            });
+        } catch(e) {
+            console.log('error inserting into database', e);
         }
     }
 });
 
 Meteor.publish('insightsBreakdownList', function () {
     return InsightsBreakdowns.find({}); //publish all breakdowns
-})
+});
