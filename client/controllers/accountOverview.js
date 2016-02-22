@@ -21,7 +21,7 @@ if (Meteor.isClient) {
             //TODO - need to write logic here to check for campaign and if not, then meteor.call to method
             if (CampaignBasics.findOne({account_id: accountId})) {
                 console.log('you should be seeing campaigns');
-                return CampaignBasics.find({account_id: accountId}, {sort: {sort_time_start: -1}, limit: 10})
+                return CampaignBasics.find({account_id: accountId}, {sort: {sort_time_start: -1}, limit: 25})
             } else {
                 Meteor.call('getCampaigns', accountId)
             }

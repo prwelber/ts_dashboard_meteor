@@ -8,16 +8,30 @@ Meteor.methods({
 Meteor.methods({
     'getDailyBreakdown': function (accountNumber, campaignName, campaignMongoId) {
         let dailyBreakdownArray = [];
+        let masterArray = [];
         let dailyBreakdown;
         try {
-            let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/insights?time_increment=1&access_token='+token+'', {});
-            breakdown = result.data.data;
+            let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/insights?fields=date_start,date_stop,campaign_id,total_actions,impressions,spend,reach,ctr,cpm,cpp,actions,cost_per_action_type&time_increment=1&access_token='+token+'', {});
+            breakdown = result;
             //breakdown is an array of objects
-            console.log(breakdown)
-            // in the below forEach we are creating an array of objects
-            // we instantiate an empty object at the beginning of each loop
-            // and we push that object into the array at the end of the loop
-            breakdown.forEach(el => {
+            dailyBreakdownArray.push(breakdown.data.data);
+
+            while (true) {
+                try {
+                    breakdown = HTTP.call('GET', breakdown.data.paging['next'], {});
+                    dailyBreakdownArray.push(breakdown.data.data);
+                } catch(e) {
+                    console.log('no more pages or error while true loop', e);
+                    break;
+                }
+            }
+
+            // flattens the array so I can loop over the whole thing at once
+            dailyBreakdownArray = _.flatten(dailyBreakdownArray);
+
+            // console.log(dailyBreakdownArray)
+
+            dailyBreakdownArray.forEach(el => {
                 data = {};
                 data['date_start'] = el.date_start;
                 data['date_stop'] = el.date_stop;
@@ -26,9 +40,9 @@ Meteor.methods({
                 data['impressions'] = el.impressions;
                 data['reach'] = el.reach;
                 data['ctr'] = el.ctr;
-                data['cpm'] = el.cpm;
-                data['cpp'] = el.cpp;
-                data['spend'] = el.spend;
+                data['cpm'] = accounting.formatMoney(el.cpm, "$", 2);
+                data['cpp'] = accounting.formatMoney(el.cpp, "$", 2);
+                data['spend'] = accounting.formatMoney(el.spend, "$", 2);
                 try {
                     el.actions.forEach(el => {
                         data[el.action_type] = el.value;
@@ -38,7 +52,7 @@ Meteor.methods({
                 }
                 try {
                     el.cost_per_action_type.forEach(el => {
-                        data['cost_per_'+el.action_type] = el.value;
+                        data['cost_per_'+el.action_type] = accounting.formatMoney(el.value, "$", 2);
                     });
                 } catch(e) {
                     console.log(e);
@@ -46,14 +60,14 @@ Meteor.methods({
                 data['campaign_name'] = campaignName;
                 data['campaign_mongo_reference'] = campaignMongoId;
                 // push each object into the master array
-                dailyBreakdownArray.push(data);
+                masterArray.push(data);
             });
         } catch(e) {
             console.log("Error pulling daily insights breakdown:", e)
         }
         // Loop over array of objects and push each into the database
         try {
-            dailyBreakdownArray.forEach(el => {
+            masterArray.forEach(el => {
                 InsightsBreakdownsByDays.insert({
                     date_start: el.date_start,
                     date_stop: el.date_stop,

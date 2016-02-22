@@ -1,27 +1,27 @@
 <template name="insightsBreakdownDaily">
 <p><a href="/accounts/{{campaignInfo.campaign_id}}/insights">Back to Campaign Insights</a></p>
 <h2>Day by Day Insights Breakdown</h2>
-<h3>{{campaignInfo.campaign_name}}</h3>
+<h3>Campaign: {{campaignInfo.campaign_name}}</h3>
 {{#each getDailyBreakdown}}
     <h3>{{date_start}} -- {{date_stop}}</h3>
-    <p>Spend: {{spend}}</p>
+    <p>Spend: {{ spend}}</p>
     <p>Total Actions: {{total_actions}}</p>
     <p>Impressions: {{impressions}}</p>
     <p>Reach: {{reach}}</p>
     <p>CTR: {{ctr}}</p>
-    <p>CPM: ${{cpm}}</p>
-    <p>CPP: ${{cpp}}</p>
+    <p>CPM: {{ cpm}}</p>
+    <p>CPP: {{ cpp}}</p>
     <p>Comment: {{comment}}</p>
     <p>Photo View: {{photo_view}}</p>
     <p>Post: {{post}}</p>
     <p>Post Like: {{post_like}}</p>
     <p>Page Engagement: {{page_engagement}}</p>
     <p>Post Engagement: {{post_engagement}}</p>
-    <p>CP Comment: ${{cost_per_comment}}</p>
-    <p>CP Photo View: ${{cost_per_photo_view}}</p>
-    <p>CP Post: ${{cost_per_post}}</p>
-    <p>CP Post Like: ${{cost_per_post_like}}</p>
-    <p>CP Page Engagement: ${{cost_per_page_engagement}}</p>
-    <p>CP Post Engagement: ${{cost_per_post_engagement}}</p>
+    <p>CP Comment: {{ cost_per_comment}}</p>
+    <p>CP Photo View: {{ cost_per_photo_view}}</p>
+    <p>CP Post: {{ cost_per_post}}</p>
+    <p>CP Post Like: {{ cost_per_post_like}}</p>
+    <p>CP Page Engagement: {{ cost_per_page_engagement}}</p>
+    <p>CP Post Engagement: {{ cost_per_post_engagement}}</p>
 {{/each}}
 </template>
