@@ -1,0 +1,30 @@
+<template name="ads">
+    <h2>Ads Insights and Ads Creative</h2>
+    <p><a href="/accounts/{{getCampaignNumber}}/insights">View Campaign Insights</a></p>
+    <p><a href="/accounts/{{getCampaignNumber}}/adsets">View AdSets and AdSets Insights</a></p>
+    {{#if getAds}}
+        {{#each getAds}}
+        <h3>Ad Name:{{name}}</h3>
+        <p>Ad Creative Name:{{ad_creative_name}}</p>
+        <p>Spend: {{spend}}</p>
+        <p>CPM: {{cpm}}</p>
+        <p>CPP: {{cpp}}</p>
+        <p>CTR: {{ctr}}%</p>
+        <p>Reach: {{reach}}</p>
+        <p>Impressions: {{impressions}}</p>
+        {{#if cost_per_page_engagement}}<p>CP Page Engagement: {{ cost_per_page_engagement}}</p>{{/if}}
+        {{#if cost_per_post_engagement}}<p>CP Post Engagement: {{ cost_per_post_engagement}}</p>{{/if}}
+        <p>Offsite Conversion Registration: {{offsite_conversion_registration}}</p>
+        <p>Offsite Conversion: {{offsite_conversion}}</p>
+        <p>CP Offsite Conversion: {{cost_per_offsite_conversion}}</p>
+
+        <p>Image URL: <a href="{{image_url}}" target="_blank">{{image_url}}</a></p>
+        <p>Ad Creative Body: {{body}}</p>
+        <p>Ad Creative Title: {{title}}</p>
+
+
+        {{/each}}
+    {{else}}
+    <p>No Ads</p>
+    {{/if}}
+</template>

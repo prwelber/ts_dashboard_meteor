@@ -25,21 +25,20 @@ Template.campaignInsights.helpers({
             Meteor.call('getInsights', campaignNumber)
         }
     },
-    'currencyFormat': function (number) {
-        function roundToTwo(num) {
-            return +(Math.round(num + "e+2")  + "e-2");
-        }
-        if (roundToTwo(number)) {
-            return "$"+roundToTwo(number)
-        } else {
-            return "N/A"
-        }
-
-    },
+    // 'currencyFormat': function (number) {
+    //     function roundToTwo(num) {
+    //         return +(Math.round(num + "e+2")  + "e-2");
+    //     }
+    //     if (roundToTwo(number)) {
+    //         return "$"+roundToTwo(number)
+    //     } else {
+    //         return "N/A"
+    //     }
+    // },
     'cleanText': function (text) {
         return text.replace("_", " ").toLowerCase();
     },
-    'goBack': function () {
+    'getCampaignNumber': function () {
         let campaignNumber = FlowRouter.current().params.campaign_id;
         let camp = CampaignInsights.findOne({campaign_id: campaignNumber})
         return camp.account_id;
@@ -47,4 +46,5 @@ Template.campaignInsights.helpers({
     'showInitiative': function () {
         return initiative
     }
+
 });

@@ -1,13 +1,20 @@
 <template name="adsets">
     <h2>AdSet Insights and Targeting</h2>
+    <p><a href="/accounts/{{getCampaignNumber}}/insights">View Campaign Insights</a></p>
+    <p> <a href="/accounts/{{getCampaignNumber}}/ads">View Ads and Ads Insights</a> </p>
     {{#if getAdSets}}
         {{#each getAdSets}}
             <h3>{{name}}</h3>
             <p>{{start_time}} -- {{end_time}}</p>
             <p>Optimization Goal: {{optimization_goal}}</p>
+            <p><strong>Targeting</strong></p>
             <p>Interests: {{interests}}</p>
             <p>Age Range: {{age_range}}</p>
+            <p>Behaviors: {{behaviors}}</p>
+            <p>Locations: {{location}}</p>
             <p>Placements: {{placements}}</p>
+            <p>Connections: {{connections}}</p>
+            <p><strong>Insights</strong></p>
             <p>Spend: {{spend}}</p>
             <p>CPM: {{cpm}}</p>
             <p>CPP: {{cpp}}</p>

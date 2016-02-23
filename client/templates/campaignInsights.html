@@ -1,6 +1,9 @@
 <template name="campaignInsights">
-    <a href="/accounts/{{goBack}}">Back to Campaign List</a>
+    <a href="/accounts/{{getCampaignNumber}}">Back to Campaign List</a>
     <h2>Campaign Insights</h2>
+    <p><a href="/accounts/{{getCampaignNumber}}/insights">View Campaign Insights</a></p>
+    <p><a href="/accounts/{{getCampaignNumber}}/adsets">View AdSets and AdSets Insights</a></p>
+    <p> <a href="/accounts/{{getCampaignNumber}}/ads">View Ads and Ads Insights</a> </p>
 
     {{#each fetchInsights}}
         <h3>Lifetime insights for <span class="campName">{{campaign_name}}</span> <br />

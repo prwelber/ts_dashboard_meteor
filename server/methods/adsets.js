@@ -53,7 +53,16 @@ Meteor.methods({
                             data['age_range'] = el.children[0];
                         }
                         if (el.content == "Placements:") {
-                            data['placements'] = el.children[0]
+                            data['placements'] = el.children[0];
+                        }
+                        if (el.content == "Location - Living In:") {
+                            data['location'] = el.children[0];
+                        }
+                        if (el.content == "Behaviors:") {
+                            data['behaviors'] = el.children[0];
+                        }
+                        if (el.content == "Connections:") {
+                            data['connections'] = el.children[0];
                         }
                     });
                 } catch(e) {
@@ -103,6 +112,9 @@ Meteor.methods({
                     updated_time: moment(el.updated_time).format("MM-DD-YYYY hh:mm a"),
                     interests: el.interests,
                     age_range: el.age_range,
+                    location: el.location,
+                    behaviors: el.behaviors,
+                    connections: el.connections,
                     placements: el.placements,
                     spend: el.spend,
                     ctr: el.ctr,
@@ -135,4 +147,8 @@ Meteor.methods({
             console.log('Error inserting into DB', e)
         }
     }
+});
+
+Meteor.publish('AdSetsList', function () {
+    return AdSets.find( {} ) // publish all adsets
 });
