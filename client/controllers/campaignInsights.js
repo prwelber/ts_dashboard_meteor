@@ -18,8 +18,7 @@ Template.campaignInsights.helpers({
         let camp = CampaignInsights.findOne({campaign_id: campaignNumber});
         if (camp) {
             console.log('you should be seeing insights');
-            let name = camp.campaign_name;
-            initiative = Initiatives.findOne({name: name});
+            initiative = Initiatives.findOne({name: camp.campaign_name});
             return CampaignInsights.find({campaign_id: campaignNumber})
         } else {
             console.log('gotta get insights for this one', campaignNumber);

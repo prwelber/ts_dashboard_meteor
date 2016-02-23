@@ -9,7 +9,7 @@ Meteor.methods({
     'getDailyBreakdown': function (accountNumber, campaignName, campaignMongoId) {
         let dailyBreakdownArray = [];
         let masterArray = [];
-        let dailyBreakdown;
+        let breakdown;
         try {
             let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/insights?fields=date_start,date_stop,campaign_id,total_actions,impressions,spend,reach,ctr,cpm,cpp,actions,cost_per_action_type&time_increment=1&access_token='+token+'', {});
             breakdown = result;
@@ -21,7 +21,7 @@ Meteor.methods({
                     breakdown = HTTP.call('GET', breakdown.data.paging['next'], {});
                     dailyBreakdownArray.push(breakdown.data.data);
                 } catch(e) {
-                    console.log('no more pages or error while true loop', e);
+                    console.log('no more pages or error in while true loop', e);
                     break;
                 }
             }

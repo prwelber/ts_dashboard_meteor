@@ -10,45 +10,45 @@
         <p><a href="/accounts/{{campaign_id}}/daybreakdowns">Day by day Breakdown</a></p>
         <h4>Flight Dates: {{date_start}} -- {{date_stop}}</h4>
         <p><strong>Often Viewed</strong></p>
-        <p>CPM: {{currencyFormat cpm}}</p>
-        <p>CPP: {{currencyFormat cpp}}</p>
+        <p>CPM: {{cpm}}</p>
+        <p>CPP: {{cpp}}</p>
         <p>CTR: {{ctr}}%</p>
-        <p>Reach: {{numFormat reach}}</p>
-        <p>Impressions: {{numFormat impressions}}</p>
-        <p>Spend: {{currencyFormat spend}}</p>
+        <p>Reach: {{reach}}</p>
+        <p>Impressions: {{impressions}}</p>
+        <p>Spend: {{spend}}</p>
         <br />
         <p><strong>Core Insights</strong></p>
-        <p>Comments: {{comment}}</p>
-        <p>Likes: {{numFormat like}}</p>
-        <p>Link Click: {{link_click}}</p>
-        <p>Website Clicks: {{website_clicks}}</p>
-        <p>Photo View: {{photo_view}}</p>
-        <p>Post: {{post}}</p>
-        <p>Post Likes: {{post_like}}</p>
-        <p>Unlikes: {{unlike}}</p>
-        <p>Video Play: {{video_play}}</p>
-        <p>Video View: {{video_view}}</p>
-        <p>CP Comment: {{currencyFormat cost_per_comment}}</p>
-        <p>CP Like: {{currencyFormat cost_per_like}}</p>
-        <p>CP Link Click: {{currencyFormat cost_per_link_click}}</p>
-        <p>CP Photo View: {{currencyFormat cost_per_photo_view}}</p>
-        <p>CP Post: {{currencyFormat cost_per_post}}</p>
-        <p>CP Post Like: {{currencyFormat cost_per_post_like}}</p>
-        <p>CP Unlike: {{currencyFormat cost_per_unlike}}</p>
-        <p>CP Video Play: {{currencyFormat cost_per_video_play}}</p>
-        <p>CP Video View: {{currencyFormat cost_per_video_view}}</p>
-        <p>CP Page Engagement: {{currencyFormat cost_per_page_engagement}}</p>
-        <p>CP Post Engagement: {{currencyFormat cost_per_post_engagement}}</p>
 
-        <br /><br />
-        <p>CP Unique Click: {{currencyFormat cost_per_unique_click}}</p>
-        <p>CP Total Action: {{currencyFormat cost_per_total_action}}</p>
+        {{#if comment}}<p>Comments: {{comment}}</p>{{/if}}
+        {{#if like}}<p>Likes: {{like}}</p>{{/if}}
+        {{#if link_click}}<p>Link Click: {{link_click}}</p>{{/if}}
+        {{#if website_clicks}}<p>Website Clicks: {{website_clicks}}</p>{{/if}}
+        {{#if photo_view}}<p>Photo View: {{photo_view}}</p>{{/if}}
+        {{#if post}}<p>Post: {{post}}</p>{{/if}}
+        {{#if post_like}}<p>Post Likes: {{post_like}}</p>{{/if}}
+        {{#if unlike}}<p>Unlikes: {{unlike}}</p>{{/if}}
+        {{#if video_play}}<p>Video Play: {{video_play}}</p>{{/if}}
+        {{#if video_view}}<p>Video View: {{video_view}}</p>{{/if}}
+        {{#if cost_per_comment}}<p>CP Comment: {{ cost_per_comment}}</p>{{/if}}
+        {{#if cost_per_like}}<p>CP Like: {{ cost_per_like}}</p>{{/if}}
+        {{#if cost_per_link_click}}<p>CP Link Click: {{ cost_per_link_click}}</p>{{/if}}
+        {{#if cost_per_photo_view}}<p>CP Photo View: {{ cost_per_photo_view}}</p>{{/if}}
+        {{#if cost_per_post}}<p>CP Post: {{ cost_per_post}}</p>{{/if}}
+        {{#if cost_per_post_like}}<p>CP Post Like: {{ cost_per_post_like}}</p>{{/if}}
+        {{#if cost_per_unlike}}<p>CP Unlike: {{cost_per_unlike}}</p>{{/if}}
+        {{#if cost_per_video_play}}<p>CP Video Play: {{cost_per_video_play}}</p>{{/if}}
+        {{#if cost_per_video_view}}<p>CP Video View: {{cost_per_video_view}}</p>{{/if}}
+        <p>CP Page Engagement: {{cost_per_page_engagement}}</p>
+        <p>CP Post Engagement: {{cost_per_post_engagement}}</p>
+        <br />
+        <p>CP Unique Click: {{cost_per_unique_click}}</p>
+        <p>CP Total Action: {{cost_per_total_action}}</p>
         <p>Unique Impressions: {{unique_impressions}}</p>
         <p>Total Actions: {{total_actions}}</p>
         <p>Total Unique Actions: {{total_unique_actions}}</p>
         <p>Unique Clicks: {{unique_clicks}}</p>
         <p>Estimated Ad Recall Rate: {{estimated_ad_recall_rate}}</p>
-        <p>CP Estimated Ad Recallers: {{currencyFormat cost_per_estimated_ad_recallers}}</p>
+        <p>CP Estimated Ad Recallers: {{cost_per_estimated_ad_recallers}}</p>
     {{/each}}
 
     {{#with showInitiative}}

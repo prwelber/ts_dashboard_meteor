@@ -1,0 +1,40 @@
+<template name="adsets">
+    <h2>AdSet Insights and Targeting</h2>
+    {{#if getAdSets}}
+        {{#each getAdSets}}
+            <h3>{{name}}</h3>
+            <p>{{start_time}} -- {{end_time}}</p>
+            <p>Optimization Goal: {{optimization_goal}}</p>
+            <p>Interests: {{interests}}</p>
+            <p>Age Range: {{age_range}}</p>
+            <p>Placements: {{placements}}</p>
+            <p>Spend: {{spend}}</p>
+            <p>CPM: {{cpm}}</p>
+            <p>CPP: {{cpp}}</p>
+            <p>CTR: {{ctr}}%</p>
+            <p>Reach: {{reach}}</p>
+            <p>Impressions: {{impressions}}</p>
+            {{#if comment}}<p>Comments: {{comment}}</p>{{/if}}
+            {{#if like}}<p>Likes: {{like}}</p>{{/if}}
+            {{#if link_click}}<p>Link Click: {{link_click}}</p>{{/if}}
+            {{#if website_clicks}}<p>Website Clicks: {{website_clicks}}</p>{{/if}}
+            {{#if photo_view}}<p>Photo View: {{photo_view}}</p>{{/if}}
+            {{#if post}}<p>Post: {{post}}</p>{{/if}}
+            {{#if post_like}}<p>Post Likes: {{post_like}}</p>{{/if}}
+            {{#if unlike}}<p>Unlikes: {{unlike}}</p>{{/if}}
+            {{#if video_play}}<p>Video Play: {{video_play}}</p>{{/if}}
+            {{#if video_view}}<p>Video View: {{video_view}}</p>{{/if}}
+            {{#if cost_per_comment}}<p>CP Comment: {{ cost_per_comment}}</p>{{/if}}
+            {{#if cost_per_like}}<p>CP Like: {{ cost_per_like}}</p>{{/if}}
+            {{#if cost_per_link_click}}<p>CP Link Click: {{ cost_per_link_click}}</p>{{/if}}
+            {{#if cost_per_photo_view}}<p>CP Photo View: {{ cost_per_photo_view}}</p>{{/if}}
+            {{#if cost_per_post}}<p>CP Post: {{ cost_per_post}}</p>{{/if}}
+            {{#if cost_per_post_like}}<p>CP Post Like: {{ cost_per_post_like}}</p>{{/if}}
+            {{#if cost_per_page_engagement}}<p>CP Page Engagement: {{ cost_per_page_engagement}}</p>{{/if}}
+            {{#if cost_per_post_engagement}}<p>CP Post Engagement: {{ cost_per_post_engagement}}</p>{{/if}}
+        {{/each}}
+    {{else}}
+        <p>No AdSets</p>
+    {{/if}}
+
+</template>

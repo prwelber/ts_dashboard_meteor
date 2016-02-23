@@ -36,6 +36,7 @@ Meteor.methods({
         try {
                 CampaignInsights.insert({
                     inserted: moment().format("MM-DD-YYYY hh:mm a"),
+                    campaign_id: campaignInsights.campaign_id,
                     account_id: campaignInsights.account_id,
                     campaign_name: campaignInsights.campaign_name,
                     cost_per_unique_click: campaignInsights.cost_per_unique_click,
@@ -51,7 +52,6 @@ Meteor.methods({
                     total_unique_actions: campaignInsights.total_unique_actions,
                     unique_impressions: campaignInsights.unique_impressions,
                     unique_clicks: campaignInsights.unique_clicks,
-                    campaign_id: campaignInsights.campaign_id,
                     estimated_ad_recall_rate: campaignInsights.estimated_ad_recall_rate,
                     estimated_ad_recallers: campaignInsights.estimated_ad_recallers,
                     cost_per_estimated_ad_recallers: campaignInsights.cost_per_estimated_ad_recallers,
