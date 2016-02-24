@@ -1,5 +1,5 @@
 <template name="campaignInsights">
-    <a href="/accounts/{{getCampaignNumber}}">Back to Campaign List</a>
+    <a href="/accounts/{{getAccountNumber}}">Back to Account Overview & Campaign List</a>
     <h2>Campaign Insights</h2>
     <p><a href="/accounts/{{getCampaignNumber}}/insights">View Campaign Insights</a></p>
     <p><a href="/accounts/{{getCampaignNumber}}/adsets">View AdSets and AdSets Insights</a></p>
@@ -32,6 +32,8 @@
         {{#if unlike}}<p>Unlikes: {{unlike}}</p>{{/if}}
         {{#if video_play}}<p>Video Play: {{video_play}}</p>{{/if}}
         {{#if video_view}}<p>Video View: {{video_view}}</p>{{/if}}
+        {{#if offsite_conversion}} <p>Offsite Conversion: {{offsite_conversion}}</p>{{/if}}
+        {{#if offsite_conversion_registration}} <p>Offsite Conversion Registration: {{offsite_conversion_registration}}</p>{{/if}}
         {{#if offsite_conversion_fb_pixel_purchase}} <p>Offsite Conversion FB Pixel Purchase: {{offsite_conversion_fb_pixel_purchase}}</p>{{/if}}
         {{#if cost_per_comment}}<p>CP Comment: {{ cost_per_comment}}</p>{{/if}}
         {{#if cost_per_like}}<p>CP Like: {{ cost_per_like}}</p>{{/if}}
@@ -43,6 +45,8 @@
         {{#if cost_per_video_play}}<p>CP Video Play: {{cost_per_video_play}}</p>{{/if}}
         {{#if cost_per_video_view}}<p>CP Video View: {{cost_per_video_view}}</p>{{/if}}
         {{#if cost_per_offsite_conversion_fb_pixel_purchase}} <p>CP Offsite Conversion FB Pixel Purchase: {{cost_per_offsite_conversion_fb_pixel_purchase}}</p>{{/if}}
+        {{#if cost_per_offsite_conversion}} <p>CP Offsite Conversion: {{cost_per_offsite_conversion}}</p>{{/if}}
+        {{#if cost_per_offsite_conversion_registration}} <p>CP Offsite Conversion Registration: {{cost_per_offsite_conversion_registration}}</p>{{/if}}
         <p>CP Page Engagement: {{cost_per_page_engagement}}</p>
         <p>CP Post Engagement: {{cost_per_post_engagement}}</p>
         <br />

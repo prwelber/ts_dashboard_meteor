@@ -79,6 +79,8 @@ Meteor.methods({
             });
         } catch(e) {
             console.log('error inserting into database', e);
+        } finally {
+            return "this is a returned result";
         }
     }
 });

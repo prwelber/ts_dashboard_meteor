@@ -22,6 +22,7 @@ Template.accountOverview.helpers({
             console.log('you should be seeing campaigns');
             return CampaignBasics.find({account_id: accountId}, {sort: {sort_time_start: -1}, limit: 25})
         } else {
+            console.log('gotta get campaigns for this account', accountId);
             Meteor.call('getCampaigns', accountId)
         }
     }

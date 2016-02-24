@@ -40,7 +40,8 @@ Template.accounts.helpers({
                     "Ruffino",
                     "Tom Gore",
                     "Mouton Cadet",
-                    "Robert Mondavi Winery"
+                    "Robert Mondavi Winery",
+                    "Kim Crawford"
                 ]}
             })
         }
@@ -59,7 +60,9 @@ Template.accounts.helpers({
     }
 })
 
+Template.index.events({
 
+});
 
 
 Template.index.helpers({

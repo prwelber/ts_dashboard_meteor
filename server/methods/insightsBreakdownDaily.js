@@ -97,6 +97,8 @@ Meteor.methods({
             });
         } catch(e) {
             console.log('error inserting data into database', e);
+        } finally {
+            return "this is a returned result";
         }
     }
 });

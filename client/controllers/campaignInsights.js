@@ -1,4 +1,3 @@
-
 Meteor.subscribe('campaignInsightList');
 
 Template.campaignInsights.onRendered(function () {
@@ -21,8 +20,16 @@ Template.campaignInsights.helpers({
             // initiative = Initiatives.findOne({name: camp.campaign_name});
             return [camp.data];
         } else {
+            var target = document.getElementById("spinner-div");
+            let spun = Blaze.render(Template.spin, target);
             console.log('gotta get insights for this one', campaignNumber);
-            Meteor.call('getInsights', campaignNumber)
+            Meteor.call('getInsights', campaignNumber, function (err, result) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    Blaze.remove(spun);
+                }
+            });
         }
     },
     // 'currencyFormat': function (number) {
@@ -39,9 +46,11 @@ Template.campaignInsights.helpers({
         return text.replace("_", " ").toLowerCase();
     },
     'getCampaignNumber': function () {
-        let campaignNumber = FlowRouter.current().params.campaign_id;
-        let camp = CampaignInsights.findOne({campaign_id: campaignNumber})
-        return camp.data.account_id;
+        return FlowRouter.current().params.campaign_id;
+    },
+    'getAccountNumber': function () {
+        let num = CampaignInsights.findOne({'data.campaign_id': FlowRouter.current().params.campaign_id}).data;
+        return num.account_id;
     },
     'showInitiative': function () {
         // return initiative
