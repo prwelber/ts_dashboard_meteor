@@ -15,11 +15,11 @@ Template.campaignInsights.helpers({
     'fetchInsights': function () {
         console.log('checking for insights');
         let campaignNumber = FlowRouter.current().params.campaign_id;
-        let camp = CampaignInsights.findOne({campaign_id: campaignNumber});
+        let camp = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
         if (camp) {
             console.log('you should be seeing insights');
-            initiative = Initiatives.findOne({name: camp.campaign_name});
-            return CampaignInsights.find({campaign_id: campaignNumber})
+            // initiative = Initiatives.findOne({name: camp.campaign_name});
+            return [camp.data];
         } else {
             console.log('gotta get insights for this one', campaignNumber);
             Meteor.call('getInsights', campaignNumber)
@@ -41,10 +41,10 @@ Template.campaignInsights.helpers({
     'getCampaignNumber': function () {
         let campaignNumber = FlowRouter.current().params.campaign_id;
         let camp = CampaignInsights.findOne({campaign_id: campaignNumber})
-        return camp.account_id;
+        return camp.data.account_id;
     },
     'showInitiative': function () {
-        return initiative
+        // return initiative
     }
 
 });
