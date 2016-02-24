@@ -31,8 +31,8 @@ Meteor.methods({
                     Accounts.insert({
                         name: accountsDataArray[i][j].name,
                         account_id: accountsDataArray[i][j].account_id,
-                        amount_spent: accountsDataArray[i][j].amount_spent,
-                        inserted: moment().format("MM-DD-YYYY")
+                        amount_spent: accounting.formatMoney(accountsDataArray[i][j].amount_spent, "$", 2),
+                        inserted: moment().format("MM-DD-YYYY hh:mm a")
                     });
                 }
             }
