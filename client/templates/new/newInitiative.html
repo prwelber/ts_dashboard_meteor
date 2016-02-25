@@ -1,0 +1,38 @@
+<template name="newInitiative">
+    <h2>Create New Initiative</h2>
+    <form class="new-initiative">
+        <p>Name</p><input type="text" name="name" placeholder="Name">
+        <p>Brand</p><select name="brand" id="brand-select">
+            {{#each getBrands}}
+                <option value="{{name}}">{{name}}</option>
+            {{/each}}
+        </select>
+        <p>Agency</p><select name="agency" id="agency-select">
+            <option value="Constellation">Constellation</option>
+            <option value="Horizon">Horizon</option>
+        </select>
+        <p>Product Category</p>
+        {{!-- TODO product category needs to be completed --}}
+        <p>Deal type</p><select name="dealtype" id="dealtype-select">
+            <option value="CPC">CPC</option>
+            <option value="CPM">CPM</option>
+            <option value="CPL">CPL</option>
+            <option value="FACTOR">FACTOR</option>
+        </select>
+        <p>Budget(no commas - input format: 1000.00)</p>$<input id="new-init-budget" type="text" name="budget" placeholder="Budget">
+        <div class="message-box"></div>
+        <p>Start Date</p>
+        <div class='col-sm-6'>
+            <input type='text' name="startDate" class="form-control datetimepicker" />
+        </div>
+        <p>End Date</p>
+        <div class='col-sm-6'>
+            <input type='text' name="endDate" class="form-control datetimepicker" />
+        </div>
+        <p>Notes</p>
+        <textarea name="notes" id="notes" cols="50" rows="5"></textarea>
+        <br />
+        <input type="submit" value="Submit">
+    </form>
+    {{!-- {{> quickForm collection="Initiatives" id="insertInitiativeForm" type="insert" class="new-initiative-form" options="allowed"}} --}}
+</template>

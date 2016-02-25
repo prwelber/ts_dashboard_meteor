@@ -5,13 +5,14 @@ Template.insightsBreakdown.helpers({
         console.log('checking for breakdown');
         let campaignNumber = FlowRouter.current().params.campaign_id;
         let camp = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
-        if (InsightsBreakdowns.findOne({campaign_name: camp.data.campaign_name})) {
+        if (InsightsBreakdowns.findOne({'data.campaign_name': camp.data.campaign_name})) {
             console.log('you should be seeing breakdown');
             let name = camp.data.campaign_name;
-            let camp_id = camp._id
             // initiative = NewInitiativeList.findOne({name: name});
-            let breakdown = InsightsBreakdowns.find({campaign_mongo_reference: camp._id});
-            return breakdown
+            let breakdown = InsightsBreakdowns.find({'data.campaign_mongo_reference': camp._id}).fetch();
+            //return array so that #each works in template
+            // console.log(breakdown)
+            return breakdown;
         } else {
             var target = document.getElementById("spinner-div");
             let spun = Blaze.render(Template.spin, target);
