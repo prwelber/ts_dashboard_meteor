@@ -48,6 +48,7 @@ Meteor.methods({
                         approved_targeting: false,
                         received_tracking: false,
                         sort_time_start: campaignOverviewArray[i][j].start_time,
+                        sort_time_stop: campaignOverviewArray[i][j].stop_time,
                         account_id: campaignOverviewArray[i][j].account_id
                     });
                 }

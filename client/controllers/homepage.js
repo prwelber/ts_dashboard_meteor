@@ -2,7 +2,15 @@ Meteor.subscribe('fbAccountList');
 
 Template.accounts.events({
     'click .refresh-accounts': function () {
-        Meteor.call('refreshAccountList')
+        var target = document.getElementById("spinner-div");
+        let spun = Blaze.render(Template.spin, target);
+        Meteor.call('refreshAccountList', function (err, result) {
+            if (err) {
+                console.log(e);
+            } else {
+                Blaze.remove(spun);
+            }
+        });
         // let userId = Meteor.userId();
         // if (!userId) {
         //     console.log('no user - can\'t update');
