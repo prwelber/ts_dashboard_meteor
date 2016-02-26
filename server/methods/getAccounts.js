@@ -21,10 +21,8 @@ Meteor.methods({
                 }
             }
         } catch(e) {
-            console.log('there has been an error in the top level try catch')
-            console.log(e);
+            console.log('there has been an error in the top level try catch', e);
         }
-
         try {
             for (let i = 0; i < accountsDataArray.length; i++) {
                 for (let j = 0; j < accountsDataArray[i].length; j++) {

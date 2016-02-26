@@ -13,8 +13,8 @@ Meteor.methods({
         try {
             let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/insights?breakdowns=age,gender&access_token='+token+'', {});
             breakdown = result
-            // breakdown is now an array of objects
             breakdownArray.push(breakdown.data.data);
+            // flatten to get rid of nested array
             breakdownArray = _.flatten(breakdownArray);
             // console.log(breakdownArray);
 
@@ -23,8 +23,9 @@ Meteor.methods({
                  for (let key in el) {
                     if (key == "actions") {
                         el[key].forEach(el => {
-                            // need something here that looks for a period in
-                            // key name
+                            // this check looks for a period in the key name and
+                            // replaces it with an underscore if found
+                            // this check is used two more times below
                             if (/\W/g.test(el.action_type)) {
                                 // console.log("before key", el.action_type)
                                 el.action_type = el.action_type.replace(/\W/g, "_");
@@ -100,6 +101,8 @@ Meteor.methods({
             console.log("Error pulling Insights Breakdown, here's the error:", e);
         }
         try {
+            // loop over array made up of gender/age objects and insert each one
+            // as its own document in Mongo - each will hold reference to parent campaign
             masterArray.forEach(el => {
                 InsightsBreakdowns.insert({
                     data: el

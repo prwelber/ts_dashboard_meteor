@@ -15,18 +15,16 @@ Meteor.methods({
             let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/insights?fields=account_id,campaign_name,cost_per_unique_click,cost_per_total_action,cost_per_10_sec_video_view,cpm,cpp,ctr,impressions,objective,reach,relevance_score,spend,total_actions,total_unique_actions,video_10_sec_watched_actions,video_15_sec_watched_actions,video_avg_pct_watched_actions,video_30_sec_watched_actions,video_avg_sec_watched_actions,video_p100_watched_actions,video_complete_watched_actions,video_p25_watched_actions,video_p50_watched_actions,video_p75_watched_actions,video_p95_watched_actions,unique_impressions,unique_clicks,campaign_id,adset_id,estimated_ad_recall_rate,estimated_ad_recallers,cost_per_estimated_ad_recallers,actions, website_clicks,cost_per_action_type&access_token='+token+'', {});
             insights = result;
             insightsArray.push(insights.data.data[0]);
-            //can just iterate over this as an object
-            // console.log(insightsArray[0]);
-            // for (let i in insightsArray[0]) {
-            //     console.log(typeof(i), .test(/\W/g))
-            // }
-
+            // at this point we just have one array with
+            // an object in it, with a few nested arrays
+            // of objects
             insightsArray.forEach(el => {
                 for (let key in el) {
                     if (key == "actions") {
                         el[key].forEach(el => {
-                            // need something here that looks for a period in
-                            // key name
+                            // this check looks for a period in the key name and
+                            // replaces it with an underscore if found
+                            // this check is used two more times below
                             if (/\W/g.test(el.action_type)) {
                                 // console.log("before key", el.action_type)
                                 el.action_type = el.action_type.replace(/\W/g, "_");
@@ -45,8 +43,6 @@ Meteor.methods({
                             }
                         });
                     } else {
-                        // this check looks for a period in the key name and
-                        // replaces it with an underscore
                         if (/\W/g.test(key)) {
                             key = key.replace(/\W/g, "_");
                             data[key] = el[key];
@@ -56,6 +52,7 @@ Meteor.methods({
                     }
                 }
             });
+            //overwrites data already in object with formatted values
             data['cpm'] = accounting.formatMoney(data.cpm, "$", 2);
             data['cpp'] = accounting.formatMoney(data.cpp, "$", 2);
             data['spend'] = accounting.formatMoney(data.spend, "$", 2);
@@ -69,9 +66,10 @@ Meteor.methods({
         }
 
         try {
+            // put the data object into Mongo
             CampaignInsights.insert({
                 data: data
-            });
+            })
 
                 // CampaignInsights.insert({
                 //     inserted: moment().format("MM-DD-YYYY hh:mm a"),
