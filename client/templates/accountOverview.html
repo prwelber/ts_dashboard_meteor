@@ -5,22 +5,26 @@
     <p class="account-id">{{getName.account_id}}</p>
     <br />
     <h2>All {{getName.name}} Campaigns</h2>
-    {{#each displayCampaignBasics}}
-        <h4>{{name}}</h4>
-        <p><a href="/accounts/{{campaign_id}}/insights">View Campaign Insights</a></p>
-        <p><a href="/accounts/{{campaign_id}}/adsets">View AdSets and AdSets Insights</a></p>
-        <p> <a href="/accounts/{{campaign_id}}/ads">View Ads and Ads Insights</a> </p>
-        <p>{{start_time}} -- {{stop_time}}</p>
-        <p>Objective: {{objective}}</p>
-        <p>Created: {{created_time}}</p>
-        <p>Inserted: {{inserted}}</p>
-        {{#unless received_creative}}
-            <p>no creative received</p>
-        {{else}}
-            <p>creative received: {{received_creative}}</p>
-        {{/unless}}
-        <p>Signed IO: {{signed_IO}}</p>
-        <p>Approved Targeting: {{approved_targeting}}</p>
-        <p>Received Tracking: {{received_tracking}}</p>
-    {{/each}}
+    {{#if displayCampaignBasics}}
+        {{#each campaign in displayCampaignBasics 1}}
+            <h4>{{campaign.name}}</h4>
+            <p><a href="/accounts/{{campaign.campaign_id}}/insights">View Campaign Insights</a></p>
+            <p><a href="/accounts/{{campaign.campaign_id}}/adsets">View AdSets and AdSets Insights</a></p>
+            <p> <a href="/accounts/{{campaign.campaign_id}}/ads">View Ads and Ads Insights</a> </p>
+            <p>{{campaign.start_time}} -- {{campaign.stop_time}}</p>
+            <p>Objective: {{campaign.objective}}</p>
+            <p>Created: {{campaign.created_time}}</p>
+            <p>Inserted: {{campaign.inserted}}</p>
+            {{#unless campaign.received_creative}}
+                <p>no creative received</p>
+            {{else}}
+                <p>creative received: {{campaign.received_creative}}</p>
+            {{/unless}}
+            <p>Signed IO: {{campaign.signed_IO}}</p>
+            <p>Approved Targeting: {{campaign.approved_targeting}}</p>
+            <p>Received Tracking: {{campaign.received_tracking}}</p>
+        {{/each}}
+    {{/if}}
+    <button id="more-campaigns-button">View More Campaigns</button>
+    <button id="all-campaigns-button">View All Campaigns</button>
 </template>

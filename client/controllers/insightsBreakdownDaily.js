@@ -5,9 +5,9 @@ Template.insightsBreakdownDaily.helpers({
         console.log('checking for daily breakdown');
         let campaignNumber = FlowRouter.current().params.campaign_id;
         let camp = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
-        if(InsightsBreakdownsByDays.findOne({campaign_name: camp.data.campaign_name})) {
+        if(InsightsBreakdownsByDays.findOne({'data.campaign_name': camp.data.campaign_name})) {
             console.log('you should be seeing daily breakdown');
-            let dailyBreakdown = InsightsBreakdownsByDays.find({campaign_mongo_reference: camp._id});
+            let dailyBreakdown = InsightsBreakdownsByDays.find({'data.campaign_mongo_reference': camp._id}, {sort: {'data.date_start': -1}});
             return dailyBreakdown;
         } else {
             console.log('gotta get the daily breakdown for this one', campaignNumber);

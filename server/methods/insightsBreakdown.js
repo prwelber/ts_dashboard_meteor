@@ -107,9 +107,9 @@ Meteor.methods({
                 InsightsBreakdowns.insert({
                     data: el
                 });
-            })
+            });
         } catch(e) {
-            console.log('Error inserting into DB:', e)
+            console.log('Error inserting into DB:', e);
         } finally {
             return "this is a return statement";
         }

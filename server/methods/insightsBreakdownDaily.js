@@ -15,7 +15,6 @@ Meteor.methods({
             breakdown = result;
             //breakdown is an array of objects
             dailyBreakdownArray.push(breakdown.data.data);
-
             while (true) {
                 try {
                     breakdown = HTTP.call('GET', breakdown.data.paging['next'], {});
@@ -32,36 +31,84 @@ Meteor.methods({
             // console.log(dailyBreakdownArray)
 
             dailyBreakdownArray.forEach(el => {
-                data = {};
-                data['date_start'] = el.date_start;
-                data['date_stop'] = el.date_stop;
-                data['campaign_id'] = el.campaign_id;
-                data['total_actions'] = el.total_actions;
-                data['impressions'] = el.impressions;
-                data['reach'] = el.reach;
-                data['ctr'] = el.ctr;
-                data['cpm'] = accounting.formatMoney(el.cpm, "$", 2);
-                data['cpp'] = accounting.formatMoney(el.cpp, "$", 2);
-                data['spend'] = accounting.formatMoney(el.spend, "$", 2);
-                try {
-                    el.actions.forEach(el => {
-                        data[el.action_type] = el.value;
-                    });
-                } catch(e) {
-                    console.log(e)
+                let data = {};
+                for (let key in el) {
+                    if (key == "actions") {
+                        el[key].forEach(el => {
+                            // this check looks for a period in the key name and
+                            // replaces it with an underscore if found
+                            // this check is used two more times below
+                            if (/\W/g.test(el.action_type)) {
+                                // console.log("before key", el.action_type)
+                                el.action_type = el.action_type.replace(/\W/g, "_");
+                                // console.log("after key", el.action_type)
+                                data[el.action_type] = el.value;
+                            }
+                            data[el.action_type] = el.value;
+                        });
+                    } else if (key == "cost_per_action_type") {
+                         el[key].forEach(el => {
+                            if (/\W/g.test(el.action_type)) {
+                                el.action_type = el.action_type.replace(/\W/g, "_");
+                                data["cost_per_"+el.action_type] = accounting.formatMoney(el.value, "$", 2);
+                            } else {
+                                data["cost_per_"+el.action_type] = accounting.formatMoney(el.value, "$", 2);
+                            }
+                        });
+                    } else {
+                        // this check looks for a period in the key name and
+                        // replaces it with an underscore
+                        if (/\W/g.test(key)) {
+                            key = key.replace(/\W/g, "_");
+                            data[key] = el[key];
+                        } else {
+                            data[key] = el[key]
+                        }
+                    }
                 }
-                try {
-                    el.cost_per_action_type.forEach(el => {
-                        data['cost_per_'+el.action_type] = accounting.formatMoney(el.value, "$", 2);
-                    });
-                } catch(e) {
-                    console.log(e);
-                }
+                data['cpm'] = accounting.formatMoney(data.cpm, "$", 2);
+                data['cpp'] = accounting.formatMoney(data.cpp, "$", 2);
+                data['spend'] = accounting.formatMoney(data.spend, "$", 2);
+                data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
                 data['campaign_name'] = campaignName;
                 data['campaign_mongo_reference'] = campaignMongoId;
-                // push each object into the master array
                 masterArray.push(data);
             });
+            // console.log(masterArray);
+
+
+
+            // dailyBreakdownArray.forEach(el => {
+            //     data = {};
+            //     data['date_start'] = el.date_start;
+            //     data['date_stop'] = el.date_stop;
+            //     data['campaign_id'] = el.campaign_id;
+            //     data['total_actions'] = el.total_actions;
+            //     data['impressions'] = el.impressions;
+            //     data['reach'] = el.reach;
+            //     data['ctr'] = el.ctr;
+            //     data['cpm'] = accounting.formatMoney(el.cpm, "$", 2);
+            //     data['cpp'] = accounting.formatMoney(el.cpp, "$", 2);
+            //     data['spend'] = accounting.formatMoney(el.spend, "$", 2);
+            //     try {
+            //         el.actions.forEach(el => {
+            //             data[el.action_type] = el.value;
+            //         });
+            //     } catch(e) {
+            //         console.log(e)
+            //     }
+            //     try {
+            //         el.cost_per_action_type.forEach(el => {
+            //             data['cost_per_'+el.action_type] = accounting.formatMoney(el.value, "$", 2);
+            //         });
+            //     } catch(e) {
+            //         console.log(e);
+            //     }
+            //     data['campaign_name'] = campaignName;
+            //     data['campaign_mongo_reference'] = campaignMongoId;
+            //     // push each object into the master array
+            //     masterArray.push(data);
+            // });
         } catch(e) {
             console.log("Error pulling daily insights breakdown:", e)
         }
@@ -69,32 +116,38 @@ Meteor.methods({
         try {
             masterArray.forEach(el => {
                 InsightsBreakdownsByDays.insert({
-                    date_start: el.date_start,
-                    date_stop: el.date_stop,
-                    campaign_id: el.campaign_id,
-                    total_actions: el.total_actions,
-                    impressions: el.impressions,
-                    reach: el.reach,
-                    spend: el.spend,
-                    ctr: el.ctr,
-                    cpm: el.cpm,
-                    cpp: el.cpp,
-                    comment: el.comment,
-                    photo_view: el.photo_view,
-                    post: el.post,
-                    post_like: el.post_like,
-                    page_engagement: el.page_engagement,
-                    post_engagement: el.post_engagement,
-                    cost_per_comment: el.cost_per_comment,
-                    cost_per_photo_view: el.cost_per_photo_view,
-                    cost_per_post: el.cost_per_post,
-                    cost_per_post_like: el.cost_per_post_like,
-                    cost_per_page_engagement: el.cost_per_page_engagement,
-                    cost_per_post_engagement: el.cost_per_post_engagement,
-                    campaign_name: el.campaign_name,
-                    campaign_mongo_reference: el.campaign_mongo_reference
+                    data: el
                 });
             });
+
+            // masterArray.forEach(el => {
+            //     InsightsBreakdownsByDays.insert({
+            //         date_start: el.date_start,
+            //         date_stop: el.date_stop,
+            //         campaign_id: el.campaign_id,
+            //         total_actions: el.total_actions,
+            //         impressions: el.impressions,
+            //         reach: el.reach,
+            //         spend: el.spend,
+            //         ctr: el.ctr,
+            //         cpm: el.cpm,
+            //         cpp: el.cpp,
+            //         comment: el.comment,
+            //         photo_view: el.photo_view,
+            //         post: el.post,
+            //         post_like: el.post_like,
+            //         page_engagement: el.page_engagement,
+            //         post_engagement: el.post_engagement,
+            //         cost_per_comment: el.cost_per_comment,
+            //         cost_per_photo_view: el.cost_per_photo_view,
+            //         cost_per_post: el.cost_per_post,
+            //         cost_per_post_like: el.cost_per_post_like,
+            //         cost_per_page_engagement: el.cost_per_page_engagement,
+            //         cost_per_post_engagement: el.cost_per_post_engagement,
+            //         campaign_name: el.campaign_name,
+            //         campaign_mongo_reference: el.campaign_mongo_reference
+            //     });
+            // });
         } catch(e) {
             console.log('error inserting data into database', e);
         } finally {
