@@ -1,5 +1,8 @@
 <template name="activeCampaigns">
-    <h2>These Campaigns are Active</h2>
+    <h2>Active Campaigns</h2>
     {{#each getActiveCampaigns}}
+        <a href="/accounts/{{campaign_id}}/insights"><p><strong>{{name}}</strong></p></a>
+        <p>{{objective}}</p>
+        <p>{{start_time}} -- {{stop_time}}</p>
     {{/each}}
 </template>

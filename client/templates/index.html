@@ -9,12 +9,12 @@
             <a href="/initiatives/new">New Initiative</a>
             <a href="/agencies/new">New Agency</a>
             <a href="/brands/new">New Brand</a>
-            Today is <span class=date>{{getDate}}</span>
+            <a href="/users/{{getCurrentUser}}/edit">Edit User Profile</a>
+            <br />Today is <span class=date>{{getDate}}</span>
         </header>
-        <h1>This is a Meteor app.</h1>
+        <h1>Stats 2.0 with Meteor</h1>
         <main>
             <div id="spinner-div">
-
             </div>
             <div id="container">
                 {{> Template.dynamic template=main}}
@@ -23,10 +23,11 @@
         <div>
             {{> Template.dynamic template=other}}
         </div>
+        <div>
+            {{> Template.dynamic template=other2}}
+        </div>
         <footer>
             <p><strong>This is for the footer.</strong></p>
         </footer>
     </body>
 </template>
-
-

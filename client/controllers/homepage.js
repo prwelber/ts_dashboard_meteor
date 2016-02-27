@@ -78,11 +78,13 @@ Template.index.helpers({
         let date = new Date();
         date = date.toDateString();
         return date;
+    },
+    'getCurrentUser': function () {
+        let user = Meteor.userId();
+        return user;
     }
 });
 
 Accounts.ui.config({
     passwordSignupFields: "USERNAME_AND_OPTIONAL_EMAIL"
 });
-
-
