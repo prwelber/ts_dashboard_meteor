@@ -18,13 +18,21 @@ Template.accountOverview.helpers({
     },
     'displayCampaignBasics': function (count) {
         accountId = FlowRouter.current().params.account_id;
-
-        // notice how to structure the sort and limit options
         //TODO - need to write logic here to check for campaign and if not, then meteor.call to method
-        if (CampaignBasics.findOne({account_id: accountId})) {
-            console.log('you should be seeing campaigns');
-            let camps = CampaignBasics.find({account_id: accountId}, {sort: {sort_time_start: -1}, limit: Session.get("limit")}).fetch();
-            return camps;
+        let camp = CampaignBasics.findOne({account_id: accountId});
+        let now = moment().format("MM-DD-YYYY hh:mm a");
+        if (camp) {
+            let timeDelta = moment(now, "MM-DD-YYYY hh:mm a").diff(moment(camp.inserted, "MM-DD-YYYY hh:mm a"), 'hours');
+            console.log('timeDelta', timeDelta);
+            if (timeDelta >= 24) {
+                console.log('it has been over 24 hours, need to refresh campaigns');
+                Meteor.call('removeCampaignBasics', accountId);
+                Meteor.call('getCampaigns', accountId);
+            } else {
+                console.log('you should be seeing campaigns');
+                let camps = CampaignBasics.find({account_id: accountId}, {sort: {sort_time_start: -1}, limit: Session.get("limit")}).fetch();
+                return camps;
+            }
         } else {
             console.log('gotta get campaigns for this account', accountId);
             Meteor.call('getCampaigns', accountId)
@@ -50,4 +58,3 @@ Template.accountOverview.onCreated(function () {
     //runs when an instance of the template is created
 
 });
-

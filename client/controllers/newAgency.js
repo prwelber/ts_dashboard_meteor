@@ -4,6 +4,13 @@ Template.newAgency.helpers({
     }
 });
 
+// for testing exporting:
+let person = {
+    name: 'phil',
+    age: 30,
+    dogs: ['cooper', 'nelly']
+};
+
 Template.newAgency.events({
     "submit .new-agency-form": function (event, template) {
         event.preventDefault();
@@ -18,3 +25,4 @@ Template.newAgency.events({
         Meteor.call('insertNewAgency', name, array, location);
     }
 });
+export {person};

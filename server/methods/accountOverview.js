@@ -3,14 +3,15 @@
 // just call Meteor.call('removeCampaignBasics')
 // remove all can only be done from server
 Meteor.methods({
-    'removeCampaignBasics': function () {
-        console.log('removing CampaignBasicsList collection')
-        CampaignBasics.remove( {} )
+    'removeCampaignBasics': function (account) {
+        console.log('removing CampaignBasicsList collection for a single account')
+        CampaignBasics.remove( {account_id: account} )
     }
 });
 
 Meteor.methods({
     'getCampaigns': function (accountNumber) {
+        // Meteor.call('removeCampaignBasics', accountNumber);
         let campaignOverviewArray = [];
         let campaignOverview;
         try{
@@ -36,13 +37,13 @@ Meteor.methods({
                 for (let j = 0; j < campaignOverviewArray[i].length; j++) {
                     CampaignBasics.insert({
                         name: campaignOverviewArray[i][j].name,
-                        created_time: moment(campaignOverviewArray[i][j].created_time).format("MM-DD-YYYY HH:MM"),
-                        start_time: moment(campaignOverviewArray[i][j].start_time).format("MM-DD-YYYY HH:MM"),
-                        stop_time: moment(campaignOverviewArray[i][j].stop_time).format("MM-DD-YYYY HH:MM"),
-                        updated_time: moment(campaignOverviewArray[i][j].updated_time).format("MM-DD-YYYY HH:MM"),
+                        created_time: moment(campaignOverviewArray[i][j].created_time).format("MM-DD-YYYY hh:mm a"),
+                        start_time: moment(campaignOverviewArray[i][j].start_time).format("MM-DD-YYYY hh:mm a"),
+                        stop_time: moment(campaignOverviewArray[i][j].stop_time).format("MM-DD-YYYY hh:mm a"),
+                        updated_time: moment(campaignOverviewArray[i][j].updated_time).format("MM-DD-YYYY hh:mm a"),
                         objective: campaignOverviewArray[i][j].objective,
                         campaign_id: campaignOverviewArray[i][j].id,
-                        inserted: moment().format("MM-DD-YYYY HH:MM"),
+                        inserted: moment().format("MM-DD-YYYY hh:mm a"),
                         received_creative: false,
                         signed_IO: false,
                         approved_targeting: false,
@@ -63,5 +64,5 @@ Meteor.methods({
 
 // need a meteor.publish here
 Meteor.publish('campaignBasicsList', function () {
-    return CampaignBasics.find( {} )
+    return CampaignBasics.find({}, {sort: {sort_time_start: -1}})
 });

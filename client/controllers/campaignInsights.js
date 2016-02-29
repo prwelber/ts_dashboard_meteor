@@ -49,8 +49,8 @@ Template.campaignInsights.helpers({
         return FlowRouter.current().params.campaign_id;
     },
     'getAccountNumber': function () {
-        let num = CampaignInsights.findOne({'data.campaign_id': FlowRouter.current().params.campaign_id}).data;
-        return num.account_id;
+        let num = CampaignInsights.findOne({'data.campaign_id': FlowRouter.current().params.campaign_id});
+        return num.data.account_id;
     },
     'showInitiative': function () {
         // return initiative
