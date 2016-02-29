@@ -45,12 +45,39 @@ Meteor.methods({
             youtube_page: data.youtube_page
         });
         return data.name;
+    },
+    'insertNewUser': function (data) {
+        Meteor.users.update(
+            {_id: data._id},
+            {
+                $set: {
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    admin: data.admin,
+                    email: data.email,
+                    company: data.company,
+                    inserted: moment(new Date()).format("MM-DD-YYYY hh:mm a")
+                }
+            },
+            function(err, result) {
+                if (result) {
+                    return "result";
+                }
+            }
+        ) //end of update
     }
 });
+
 
 Meteor.publish('agenciesList', function () {
     return Agencies.find( {} );
 });
 Meteor.publish('InitiativesList', function () {
     return Initiatives.find( {} );
+});
+Meteor.publish('BrandsList', function () {
+    return Brands.find( {} );
+});
+Meteor.publish('usersList', function () {
+    return Meteor.users.find( {} );
 });

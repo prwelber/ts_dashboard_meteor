@@ -5,7 +5,7 @@ Template.accountOverview.onRendered(function () {
         let campId = this.find(".account-id").textContent
         console.log('accountNumber and campId:', accountNumber, campId);
         Session.set("limit", 5);
-})
+});
 
 // var myFunc = function () {console.log('this is a helper function')}
 
@@ -26,7 +26,6 @@ Template.accountOverview.helpers({
             console.log('timeDelta', timeDelta);
             if (timeDelta >= 24) {
                 console.log('it has been over 24 hours, need to refresh campaigns');
-                Meteor.call('removeCampaignBasics', accountId);
                 Meteor.call('getCampaigns', accountId);
             } else {
                 console.log('you should be seeing campaigns');

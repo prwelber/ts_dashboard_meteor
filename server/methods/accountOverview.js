@@ -5,13 +5,13 @@
 Meteor.methods({
     'removeCampaignBasics': function (account) {
         console.log('removing CampaignBasicsList collection for a single account')
-        CampaignBasics.remove( {account_id: account} )
+        CampaignBasics.remove( {} );
     }
 });
 
 Meteor.methods({
     'getCampaigns': function (accountNumber) {
-        // Meteor.call('removeCampaignBasics', accountNumber);
+        CampaignBasics.remove( {account_id: accountNumber} );
         let campaignOverviewArray = [];
         let campaignOverview;
         try{

@@ -1,6 +1,7 @@
 Meteor.subscribe('fbAccountList');
 import {person} from "./newAgency"
-console.log("this is person", person)
+console.log("this is person", person);
+
 Template.accounts.events({
     'click .refresh-accounts': function () {
         var target = document.getElementById("spinner-div");

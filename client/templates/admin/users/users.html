@@ -1,0 +1,29 @@
+<template name="newUser">
+    <h2>Create User Profile</h2>
+    <form class="new-user-form">
+        <p>Username</p>
+        <input type="text" name="username" value="{{populateFields.username}}">
+        <p>First Name</p>
+        <input type="text" name="firstName" placeholder="First Name" value="{{populateFields.firstName}}">
+        <p>Last Name</p>
+        <input type="text" name="lastName" placeholder="Last Name" value="{{populateFields.lastName}}">
+        <p>Company or Agency</p>
+        <input type="text" name="company" value="{{populateFields.company}}">
+        <p>Email</p>
+        <input type="text" name="email" id="user-form-email" value="{{populateFields.email}}">
+        <p>Admin Privileges</p>
+        <input type="radio" name="admin" value="yes" id="user-form-admin">Yes<br />
+        <input type="radio" name="admin" value="no">No<br />
+        <input type="submit" value="Submit">
+    </form>
+</template>
+
+<template name="allUsers">
+    <h2>All Users</h2>
+    {{#each fetchUsers}}
+        <h4>{{firstName}} {{lastName}}</h4>
+        <p>{{email}}</p>
+        <p>Admin: {{admin}}</p>
+        <p>{{company}}</p>
+    {{/each}}
+</template>
