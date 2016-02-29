@@ -77,6 +77,7 @@ Meteor.methods({
                         data['total_actions'] = el.total_actions;
                         data['impressions'] = el.impressions;
                         data['reach'] = el.reach;
+                        data['clicks'] = Math.round((el.ctr / 100) * el.impressions);
                         el.actions.forEach(el => {
                             data[el.action_type] = el.value;
                         });

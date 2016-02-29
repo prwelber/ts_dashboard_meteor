@@ -5,8 +5,10 @@ Template.endingSoon.helpers({
                 {
                     sort: {sort_time_stop: -1},
                     fields: {"name": 1, "start_time": 1, "stop_time": 1, "objective": 1, "campaign_id": 1},
-                    limit: 8
+                    limit: 5
                 }).fetch();
         }
     }
 });
+
+

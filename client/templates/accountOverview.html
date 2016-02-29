@@ -5,12 +5,10 @@
     <p class="account-id">{{getName.account_id}}</p>
     <br />
     <h2>All {{getName.name}} Campaigns</h2>
-    {{#if displayCampaignBasics}}
         {{#each campaign in displayCampaignBasics 1}}
-            <h4>{{campaign.name}}</h4>
-            <p><a href="/accounts/{{campaign.campaign_id}}/insights">View Campaign Insights</a></p>
-            <p><a href="/accounts/{{campaign.campaign_id}}/adsets">View AdSets and AdSets Insights</a></p>
-            <p> <a href="/accounts/{{campaign.campaign_id}}/ads">View Ads and Ads Insights</a> </p>
+            <a href="/accounts/{{campaign.campaign_id}}/insights" ><h4 id="insights-link" data-campaign="{{campaign.campaign_id}}">{{campaign.name}}</h4></a>
+            {{!-- <p><a href="/accounts/{{campaign.campaign_id}}/adsets">View AdSets and AdSets Insights</a></p>
+            <p> <a href="/accounts/{{campaign.campaign_id}}/ads">View Ads and Ads Insights</a> </p> --}}
             <p>{{campaign.start_time}} -- {{campaign.stop_time}}</p>
             <p>Objective: {{campaign.objective}}</p>
             <p>Created: {{campaign.created_time}}</p>
@@ -24,7 +22,6 @@
             <p>Approved Targeting: {{campaign.approved_targeting}}</p>
             <p>Received Tracking: {{campaign.received_tracking}}</p>
         {{/each}}
-    {{/if}}
     <button id="more-campaigns-button">View More Campaigns</button>
     <button id="all-campaigns-button">View All Campaigns</button>
 </template>

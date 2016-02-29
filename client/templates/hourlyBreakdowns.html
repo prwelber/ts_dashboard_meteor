@@ -17,7 +17,8 @@
             <p>Spend: {{data.spend}}</p>
             {{#if data.cost_per_page_engagement}}<p>CP Page Engagement: {{data.cost_per_page_engagement}}</p>{{/if}}
             {{#if data.cost_per_post_engagement}}<p>CP Post Engagement: {{data.cost_per_post_engagement}}</p>{{/if}}
-
+            {{#if data.clicks}} <p>Clicks: {{data.clicks}}</p> {{/if}}
+            {{#if data.cpc}} <p>CPM: {{data.cpc}}</p> {{/if}}
             {{#if data.comment}}<p>Comments: {{data.comment}}</p>{{/if}}
             {{#if data.like}}<p>Likes: {{data.like}}</p>{{/if}}
             {{#if data.link_click}}<p>Link Click: {{data.link_click}}</p>{{/if}}

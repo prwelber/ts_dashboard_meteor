@@ -55,10 +55,12 @@ Meteor.methods({
             //overwrites data already in object with formatted values
             data['cpm'] = accounting.formatMoney(data.cpm, "$", 2);
             data['cpp'] = accounting.formatMoney(data.cpp, "$", 2);
-            data['spend'] = accounting.formatMoney(data.spend, "$", 2);
             data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
             data['cost_per_unique_click'] = accounting.formatMoney(data.cost_per_unique_click, "$", 2);
             data['cost_per_total_action'] = accounting.formatMoney(data.cost_per_total_action, "$", 2);
+            data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
+            data['cpc'] = accounting.formatMoney((data.spend / data.clicks), "$", 2);
+            data['spend'] = accounting.formatMoney(data.spend, "$", 2);
 
             masterArray.push(data);
         } catch(e) {

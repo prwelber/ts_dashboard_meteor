@@ -4,7 +4,7 @@
     <p><a href="/accounts/{{getCampaignNumber}}/insights">View Campaign Insights</a></p>
     <p><a href="/accounts/{{getCampaignNumber}}/adsets">View AdSets and AdSets Insights</a></p>
     <p> <a href="/accounts/{{getCampaignNumber}}/ads">View Ads and Ads Insights</a> </p>
-
+    {{> Template.dynamic template=initiativeStats }}
     {{#each fetchInsights}}
         <h3>Lifetime insights for <span class="campName">{{campaign_name}}</span> <br />
         Objective: {{cleanText objective}}
@@ -20,9 +20,10 @@
         <p>Reach: {{reach}}</p>
         <p>Impressions: {{impressions}}</p>
         <p>Spend: {{spend}}</p>
+        {{#if clicks}}<p>Clicks: {{clicks}}</p>{{/if}}
+        {{#if cpc}}<p>CPC: {{cpc}}</p>{{/if}}
         <br />
         <p><strong>Core Insights</strong></p>
-
         {{#if comment}}<p>Comments: {{comment}}</p>{{/if}}
         {{#if like}}<p>Likes: {{like}}</p>{{/if}}
         {{#if link_click}}<p>Link Click: {{link_click}}</p>{{/if}}
@@ -60,17 +61,4 @@
         <p>Estimated Ad Recall Rate: {{estimated_ad_recall_rate}}</p>
         <p>CP Estimated Ad Recallers: {{cost_per_estimated_ad_recallers}}</p>
     {{/each}}
-
-    {{#with showInitiative}}
-        <h3>IO Details for {{name}}</h3>
-        <p>Date Range: {{startDate}} -- {{endDate}}</p>
-        <p>Agency: {{agency}}</p>
-        <p>Brand: {{brand}}</p>
-        <p>Budget: ${{budget}}</p>
-        <p>Deal Type: {{dealType}}</p>
-        <p>Notes: {{notes}}</p>
-        <p>Date IO Created: {{inserted_date}}</p>
-    {{else}}
-        <h3>There is no IO</h3>
-    {{/with}}
 </template>

@@ -1,0 +1,48 @@
+<template name="newInitiative">
+    <h2>Create New Initiative</h2>
+    <form class="new-initiative">
+        <p>Name</p><input type="text" name="name" placeholder="Name"><br><br>
+        <p>Brand</p><select name="brand" id="brand-select">
+            {{#each getBrands}}
+                <option value="{{name}}">{{name}}</option>
+            {{/each}}
+        </select><br><br>
+        <p>Agency</p><select name="agency" id="agency-select">
+            <option value="Constellation">Constellation</option>
+            <option value="Horizon">Horizon</option>
+        </select>
+        <p>Product Category</p>
+        {{!-- TODO product category needs to be completed --}}
+        <p>Deal type</p><select name="dealtype" id="dealtype-select">
+            <option value="CPC">CPC</option>
+            <option value="CPM">CPM</option>
+            <option value="CPL">CPL</option>
+            <option value="FACTOR">FACTOR</option>
+        </select><br><br>
+        <p>Quantity</p><input type="text" name="quantity" placeholder="IO Quantity"><br><br>
+        <p>Price</p><input type="text" name="price" placeholder="IO Price"><br><br>
+        <p>Budget(no commas - input format: 1000.00)</p>$<input id="new-init-budget" type="text" name="budget" placeholder="Budget"><br><br>
+        <p>Start Date</p>
+        <div class='col-sm-6'>
+            <input type='text' name="startDate" class="form-control datetimepicker" />
+        </div>
+        <p>End Date</p>
+        <div class='col-sm-6'>
+            <input type='text' name="endDate" class="form-control datetimepicker" />
+        </div>
+        <p>Notes</p>
+        <textarea name="notes" id="notes" cols="50" rows="5"></textarea>
+        <br />
+        <input type="submit" value="Submit">
+    </form>
+</template>
+
+<template name="initiativeStats">
+    <h3>These are stats for the initiative</h3>
+        {{#with getInitiative }}
+            <p>{{brand}} || {{agency}}</p>
+            <p>Deal Type: {{dealType}}</p>
+            <p>Budget: {{budget}} || Quantity: {{quantity}} || Price: {{price}}</p>
+            <p>{{notes}}</p>
+        {{/with}}
+</template>

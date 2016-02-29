@@ -56,10 +56,12 @@ Meteor.methods({
                 }
                 data['cpm'] = accounting.formatMoney(data.cpm, "$", 2);
                 data['cpp'] = accounting.formatMoney(data.cpp, "$", 2);
-                data['spend'] = accounting.formatMoney(data.spend, "$", 2);
                 data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
                 data['campaign_name'] = campaignName;
                 data['campaign_mongo_reference'] = campaignMongoId;
+                data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
+                data['cpc'] = accounting.formatMoney((data.spend / data.clicks), "$", 2);
+                data['spend'] = accounting.formatMoney(data.spend, "$", 2);
                 masterArray.push(data);
             });
             // console.log(masterArray);

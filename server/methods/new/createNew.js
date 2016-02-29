@@ -10,9 +10,14 @@ Meteor.methods({
             endDate: dataObj.endDate,
             name: dataObj.name,
             notes: dataObj.notes,
-            startDate: dataObj.startDate
+            startDate: dataObj.startDate,
+            quantity: dataObj.quantity,
+            price: dataObj.price,
+            campaign_id: dataObj.campaign_id,
+            campaign_mongo_id: dataObj.campaign_mongo_id
         });
         console.log("new initiative inserted into DB:", dataObj)
+        return "success";
     },
     'insertNewAgency': function (name, array, location) {
         Agencies.insert({
@@ -58,13 +63,9 @@ Meteor.methods({
                     company: data.company,
                     inserted: moment(new Date()).format("MM-DD-YYYY hh:mm a")
                 }
-            },
-            function(err, result) {
-                if (result) {
-                    return "result";
-                }
             }
         ) //end of update
+    return "success!";
     }
 });
 

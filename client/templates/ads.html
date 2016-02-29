@@ -1,7 +1,5 @@
 <template name="ads">
     <h2>Ads Insights and Ads Creative</h2>
-    <p><a href="/accounts/{{getCampaignNumber}}/insights">View Campaign Insights</a></p>
-    <p><a href="/accounts/{{getCampaignNumber}}/adsets">View AdSets and AdSets Insights</a></p>
     {{#if getAds}}
         {{#each getAds}}
         <h3>Ad Name:{{name}}</h3>
