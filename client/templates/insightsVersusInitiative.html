@@ -1,4 +1,13 @@
 <template name="reporter">
     <h3>Performance Report</h3>
-    {{getReport}}
+    <div id="reportDiv">
+        <h4>Clicks</h4>
+        {{#each reporting}}
+            <p><strong>Day {{day}}</strong></p>
+            <p>Evenly Distrubuted Clicks: {{ioClicks}}</p>
+            <p>Real Clicks: {{dailyClicks}}</p>
+            <p>Daily Click Difference: {{dailyClickDiff}}</p>
+            <p>Total Click Difference: {{totalClickDiff}}</p>
+        {{/each}}
+    </div>
 </template>

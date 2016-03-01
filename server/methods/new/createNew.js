@@ -19,6 +19,10 @@ Meteor.methods({
         console.log("new initiative inserted into DB:", dataObj)
         return "success";
     },
+    'removeInitiatives': function () {
+        Initiatives.remove( {} );
+        return "initiatives removed!";
+    },
     'insertNewAgency': function (name, array, location) {
         Agencies.insert({
             inserted_date: moment().format("MM-DD-YYYY hh:mm a"),
