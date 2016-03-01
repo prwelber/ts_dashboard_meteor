@@ -5,8 +5,10 @@ Template.campaignInsights.onRendered(function () {
 });
 
 Template.campaignInsights.events({
-    'getBreakdowns': function () {
-
+    'click .report-button': function () {
+        console.log('clicked')
+        let node = document.getElementsByClassName("reporting-div")[0];
+        reporter = Blaze.render(Template.reporter, node);
     }
 });
 
@@ -32,16 +34,6 @@ Template.campaignInsights.helpers({
             });
         }
     },
-    // 'currencyFormat': function (number) {
-    //     function roundToTwo(num) {
-    //         return +(Math.round(num + "e+2")  + "e-2");
-    //     }
-    //     if (roundToTwo(number)) {
-    //         return "$"+roundToTwo(number)
-    //     } else {
-    //         return "N/A"
-    //     }
-    // },
     'cleanText': function (text) {
         return text.replace("_", " ").toLowerCase();
     },

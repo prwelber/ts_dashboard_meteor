@@ -1,5 +1,5 @@
 Meteor.methods({
-    'removeInsightCollection': function () {
+    'removeInsights': function () {
         console.log('removing CampaignInsightList collection')
         CampaignInsights.remove( {} );
         return "CampaignInsights removed!";

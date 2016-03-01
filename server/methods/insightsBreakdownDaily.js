@@ -1,5 +1,5 @@
 Meteor.methods({
-    'removeBreakdownDailyCollection': function () {
+    'removeDailyBreakdowns': function () {
         console.log('removing InsightsBreakdownByDays collection')
         InsightsBreakdownsByDays.remove( {} )
     }

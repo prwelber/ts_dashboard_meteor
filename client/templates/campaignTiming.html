@@ -1,0 +1,19 @@
+<template name="timing">
+    <h2>Active Campaigns</h2>
+    {{#each getActive}}
+        <a href="/accounts/{{campaign_id}}/insights"><p><strong>{{name}}</strong></p></a>
+        <p>{{objective}}</p>
+        <p>{{start_time}} -- {{stop_time}}</p>
+    {{/each}}
+
+    <h2>Campaigns Ending Soon</h2>
+    {{#each getEndingSoon}}
+        <a href="/accounts/{{campaign_id}}/insights"><p><strong>{{name}}</strong></p></a>
+        <p>End Time: {{stop_time}}</p>
+    {{/each}}
+
+    <h2>Campaigns Starting Soon</h2>
+    {{#each getStartingSoon}}
+
+    {{/each}}
+</template>

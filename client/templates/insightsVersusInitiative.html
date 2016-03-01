@@ -2,12 +2,23 @@
     <h3>Performance Report</h3>
     <div id="reportDiv">
         <h4>Clicks</h4>
-        {{#each reporting}}
+       {{!--  {{#each reporting.clicks}}
             <p><strong>Day {{day}}</strong></p>
             <p>Evenly Distrubuted Clicks: {{ioClicks}}</p>
             <p>Real Clicks: {{dailyClicks}}</p>
-            <p>Daily Click Difference: {{dailyClickDiff}}</p>
-            <p>Total Click Difference: {{totalClickDiff}}</p>
+            <p>Daily Click Difference: <span class="{{dailyClass}}">{{dailyClickDiff}}</span></p>
+            <p>Total Click Difference: <span class="{{totalClass}}">{{totalClickDiff}}</span></p>
+        {{/each}} --}}
+
+         {{#each reporting.impressions}}
+            <p><strong>Day {{day}}</strong></p>
+            <p>Evenly Distrubuted Impressions: {{ioImpressions}}</p>
+            <p>Real Impressions: {{dailyImpressions}}</p>
+            <p>Daily Impression Difference: <span class="{{dailyClass}}">{{dailyImpressionDiff}}</span></p>
+            <p>Total Impression Difference: <span class="{{totalClass}}">{{totalImpressionDiff}}</span></p>
+            <p>Daily CPM: {{dailyCPM}}</p>
         {{/each}}
+
+
     </div>
 </template>
