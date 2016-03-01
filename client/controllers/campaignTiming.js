@@ -1,12 +1,7 @@
 Template.timing.helpers({
     'getEndingSoon': function () {
         if (Meteor.userId()) {
-            return CampaignBasics.find({},
-                {
-                    sort: {sort_time_stop: -1},
-                    fields: {"name": 1, "start_time": 1, "stop_time": 1, "objective": 1, "campaign_id": 1},
-                    limit: 5
-                }).fetch();
+            // TODO
         }
     },
     'getActive': function () {
@@ -19,13 +14,15 @@ Template.timing.helpers({
         if (Meteor.userId()) {
             return CampaignBasics.find({
                 "sort_time_start": {$lt: new Date().toISOString()},
-                "sort_time_stop": {$gt: new Date().toISOString()}
+                "sort_time_stop": {$gt: new Date().toISOString()},
             }).fetch()
         }
     },
     'getStartingSoon': function () {
         if (Meteor.userId()) {
-            return CampaignBasics.find({}, {filter: {gte: {sort_time_start: new Date().toISOString()}, limit: 3}}).fetch();
+            return CampaignBasics.find({
+                "sort_time_start": {$gte: new Date().toISOString()}
+            }).fetch()
         }
     }
 });

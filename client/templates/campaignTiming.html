@@ -7,6 +7,7 @@
     {{/each}}
 
     <h2>Campaigns Ending Soon</h2>
+
     {{#each getEndingSoon}}
         <a href="/accounts/{{campaign_id}}/insights"><p><strong>{{name}}</strong></p></a>
         <p>End Time: {{stop_time}}</p>
@@ -14,6 +15,7 @@
 
     <h2>Campaigns Starting Soon</h2>
     {{#each getStartingSoon}}
-
+        <a href="/accounts/{{campaign_id}}/insights"><p><strong>{{name}}</strong></p></a>
+        <p>Start Time: {{start_time}}</p>
     {{/each}}
 </template>

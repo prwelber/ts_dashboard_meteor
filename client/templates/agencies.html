@@ -10,3 +10,16 @@
         <br><br>
     {{/each}}
 </template>
+
+<template name="newAgency">
+    <h2>Create New Agency</h2>
+    <form class="new-agency-form">
+        <p>Name</p><input type="text" name="name" placeholder="Name">
+        <p>Location</p><input type="text" name="location" placeholder="Location"><br><br>
+        <p>Brands</p>
+        {{#each getBrands}}
+            <input type="checkbox" name="brand" value={{name}}>{{name}} <br />
+        {{/each}}
+        <input type="submit" value="Create Agency">
+    </form>
+</template>
