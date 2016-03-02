@@ -1,3 +1,5 @@
+Meteor.subscribe("BrandsList");
+
 Template.newBrand.helpers({
     'getAgencies': function () {
         return Agencies.find( {} );

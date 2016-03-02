@@ -1,7 +1,0 @@
-<template name="endingSoon">
-    <h2>Campaigns Ending Soon</h2>
-    {{#each getEndingSoonCampaigns}}
-        <a href="/accounts/{{campaign_id}}/insights"><p><strong>{{name}}</strong></p></a>
-        <p>End Time: {{stop_time}}</p>
-    {{/each}}
-</template>
