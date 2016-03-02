@@ -23,15 +23,7 @@ Meteor.methods({
         Initiatives.remove( {} );
         return "initiatives removed!";
     },
-    'insertNewAgency': function (name, array, location) {
-        Agencies.insert({
-            inserted_date: moment().format("MM-DD-YYYY hh:mm a"),
-            name: name,
-            brands: array,
-            location: location
-        });
-        console.log('new agency inserted into DB');
-    },
+    
     'insertNewBrand': function (data) {
         Brands.insert({
             agency: data.agency,
@@ -54,35 +46,12 @@ Meteor.methods({
             youtube_page: data.youtube_page
         });
         return data.name;
-    },
-    'insertNewUser': function (data) {
-        Meteor.users.update(
-            {_id: data._id},
-            {
-                $set: {
-                    firstName: data.firstName,
-                    lastName: data.lastName,
-                    admin: data.admin,
-                    email: data.email,
-                    company: data.company,
-                    inserted: moment(new Date()).format("MM-DD-YYYY hh:mm a")
-                }
-            }
-        ) //end of update
-    return "success!";
     }
 });
 
-
-Meteor.publish('agenciesList', function () {
-    return Agencies.find( {} );
-});
 Meteor.publish('InitiativesList', function () {
     return Initiatives.find( {} );
 });
 Meteor.publish('BrandsList', function () {
     return Brands.find( {} );
-});
-Meteor.publish('usersList', function () {
-    return Meteor.users.find( {} );
 });

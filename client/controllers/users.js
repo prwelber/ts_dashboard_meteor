@@ -20,7 +20,12 @@ Template.newUser.events({
         user['_id'] = Meteor.userId();
         if (/@targetedsocial\.com/.test(user.email)) {
             console.log('TS employee');
-            Meteor.call('insertNewUser', user);
+            Meteor.call('insertNewUser', user, function (error, result) {
+                if (result) {
+                    $("#message-box").text("");
+                    $("#message-box").append("Your profile has been successfully updated");
+                }
+            });
         } else if (!/@targetedsocial\.com/.test(user.email) && user.admin == "yes") {
             alert('You cannot be an admin');
         } else if (!/@targetedsocial\.com/.test(user.email) && user.admin == "no") {
@@ -43,8 +48,19 @@ Template.newUser.events({
     }
 });
 
+Template.allUsers.events({
+    "click .delete-user": function () {
+        let userId = this._id;
+        Meteor.call('deleteUser', userId);
+    }
+})
+
 Template.allUsers.helpers({
     'fetchUsers': function () {
         return Meteor.users.find({});
     }
 });
+
+Template.newUser.onDestroyed(function () {
+    $("#message-box").text("");
+})

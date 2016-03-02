@@ -7,6 +7,8 @@
         {{#each thing in brands}}
             <p>{{thing}}</p>
         {{/each}}
+        <a href="/admin/agencies/{{_id}}/update">Update This Agency</a>
+        <p> <a class="delete-agency" data-id="{{_id}}" href="">Delete Agency</a> </p>
         <br><br>
     {{/each}}
 </template>
@@ -21,5 +23,18 @@
             <input type="checkbox" name="brand" value={{name}}>{{name}} <br />
         {{/each}}
         <input type="submit" value="Create Agency">
+    </form>
+</template>
+
+<template name="updateAgency">
+    <h2>Update Agency</h2>
+    <form class="update-agency-form">
+        <p>Name</p><input type="text" name="name" value="{{getAgency.name}}">
+        <p>Location</p><input type="text" name="location" value="{{getAgency.location}}"><br><br>
+        <p>Brands</p>
+        {{#each getBrands}}
+            <input type="checkbox" name="brand" value={{name}}>{{name}} <br />
+        {{/each}}
+        <input type="submit" value="Update Agency">
     </form>
 </template>

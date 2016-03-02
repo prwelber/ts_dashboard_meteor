@@ -80,10 +80,6 @@ Template.index.helpers({
         let date = new Date();
         date = date.toDateString();
         return date;
-    },
-    'getCurrentUser': function () {
-        let user = Meteor.userId();
-        return user;
     }
 });
 
