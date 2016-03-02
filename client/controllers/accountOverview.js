@@ -1,4 +1,18 @@
-Meteor.subscribe('campaignBasicsList');
+// Meteor.subscribe('campaignBasicsList', {
+//     onReady: function () {
+//         console.log("onReady and items have arrived!");
+//     },
+//     onStop: function (error) {
+//         console.log('subscription has stopped and the error', e);
+//     }
+// });
+// Doing this in FlowRouter
+
+Tracker.autorun(function () {
+    if (FlowRouter.subsReady('campaignBasicsList')) {
+        console.log('subs ready!');
+    }
+});
 
 Template.accountOverview.onRendered(function () {
         let accountNumber = this.find(".account-id").textContent

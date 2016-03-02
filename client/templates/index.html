@@ -3,6 +3,7 @@
 </head>
 <template name="index">
     <body>
+    {{isUserUpdated}}
         <header>
             <a href="/">Home</a>
             {{> loginButtons}}
@@ -12,7 +13,7 @@
         </header>
         <h1>Stats 2.0 with Meteor</h1>
         <div id="message-box">
-            
+
         </div>
         <main>
             <div id="spinner-div">

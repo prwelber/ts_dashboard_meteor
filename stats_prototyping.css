@@ -1,5 +1,13 @@
 /* CSS declarations go here */
-footer {
+* {
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+.site-footer {
     text-align: center;
 }
 
@@ -18,3 +26,4 @@ h1 {
 .green {
     color: green;
 }
+

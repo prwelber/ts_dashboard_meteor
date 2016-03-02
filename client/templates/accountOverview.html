@@ -6,9 +6,11 @@
     <br />
     <h2>All {{getName.name}} Campaigns</h2>
         {{#each campaign in displayCampaignBasics 1}}
-            <a href="/accounts/{{campaign.campaign_id}}/insights" ><h4 id="insights-link" data-campaign="{{campaign.campaign_id}}">{{campaign.name}}</h4></a>
-            {{!-- <p><a href="/accounts/{{campaign.campaign_id}}/adsets">View AdSets and AdSets Insights</a></p>
-            <p> <a href="/accounts/{{campaign.campaign_id}}/ads">View Ads and Ads Insights</a> </p> --}}
+            <a href="/accounts/{{campaign.campaign_id}}/insights" >
+                <h4 id="insights-link" data-campaign="{{campaign.campaign_id}}">
+                    {{campaign.name}}
+                </h4>
+            </a>
             <p>{{campaign.start_time}} -- {{campaign.stop_time}}</p>
             <p>Objective: {{campaign.objective}}</p>
             <p>Created: {{campaign.created_time}}</p>

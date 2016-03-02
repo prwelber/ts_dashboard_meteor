@@ -80,6 +80,13 @@ Template.index.helpers({
         let date = new Date();
         date = date.toDateString();
         return date;
+    },
+    'isUserUpdated': function () {
+        let user = Meteor.user();
+        if (!user.firstName) {
+            $("#message-box").text("")
+            $("#message-box").append("Please update your user profile in the admin section before continuing.");
+        }
     }
 });
 

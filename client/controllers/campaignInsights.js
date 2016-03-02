@@ -1,4 +1,8 @@
-Meteor.subscribe('campaignInsightList');
+Meteor.subscribe('campaignInsightList', {
+    onReady: function () {
+        console.log('campaignInsights are ready!');
+    }
+});
 
 Template.campaignInsights.onRendered(function () {
     // console.log(this)

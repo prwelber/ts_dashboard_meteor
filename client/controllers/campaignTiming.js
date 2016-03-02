@@ -20,9 +20,28 @@ Template.timing.helpers({
     },
     'getStartingSoon': function () {
         if (Meteor.userId()) {
-            return CampaignBasics.find({
+            let query = CampaignBasics.find({
                 "sort_time_start": {$gte: new Date().toISOString()}
-            }).fetch()
+            }, {
+                sort: {
+                    sort_time_start: 1
+                },
+                limit: 5
+            }); // end of DB query
+            return query;
         }
     }
 });
+// Documents.find({
+//   "owner": "123456",
+//   "category": { $in: [ "photos", "announcements" ] },
+//   "date.year": { $lt: 2015 },
+//   "tags": { $in: [ 'baby', 'wedding' ] }
+// }, {
+//   fields: {
+//     "title": 1
+//   },
+//   sort: {
+//     "title": -1
+//   }
+// });

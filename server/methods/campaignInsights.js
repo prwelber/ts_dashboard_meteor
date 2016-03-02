@@ -62,6 +62,8 @@ Meteor.methods({
             data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
             data['cpc'] = accounting.formatMoney((data.spend / data.clicks), "$", 2);
             data['spend'] = accounting.formatMoney(data.spend, "$", 2);
+            data['date_start'] = moment(data.date_start).format("MM-DD-YYYY hh:mm a");
+            data['date_stop'] = moment(data.date_stop).format("MM-DD-YYYY hh:mm a");
 
             masterArray.push(data);
         } catch(e) {
@@ -73,54 +75,6 @@ Meteor.methods({
             CampaignInsights.insert({
                 data: data
             })
-
-                // CampaignInsights.insert({
-                //     inserted: moment().format("MM-DD-YYYY hh:mm a"),
-                //     campaign_id: el.campaign_id,
-                //     account_id: el.account_id,
-                //     campaign_name: el.campaign_name,
-                //     cost_per_unique_click: el.cost_per_unique_click,
-                //     cost_per_total_action: el.cost_per_total_action,
-                //     cpm: el.cpm,
-                //     cpp: el.cpp,
-                //     ctr: el.ctr,
-                //     impressions: el.impressions,
-                //     objective: el.objective,
-                //     reach: el.reach,
-                //     spend: el.spend,
-                //     total_actions: el.total_actions,
-                //     total_unique_actions: el.total_unique_actions,
-                //     unique_impressions: el.unique_impressions,
-                //     unique_clicks: el.unique_clicks,
-                //     estimated_ad_recall_rate: el.estimated_ad_recall_rate,
-                //     estimated_ad_recallers: el.estimated_ad_recallers,
-                //     cost_per_estimated_ad_recallers: el.cost_per_estimated_ad_recallers,
-                //     date_start: el.date_start,
-                //     date_stop: el.date_stop,
-                //     comment: el.comment,
-                //     like: el.like,
-                //     link_click: el.link_click,
-                //     photo_view: el.photo_view,
-                //     post: el.post,
-                //     post_like: el.post_like,
-                //     unlike: el.unlike,
-                //     video_play: el.video_play,
-                //     video_view: el.video_view,
-                //     page_engagement: el.page_engagement,
-                //     post_engagement: el.post_engagement,
-                //     cost_per_comment: el.cost_per_comment,
-                //     cost_per_like: el.cost_per_like,
-                //     cost_per_link_click: el.cost_per_link_click,
-                //     cost_per_photo_view: el.cost_per_photo_view,
-                //     cost_per_post: el.cost_per_post,
-                //     cost_per_post_like: el.cost_per_post_like,
-                //     cost_per_unlike: el.cost_per_unlike,
-                //     cost_per_video_play: el.cost_per_video_play,
-                //     cost_per_video_view: el.cost_per_video_view,
-                //     cost_per_page_engagement: el.cost_per_page_engagement,
-                //     cost_per_post_engagement: el.cost_per_post_engagement
-                // });
-
         } catch(e) {
             console.log('error while inserting into collection:', e);
         }
