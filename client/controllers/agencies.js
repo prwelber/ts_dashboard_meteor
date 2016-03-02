@@ -6,6 +6,12 @@ Template.agencies.helpers({
     }
 });
 
+Template.updateAgency.helpers({
+    'getBrands': function () {
+        return Accounts.find();
+    }
+});
+
 Template.agencies.events({
     "click .delete-agency": function (event, template) {
         let agencyId = event.target.dataset.id;
@@ -34,7 +40,7 @@ Template.newAgency.events({
         // on submit, find all DOM elements of type "input checkbox" that are
         // checked and then create new array of just the defaultValues
         let selected = template.findAll("input[type=checkbox]:checked");
-        let array = _.map(selected, function(item) {
+        let brands = _.map(selected, function(item) {
             return item.value;
         });
         let inserted = moment().format("MM-DD-YYYY hh:mm a");
@@ -42,7 +48,8 @@ Template.newAgency.events({
         let d = {};
         d.name = name;
         d.location = location;
-        d.inserted = inserted
+        d.inserted = inserted;
+        d.brands = brands;
         Meteor.call('insertNewAgency', d, function (error, result) {
             if (result) {
                 $("#message-box").append("Agency has been created!")
@@ -63,18 +70,22 @@ Template.updateAgency.events({
         event.preventDefault();
         let name = event.target.name.value;
         let location = event.target.location.value;
+        let selected = template.findAll("input[type=checkbox]:checked");
+        let brands = _.map(selected, function(item) {
+            return item.value;
+        });
         let d = {};
         d['_id'] = FlowRouter.current().params._id;
         d['name'] = name;
+        d['brands'] = brands;
         d['location'] = location;
         Meteor.call("updateAgency", d, function (error, result) {
             if (result) {
                 $("#message-box").append("Agency has been updated!");
             }
-        })
-
+        });
     }
-})
+});
 
 Template.newAgency.onDestroyed(function () {
     $("#message-box").text("");

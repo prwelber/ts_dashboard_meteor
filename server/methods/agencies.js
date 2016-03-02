@@ -3,7 +3,8 @@ Meteor.methods({
         Agencies.insert({
             name: d.name,
             location: d.location,
-            inserted: d.inserted
+            inserted: d.inserted,
+            brands: d.brands
         });
         console.log('new agency inserted into DB');
         return "success!";
@@ -14,7 +15,8 @@ Meteor.methods({
             {
                 $set: {
                     name: d.name,
-                    location: d.location
+                    location: d.location,
+                    brands: d.brands
                 }
             }
         );
