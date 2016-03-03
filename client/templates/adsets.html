@@ -1,6 +1,5 @@
 <template name="adsets">
     <h2>AdSet Insights and Targeting</h2>
-    {{#if getAdSets}}
         {{#each getAdSets}}
             <h3>{{data.name}}</h3>
             <p>Campaign: {{data.campaign_name}}</p>
@@ -36,9 +35,7 @@
             {{#if data.cost_per_comment}}<p>CP Comment: {{ data.cost_per_comment}}</p>{{/if}}
             {{#if data.cost_per_page_engagement}}<p>CP Page Engagement: {{ data.cost_per_page_engagement}}</p>{{/if}}
             {{#if data.cost_per_post_engagement}}<p>CP Post Engagement: {{ data.cost_per_post_engagement}}</p>{{/if}}
-        {{/each}}
     {{else}}
         <p>No AdSets</p>
-    {{/if}}
-
+    {{/each}}
 </template>

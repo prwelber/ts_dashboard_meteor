@@ -6,7 +6,7 @@ Meteor.methods({
 });
 
 Meteor.methods({
-    'getAdSets': function (accountNumber, campaignMongoId, campaignName) {
+    'getAdSets': function (accountNumber, campaignName) {
         let adSetsArray = [];
         let masterArray = [];
         let adSets;
@@ -98,7 +98,6 @@ Meteor.methods({
                 } catch(e) {
                     console.log("Error while looping over and organizing data", e);
                 }
-                data['campaign_mongo_reference'] = campaignMongoId;
                 data['campaign_name'] = campaignName;
                 data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
                 masterArray.push(data);
