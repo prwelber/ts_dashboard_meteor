@@ -10,7 +10,7 @@
 
 Tracker.autorun(function () {
     if (FlowRouter.subsReady('campaignBasicsList')) {
-        console.log('subs ready!');
+        console.log('campaignBasics subs ready!');
     }
 });
 
@@ -41,6 +41,13 @@ Template.accountOverview.helpers({
             console.log('gotta get campaigns for this account', accountId);
             Meteor.call('getCampaigns', accountId)
         }
+    },
+    'isUserUpdated': function () {
+        let user = Meteor.user();
+        if (!user.firstName) {
+            $("#message-box").text("")
+            $("#message-box").append("Please update your user profile in the admin section before continuing.");
+        }
     }
 });
 
@@ -58,6 +65,7 @@ Template.accountOverview.events({
     'click #insights-link': function (event, template) {
         console.log(event.target.dataset);
         Session.set("campaign_id", event.target.dataset.campaign);
+        Session.set("end_date", event.target.dataset.stop);
     }
 });
 

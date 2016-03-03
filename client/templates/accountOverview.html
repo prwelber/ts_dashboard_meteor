@@ -1,4 +1,5 @@
 <template name="accountOverview">
+    {{isUserUpdated}}
     <h2>Single Account Overview</h2>
 
     <p class='account-name'>{{getName.name}}</p>
@@ -7,7 +8,7 @@
     <h2>All {{getName.name}} Campaigns</h2>
         {{#each campaign in displayCampaignBasics 1}}
             <a href="/accounts/{{campaign.campaign_id}}/insights" >
-                <h4 id="insights-link" data-campaign="{{campaign.campaign_id}}">
+                <h4 id="insights-link" data-campaign="{{campaign.campaign_id}}" data-stop="{{campaign.stop_time}}">
                     {{campaign.name}}
                 </h4>
             </a>

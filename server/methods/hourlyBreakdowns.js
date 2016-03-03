@@ -6,7 +6,7 @@ Meteor.methods({
 });
 
 Meteor.methods({
-    'getHourlyBreakdown': function (accountNumber, campaignName, campaignMongoId) {
+    'getHourlyBreakdown': function (accountNumber, campaignName, end_date) {
         let hourlyArray = [];
         let masterArray = [];
         let hourlyBreakdown;
@@ -57,10 +57,10 @@ Meteor.methods({
                 data['cpp'] = accounting.formatMoney(data.cpp, "$", 2);
                 data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
                 data['campaign_name'] = campaignName;
-                data['campaign_mongo_reference'] = campaignMongoId;
                 data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
                 data['cpc'] = accounting.formatMoney((data.spend / data.clicks), "$", 2);
                 data['spend'] = accounting.formatMoney(data.spend, "$", 2);
+                data['date_stop'] = moment(end_date).format("MM-DD-YYYY hh:mm a");
                 masterArray.push(data);
             });
             // console.log(masterArray);

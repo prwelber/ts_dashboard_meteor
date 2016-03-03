@@ -11,20 +11,13 @@
         <p>CTR: {{data.ctr}}</p>
         <p>CPM: {{data.cpm}}</p>
         <p>CPP: {{data.cpp}}</p>
-        {{#if data.clicks}} <p>Clicks: {{data.clicks}}</p> {{/if}}
-        {{#if data.cpc}} <p>CPM: {{data.cpc}}</p> {{/if}}
-        <p>Comment: {{data.comment}}</p>
-        <p>Photo View: {{data.photo_view}}</p>
-        <p>Post: {{data.post}}</p>
-        <p>Post Like: {{data.post_like}}</p>
-        <p>Page Engagement: {{data.page_engagement}}</p>
-        <p>Post Engagement: {{data.post_engagement}}</p>
-        <p>CP Comment: {{data.cost_per_comment}}</p>
-        <p>CP Photo View: {{data.cost_per_photo_view}}</p>
-        <p>CP Post: {{data.cost_per_post}}</p>
-        <p>CP Post Like: {{data.cost_per_post_like}}</p>
-        <p>CP Page Engagement: {{data.cost_per_page_engagement}}</p>
-        <p>CP Post Engagement: {{data.cost_per_post_engagement}}</p>
+        {{#if data.clicks}} <p>Clicks: {{data.clicks}} | Cost per: {{data.cpc}}</p> {{/if}}
+        {{#if data.comment}}<p>Comment: {{data.comment}} | Cost per: {{data.cost_per_comment}}</p>{{/if}}
+        {{#if data.photo_view}}<p>Photo View: {{data.photo_view}} | Cost per: {{data.cost_per_photo_view}}</p>{{/if}}
+        {{#if data.post}}<p>Post: {{data.post}} | Cost per: {{data.cost_per_post}}</p>{{/if}}
+        {{#if data.post_like}}<p>Post Like: {{data.post_like}} | Cost per: {{data.cost_per_post_like}}</p>{{/if}}
+        <p>Page Engagement: {{data.page_engagement}} | Cost per: {{data.cost_per_page_engagement}}</p>
+        <p>Post Engagement: {{data.post_engagement}} | Cost per: {{data.cost_per_post_engagement}}</p>
     {{/each}}
     {{!-- TODO if statements for all possible data points --}}
 </template>

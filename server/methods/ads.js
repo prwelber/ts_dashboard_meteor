@@ -72,6 +72,7 @@ Meteor.methods({
                 }
                 data['campaign_mongo_reference'] = campaignMongoId;
                 data['campaign_name'] = campaignName;
+                data['cpc'] = accounting.formatMoney((data.spend / data.clicks), "$", 2);
                 masterArray.push(data);
             });
         } catch(e) {

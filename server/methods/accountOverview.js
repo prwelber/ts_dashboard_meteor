@@ -3,7 +3,7 @@
 // just call Meteor.call('removeCampaignBasics')
 // remove all can only be done from server
 Meteor.methods({
-    'removeCampaignBasics': function (account) {
+    'removeCampaigns': function (account) {
         console.log('removing CampaignBasicsList collection for a single account')
         CampaignBasics.remove( {} );
         return "removed!"

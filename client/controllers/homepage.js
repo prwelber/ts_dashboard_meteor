@@ -37,6 +37,8 @@ Template.accounts.events({
     'click .account-link': function () {
         if (Session.get('id') == Meteor.userId()) {
             console.log('you are propertly authenticated')
+        } else {
+            addToBox("You are not authenticated.")
         }
     }
 });
@@ -49,7 +51,7 @@ Template.accounts.helpers({
                 "name": { "$in": [
                     "Ruffino",
                     "Tom Gore",
-                    "Mouton Cadet",
+                    "Luchese",
                     "Robert Mondavi Winery",
                     "Kim Crawford"
                 ]}
@@ -80,13 +82,6 @@ Template.index.helpers({
         let date = new Date();
         date = date.toDateString();
         return date;
-    },
-    'isUserUpdated': function () {
-        let user = Meteor.user();
-        if (!user.firstName) {
-            $("#message-box").text("")
-            $("#message-box").append("Please update your user profile in the admin section before continuing.");
-        }
     }
 });
 

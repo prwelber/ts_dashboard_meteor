@@ -4,14 +4,15 @@
     <p><a href="/accounts/{{getCampaignNumber}}/insights">View Campaign Insights</a></p>
     <p><a href="/accounts/{{getCampaignNumber}}/adsets">View AdSets and AdSets Insights</a></p>
     <p> <a href="/accounts/{{getCampaignNumber}}/ads">View Ads and Ads Insights</a> </p>
-    {{> Template.dynamic template=initiativeStats }}
+    {{!-- {{> Template.dynamic template=initiativeStats }} --}}
     {{#each fetchInsights}}
         <h3>Lifetime insights for <span class="campName">{{campaign_name}}</span> <br />
         Objective: {{cleanText objective}}
         </h3>
-        <p><a href="/accounts/{{campaign_id}}/breakdowns">Breakdown by Age and Gender</a></p>
-        <p><a href="/accounts/{{campaign_id}}/daybreakdowns">Day by day Breakdown</a></p>
-        <p> <a href="/accounts/{{campaign_id}}/hourlybreakdowns">Hourly Stats Aggregated by Audience Time Zone</a></p>
+        <button id="refresh-insights">Refresh Insights</button>
+        <p><a class="setSessionCampName" href="/accounts/{{campaign_id}}/breakdowns">Breakdown by Age and Gender</a></p>
+        <p><a class="setSessionCampName" href="/accounts/{{campaign_id}}/daybreakdowns">Day by day Breakdown</a></p>
+        <p> <a class="setSessionCampName" href="/accounts/{{campaign_id}}/hourlybreakdowns">Hourly Stats Aggregated by Audience Time Zone</a></p>
         <h4>Flight Dates: {{date_start}} -- {{date_stop}}</h4>
         <p><strong>Often Viewed</strong></p>
         <p>CPM: {{cpm}}</p>
@@ -28,6 +29,7 @@
         {{#if like}}<p>Likes: {{like}}</p>{{/if}}
         {{#if link_click}}<p>Link Click: {{link_click}}</p>{{/if}}
         {{#if website_clicks}}<p>Website Clicks: {{website_clicks}}</p>{{/if}}
+        {{#if link_click_ctr}}<p>Link Click CTR: {{link_click_ctr}}</p>{{/if}}
         {{#if photo_view}}<p>Photo View: {{photo_view}}</p>{{/if}}
         {{#if post}}<p>Post: {{post}}</p>{{/if}}
         {{#if post_like}}<p>Post Likes: {{post_like}}</p>{{/if}}
