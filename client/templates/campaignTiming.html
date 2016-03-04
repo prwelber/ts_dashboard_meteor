@@ -3,9 +3,9 @@
 
     {{#each getActive}}
         <a href="/accounts/{{campaign_id}}/insights">
-            <p class="insights-link" data-campaign="{{campaign_id}}" data-stop="{{stop_time}}">
-                <strong>{{name}}</strong>
-            </p>
+            <h4 class="insights-link" data-campaign="{{campaign_id}}" data-stop="{{stop_time}}">
+                {{name}}
+            </h4>
         </a>
         <p>{{objective}}</p>
         <p>{{start_time}} -- {{stop_time}}</p>
@@ -15,9 +15,9 @@
 
     {{#each getEndingSoon}}
         <a href="/accounts/{{campaign_id}}/insights">
-            <p class="insights-link" data-campaign="{{campaign_id}}" data-stop="{{stop_time}}">
-                <strong>{{name}}</strong>
-            </p>
+                <h4 class="insights-link" data-campaign="{{campaign_id}}" data-stop="{{stop_time}}">
+                    {{name}}
+                </h4>
         </a>
         <p>End Time: {{stop_time}}</p>
     {{/each}}
@@ -25,7 +25,11 @@
     <h2>Campaigns Starting Soon</h2>
 
     {{#each getStartingSoon}}
-        <a href="/accounts/{{campaign_id}}/insights"><p class="insights-link" data-campaign="{{campaign_id}}" data-stop="{{stop_time}}"><strong>{{name}}</strong></p></a>
+        <a href="/accounts/{{campaign_id}}/insights">
+            <h4 class="insights-link" data-campaign="{{campaign_id}}" data-stop="{{stop_time}}">
+                {{name}}
+            </h4>
+        </a>
         <p>Start Time: {{start_time}}</p>
     {{/each}}
 </template>

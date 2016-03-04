@@ -20,6 +20,25 @@ Meteor.methods({
     'removeInitiatives': function () {
         Initiatives.remove( {} );
         return "initiatives removed!";
+    },
+    'updateInitiative': function (data) {
+        Initiatives.update(
+            {name: data.name},
+            {$set: {
+                brand: data.brand,
+                agency: data.agency,
+                budget: data.budget,
+                dealType: data.dealType,
+                endDate: data.endDate,
+                name: data.name,
+                notes: data.notes,
+                startDate: data.startDate,
+                quantity: data.quantity,
+                price: data.price,
+                campaign_id: data.campaign_id,
+            }
+        });
+        return data.name;
     }
 });
 

@@ -70,5 +70,41 @@
         <p>Ends: {{endDate}}</p>
         <p>Agency: {{agency}}</p>
         <p>notes: {{notes}}</p>
+        <button id="edit-initiative-button">Edit</button>
     {{/with}}
+</template>
+
+<template name="editInitiative">
+    <h3>Edit Initiative</h3>
+    <form id="edit-initiative-form">
+        {{#with getInitiative}}
+            <p>Name: </p><input type="text" name="name" value="{{name}}" size="40">
+            <p>Brand</p>
+            <select name="brand" id="brand-select">
+                {{#each getBrands}}
+                    <option value="{{name}}">{{name}}</option>
+                {{/each}}
+            </select><br><br>
+            <p>Deal type</p>
+            <select name="dealtype" id="dealtype-select">
+                    <option value="CPC">CPC</option>
+                    <option value="CPM">CPM</option>
+                    <option value="CPL">CPL</option>
+                    <option value="FACTOR">FACTOR</option>
+                </select><br><br>
+            <p>Agency</p>
+            <select name="agency" id="agency-select">
+                <option value="Constellation">Constellation</option>
+                <option value="Horizon">Horizon</option>
+            </select>
+            <p>Budget: </p> <input type="text" name="budget" value="{{budget}}">
+            <p>Quantity: </p> <input type="text" name="quantity" value="{{quantity}}">
+            <p>Price: </p> <input type="text" name="price" value="{{price}}">
+            <p>Starts: </p> <input type="text" name="startDate" value="{{startDate}}">
+            <p>Ends: </p> <input type="text" name="endDate" value="{{endDate}}">
+            <p>notes: </p> <input type="text" name="notes" value="{{notes}}">
+            <p>Campaign ID</p> <input type="text" name="campaign_id" value={{campaign_id}}><br /><br />
+            <input type="submit" value="Update Initiative">
+        {{/with}}
+    </form>
 </template>

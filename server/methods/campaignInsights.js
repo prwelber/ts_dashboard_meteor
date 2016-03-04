@@ -68,7 +68,7 @@ Meteor.methods({
             data['cpc'] = accounting.formatMoney((data.spend / data.clicks), "$", 2);
             data['spend'] = accounting.formatMoney(data.spend, "$", 2);
             data['date_start'] = moment(data.date_start).format("MM-DD-YYYY hh:mm a");
-            data['date_stop'] = moment(end_date).format("MM-DD-YYYY hh:mm a");
+            data['date_stop'] = moment(end_date, "MM-DD-YYYY hh:mm a").format("MM-DD-YYYY hh:mm a");
 
             masterArray.push(data);
             // console.log(data.date_stop);

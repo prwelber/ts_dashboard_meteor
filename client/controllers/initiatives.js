@@ -75,4 +75,47 @@ Template.initiative.helpers({
     'getInitiative': function () {
         return Initiatives.findOne({_id: FlowRouter.current().params._id})
     }
+});
+
+Template.initiative.events({
+    'click #edit-initiative-button': function (event) {
+        FlowRouter.go('/admin/initiatives/'+this._id+'/edit');
+    }
+});
+
+Template.editInitiative.helpers({
+    'getInitiative': function () {
+        return Initiatives.findOne({_id: FlowRouter.current().params._id})
+    },
+    'getBrands': function () {
+        return Accounts.find()
+    }
+});
+
+Template.editInitiative.events({
+    'submit #edit-initiative-form': function (event, template) {
+        event.preventDefault();
+        let data = {};
+        data['name']      = event.target.name.value;
+        data['brand']     = event.target.brand.value;
+        data['agency']    = event.target.agency.value;
+        data['dealType']  = event.target.dealtype.value;
+        data['budget']    = event.target.budget.value;
+        data['startDate'] = moment(new Date(event.target.startDate.value)).format("MM-DD-YYYY hh:mm a");
+        data['endDate']   = moment(new Date(event.target.endDate.value)).format("MM-DD-YYYY hh:mm a");;
+        data['notes']     = event.target.notes.value;
+        data['quantity']  = event.target.quantity.value;
+        data['price']     = event.target.price.value;
+        data['campaign_id'] = event.target.campaign_id.value;
+
+        Meteor.call('updateInitiative', data, function (error, result) {
+            if (result) {
+                mastFunc.addToBox("Initiative "+result+" Updated Successfully!");
+            }
+        });
+    }
+});
+
+Template.editInitiative.onDestroyed(func => {
+    $("#message-box li").remove();
 })

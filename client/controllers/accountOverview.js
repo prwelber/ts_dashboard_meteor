@@ -65,6 +65,7 @@ Template.accountOverview.events({
     'click .insights-link': function (event, template) {
         Session.set("campaign_id", event.target.dataset.campaign);
         Session.set("end_date", event.target.dataset.stop);
+        console.log("dataset:", event.target.dataset)
     }
 });
 

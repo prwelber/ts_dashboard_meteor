@@ -32,16 +32,10 @@ Template.timing.helpers({
         }
     }
 });
-// Documents.find({
-//   "owner": "123456",
-//   "category": { $in: [ "photos", "announcements" ] },
-//   "date.year": { $lt: 2015 },
-//   "tags": { $in: [ 'baby', 'wedding' ] }
-// }, {
-//   fields: {
-//     "title": 1
-//   },
-//   sort: {
-//     "title": -1
-//   }
-// });
+
+Template.timing.events({
+    'click .insights-link': function (event, template) {
+        Session.set("campaign_id", event.target.dataset.campaign);
+        Session.set("end_date", event.target.dataset.stop);
+    }
+});
