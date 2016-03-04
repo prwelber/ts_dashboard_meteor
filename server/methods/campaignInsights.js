@@ -95,3 +95,15 @@ Meteor.methods({
 Meteor.publish('campaignInsightList', function () {
     return CampaignInsights.find({}); //publish all insights
 })
+
+/*
+Aggregate can happen only on server side
+        var pipeline = [
+            {$match: {"data.account_id": "867733226610106"}},
+            {$group: {_id: null, total: {$sum: "$data.clicks"}}}
+        ]
+        var result = CampaignInsights.aggregate(pipeline);
+        console.log(result);
+
+        // this returns [ { _id: null, total: 822 } ]
+*/
