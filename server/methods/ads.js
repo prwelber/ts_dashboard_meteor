@@ -1,5 +1,5 @@
 Meteor.methods({
-    'removeAdsCollection': function () {
+    'removeAds': function () {
         console.log('removing Ads collection');
         Ads.remove( {} );
     }

@@ -38,7 +38,7 @@ Template.accounts.events({
         if (Session.get('id') == Meteor.userId()) {
             console.log('you are propertly authenticated')
         } else {
-            addToBox("You are not authenticated.")
+            mastFunc.addToBox("You are not authenticated.")
         }
     }
 });

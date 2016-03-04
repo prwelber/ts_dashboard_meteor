@@ -15,27 +15,20 @@
         <p>Spend: {{data.spend}}</p>
         {{#if data.cost_per_page_engagement}}<p>CP Page Engagement: {{data.cost_per_page_engagement}}</p>{{/if}}
         {{#if data.cost_per_post_engagement}}<p>CP Post Engagement: {{data.cost_per_post_engagement}}</p>{{/if}}
-        {{#if data.clicks}} <p>Clicks: {{data.clicks}}</p> {{/if}}
-        {{#if data.cpc}} <p>CPM: {{data.cpc}}</p> {{/if}}
-        {{#if data.comment}}<p>Comments: {{data.comment}}</p>{{/if}}
-        {{#if data.like}}<p>Likes: {{data.like}}</p>{{/if}}
-        {{#if data.link_click}}<p>Link Click: {{data.link_click}}</p>{{/if}}
+        {{#if data.clicks}} <p>Clicks: {{data.clicks}} | Cost per: {{data.cpc}}</p> {{/if}}
+        {{#if data.comment}}<p>Comments: {{data.comment}} | Cost per: {{ data.cost_per_comment}}</p>{{/if}}
+        {{#if data.like}}<p>Likes: {{data.like}} | Cost per: {{data.cost_per_like}}</p>{{/if}}
+        {{#if data.link_click}}<p>Link Click: {{data.link_click}} | Cost per: {{ data.cost_per_link_click}}</p>{{/if}}
         {{#if data.website_clicks}}<p>Website Clicks: {{data.website_clicks}}</p>{{/if}}
-        {{#if data.photo_view}}<p>Photo View: {{data.photo_view}}</p>{{/if}}
-        {{#if data.post}}<p>Post: {{data.post}}</p>{{/if}}
-        {{#if data.post_like}}<p>Post Likes: {{data.post_like}}</p>{{/if}}
+        {{#if data.photo_view}}<p>Photo View: {{data.photo_view}} | Cost per: {{ data.cost_per_photo_view}}</p>{{/if}}
+        {{#if data.post}}<p>Post: {{data.post}} | Cost per: {{ data.cost_per_post}}</p>{{/if}}
+        {{#if data.post_like}}<p>Post Likes: {{data.post_like}} | Cost per: {{ data.cost_per_post_like}}</p>{{/if}}
         {{#if data.unlike}}<p>Unlikes: {{data.unlike}}</p>{{/if}}
         {{#if data.video_play}}<p>Video Play: {{data.video_play}}</p>{{/if}}
         {{#if data.video_view}}<p>Video View: {{data.video_view}}</p>{{/if}}
         {{#if data.offsite_conversion}} <p>Offsite Conversion: {{data.offsite_conversion}}</p>{{/if}}
         {{#if data.offsite_conversion_registration}} <p>Offsite Conversion Registration: {{data.offsite_conversion_registration}}</p>{{/if}}
         {{#if data.offsite_conversion_fb_pixel_purchase}} <p>Offsite Conversion FB Pixel Purchase: {{data.offsite_conversion_fb_pixel_purchase}}</p>{{/if}}
-        {{#if data.cost_per_comment}}<p>CP Comment: {{ data.cost_per_comment}}</p>{{/if}}
-        {{#if data.cost_per_like}}<p>CP Like: {{ data.cost_per_like}}</p>{{/if}}
-        {{#if data.cost_per_link_click}}<p>CP Link Click: {{ data.cost_per_link_click}}</p>{{/if}}
-        {{#if data.cost_per_photo_view}}<p>CP Photo View: {{ data.cost_per_photo_view}}</p>{{/if}}
-        {{#if data.cost_per_post}}<p>CP Post: {{ data.cost_per_post}}</p>{{/if}}
-        {{#if data.cost_per_post_like}}<p>CP Post Like: {{ data.cost_per_post_like}}</p>{{/if}}
         {{#if data.cost_per_unlike}}<p>CP Unlike: {{data.cost_per_unlike}}</p>{{/if}}
         {{#if data.cost_per_video_play}}<p>CP Video Play: {{data.cost_per_video_play}}</p>{{/if}}
         {{#if data.cost_per_video_view}}<p>CP Video View: {{data.cost_per_video_view}}</p>{{/if}}

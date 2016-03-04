@@ -46,3 +46,29 @@
             <p>{{notes}}</p>
         {{/with}} --}}
 </template>
+
+<template name="initiatives">
+    <h2>Initiatives</h2>
+    {{#each getInitiatives}}
+        <a href="/admin/initiatives/{{_id}}"><h4>{{name}}</h4></a>
+        <p>Brand: {{brand}}</p>
+        <p>Deal Type: {{dealType}}</p>
+        <p>Budget: {{budget}}</p>
+    {{/each}}
+
+</template>
+
+<template name="initiative">
+    {{#with getInitiative}}
+        <h3>{{name}}</h3>
+        <p>Brand: {{brand}}</p>
+        <p>Deal Type: {{dealType}}</p>
+        <p>Budget: {{budget}}</p>
+        <p>Quantity: {{quantity}}</p>
+        <p>Price: {{price}}</p>
+        <p>Starts: {{startDate}}</p>
+        <p>Ends: {{endDate}}</p>
+        <p>Agency: {{agency}}</p>
+        <p>notes: {{notes}}</p>
+    {{/with}}
+</template>

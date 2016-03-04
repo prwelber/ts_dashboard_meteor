@@ -1,4 +1,10 @@
-Meteor.subscribe('InitiativesList');
+// Meteor.subscribe('Initiatives');
+
+Tracker.autorun(function () {
+    if (FlowRouter.subsReady('Initiatives')) {
+        console.log('Initiatives subs ready!');
+    }
+})
 
 Template.newInitiative.helpers({
     'getBrands': function () {
@@ -30,7 +36,6 @@ Template.newInitiative.events({
 
         let campaignInsight = CampaignInsights.findOne({'data.campaign_name': newInitiative.name});
         newInitiative['campaign_id'] = campaignInsight.data.campaign_id;
-        newInitiative['campaign_mongo_id'] = campaignInsight._id
         console.log(newInitiative);
         Meteor.call('insertNewInitiative', newInitiative, function (error, result) {
             if (error) {
@@ -60,3 +65,14 @@ Template.initiativeStats.helpers({
     }
 });
 
+Template.initiatives.helpers({
+    'getInitiatives': function () {
+        return Initiatives.find().fetch();
+    }
+});
+
+Template.initiative.helpers({
+    'getInitiative': function () {
+        return Initiatives.findOne({_id: FlowRouter.current().params._id})
+    }
+})

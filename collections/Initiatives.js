@@ -1,4 +1,4 @@
-Initiatives = new Mongo.Collection('InitiativesList')
+Initiatives = new Mongo.Collection('Initiatives')
 
 // let Schemas = {};
 

@@ -12,9 +12,9 @@ Template.adsets.helpers({
         // let camp = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
         if (adSet) {
             if (adSet.data.inserted > adSet.data.end_time) {
-                addToBox("This AdSet has been updated after it ended, no need to refresh.");
+                mastFunc.addToBox("This AdSet has been updated after it ended, no need to refresh.");
             } else {
-                addToBox("last AdSet refresh: "+adSet.data.inserted+", refreshing will give you live stats");
+                mastFunc.addToBox("last AdSet refresh: "+adSet.data.inserted+", refreshing will give you live stats");
             }
             return AdSets.find({'data.campaign_id': campaignNumber})
         } else {

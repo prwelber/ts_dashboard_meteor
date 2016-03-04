@@ -1,5 +1,5 @@
 Meteor.methods({
-    'removeHourlyCollection': function () {
+    'removeHourly': function () {
         console.log('removing hourly breakdowns collection')
         HourlyBreakdowns.remove( {} )
     }

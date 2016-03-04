@@ -14,10 +14,10 @@ Template.insightsBreakdown.helpers({
         let breakdown = InsightsBreakdowns.findOne({'data.campaign_id': campaignNumber});
         console.log('breakdown', breakdown)
         if (breakdown) {
-            if (breakdown.data.inserted > breakdown.data.date_stop) {
-                addToBox("This InsightBreakdown has been updated after it ended, no need to refresh.");
+            if (moment(breakdown.data.inserted, "MM-DD-YYYY hh:mm a").isAfter(moment(breakdown.data.date_stop, "MM-DD-YYYY hh:mm a"))) {
+                mastFunc.addToBox("This InsightBreakdown has been updated after it ended, no need to refresh.");
             } else {
-                addToBox("last refresh: "+breakdown.data.inserted+", refreshing will give you live stats");
+                mastFunc.addToBox("last refresh: "+breakdown.data.inserted+", refreshing will give you live stats");
             }
             console.log('you should be seeing breakdown');
             // initiative = NewInitiativeList.findOne({name: name});

@@ -71,6 +71,7 @@ Meteor.methods({
             data['date_stop'] = moment(end_date).format("MM-DD-YYYY hh:mm a");
 
             masterArray.push(data);
+            // console.log(data.date_stop);
         } catch(e) {
             console.log("error pulling campaign insights:", e);
         }

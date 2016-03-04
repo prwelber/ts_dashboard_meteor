@@ -37,12 +37,13 @@ Template.campaignInsights.helpers({
         let campaignNumber = FlowRouter.current().params.campaign_id;
         let camp = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
         if (camp) {
-          console.log('you should be seeing insights');
           // initiative = Initiatives.findOne({name: camp.campaign_name});
-          if (camp.data.inserted > camp.data.date_stop) {
-            addToBox("This campaign has been updated after it ended, no need to refresh.");
+          // Needed to included moment and formatting here
+          // because of a deprecation warning thrown by moment
+          if (moment(camp.data.inserted, "MM-DD-YYYY hh:mm a").isAfter(moment(camp.data.date_stop, "MM-DD-YYYY hh:mm a"))) {
+            mastFunc.addToBox("This campaign has been updated after it ended, no need to refresh.");
           } else {
-            addToBox("last campaignInsights refresh: "+camp.data.inserted+", refreshing will give you live stats")
+            mastFunc.addToBox("last campaignInsights refresh: "+camp.data.inserted+", refreshing will give you live stats")
           }
           return [camp.data];
         } else {

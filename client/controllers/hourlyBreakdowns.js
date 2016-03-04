@@ -11,10 +11,11 @@ Template.hourlyBreakdowns.helpers({
         let campaignNumber = FlowRouter.current().params.campaign_id;
         let hourlyBreakdown = HourlyBreakdowns.findOne({'data.campaign_id': campaignNumber});
         if (hourlyBreakdown) {
-            if (hourlyBreakdown.data.inserted > hourlyBreakdown.data.date_stop) {
-                addToBox("This hourlyBreakdown has been updated after it ended, no need to refresh.");
+            // console.log(hourlyBreakdown.data.inserted > hourlyBreakdown.data.date_stop);
+            if (moment(hourlyBreakdown.data.inserted, "MM-DD-YYYY hh:mm a").isAfter(moment(hourlyBreakdown.data.date_stop, "MM-DD-YYYY hh:mm a"))) {
+                mastFunc.addToBox("This hourlyBreakdown has been updated after it ended, no need to refresh.");
             } else {
-                addToBox("last refresh: "+dailyBreakdown.data.inserted+", refreshing will give you live stats");
+                mastFunc.addToBox("last refresh: "+hourlyBreakdown.data.inserted+", refreshing will give you live stats");
             }
             // initiative = NewInitiativeList.findOne({name: name});
             return HourlyBreakdowns.find({'data.campaign_id': campaignNumber}, {sort: {'data.hourly_stats_aggregated_by_audience_time_zone': 1}});

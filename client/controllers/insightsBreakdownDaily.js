@@ -12,10 +12,10 @@ Template.insightsBreakdownDaily.helpers({
         // let camp = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
         let dailyBreakdown = InsightsBreakdownsByDays.findOne({'data.campaign_id': campaignNumber});
         if(dailyBreakdown) {
-            if (dailyBreakdown.data.inserted > dailyBreakdown.data.date_stop) {
-                addToBox("This dailyBreakdown has been updated after it ended, no need to refresh.");
+            if (moment(dailyBreakdown.data.inserted, "MM-DD-YYYY hh:mm a").isAfter(moment(dailyBreakdown.data.date_stop, "MM-DD-YYYY hh:mm a"))) {
+                mastFunc.addToBox("This dailyBreakdown has been updated after it ended, no need to refresh.");
             } else {
-                addToBox("last refresh: "+dailyBreakdown.data.inserted+", refreshing will give you live stats");
+                mastFunc.addToBox("last refresh: "+dailyBreakdown.data.inserted+", refreshing will give you live stats");
             }
 
             return InsightsBreakdownsByDays.find({'data.campaign_id': campaignNumber}, {sort: {'data.date_start': -1}});

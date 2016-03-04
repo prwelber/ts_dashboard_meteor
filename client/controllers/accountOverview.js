@@ -62,8 +62,7 @@ Template.accountOverview.events({
         let count = CampaignBasics.find().count()
         Session.set("limit", count);
     },
-    'click #insights-link': function (event, template) {
-        console.log(event.target.dataset);
+    'click .insights-link': function (event, template) {
         Session.set("campaign_id", event.target.dataset.campaign);
         Session.set("end_date", event.target.dataset.stop);
     }
