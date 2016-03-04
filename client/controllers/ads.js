@@ -1,4 +1,10 @@
-Meteor.subscribe('AdsList');
+// Meteor.subscribe('AdsList');
+
+Tracker.autorun(function () {
+    if (FlowRouter.subsReady('AdsList')) {
+        console.log('AdsList subs ready!');
+    }
+});
 
 Template.ads.helpers({
     'getAds': function () {

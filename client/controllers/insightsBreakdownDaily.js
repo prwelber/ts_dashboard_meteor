@@ -1,5 +1,10 @@
-Meteor.subscribe('insightsBreakdownByDaysList')
+// Meteor.subscribe('insightsBreakdownByDaysList')
 
+Tracker.autorun(function () {
+    if (FlowRouter.subsReady('insightsBreakdownByDaysList')) {
+        console.log('insightsBreakdownByDays subs ready!');
+    }
+});
 
 Template.insightsBreakdownDaily.helpers({
     'getDailyBreakdown': function () {
