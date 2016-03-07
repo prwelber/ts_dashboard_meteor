@@ -1,3 +1,7 @@
+Meteor.startup(function () {
+    CampaignInsights._ensureIndex({campUniqueId: 1});
+});
+
 Meteor.methods({
     'removeInsights': function () {
         console.log('removing CampaignInsightList collection')
@@ -59,13 +63,13 @@ Meteor.methods({
                 }
             });
             //overwrites data already in object with formatted values
-            data['cpm'] = accounting.formatMoney(data.cpm, "$", 2);
+            data['cpm'] = data.cpm;
             data['cpp'] = accounting.formatMoney(data.cpp, "$", 2);
             data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
             data['cost_per_unique_click'] = accounting.formatMoney(data.cost_per_unique_click, "$", 2);
             data['cost_per_total_action'] = accounting.formatMoney(data.cost_per_total_action, "$", 2);
             data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
-            data['cpc'] = accounting.formatMoney((data.spend / data.clicks), "$", 2);
+            data['cpc'] = data.spend / data.clicks;
             data['spend'] = accounting.formatMoney(data.spend, "$", 2);
             data['date_start'] = moment(data.date_start).format("MM-DD-YYYY hh:mm a");
             data['date_stop'] = moment(end_date, "MM-DD-YYYY hh:mm a").format("MM-DD-YYYY hh:mm a");
@@ -76,37 +80,45 @@ Meteor.methods({
             console.log("error pulling campaign insights:", e);
         }
 
-        // where we search initiatives looking for the one that matches
+        // Where we search initiatives looking for the one that matches
+        try {
+            Initiatives._ensureIndex({
+                "search_text": "text"
+            });
 
-        Initiatives._ensureIndex({
-            "search_text": "text"
-        });
-        console.log(data.campaign_name);
-        let str = data.campaign_name.toString();
-        let inits = Initiatives.find(
-            {$text: { $search: data.campaign_name}},
-            {
-                fields: { // giving each document a text score
-                    score: {$meta: "textScore"}
-                },
-                sort: { // sorting by highest text score
-                    score: {$meta: "textScore"}
+            let inits = Initiatives.find(
+                {$text: { $search: data.campaign_name}},
+                {
+                    fields: { // giving each document a text score
+                        score: {$meta: "textScore"}
+                    },
+                    sort: { // sorting by highest text score
+                        score: {$meta: "textScore"}
+                    }
                 }
-            }
-        ).fetch();
+            ).fetch();
+            inits = inits[0];  // set "inits" equal to initiative with highest textScore
+            data['initiative'] = inits.name; //assign initiative name to data object
 
-        console.log(inits)
-        inits = inits[0];  // set "inits" equal to initiative with highest textScore
+            // try and remove initiative id and name to guard against duplicates
+            // Initiatives.update(
+            //     {name: inits.name},
+            //     {$pull: {campaign_ids: data.campaign_id, campaign_names: data.campaign_name}
+            // });
+            // I might not need this since using addToSet below, which
+            // checks for duplicate values
 
-        data['initiative'] = inits.name; //assign initiative name to data object
+            Initiatives.update(   // assign campaign id and name to matching initiative
+                {name: inits.name},
+                {$addToSet: {
+                    campaign_ids: data.campaign_id,
+                    campaign_names: data.campaign_name
+                }
+            });
 
-        // Initiatives.update(   // assign campaign id and name to matching initiative
-        //     {name: inits.name},
-        //     {$push: {
-        //         campaign_ids: data.campaign_id,
-        //         campaign_names: data.campaign_name
-        //         }
-        //     });
+        } catch(e) {
+            console.log(e);
+        }
 
         // end of initiative matching
 
@@ -119,8 +131,13 @@ Meteor.methods({
             console.log('error while inserting into collection:', e);
         }
     },
-    'refreshInsight': function (campaign_id) {
+    'refreshInsight': function (campaign_id, campaign_name, initiativeName) {
         console.log('refreshInsight running');
+
+        Initiatives.update(
+            {name: initiativeName},
+            {$pull: {campaign_ids: campaign_id, campaign_names: campaign_name}
+        });
         CampaignInsights.remove({'data.campaign_id': campaign_id});
     }
 });
@@ -128,16 +145,4 @@ Meteor.methods({
 
 Meteor.publish('campaignInsightList', function () {
     return CampaignInsights.find({}); //publish all insights
-})
-
-/*
-Aggregate can happen only on server side
-        var pipeline = [
-            {$match: {"data.account_id": "867733226610106"}},
-            {$group: {_id: null, total: {$sum: "$data.clicks"}}}
-        ]
-        var result = CampaignInsights.aggregate(pipeline);
-        console.log(result);
-
-        // this returns [ { _id: null, total: 822 } ]
-*/
+});

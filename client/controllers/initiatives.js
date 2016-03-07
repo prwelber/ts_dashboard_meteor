@@ -58,7 +58,7 @@ Template.newInitiative.events({
 });
 
 Template.initiativeStats.helpers({
-    'getInitiative': function (template) {
+    'getInitiativeStats': function (template) {
         camp_id = Session.get("campaign_id");
         let initiative = Initiatives.findOne({campaign_id: camp_id});
         return initiative;
@@ -113,6 +113,13 @@ Template.editInitiative.events({
                 mastFunc.addToBox("Initiative "+result+" Updated Successfully!");
             }
         });
+    }
+});
+
+Template.initiativeAggregate.helpers({
+    'getInitiativeAggregate': function () {
+        let init = Initiatives.findOne({_id: FlowRouter.current().params._id})
+        Meteor.call('getInitiativeAggregate', init.name);
     }
 });
 

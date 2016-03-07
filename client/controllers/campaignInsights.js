@@ -22,8 +22,8 @@ Template.campaignInsights.events({
       reporter = Blaze.render(Template.reporter, node);
     },
     'click #refresh-insights': function (event, template) {
-      console.log(this.campaign_id);
-      Meteor.call('refreshInsight', this.campaign_id);
+      console.log(this);
+      Meteor.call('refreshInsight', this.campaign_id, this.campaign_name, this.initiative);
       $("#message-box li").remove();
     },
     'click .setSessionCampName': function () {
@@ -45,6 +45,9 @@ Template.campaignInsights.helpers({
           } else {
             mastFunc.addToBox("last campaignInsights refresh: "+camp.data.inserted+", refreshing will give you live stats")
           }
+          // convert currency data types - may want to use underscore here
+          camp.data.cpm = accounting.formatMoney(camp.data.cpm, "$", 2);
+          camp.data.cpc = accounting.formatMoney(camp.data.cpc, "$", 2);
           return [camp.data];
         } else {
           var target = document.getElementById("spinner-div");

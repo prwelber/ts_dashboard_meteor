@@ -43,7 +43,7 @@
 
 <template name="initiativeStats">
     {{!-- <h3>These are stats for the initiative</h3>
-        {{#with getInitiative }}
+        {{#with getInitiativeStats }}
             <p>{{brand}} || {{agency}}</p>
             <p>Deal Type: {{dealType}}</p>
             <p>Budget: {{budget}} || Quantity: {{quantity}} || Price: {{price}}</p>
@@ -64,18 +64,25 @@
 
 <template name="initiative">
     {{#with getInitiative}}
-        <h3>{{name}}</h3>
+        <a href="/admin/initiatives/{{_id}}/aggregate"><h2>{{name}}</h2></a>
         <p>Brand: {{brand}}</p>
+        <p>Agency: {{agency}}</p>
         <p>Deal Type: {{dealType}}</p>
         <p>Budget: {{budget}}</p>
         <p>Quantity: {{quantity}}</p>
         <p>Price: {{price}}</p>
         <p>Starts: {{startDate}}</p>
         <p>Ends: {{endDate}}</p>
-        <p>Agency: {{agency}}</p>
+        <p>Campaigns: {{campaign_names}}</p>
         <p>notes: {{notes}}</p>
         <button id="edit-initiative-button">Edit</button>
     {{/with}}
+</template>
+
+<template name="initiativeAggregate">
+    <h2>Aggregate Stats for Initiative</h2>
+
+
 </template>
 
 <template name="editInitiative">

@@ -3,20 +3,8 @@
 
 Meteor.methods({
     'insertNewInitiative': function (dataObj) {
-        console.log(dataObj)
-        // let re = dataObj.name.toString()
         let campArray = [];
         let campNameArray = [];
-        // let camps = CampaignBasics.find({name: { $regex: re, $options: "i"}}).fetch()
-        // // console.log(camps)
-        // camps.forEach(el => {
-        //     campNameArray.push(el.name);
-        //     campArray.push(el.campaign_id);
-        // });
-
-        // let pipeline = [
-        //     {$match: {}}
-        // ]
 
         Initiatives.insert({
             inserted_date: moment().format("MM-DD-YYYY hh:mm a"),
@@ -59,6 +47,22 @@ Meteor.methods({
             }
         });
         return data.name;
+    },
+    'getInitiativeAggregate': function (name) {
+        // This function aggregates campaignInsight data for an initiative
+        let pipeline = [
+            {$match: {"data.initiative": name}},
+            {$group: {
+                _id: null,
+                clicks: {$sum: "$data.clicks"},
+                reach: {$sum: "$data.reach"},
+                cpm: {$avg: "$data.cpm"},
+                cpc: {$avg: "$data.cpc"}
+                }
+            }
+        ]
+        let result = CampaignInsights.aggregate(pipeline);
+        console.log(result)
     }
 });
 
