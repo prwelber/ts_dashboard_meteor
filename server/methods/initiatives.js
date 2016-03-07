@@ -1,5 +1,23 @@
+
+
+
 Meteor.methods({
     'insertNewInitiative': function (dataObj) {
+        console.log(dataObj)
+        // let re = dataObj.name.toString()
+        let campArray = [];
+        let campNameArray = [];
+        // let camps = CampaignBasics.find({name: { $regex: re, $options: "i"}}).fetch()
+        // // console.log(camps)
+        // camps.forEach(el => {
+        //     campNameArray.push(el.name);
+        //     campArray.push(el.campaign_id);
+        // });
+
+        // let pipeline = [
+        //     {$match: {}}
+        // ]
+
         Initiatives.insert({
             inserted_date: moment().format("MM-DD-YYYY hh:mm a"),
             brand: dataObj.brand,
@@ -12,7 +30,9 @@ Meteor.methods({
             startDate: dataObj.startDate,
             quantity: dataObj.quantity,
             price: dataObj.price,
-            campaign_id: dataObj.campaign_id,
+            campaign_ids: campArray,
+            campaign_names: campNameArray,
+            search_text: dataObj.searchText
         });
         console.log("new initiative inserted into DB:", dataObj)
         return "success";

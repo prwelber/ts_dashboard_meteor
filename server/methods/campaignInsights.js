@@ -71,10 +71,44 @@ Meteor.methods({
             data['date_stop'] = moment(end_date, "MM-DD-YYYY hh:mm a").format("MM-DD-YYYY hh:mm a");
 
             masterArray.push(data);
-            // console.log(data.date_stop);
+
         } catch(e) {
             console.log("error pulling campaign insights:", e);
         }
+
+        // where we search initiatives looking for the one that matches
+
+        Initiatives._ensureIndex({
+            "search_text": "text"
+        });
+        console.log(data.campaign_name);
+        let str = data.campaign_name.toString();
+        let inits = Initiatives.find(
+            {$text: { $search: data.campaign_name}},
+            {
+                fields: { // giving each document a text score
+                    score: {$meta: "textScore"}
+                },
+                sort: { // sorting by highest text score
+                    score: {$meta: "textScore"}
+                }
+            }
+        ).fetch();
+
+        console.log(inits)
+        inits = inits[0];  // set "inits" equal to initiative with highest textScore
+
+        data['initiative'] = inits.name; //assign initiative name to data object
+
+        // Initiatives.update(   // assign campaign id and name to matching initiative
+        //     {name: inits.name},
+        //     {$push: {
+        //         campaign_ids: data.campaign_id,
+        //         campaign_names: data.campaign_name
+        //         }
+        //     });
+
+        // end of initiative matching
 
         try {
             // put the data object into Mongo

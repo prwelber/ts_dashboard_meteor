@@ -33,10 +33,11 @@ Template.newInitiative.events({
         newInitiative['notes']     = event.target.notes.value;
         newInitiative['quantity']  = event.target.quantity.value;
         newInitiative['price']     = event.target.price.value;
+        newInitiative['searchText']= event.target.searchText.value;
 
-        let campaignInsight = CampaignInsights.findOne({'data.campaign_name': newInitiative.name});
-        newInitiative['campaign_id'] = campaignInsight.data.campaign_id;
-        console.log(newInitiative);
+        // let campaignInsight = CampaignInsights.findOne({'data.campaign_name': newInitiative.name});
+        // newInitiative['campaign_id'] = campaignInsight.data.campaign_id;
+        // console.log(newInitiative);
         Meteor.call('insertNewInitiative', newInitiative, function (error, result) {
             if (error) {
                 console.log(error);
@@ -44,7 +45,6 @@ Template.newInitiative.events({
                 alert('Initiative successfully submitted');
             }
         });
-
 
     },
     'blur #new-init-budget': function (event, template) {
@@ -106,7 +106,7 @@ Template.editInitiative.events({
         data['notes']     = event.target.notes.value;
         data['quantity']  = event.target.quantity.value;
         data['price']     = event.target.price.value;
-        data['campaign_id'] = event.target.campaign_id.value;
+        // data['campaign_id'] = event.target.campaign_id.value;
 
         Meteor.call('updateInitiative', data, function (error, result) {
             if (result) {

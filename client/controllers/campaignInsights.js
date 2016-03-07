@@ -7,7 +7,7 @@
 
 Tracker.autorun(function () {
   if (FlowRouter.subsReady('campaignInsightList')) {
-    console.log('campaignInsights subs ready!')
+    console.log('campaignInsights subs ready!');
   }
 });
 
@@ -73,8 +73,9 @@ Template.campaignInsights.helpers({
             console.log("this error is not important");
         }
     },
-    'showInitiative': function () {
-        // return initiative
+    'findInitiative': function () {
+        // console.log(this)
+        //Meteor.call('findInitiative');
     }
 
 });

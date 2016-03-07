@@ -1,7 +1,11 @@
 <template name="newInitiative">
     <h2>Create New Initiative</h2>
     <form class="new-initiative">
-        <p>Name</p><input type="text" name="name" placeholder="Name"><br><br>
+        <p>Name</p><input type="text" name="name" placeholder="Name" size="35"><br><br>
+        <p>Search Text</p> <input type="text" name="searchText" size="35"><br>
+        This will be used to identify associated campaigns. <br>
+        For example, if campaign name is "Ruffino 2016 Page Post #50", write "Ruffino 2016 Page Post" <br>
+        This can be the same name as the initiative. <br><br><br>
         <p>Brand</p><select name="brand" id="brand-select">
             {{#each getBrands}}
                 <option value="{{name}}">{{name}}</option>
