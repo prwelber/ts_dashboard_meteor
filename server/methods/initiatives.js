@@ -1,6 +1,3 @@
-
-
-
 Meteor.methods({
     'insertNewInitiative': function (dataObj) {
         let campArray = [];
@@ -59,12 +56,12 @@ Meteor.methods({
         });
         return data.name;
     },
-    'getInitiativeAggregate': function (name) {
+    'getAggregate': function (name) {
         // This function aggregates campaignInsight data for an initiative
         let pipeline = [
             {$match: {"data.initiative": name}},
             {$group: {
-                _id: null,
+                _id: name,
                 clicks: {$sum: "$data.clicks"},
                 reach: {$sum: "$data.reach"},
                 cpm: {$avg: "$data.cpm"},
@@ -73,7 +70,14 @@ Meteor.methods({
             }
         ]
         let result = CampaignInsights.aggregate(pipeline);
-        console.log(result)
+        result[0]['inserted'] = moment(new Date).format("MM-DD-YYYY hh:mm a");
+        Initiatives.update(
+            {name: name},
+            {$set: {
+                aggregateData: result
+            }
+        });
+        return result;
     }
 });
 

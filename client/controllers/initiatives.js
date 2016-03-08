@@ -131,9 +131,21 @@ Template.editInitiative.events({
 });
 
 Template.initiativeAggregate.helpers({
-    'getInitiativeAggregate': function () {
-        let init = Initiatives.findOne({_id: FlowRouter.current().params._id})
-        Meteor.call('getInitiativeAggregate', init.name);
+    'showAggregate': function () {
+        let init = Initiatives.findOne({_id: FlowRouter.current().params._id});
+        Meteor.call('getAggregate', init.name, (error, result) => {
+            if (result) {
+                // mastFunc.addToBox("data refreshed on " +result[0].inserted);
+            }
+        });
+        let ends = moment(init.endDate, "MM-DD-YYYY");
+        let timeLeft = ends.diff(moment(new Date), 'days')
+        console.log(timeLeft)
+
+        // format currency data
+        init.aggregateData[0].cpc = accounting.formatMoney(init.aggregateData[0].cpc, "$", 2);
+        init.aggregateData[0].cpm = accounting.formatMoney(init.aggregateData[0].cpm, "$", 2);
+        return init
     }
 });
 
@@ -180,3 +192,7 @@ Template.editInitiativeCampaigns.onDestroyed(func => {
 Template.editInitiative.onDestroyed(func => {
     $("#message-box li").remove();
 });
+
+Template.initiativeAggregate.onDestroyed(func => {
+    $("#message-box li").remove();
+})

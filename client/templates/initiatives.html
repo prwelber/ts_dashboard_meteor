@@ -81,8 +81,22 @@
 
 <template name="initiativeAggregate">
     <h2>Aggregate Stats for Initiative</h2>
-
-
+    {{#with showAggregate}}
+        {{#each showAggregate.aggregateData}}
+            <h3>{{_id}}</h3>
+            <br><br><br>
+            <p>Clicks: {{clicks}}</p>
+            <p>CPC: {{cpc}}</p>
+            <p>CPM: {{cpm}}</p>
+            <p>Reach: {{reach}}</p>
+        {{/each}}
+    <br><br>
+        <p>Agency: {{agency}}</p>
+        <p>Budget: {{budget}}</p>
+        <p>Deal Type: {{dealType}}</p>
+        <p>Price: {{price}}</p>
+        <p>Quantity: {{quantity}}</p>
+    {{/with}}
 </template>
 
 <template name="editInitiative">
