@@ -1,9 +1,4 @@
-// Meteor.subscribe('campaignInsightList', {
-//     onReady: function () {
-//         console.log('campaignInsights are ready!');
-//     }
-// });
-// Doing this in FlowRouter
+
 
 Tracker.autorun(function () {
   if (FlowRouter.subsReady('campaignInsightList')) {

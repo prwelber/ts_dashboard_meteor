@@ -43,7 +43,18 @@ Meteor.methods({
                 startDate: data.startDate,
                 quantity: data.quantity,
                 price: data.price,
-                campaign_id: data.campaign_id,
+                // campaign_id: data.campaign_id,
+                // campaign_names: data.campaign_names,
+                search_text: data.search_text
+            }
+        });
+        return data.name;
+    },
+    'updateInitiativeCampaigns': function (data) {
+        Initiatives.update(
+            {name: data.name},
+            {$set: {
+                campaign_names: data.campaign_names
             }
         });
         return data.name;
@@ -57,7 +68,7 @@ Meteor.methods({
                 clicks: {$sum: "$data.clicks"},
                 reach: {$sum: "$data.reach"},
                 cpm: {$avg: "$data.cpm"},
-                cpc: {$avg: "$data.cpc"}
+                cpc: {$avg: "$data.cpc"},
                 }
             }
         ]

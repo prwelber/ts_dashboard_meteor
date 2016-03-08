@@ -89,6 +89,14 @@ Template.editInitiative.helpers({
     },
     'getBrands': function () {
         return Accounts.find()
+    },
+    'getCampaigns': function () {
+        let init =  Initiatives.findOne({_id: FlowRouter.current().params._id});
+        return {names: init.campaign_names, ids: init.campaign_ids};
+    },
+    'getCampaignIds': function () {
+        let init =  Initiatives.findOne({_id: FlowRouter.current().params._id});
+        return init.campaign_ids;
     }
 });
 
@@ -106,8 +114,14 @@ Template.editInitiative.events({
         data['notes']     = event.target.notes.value;
         data['quantity']  = event.target.quantity.value;
         data['price']     = event.target.price.value;
-        // data['campaign_id'] = event.target.campaign_id.value;
+        data['search_text'] = event.target.search_text.value;
+        let selected = template.findAll("input[type=checkbox]:checked");
+        let campaigns = _.map(selected, function(item) {
+            return item.value;
+        });
 
+        data['campaign_names'] = campaigns;
+        console.log(data);
         Meteor.call('updateInitiative', data, function (error, result) {
             if (result) {
                 mastFunc.addToBox("Initiative "+result+" Updated Successfully!");
@@ -123,6 +137,46 @@ Template.initiativeAggregate.helpers({
     }
 });
 
+Template.editInitiativeCampaigns.helpers({
+    'getInitiative': function () {
+        let init =  Initiatives.findOne({_id: FlowRouter.current().params._id});
+        return [init];
+    },
+    'getCampaigns': function () {
+        let init =  Initiatives.findOne({_id: FlowRouter.current().params._id});
+        return init.campaign_names;
+    },
+    'getAllCampaigns': function () {
+        let camps = CampaignInsights.find().fetch();
+        return camps
+    }
+});
+
+Template.editInitiativeCampaigns.events({
+    'submit #edit-initiative-campaigns': function (event, template) {
+        event.preventDefault();
+
+        let init = Initiatives.findOne({_id: FlowRouter.current().params._id})
+        let data = {};
+        data['name'] = init.name
+        let selected = template.findAll("input[type=checkbox]:checked");
+        let campaigns = _.map(selected, function(item) {
+            return item.value;
+        });
+        data['campaign_names'] = campaigns;
+        console.log(data)
+        Meteor.call('updateInitiativeCampaigns', data, function (error, result) {
+            if (result) {
+                mastFunc.addToBox("Campaigns for "+result+" updated successfully!");
+            }
+        });
+    }
+});
+
+Template.editInitiativeCampaigns.onDestroyed(func => {
+    $("#message-box li").remove();
+});
+
 Template.editInitiative.onDestroyed(func => {
     $("#message-box li").remove();
-})
+});

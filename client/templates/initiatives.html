@@ -89,13 +89,14 @@
     <h3>Edit Initiative</h3>
     <form id="edit-initiative-form">
         {{#with getInitiative}}
-            <p>Name: </p><input type="text" name="name" value="{{name}}" size="40">
-            <p>Brand</p>
-            <select name="brand" id="brand-select">
-                {{#each getBrands}}
-                    <option value="{{name}}">{{name}}</option>
-                {{/each}}
-            </select><br><br>
+            <h4>Name: </h4><input type="text" name="name" value="{{name}}" size="40">
+            <br><br>
+            <p>Search Text: </p>
+            <input type="text" name="search_text" value={{search_text}} size="40">
+            <br><br>
+            <p>Brand:</p>
+            <input type="text" name="brand" value={{brand}}>
+            <br><br>
             <p>Deal type</p>
             <select name="dealtype" id="dealtype-select">
                     <option value="CPC">CPC</option>
@@ -108,14 +109,44 @@
                 <option value="Constellation">Constellation</option>
                 <option value="Horizon">Horizon</option>
             </select>
+            <br><br>
             <p>Budget: </p> <input type="text" name="budget" value="{{budget}}">
             <p>Quantity: </p> <input type="text" name="quantity" value="{{quantity}}">
             <p>Price: </p> <input type="text" name="price" value="{{price}}">
             <p>Starts: </p> <input type="text" name="startDate" value="{{startDate}}">
             <p>Ends: </p> <input type="text" name="endDate" value="{{endDate}}">
             <p>notes: </p> <input type="text" name="notes" value="{{notes}}">
-            <p>Campaign ID</p> <input type="text" name="campaign_id" value={{campaign_id}}><br /><br />
+            <p>Campaigns:</p>
+            {{#each getCampaigns.names}}
+                <p>{{this}}</p>
+            {{/each}}
+            <a href="/admin/initiatives/{{_id}}/edit/campaigns">Edit Campaigns Associated with this Initiative</a>
+            <br /><br />
             <input type="submit" value="Update Initiative">
         {{/with}}
     </form>
+</template>
+
+<template name="editInitiativeCampaigns">
+    <h2>Edit Initiative Campaigns</h2>
+    <form id="edit-initiative-campaigns">
+        {{#each getInitiative}}
+            Initiative Name: {{name}}
+            <br>
+            Campaigns: {{campaign_names}}
+        {{/each}}
+        <br><br><br>
+        <h4>Campaigns Currently Associated</h4>
+        {{#each getCampaigns}}
+            <input type="checkbox" name="campaign" value={{this}} checked>{{this}} <br>
+        {{/each}}
+        <br>
+        <h4>All Available Campaigns</h4>
+        {{#each getAllCampaigns}}
+            <input type="checkbox" name="allCampaigns" value={{this.data.campaign_name}}>{{this.data.campaign_name}} <br>
+        {{/each}}
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+
 </template>
