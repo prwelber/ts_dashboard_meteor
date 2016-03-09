@@ -1,19 +1,23 @@
 <template name="newUser">
-    <h2>Create User Profile</h2>
+    <h2>Make Changes To User Profile</h2>
     <form class="new-user-form">
-        <p>Username</p>
+        <h5>Username</h5>
         <input type="text" name="username" value="{{populateFields.username}}">
-        <p>First Name</p>
+        <h5>First Name</h5>
         <input type="text" name="firstName" placeholder="First Name" value="{{populateFields.firstName}}">
-        <p>Last Name</p>
+        <h5>Last Name</h5>
         <input type="text" name="lastName" placeholder="Last Name" value="{{populateFields.lastName}}">
-        <p>Company or Agency</p>
+        <h5>Company or Agency</h5>
         <input type="text" name="company" value="{{populateFields.company}}">
-        <p>Email</p>
+        <h5>Email</h5>
         <input type="text" name="email" id="user-form-email" value="{{populateFields.email}}">
-        <p>Admin Privileges</p>
-        <input type="radio" name="admin" value="yes" id="user-form-admin" {{adminRadioYes}}>Yes<br />
-        <input type="radio" name="admin" value="no" {{adminRadioNo}}>No<br />
+        <h5>Admin Privileges</h5>
+        <input type="radio" name="admin" value="yes" id="user-form-admin" {{adminRadioYes}}>Yes
+        <input type="radio" name="admin" value="no" {{adminRadioNo}}>No
+        <h5>Associated Initiatives</h5>
+            {{#each getInitiatives}}
+                <input type="checkbox" name="initiatives" value={{name}}>{{name}} <br />
+            {{/each}}
         <input type="submit" value="Submit">
     </form>
 </template>

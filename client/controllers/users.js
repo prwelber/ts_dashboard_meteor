@@ -10,6 +10,9 @@ Template.newUser.helpers({
     },
     'adminRadioNo': function () {
         return Meteor.user().admin === "no" ? 'checked' : "";
+    },
+    'getInitiatives': function () {
+        return Initiatives.find().fetch();
     }
 });
 
@@ -24,7 +27,14 @@ Template.newUser.events({
         user['email'] = event.target.email.value;
         user['admin'] = event.target.admin.value;
         user['_id'] = Meteor.userId();
-        user['admin'] === "" ? alert('please finish form') : console.log('admin section compelted');
+
+        let selected = template.findAll("input[type=checkbox]:checked");
+        let inits = _.map(selected, function(item) {
+            return item.value;
+        });
+        user['initiativePermissions'] = inits;
+
+        user['admin'] === "" ? alert('please finish filling in form') : console.log('admin section compelted');
         if (/@targetedsocial\.com/.test(user.email)) {
             console.log('TS employee');
             Meteor.call('insertNewUser', user, function (error, result) {
@@ -37,13 +47,13 @@ Template.newUser.events({
             alert('You cannot be an admin');
         } else if (!/@targetedsocial\.com/.test(user.email) && user.admin == "no") {
             console.log('hit the right one!')
-            Meteor.call('insertNewUser', user, function (error, result) {
-                if (error) {
-                    console.log("error");
-                } else {
-                    alert('Your record has been successfully updated.')
-                }
-            });
+            // Meteor.call('insertNewUser', user, function (error, result) {
+            //     if (error) {
+            //         console.log("error");
+            //     } else {
+            //         alert('Your record has been successfully updated.')
+            //     }
+            // });
         }
         console.log(user);
 
