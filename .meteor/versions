@@ -41,6 +41,7 @@ ejson@1.0.8-beta.12
 email@1.0.9-beta.12
 es5-shim@4.3.2-beta.12
 fastclick@1.0.8-beta.12
+flemay:less-autoprefixer@1.2.0
 geojson-utils@1.0.5-beta.12
 hot-code-push@1.0.1-beta.12
 html-tools@1.0.6-beta.12
@@ -95,6 +96,8 @@ reload@1.1.5-beta.12
 retry@1.0.4
 routepolicy@1.0.7-beta.12
 sacha:spin@2.3.1
+semantic:ui@2.1.8
+semantic:ui-data@2.1.8
 service-configuration@1.0.6-beta.12
 session@1.1.2-beta.12
 sha@1.0.4
@@ -107,7 +110,6 @@ templating@1.1.6-beta.12
 templating-tools@1.0.1-beta.12
 tracker@1.0.10-beta.12
 tsega:bootstrap3-datetimepicker@4.17.37_1
-twbs:bootstrap@3.3.6
 ui@1.0.8
 underscore@1.0.5-beta.12
 url@1.0.6-beta.12

@@ -12,8 +12,8 @@
         <p>Email</p>
         <input type="text" name="email" id="user-form-email" value="{{populateFields.email}}">
         <p>Admin Privileges</p>
-        <input type="radio" name="admin" value="yes" id="user-form-admin">Yes<br />
-        <input type="radio" name="admin" value="no">No<br />
+        <input type="radio" name="admin" value="yes" id="user-form-admin" {{adminRadioYes}}>Yes<br />
+        <input type="radio" name="admin" value="no" {{adminRadioNo}}>No<br />
         <input type="submit" value="Submit">
     </form>
 </template>

@@ -111,7 +111,6 @@ Meteor.methods({
             Initiatives.update(   // assign campaign id and name to matching initiative
                 {name: inits.name},
                 {$addToSet: {
-                    campaign_ids: data.campaign_id,
                     campaign_names: data.campaign_name
                 }
             });
@@ -136,7 +135,7 @@ Meteor.methods({
 
         Initiatives.update(
             {name: initiativeName},
-            {$pull: {campaign_ids: campaign_id, campaign_names: campaign_name}
+            {$pull: {campaign_names: campaign_name}
         });
         CampaignInsights.remove({'data.campaign_id': campaign_id});
     }

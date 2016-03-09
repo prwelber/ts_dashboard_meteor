@@ -14,7 +14,7 @@ Template.newInitiative.helpers({
 
 
 Template.newInitiative.onRendered(function () {
-    this.$('.datetimepicker').datetimepicker();
+
 });
 
 Template.newInitiative.events({
@@ -28,8 +28,8 @@ Template.newInitiative.events({
         newInitiative['agency']    = event.target.agency.value;
         newInitiative['dealType']  = event.target.dealtype.value;
         newInitiative['budget']    = event.target.budget.value;
-        newInitiative['startDate'] = moment(new Date(event.target.startDate.value)).format("MM-DD-YYYY hh:mm a");
-        newInitiative['endDate']   = moment(new Date(event.target.endDate.value)).format("MM-DD-YYYY hh:mm a");;
+        newInitiative['startDate'] = moment(event.target.startDate.value, "MM-DD-YYYY hh:mm a").format("MM-DD-YYYY hh:mm a");
+        newInitiative['endDate']   = moment(event.target.endDate.value, "MM-DD-YYYY hh:mm a").format("MM-DD-YYYY hh:mm a");;
         newInitiative['notes']     = event.target.notes.value;
         newInitiative['quantity']  = event.target.quantity.value;
         newInitiative['price']     = event.target.price.value;
@@ -37,7 +37,7 @@ Template.newInitiative.events({
 
         // let campaignInsight = CampaignInsights.findOne({'data.campaign_name': newInitiative.name});
         // newInitiative['campaign_id'] = campaignInsight.data.campaign_id;
-        // console.log(newInitiative);
+        console.log(newInitiative);
         Meteor.call('insertNewInitiative', newInitiative, function (error, result) {
             if (error) {
                 console.log(error);
@@ -45,7 +45,6 @@ Template.newInitiative.events({
                 alert('Initiative successfully submitted');
             }
         });
-
     },
     'blur #new-init-budget': function (event, template) {
         let re = /[^0-9.]/

@@ -32,7 +32,6 @@ Template.campaignInsights.helpers({
         let campaignNumber = FlowRouter.current().params.campaign_id;
         let camp = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
         if (camp) {
-          // initiative = Initiatives.findOne({name: camp.campaign_name});
           // Needed to included moment and formatting here
           // because of a deprecation warning thrown by moment
           if (moment(camp.data.inserted, "MM-DD-YYYY hh:mm a").isAfter(moment(camp.data.date_stop, "MM-DD-YYYY hh:mm a"))) {

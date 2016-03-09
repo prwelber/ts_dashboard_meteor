@@ -4,6 +4,12 @@ Template.newUser.helpers({
     'populateFields': function () {
         let user = Meteor.user();
         return user;
+    },
+    'adminRadioYes': function () {
+        return (Meteor.user().admin === "yes") ? 'checked' : '';
+    },
+    'adminRadioNo': function () {
+        return Meteor.user().admin === "no" ? 'checked' : "";
     }
 });
 
@@ -18,6 +24,7 @@ Template.newUser.events({
         user['email'] = event.target.email.value;
         user['admin'] = event.target.admin.value;
         user['_id'] = Meteor.userId();
+        user['admin'] === "" ? alert('please finish form') : console.log('admin section compelted');
         if (/@targetedsocial\.com/.test(user.email)) {
             console.log('TS employee');
             Meteor.call('insertNewUser', user, function (error, result) {

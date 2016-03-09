@@ -31,7 +31,6 @@ percolate:synced-cron
 sacha:spin
 rajit:bootstrap3-datepicker
 tsega:bootstrap3-datetimepicker
-twbs:bootstrap
 aldeed:collection2
 lepozepo:accounting
 aldeed:autoform
@@ -40,3 +39,5 @@ standard-minifier-css
 standard-minifier-js
 d3js:d3
 meteorhacks:aggregate
+semantic:ui
+flemay:less-autoprefixer

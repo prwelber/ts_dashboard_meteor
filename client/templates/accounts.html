@@ -1,12 +1,19 @@
 
 <template name="accounts">
-    <h3>Here is a list of all TS Accounts:</h3>
-    <button class="refresh-accounts">Refresh Accounts</button>
-    <br />{{sessionSetter}}
-    {{#each accountList}}
-        <h4> <a href="/accounts/{{account_id}}" class="account-link"> {{name}} </a> </h4>
-        <p>Last Refresh: {{inserted}}</p>
-        <p>Account ID: {{account_id}}</p>
-        <p>Amount Spent: {{amount_spent}}</p>
-    {{/each}}
+  <div class="ui grid">
+    <div class="sixteen wide column">
+      <h3>Here is a list of all TS Accounts:</h3>
+      <button class="refresh-accounts">Refresh Accounts</button>
+      {{sessionSetter}}
+    </div>
+      <div class="eight wide column">
+        {{#each accountList}}
+          <h4> <a href="/accounts/{{account_id}}" class="account-link"> {{name}} </a> </h4>
+          <p>Last Refresh: {{inserted}}</p>
+          <p>Account ID: {{account_id}}</p>
+          <p>Amount Spent: {{amount_spent}}</p>
+        {{/each}}
+      </div>
+      {{> Template.dynamic template=other}}
+  </div>
 </template>
