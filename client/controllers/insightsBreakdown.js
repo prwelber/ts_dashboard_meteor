@@ -14,11 +14,11 @@ Template.insightsBreakdown.helpers({
         let breakdown = InsightsBreakdowns.findOne({'data.campaign_id': campaignNumber});
         console.log('breakdown', breakdown)
         if (breakdown) {
-            if (moment(breakdown.data.inserted, "MM-DD-YYYY hh:mm a").isAfter(moment(breakdown.data.date_stop, "MM-DD-YYYY hh:mm a"))) {
-                mastFunc.addToBox("This InsightBreakdown has been updated after it ended, no need to refresh.");
-            } else {
-                mastFunc.addToBox("last refresh: "+breakdown.data.inserted+", refreshing will give you live stats");
-            }
+            // if (moment(breakdown.data.inserted, "MM-DD-YYYY hh:mm a").isAfter(moment(breakdown.data.date_stop, "MM-DD-YYYY hh:mm a"))) {
+            //     mastFunc.addToBox("This InsightBreakdown has been updated after it ended, no need to refresh.");
+            // } else {
+            //     mastFunc.addToBox("last refresh: "+breakdown.data.inserted+", refreshing will give you live stats");
+            // }
             console.log('you should be seeing breakdown');
             // initiative = NewInitiativeList.findOne({name: name});
             return InsightsBreakdowns.find({'data.campaign_id': campaignNumber}, {sort: {'data.age': 1}});

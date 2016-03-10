@@ -1,0 +1,68 @@
+<template name="campaignDashboard">
+    <div class="ui sixteen column centered grid">
+        <div class="four wide centered column">
+            <h2>Campaign Dashboard</h2>
+        </div>
+    </div>
+    <div class="ui grid">
+        <div class="ten wide centered column">
+            <div class="ui six column grid">
+                <div class="column">
+                    <div class="ui button">
+                        <a href="/accounts/{{getCampaignNumber}}/overview">Overview</a>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="ui button">
+                        <a href="/accounts/{{getCampaignNumber}}/targeting">Targeting</a>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="ui button">
+                        <a href="/accounts/{{getCampaignNumber}}/creative">Creative</a>
+                    </div>
+                </div>
+                <div class="column">
+                    <div id="dashboard-insights-button" class="ui button"><a>Insights</a></div>
+                    <div class="ui fluid popup top left transition hidden">
+                      <div class="ui three column">
+                        <div class="column"><a class="setSessionCampName" href="/accounts/{{getCampaignNumber}}/breakdowns">Age & Gender</a></div>
+                        <div class="column"><a class="setSessionCampName" href="/accounts/{{getCampaignNumber}}/daybreakdowns">Daily</a></div>
+                        <div class="column"><a class="setSessionCampName" href="/accounts/{{getCampaignNumber}}/hourlybreakdowns">Hourly</a></div>
+                      </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="ui button">
+                        <a href="">Visualization</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ten wide column">
+                <h3>Initiative Name</h3>
+                <h4>Agency</h4>
+                <h4>Brand</h4>
+                <h4>Products</h4>
+            <div class="ui five column grid">
+                <div class="column">
+                    <p>Deal Type</p>
+                </div>
+                <div class="column">
+                    <p>Quantity</p>
+                </div>
+                <div class="column">
+                    <p>Budget</p>
+                </div>
+                <div class="column">
+                    <p>Platform</p>
+                </div>
+                <div class="column">
+                    <p>Objective</p>
+                </div>
+            </div>
+        </div>
+
+        </div>
+        {{> Template.dynamic template=dash}}
+</template>

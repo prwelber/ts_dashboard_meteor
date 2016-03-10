@@ -1,36 +1,17 @@
 <template name="campaignInsights">
-    <a href="/accounts/{{getAccountNumber}}">Back to Campaign List</a>
-
-    <div class="ui grid">
-        <div class="ten wide column">
-            <h2>Campaign Insights</h2>
-            <p><a href="/accounts/{{getCampaignNumber}}/insights">Campaign Insights</a></p>
-            <p><a href="/accounts/{{getCampaignNumber}}/adsets">AdSets Insights</a></p>
-            <p> <a href="/accounts/{{getCampaignNumber}}/ads">Ads Insights</a> </p>
-        </div>
-        <div class="six wide column">
-            <h3>Grid Tester</h3>
-            <h4>Inititiave Stats Here</h4>
-            <p>Something Else Here</p>
-        </div>
-
         {{#each fetchInsights}}
         <div class="sixteen wide column">
+            <h2>
+                <span class="campName">{{campaign_name}}</span>
+            </h2>
             <h3>
-                Lifetime insights for <span class="campName">{{campaign_name}}</span>
-            </h3>
-            <h4>
                 Objective: {{cleanText objective}}
-            </h4>
+            </h3>
         </div>
         <div class="eight wide column">
-
-
+            <br>
             <button id="refresh-insights">Refresh Insights</button>
-            <p><a class="setSessionCampName" href="/accounts/{{campaign_id}}/breakdowns">Breakdown by Age and Gender</a></p>
-            <p><a class="setSessionCampName" href="/accounts/{{campaign_id}}/daybreakdowns">Day by day Breakdown</a></p>
-            <p> <a class="setSessionCampName" href="/accounts/{{campaign_id}}/hourlybreakdowns">Hourly Stats Aggregated by Audience Time Zone</a></p>
-            <h4>Flight Dates: {{date_start}} -- {{date_stop}}</h4>
+            <h4>Insights Time Period: {{date_start}} -- {{date_stop}}</h4>
             <p><strong>Often Viewed</strong></p>
             <p>CPM: {{cpm}}</p>
             <p>CPP: {{cpp}}</p>
@@ -76,5 +57,5 @@
             <p>CP Estimated Ad Recallers: {{cost_per_estimated_ad_recallers}}</p>
         </div>
         {{/each}}
-    </div>
 </template>
+

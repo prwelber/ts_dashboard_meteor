@@ -11,11 +11,11 @@ Template.adsets.helpers({
         let adSet = AdSets.findOne({'data.campaign_id': campaignNumber});
         // let camp = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
         if (adSet) {
-            if (adSet.data.inserted > adSet.data.end_time) {
-                mastFunc.addToBox("This AdSet has been updated after it ended, no need to refresh.");
-            } else {
-                mastFunc.addToBox("last AdSet refresh: "+adSet.data.inserted+", refreshing will give you live stats");
-            }
+            // if (adSet.data.inserted > adSet.data.end_time) {
+            //     mastFunc.addToBox("This AdSet has been updated after it ended, no need to refresh.");
+            // } else {
+            //     mastFunc.addToBox("last AdSet refresh: "+adSet.data.inserted+", refreshing will give you live stats");
+            // }
             return AdSets.find({'data.campaign_id': campaignNumber})
         } else {
             var target = document.getElementById("spinner-div");

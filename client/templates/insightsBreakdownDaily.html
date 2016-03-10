@@ -1,29 +1,32 @@
 <template name="insightsBreakdownDaily">
-<p><a href="/accounts/{{campaignInfo.campaign_id}}/insights">Back to Campaign Insights</a></p>
-<h2>Day by Day Insights Breakdown</h2>
-<h3>Campaign: {{campaignInfo.campaign_name}}</h3>
-{{#each getDailyBreakdown}}
-    <h3>{{data.date_start}}</h3>
-    <p>Spend: {{data.spend}}</p>
-    <p>Total Actions: {{data.total_actions}}</p>
-    <p>Impressions: {{data.impressions}}</p>
-    <p>Reach: {{data.reach}}</p>
-    <p>CTR: {{data.ctr}}</p>
-    <p>CPM: {{ data.cpm}}</p>
-    <p>CPP: {{ data.cpp}}</p>
-    <p>Clicks: {{data.clicks}}</p>
-    <p>CPC: {{data.cpc}}</p>
-    <p>Comment: {{data.comment}}</p>
-    <p>Photo View: {{data.photo_view}}</p>
-    <p>Post: {{data.post}}</p>
-    <p>Post Like: {{data.post_like}}</p>
-    <p>Page Engagement: {{data.page_engagement}}</p>
-    <p>Post Engagement: {{data.post_engagement}}</p>
-    <p>CP Comment: {{ data.cost_per_comment}}</p>
-    <p>CP Photo View: {{ data.cost_per_photo_view}}</p>
-    <p>CP Post: {{ data.cost_per_post}}</p>
-    <p>CP Post Like: {{ data.cost_per_post_like}}</p>
-    <p>CP Page Engagement: {{ data.cost_per_page_engagement}}</p>
-    <p>CP Post Engagement: {{ data.cost_per_post_engagement}}</p>
-{{/each}}
+        <div class="six wide column">
+            <h2>Day by Day Insights Breakdown</h2>
+            <h3>Campaign: {{campaignInfo.campaign_name}}</h3>
+        </div>
+        {{#each getDailyBreakdown}}
+            <div class="ten wide column">
+                <h3>{{data.date_start}}</h3>
+                <p>Spend: {{data.spend}}</p>
+                <p>Total Actions: {{data.total_actions}}</p>
+                <p>Impressions: {{data.impressions}}</p>
+                <p>Reach: {{data.reach}}</p>
+                <p>CTR: {{data.ctr}}</p>
+                <p>CPM: {{ data.cpm}}</p>
+                <p>CPP: {{ data.cpp}}</p>
+                <p>Clicks: {{data.clicks}}</p>
+                <p>CPC: {{data.cpc}}</p>
+                <p>Comment: {{data.comment}}</p>
+                <p>Photo View: {{data.photo_view}}</p>
+                <p>Post: {{data.post}}</p>
+                <p>Post Like: {{data.post_like}}</p>
+                <p>Page Engagement: {{data.page_engagement}}</p>
+                <p>Post Engagement: {{data.post_engagement}}</p>
+                <p>CP Comment: {{ data.cost_per_comment}}</p>
+                <p>CP Photo View: {{ data.cost_per_photo_view}}</p>
+                <p>CP Post: {{ data.cost_per_post}}</p>
+                <p>CP Post Like: {{ data.cost_per_post_like}}</p>
+                <p>CP Page Engagement: {{ data.cost_per_page_engagement}}</p>
+                <p>CP Post Engagement: {{ data.cost_per_post_engagement}}</p>
+            </div>
+        {{/each}}
 </template>

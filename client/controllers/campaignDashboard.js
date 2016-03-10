@@ -7,11 +7,17 @@ Tracker.autorun(function () {
 });
 
 
-Template.campaignInsights.onRendered(function () {
+Template.campaignDashboard.onRendered(function () {
     // console.log(this)
 });
 
-Template.campaignInsights.events({
+
+
+Template.campaignDashboard.events({
+    'click .report-button': function () {
+      let node = document.getElementsByClassName("reporting-div")[0];
+      reporter = Blaze.render(Template.reporter, node);
+    },
     'click #refresh-insights': function (event, template) {
       console.log(this);
       Meteor.call('refreshInsight', this.campaign_id, this.campaign_name, this.initiative);
@@ -19,22 +25,28 @@ Template.campaignInsights.events({
     },
     'click .setSessionCampName': function () {
       Session.set("campaign_name", this.campaign_name);
+    },
+    'click #dashboard-insights-button': function (event, template) {
+      console.log('clicks button');
+      $("#dashboard-insights-button").popup({
+        on: 'click'
+      });
     }
 });
 
-Template.campaignInsights.helpers({
+Template.campaignDashboard.helpers({
     'fetchInsights': function () {
         console.log('checking for insights');
         let campaignNumber = FlowRouter.current().params.campaign_id;
         let camp = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
         if (camp) {
-          // // Needed to included moment and formatting here
-          // // because of a deprecation warning thrown by moment
-          // if (moment(camp.data.inserted, "MM-DD-YYYY hh:mm a").isAfter(moment(camp.data.date_stop, "MM-DD-YYYY hh:mm a"))) {
-          //   mastFunc.addToBox("This campaign has been updated after it ended, no need to refresh.");
-          // } else {
-          //   mastFunc.addToBox("last campaignInsights refresh: "+camp.data.inserted+", refreshing will give you live stats")
-          // }
+          // Needed to included moment and formatting here
+          // because of a deprecation warning thrown by moment
+          if (moment(camp.data.inserted, "MM-DD-YYYY hh:mm a").isAfter(moment(camp.data.date_stop, "MM-DD-YYYY hh:mm a"))) {
+            mastFunc.addToBox("This campaign has been updated after it ended, no need to refresh.");
+          } else {
+            mastFunc.addToBox("last campaignInsights refresh: "+camp.data.inserted+", refreshing will give you live stats")
+          }
           // convert currency data types - may want to use underscore here
           camp.data.cpm = accounting.formatMoney(camp.data.cpm, "$", 2);
           camp.data.cpc = accounting.formatMoney(camp.data.cpc, "$", 2);
@@ -73,6 +85,6 @@ Template.campaignInsights.helpers({
 
 });
 
-Template.campaignInsights.onDestroyed(function () {
+Template.campaignDashboard.onDestroyed(function () {
     $("#message-box").text("");
 });

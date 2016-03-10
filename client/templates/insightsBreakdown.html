@@ -1,23 +1,27 @@
 <template name="insightsBreakdown">
-    <a href="/accounts/{{campaignInfo.campaign_id}}/insights">Back to Campaign Insights</a>
-    <h2>Insights Breakdown by Age + Gender</h2>
-    <h3>Campaign: {{campaignInfo.campaign_name}}</h3>
-    {{#each getBreakdown}}
-        <h2>{{data.age}} | {{data.gender}}</h2>
-        <p>Spend: {{data.spend}}</p>
-        <p>Total Actions: {{data.total_actions}}</p>
-        <p>Impressions: {{data.impressions}}</p>
-        <p>Reach: {{data.reach}}</p>
-        <p>CTR: {{data.ctr}}</p>
-        <p>CPM: {{data.cpm}}</p>
-        <p>CPP: {{data.cpp}}</p>
-        {{#if data.clicks}} <p>Clicks: {{data.clicks}} | Cost per: {{data.cpc}}</p> {{/if}}
-        {{#if data.comment}}<p>Comment: {{data.comment}} | Cost per: {{data.cost_per_comment}}</p>{{/if}}
-        {{#if data.photo_view}}<p>Photo View: {{data.photo_view}} | Cost per: {{data.cost_per_photo_view}}</p>{{/if}}
-        {{#if data.post}}<p>Post: {{data.post}} | Cost per: {{data.cost_per_post}}</p>{{/if}}
-        {{#if data.post_like}}<p>Post Like: {{data.post_like}} | Cost per: {{data.cost_per_post_like}}</p>{{/if}}
-        <p>Page Engagement: {{data.page_engagement}} | Cost per: {{data.cost_per_page_engagement}}</p>
-        <p>Post Engagement: {{data.post_engagement}} | Cost per: {{data.cost_per_post_engagement}}</p>
-    {{/each}}
-    {{!-- TODO if statements for all possible data points --}}
+    <div class="ui grid">
+        <a href="/accounts/{{campaignInfo.campaign_id}}/dashboard">Campaign Dashboard</a>
+        <h2>Insights Breakdown by Age + Gender</h2>
+        <h3>Campaign: {{campaignInfo.campaign_name}}</h3>
+        {{#each getBreakdown}}
+        <div class="ten wide column">
+            <h2>{{data.age}} | {{data.gender}}</h2>
+            <p>Spend: {{data.spend}}</p>
+            <p>Total Actions: {{data.total_actions}}</p>
+            <p>Impressions: {{data.impressions}}</p>
+            <p>Reach: {{data.reach}}</p>
+            <p>CTR: {{data.ctr}}</p>
+            <p>CPM: {{data.cpm}}</p>
+            <p>CPP: {{data.cpp}}</p>
+            {{#if data.clicks}} <p>Clicks: {{data.clicks}} | Cost per: {{data.cpc}}</p> {{/if}}
+            {{#if data.comment}}<p>Comment: {{data.comment}} | Cost per: {{data.cost_per_comment}}</p>{{/if}}
+            {{#if data.photo_view}}<p>Photo View: {{data.photo_view}} | Cost per: {{data.cost_per_photo_view}}</p>{{/if}}
+            {{#if data.post}}<p>Post: {{data.post}} | Cost per: {{data.cost_per_post}}</p>{{/if}}
+            {{#if data.post_like}}<p>Post Like: {{data.post_like}} | Cost per: {{data.cost_per_post_like}}</p>{{/if}}
+            <p>Page Engagement: {{data.page_engagement}} | Cost per: {{data.cost_per_page_engagement}}</p>
+            <p>Post Engagement: {{data.post_engagement}} | Cost per: {{data.cost_per_post_engagement}}</p>
+        </div>
+        {{/each}}
+        {{!-- TODO if statements for all possible data points --}}
+    </div>
 </template>
