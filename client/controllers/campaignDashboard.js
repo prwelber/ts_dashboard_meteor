@@ -27,7 +27,6 @@ Template.campaignDashboard.events({
       Session.set("campaign_name", this.campaign_name);
     },
     'click #dashboard-insights-button': function (event, template) {
-      console.log('clicks button');
       $("#dashboard-insights-button").popup({
         on: 'click'
       });
