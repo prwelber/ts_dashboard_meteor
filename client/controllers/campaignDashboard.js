@@ -1,4 +1,4 @@
-
+let dash = Template.campaignDashboard;
 
 Tracker.autorun(function () {
   if (FlowRouter.subsReady('campaignInsightList')) {
@@ -11,9 +11,7 @@ Template.campaignDashboard.onRendered(function () {
     // console.log(this)
 });
 
-
-
-Template.campaignDashboard.events({
+dash.events({
     'click .report-button': function () {
       let node = document.getElementsByClassName("reporting-div")[0];
       reporter = Blaze.render(Template.reporter, node);
@@ -33,7 +31,7 @@ Template.campaignDashboard.events({
     }
 });
 
-Template.campaignDashboard.helpers({
+dash.helpers({
     'fetchInsights': function () {
         console.log('checking for insights');
         let campaignNumber = FlowRouter.current().params.campaign_id;
@@ -41,14 +39,14 @@ Template.campaignDashboard.helpers({
         if (camp) {
           // Needed to included moment and formatting here
           // because of a deprecation warning thrown by moment
-          if (moment(camp.data.inserted, "MM-DD-YYYY hh:mm a").isAfter(moment(camp.data.date_stop, "MM-DD-YYYY hh:mm a"))) {
-            mastFunc.addToBox("This campaign has been updated after it ended, no need to refresh.");
-          } else {
-            mastFunc.addToBox("last campaignInsights refresh: "+camp.data.inserted+", refreshing will give you live stats")
-          }
+          // if (moment(camp.data.inserted, "MM-DD-YYYY hh:mm a").isAfter(moment(camp.data.date_stop, "MM-DD-YYYY hh:mm a"))) {
+          //   mastFunc.addToBox("This campaign has been updated after it ended, no need to refresh.");
+          // } else {
+          //   mastFunc.addToBox("last campaignInsights refresh: "+camp.data.inserted+", refreshing will give you live stats")
+          // }
           // convert currency data types - may want to use underscore here
-          camp.data.cpm = accounting.formatMoney(camp.data.cpm, "$", 2);
-          camp.data.cpc = accounting.formatMoney(camp.data.cpc, "$", 2);
+          camp.data.cpm = mastFunc.makeMoney(camp.data.cpm);
+          camp.data.cpc = mastFunc.makeMoney(camp.data.cpc);
           return [camp.data];
         } else {
           var target = document.getElementById("spinner-div");
@@ -84,6 +82,6 @@ Template.campaignDashboard.helpers({
 
 });
 
-Template.campaignDashboard.onDestroyed(function () {
+dash.onDestroyed(function () {
     $("#message-box").text("");
 });

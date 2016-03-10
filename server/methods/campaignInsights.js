@@ -43,14 +43,14 @@ Meteor.methods({
                          el[key].forEach(el => {
                             if (/\W/g.test(el.action_type)) {
                                 el.action_type = el.action_type.replace(/\W/g, "_");
-                                data["cost_per_"+el.action_type] = accounting.formatMoney(el.value, "$", 2);
+                                data["cost_per_"+el.action_type] = mastFunc.makeMoney(el.value);
                             } else {
-                                data["cost_per_"+el.action_type] = accounting.formatMoney(el.value, "$", 2);
+                                data["cost_per_"+el.action_type] = mastFunc.makeMoney(el.value);
                             }
                         });
                     } else if (key == "website_ctr") {
                         el[key].forEach(el => {
-                            data[el.action_type+"_ctr"] = accounting.formatMoney(el.value, "$", 2);
+                            data[el.action_type+"_ctr"] = el.value;
                         });
                     } else {
                         if (/\W/g.test(key)) {
@@ -66,11 +66,11 @@ Meteor.methods({
             data['cpm'] = data.cpm;
             data['cpp'] = accounting.formatMoney(data.cpp, "$", 2);
             data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
-            data['cost_per_unique_click'] = accounting.formatMoney(data.cost_per_unique_click, "$", 2);
-            data['cost_per_total_action'] = accounting.formatMoney(data.cost_per_total_action, "$", 2);
+            data['cost_per_unique_click'] = mastFunc.makeMoney(data.cost_per_unique_click);
+            data['cost_per_total_action'] = mastFunc.makeMoney(data.cost_per_total_action);
             data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
             data['cpc'] = data.spend / data.clicks;
-            data['spend'] = accounting.formatMoney(data.spend, "$", 2);
+            data['spend'] = mastFunc.makeMoney(data.spend);
             data['date_start'] = moment(data.date_start).format("MM-DD-YYYY hh:mm a");
             data['date_stop'] = moment(data.date_stop).format("MM-DD-YYYY hh:mm a");
 

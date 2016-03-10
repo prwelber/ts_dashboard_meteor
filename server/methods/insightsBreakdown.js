@@ -20,7 +20,7 @@ Meteor.methods({
 
             breakdownArray.forEach(el => {
                 let data = {};
-                 for (let key in el) {
+                for (let key in el) {
                     if (key == "actions") {
                         el[key].forEach(el => {
                             // this check looks for a period in the key name and

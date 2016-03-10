@@ -8,117 +8,114 @@ Meteor.methods({
 Meteor.methods({
     'getAds': function (accountNumber, campaignMongoId, campaignName) {
         let adsArray = [];
+        let otherArray = [];
         let masterArray = [];
         let ads;
         try {
-            let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/ads?fields=insights{cpm,cpp,ctr,impressions,reach,spend,actions,cost_per_action_type},adcreatives{id,image_url,name,body,thumbnail_url,title,link_url,product_set_id},name,id,account_id,adset_id,campaign_id,created_time&access_token='+token+'', {});
+            let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/ads?fields=adcreatives{object_story_id},insights,account_id,adset_id,campaign_id,name,id&limit=75&access_token='+token+'', {});
             ads = result;
             // ads variable is now an array of objects
             adsArray.push(ads.data.data);
 
-            while (true) {
-                try {
-                    ads = HTTP.call('GET', ads.data.paging['next'], {});
-                    adsArray.push(ads.data.data)
-                } catch(e) {
-                    console.log('no more pages or error in while true loop', e);
-                    break;
-                }
-            }
-
-            // flatten array
             adsArray = _.flatten(adsArray);
-
-            // console.log(adsArray);
-
             adsArray.forEach(el => {
-                let data = {};
-                data['name'] = el.name;
-                data['id'] = el.id;
-                data['account_id'] = el.account_id;
-                data['adset_id'] = el.adset_id;
-                data['campaign_id'] = el.campaign_id;
-                data['created_time'] = moment(el.created_time).format("MM-DD-YYYY hh:mm a");
-                try {
-                    el.insights.data.forEach(el => {
-                        data['spend'] = accounting.formatMoney(el.spend, "$", 2);
-                        data['cpm'] = accounting.formatMoney(el.cpm, "$", 2);
-                        data['cpp'] = accounting.formatMoney(el.cpp, "$", 2);
-                        data['ctr'] = el.ctr;
-                        data['impressions'] = el.impressions;
-                        data['reach'] = el.reach;
-                        data['clicks'] = Math.round((el.ctr / 100) * el.impressions);
-                        el.actions.forEach(el => {
-                            data[el.action_type] = el.value;
-                        });
-                        el.cost_per_action_type.forEach(el => {
-                            data['cost_per_'+el.action_type] = accounting.formatMoney(el.value, "$", 2);
-                        });
-                    });
-                } catch(e) {
-                    console.log("Error while looping over and organizing data", e);
-                }
-                try {
-                    el.adcreatives.data.forEach(el => {
-                        data['ad_creative_id'] = el.id;
-                        data['image_url'] = el.image_url;
-                        data['ad_creative_name'] = el.name;
-                        data['body'] = el.body;
-                        data['thumbnail_url'] = el.thumbnail_url;
-                        data['title'] = el.title;
-                    })
-                } catch(e) {
-                    console.log("Error while looping over and organizing data", e);
-                }
-                data['campaign_mongo_reference'] = campaignMongoId;
-                data['campaign_name'] = campaignName;
-                data['cpc'] = accounting.formatMoney((data.spend / data.clicks), "$", 2);
-                masterArray.push(data);
+                let attachments = {}
+                let attachment = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+el.adcreatives.data[0].object_story_id+'?fields=attachments,message&access_token='+token+'', {});
+                // console.log(attachment.data.attachments.data[0])
+                // console.log("description", attachment.data.attachments.data[0].description)
+                attachments['description'] = attachment.data.attachments.data[0].description;
+                // console.log("target url", attachment.data.attachments.data[0].target.url) // target url
+                attachments['url'] = attachment.data.attachments.data[0].target.url;
+                // console.log("src picture", attachment.data.attachments.data[0].media.image.src) // src picture
+                attachments['picture'] = attachment.data.attachments.data[0].media.image.src;
+                // console.log("title", attachment.data.attachments.data[0].title)
+                attachments['title'] = attachment.data.attachments.data[0].title;
+                el['attachments'] = attachments;
+                delete el.adcreatives;
+                otherArray.push(el)
             });
+            // console.log(otherArray)
+            // console.log(otherArray.length)
+
+            otherArray.forEach(el => {
+                let data = {};
+                for (let key in el) {
+                    if (key === "insights") {
+                        console.log(el[key]);
+                    }
+                }
+            });
+
+
+
+
+
+
+
+            // otherArray.forEach(el => {
+            //     let data = {};
+            //     for (let key in el) {
+            //         if (key == "actions") {
+            //             el[key].forEach(el => {
+            //                 // this check looks for a period in the key name and
+            //                 // replaces it with an underscore if found
+            //                 // this check is used two more times below
+            //                 if (/\W/g.test(el.action_type)) {
+            //                     // console.log("before key", el.action_type)
+            //                     el.action_type = el.action_type.replace(/\W/g, "_");
+            //                     // console.log("after key", el.action_type)
+            //                     data[el.action_type] = el.value;
+            //                 }
+            //                 data[el.action_type] = el.value;
+            //             });
+            //         } else if (key == "cost_per_action_type") {
+            //              el[key].forEach(el => {
+            //                 if (/\W/g.test(el.action_type)) {
+            //                     el.action_type = el.action_type.replace(/\W/g, "_");
+            //                     data["cost_per_"+el.action_type] = accounting.formatMoney(el.value, "$", 2);
+            //                 } else {
+            //                     data["cost_per_"+el.action_type] = accounting.formatMoney(el.value, "$", 2);
+            //                 }
+            //             });
+            //         } else {
+            //             // this check looks for a period in the key name and
+            //             // replaces it with an underscore
+            //             if (/\W/g.test(key)) {
+            //                 key = key.replace(/\W/g, "_");
+            //                 data[key] = el[key];
+            //             } else {
+            //                 data[key] = el[key]
+            //             }
+            //         }
+            //     }
+            // });
+
+
+
+
+
+                masterArray.push(data);
+            // console.log(masterArray);
+
+
+
+
+
+
+            // while (true) {
+            //     try {
+            //         ads = HTTP.call('GET', ads.data.paging['next'], {});
+            //         adsArray.push(ads.data.data)
+            //     } catch(e) {
+            //         console.log('no more pages or error in while true loop', e);
+            //         break;
+            //     }
+            // }
+
         } catch(e) {
             console.log('Error pulling Ads data', e);
         }
-        try {
-            masterArray.forEach(el => {
-                Ads.insert({
-                    inserted: moment().format('MM-DD-YYYY hh:mm a'),
-                    name: el.name,
-                    id: el.id,
-                    account_id: el.account_id,
-                    adset_id: el.adset_id,
-                    campaign_id: el.campaign_id,
-                    created_time: el.created_time,
-                    spend: el.spend,
-                    ctr: el.ctr,
-                    cpm: el.cpm,
-                    cpp: el.cpp,
-                    impressions: el.impressions,
-                    reach: el.reach,
-                    like: el.like,
-                    link_click: el.link_click,
-                    offsite_conversion_registration: el['offsite_conversion.registration'],
-                    page_engagement: el.page_engagement,
-                    post_engagement: el.post_engagement,
-                    offsite_conversion: el.offsite_conversion,
-                    cost_per_like: el.cost_per_like,
-                    cost_per_link_click: el.cost_per_link_click,
-                    cost_per_offsite_conversion_registration: el['cost_per_offsite_conversion.registration'],
-                    cost_per_page_engagement: el.cost_per_page_engagement,
-                    cost_per_post_engagement: el.cost_per_post_engagement,
-                    cost_per_offsite_conversion: el.cost_per_offsite_conversion,
-                    ad_creative_id: el.ad_creative_id,
-                    image_url: el.image_url,
-                    ad_creative_name: el.ad_creative_name,
-                    body: el.body,
-                    thumbnail_url: el.thumbnail_url,
-                    title: el.title,
-                    campaign_mongo_reference: el.campaign_mongo_reference,
-                    campaign_name: el.campaign_name
-                });
-            });
-        } catch(e) {
-            console.log('Error inserting into DB', e);
-        }
+
     }
 });
 
