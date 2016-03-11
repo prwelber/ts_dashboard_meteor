@@ -6,10 +6,11 @@ Meteor.methods({
 });
 
 Meteor.methods({
-  'getAds': function (accountNumber, campaignMongoId, campaignName) {
+  'getAds': function (accountNumber) {
     let adsArray = [];
     let otherArray = [];
     let masterArray = [];
+    let carouselArray = [];
     let ads;
     try {
         let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/ads?fields=adcreatives{object_story_id},insights,account_id,adset_id,campaign_id,name,id&limit=75&access_token='+token+'', {});
@@ -17,20 +18,35 @@ Meteor.methods({
         // ads variable is now an array of objects
         adsArray.push(ads.data.data);
         adsArray = _.flatten(adsArray);
-        adsArray.forEach(el => {
+        adsArray.forEach(el => { // pulls in creative attachments (picture, url, message)
           let attachments = {}
+          // make 2nd api call with object_story_id to retrieve attachments
           let attachment = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+el.adcreatives.data[0].object_story_id+'?fields=attachments,message&access_token='+token+'', {});
-          attachments['description'] = attachment.data.attachments.data[0].description;
-          attachments['url'] = attachment.data.attachments.data[0].target.url;
-          attachments['picture'] = attachment.data.attachments.data[0].media.image.src;
-          attachments['title'] = attachment.data.attachments.data[0].title;
-          el['attachments'] = attachments;
-          delete el.adcreatives;
-          otherArray.push(el)
+          if (attachment.data.attachments.data[0].hasOwnProperty('subattachments')) { //essentially, is this a carousel ad?
+            attachment.data.attachments.data[0].subattachments.data.forEach((element,index) => {
+              let carouselAttachments = {};
+              carouselAttachments['src'] = element.media.image.src;
+              carouselAttachments['title'] = element.title;
+              carouselAttachments['url'] = element.url;
+              carouselAttachments['description'] = element.description;
+              delete el.adcreatives;
+              carouselArray.push(carouselAttachments);
+            });
+            el['carouselData'] = carouselArray;
+            otherArray.push(el)
+          } else {
+            let obj = attachment.data.attachments.data[0];   // for readability purposes
+            attachments['description'] = obj.description;
+            attachments['url'] = obj.target.url;
+            attachments['picture'] = obj.media.image.src;
+            attachments['title'] = obj.title;
+            el['attachments'] = attachments;
+            delete el.adcreatives;
+            otherArray.push(el)
+          }
         });
         // console.log(otherArray)
         // console.log(otherArray.length)
-
         otherArray.forEach(el => {
           data = {};
           for (let key in el) {
@@ -73,14 +89,22 @@ Meteor.methods({
                   });
               }
             }
+          // check for carouselData
+          if (el.attachments) {
+            data['description'] = el.attachments.description;
+            data['url'] = el.attachments.url;
+            data['picture'] = el.attachments.picture;
+            data['title'] = el.attachments.title;
+          } else if (el.carouselData) {
+            data['carouselData'] = el.carouselData;
+          }
           data['name'] = el.name;
-          data['description'] = el.attachments.description;
-          data['url'] = el.attachments.url;
-          data['picture'] = el.attachments.picture;
-          data['title'] = el.attachments.title;
           data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
+          data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
+          data['cpc'] = data.spend / data.clicks;
           delete data['unique_actions'];
           delete data['cost_per_unique_action_type'];
+
           masterArray.push(data);
         });
         // console.log(data);
@@ -98,6 +122,17 @@ Meteor.methods({
 
         } catch(e) {
             console.log('Error pulling Ads data', e);
+        }
+        try {
+          masterArray.forEach(adDataObj => { // inserts data into Mongo
+            Ads.insert({
+              data: adDataObj
+            });
+          });
+        } catch (e) {
+          console.log('Error inserting data into DB', e);
+        } finally {
+          return "success!"
         }
 
     }

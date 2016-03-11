@@ -2,29 +2,33 @@
     <div class="ten wide column">
         <h2>Ads Insights and Ads Creative</h2>
     </div>
-    {{#if getAds}}
         {{#each getAds}}
         <div class="ten wide column">
-            <h3>{{name}}</h3>
-            <p>Ad Creative Name:{{ad_creative_name}}</p>
-            <p>Spend: {{spend}}</p>
-            <p>CPM: {{cpm}}</p>
-            <p>CPP: {{cpp}}</p>
-            <p>CTR: {{ctr}}%</p>
-            <p>Reach: {{reach}}</p>
-            <p>Impressions: {{impressions}}</p>
-            {{#if cost_per_page_engagement}}<p>CP Page Engagement: {{ cost_per_page_engagement}}</p>{{/if}}
-            {{#if cost_per_post_engagement}}<p>CP Post Engagement: {{ cost_per_post_engagement}}</p>{{/if}}
-            <p>Offsite Conversion Registration: {{offsite_conversion_registration}}</p>
-            <p>Offsite Conversion: {{offsite_conversion}}</p>
-            <p>CP Offsite Conversion: {{cost_per_offsite_conversion}}</p>
+          <h3>{{data.name}}</h3>
+          <h4>Creative</h4>
+          <p>Title: {{data.title}}</p>
+          <p>Copy: {{data.description}}</p>
+          <p><a target="_blank" href="{{data.picture}}">Picture Link (opens new tab)</a></p>
+          <p><a href="{{data.url}}">Facebook Ad Link (opens new tab)</a></p>
+          <p>Ad Name:{{data.name}}</p>
+          <p>Spend: {{data.spend}}</p>
+          <p>Clicks: {{data.clicks}}</p>
+          <p>CPC: {{data.cpc}}</p>
+          <p>CPM: {{data.cpm}}</p>
+          <p>CPP: {{data.cpp}}</p>
+          <p>CTR: {{data.ctr}}%</p>
+          <p>Reach: {{data.reach}}</p>
+          <p>Impressions: {{data.impressions}}</p>
+          {{#if data.cost_per_page_engagement}}<p>CP Page Engagement: {{ data.cost_per_page_engagement}}</p>{{/if}}
+          {{#if data.cost_per_post_engagement}}<p>CP Post Engagement: {{ data.cost_per_post_engagement}}</p>{{/if}}
+          <p>Website Clicks: {{data.website_clicks}}</p>
+          <p>Offsite Conversion Registration: {{data.offsite_conversion_registration}}</p>
+          <p>Offsite Conversion: {{data.offsite_conversion}}</p>
+          <p>CP Offsite Conversion: {{data.cost_per_offsite_conversion}}</p>
 
-            <p>Image URL: <a href="{{image_url}}" target="_blank">{{image_url}}</a></p>
-            <p>Ad Creative Body: {{body}}</p>
-            <p>Ad Creative Title: {{title}}</p>
+          <p>Image URL: <a href="{{image_url}}" target="_blank">{{data.image_url}}</a></p>
+          <p>Ad Creative Body: {{data.body}}</p>
+          <p>Ad Creative Title: {{data.title}}</p>
         </div>
         {{/each}}
-    {{else}}
-    <p>No Ads</p>
-    {{/if}}
 </template>
