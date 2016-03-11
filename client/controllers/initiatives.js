@@ -142,8 +142,8 @@ Template.initiativeAggregate.helpers({
         console.log(timeLeft)
 
         // format currency data
-        init.aggregateData[0].cpc = accounting.formatMoney(init.aggregateData[0].cpc, "$", 2);
-        init.aggregateData[0].cpm = accounting.formatMoney(init.aggregateData[0].cpm, "$", 2);
+        init.aggregateData[0].cpc = mastFunc.makeMoney(init.aggregateData[0].cpc);
+        init.aggregateData[0].cpm = mastFunc.makeMoney(init.aggregateData[0].cpm);
         return init
     }
 });
