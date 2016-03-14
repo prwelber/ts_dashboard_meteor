@@ -1,45 +1,45 @@
 <template name="adsets">
-    <div class="ten wide column">
-        <h2>AdSet Insights and Targeting</h2>
+  <div class="ten wide column">
+    <h2>AdSet Insights and Targeting</h2>
+  </div>
+    {{#each getAdSets}}
+    <div class="twelve wide column">
+      <h3>{{data.name}}</h3>
+      <p>AdSet runtime: {{data.date_start}} -- {{data.date_stop}}</p>
+      <p>Optimization Goal: {{data.optimization_goal}}</p>
+      <p><strong>Targeting</strong></p>
+      {{#if data.interests}}<p>Interests: {{data.interests}}</p>{{/if}}
+      {{#if data.age_range}}<p>Age Range: {{data.age_range}}</p>{{/if}}
+      {{#if data.behaviors}}<p>Behaviors: {{data.behaviors}}</p>{{/if}}
+      {{#if data.location}}<p>Location: {{data.location}}</p>{{/if}}
+      {{#if data.locations}}<p>Locations: {{data.locations}}</p>{{/if}}
+      {{#if data.placements}}<p>Placements: {{data.placements}}</p>{{/if}}
+      {{#if data.connections}}<p>Connections: {{data.connections}}</p>{{/if}}
+      {{#if data.match}}<p>People Who Match: {{data.match}}</p>{{/if}}
+      {{#if data.also_match}}<p>And Who Also Match: {{data.also_match}}</p>{{/if}}
+      <p><strong>Insights</strong></p>
+      <p>Spend: {{data.spend}}</p>
+      <p>Reach: {{data.reach}}</p>
+      {{#if data.clicks}}<p>Clicks: {{data.clicks}} | Cost per: {{data.cpc}}</p>{{/if}}
+      <p>CTR: {{data.ctr}}%</p>
+      <p>CPM: {{data.cpm}}</p>
+      <p>Impressions: {{data.impressions}}</p>
+      <p>CPP: {{data.cpp}}</p>
+      {{#if data.comment}}<p>Comments: {{data.comment}}</p>{{/if}}
+      {{#if data.like}}<p>Likes: {{data.like}} | Cost per: {{data.cost_per_like}}</p>{{/if}}
+      {{#if data.link_click}}<p>Link Click: {{data.link_click}} | Cost per: {{data.cost_per_link_click}}</p>{{/if}}
+      {{#if data.website_clicks}}<p>Website Clicks: {{data.website_clicks}}</p>{{/if}}
+      {{#if data.photo_view}}<p>Photo View: {{data.photo_view}} | Cost per: {{data.cost_per_photo_view}}</p>{{/if}}
+      {{#if data.post}}<p>Post: {{data.post}} | Cost per: {{data.cost_per_post}}</p>{{/if}}
+      {{#if data.post_like}}<p>Post Likes: {{data.post_like}} | Cost per: {{data.cost_per_post_like}}</p>{{/if}}
+      {{#if data.unlike}}<p>Unlikes: {{data.unlike}}</p>{{/if}}
+      {{#if data.video_play}}<p>Video Play: {{data.video_play}} | Cost per: {{data.cost_per_video_play}}</p>{{/if}}
+      {{#if data.video_view}}<p>Video View: {{data.video_view}} | Cost per: {{data.cost_per_video_view}}</p>{{/if}}
+      {{#if data.cost_per_comment}}<p>CP Comment: {{ data.cost_per_comment}}</p>{{/if}}
+      {{#if data.cost_per_page_engagement}}<p>CP Page Engagement: {{ data.cost_per_page_engagement}}</p>{{/if}}
+      {{#if data.cost_per_post_engagement}}<p>CP Post Engagement: {{ data.cost_per_post_engagement}}</p>{{/if}}
     </div>
-        {{#each getAdSets}}
-        <div class="twelve wide column">
-            <h3>{{data.name}}</h3>
-            <p>Campaign: {{data.campaign_name}}</p>
-            <p>AdSet runtime: {{data.start_time}} -- {{data.end_time}}</p>
-            <p>Optimization Goal: {{data.optimization_goal}}</p>
-            <p><strong>Targeting</strong></p>
-            {{#if data.interests}}<p>Interests: {{data.interests}}</p>{{/if}}
-            {{#if data.age_range}}<p>Age Range: {{data.age_range}}</p>{{/if}}
-            {{#if data.behaviors}}<p>Behaviors: {{data.behaviors}}</p>{{/if}}
-            {{#if data.locations}}<p>Locations: {{data.locations}}</p>{{/if}}
-            {{#if data.placements}}<p>Placements: {{data.placements}}</p>{{/if}}
-            {{#if data.connections}}<p>Connections: {{data.connections}}</p>{{/if}}
-            {{#if data.match}}<p>People Who Match: {{data.match}}</p>{{/if}}
-            {{#if data.also_match}}<p>And Who Also Match: {{data.also_match}}</p>{{/if}}
-            <p><strong>Insights</strong></p>
-            <p>Spend: {{data.spend}}</p>
-            <p>Reach: {{data.reach}}</p>
-            {{#if data.clicks}}<p>Clicks: {{data.clicks}} | Cost per: {{data.cpc}}</p>{{/if}}
-            <p>CTR: {{data.ctr}}%</p>
-            <p>CPM: {{data.cpm}}</p>
-            <p>Impressions: {{data.impressions}}</p>
-            <p>CPP: {{data.cpp}}</p>
-            {{#if data.comment}}<p>Comments: {{data.comment}}</p>{{/if}}
-            {{#if data.like}}<p>Likes: {{data.like}} | Cost per: {{data.cost_per_like}}</p>{{/if}}
-            {{#if data.link_click}}<p>Link Click: {{data.link_click}} | Cost per: {{data.cost_per_link_click}}</p>{{/if}}
-            {{#if data.website_clicks}}<p>Website Clicks: {{data.website_clicks}}</p>{{/if}}
-            {{#if data.photo_view}}<p>Photo View: {{data.photo_view}} | Cost per: {{data.cost_per_photo_view}}</p>{{/if}}
-            {{#if data.post}}<p>Post: {{data.post}} | Cost per: {{data.cost_per_post}}</p>{{/if}}
-            {{#if data.post_like}}<p>Post Likes: {{data.post_like}} | Cost per: {{cost_per_post_like}}</p>{{/if}}
-            {{#if data.unlike}}<p>Unlikes: {{data.unlike}}</p>{{/if}}
-            {{#if data.video_play}}<p>Video Play: {{data.video_play}} | Cost per: {{data.cost_per_video_play}}</p>{{/if}}
-            {{#if data.video_view}}<p>Video View: {{data.video_view}} | Cost per: {{data.cost_per_video_view}}</p>{{/if}}
-            {{#if data.cost_per_comment}}<p>CP Comment: {{ data.cost_per_comment}}</p>{{/if}}
-            {{#if data.cost_per_page_engagement}}<p>CP Page Engagement: {{ data.cost_per_page_engagement}}</p>{{/if}}
-            {{#if data.cost_per_post_engagement}}<p>CP Post Engagement: {{ data.cost_per_post_engagement}}</p>{{/if}}
-        </div>
-        {{else}}
-            <p>No AdSets</p>
-        {{/each}}
+    {{else}}
+      <p>No AdSets</p>
+    {{/each}}
 </template>
