@@ -19,6 +19,7 @@ Template.ads.helpers({
         ads = Ads.find({'data.campaign_id': campaignNumber});
         try {
           // TODO control flow to handle single ad, set of ads, carousel
+          // maybe do by length or mongo Array or by property / key name
           ads.data.cpc = mastFunc.money(ads.data.cpc);
           ads.data.cpm = mastFunc.money(ads.data.cpm);
           ads.data.cpp = mastFunc.money(ads.data.cpp);
