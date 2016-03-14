@@ -5,11 +5,27 @@
         {{#each getAds}}
         <div class="ten wide column">
           <h3>{{data.name}}</h3>
-          <h4>Creative</h4>
-          <p>Title: {{data.title}}</p>
-          <p>Copy: {{data.description}}</p>
-          <p><a target="_blank" href="{{data.picture}}">Picture Link (opens new tab)</a></p>
-          <p><a href="{{data.url}}">Facebook Ad Link (opens new tab)</a></p>
+          {{#if data.carouselData}}
+            <h3>Carousel Creative</h3>
+            {{#each data.carouselData}}
+              <p>Title: {{title}}</p>
+              <p>Copy: {{description}}</p>
+              <p><a target="blank" href="{{src}}">Image Source</a></p>
+              <p><a target="blank" href="{{url}}">URL</a></p>
+            {{/each}}
+          {{else}}
+            <h3>Creative</h3>
+            <p>Title: {{data.title}}</p>
+            {{#if data.description}}
+              <p>Copy: {{data.description}}</p>
+              <p>Message: {{data.message}}</p>
+            {{else}}
+              <p>Message: {{data.message}}</p>
+            {{/if}}
+            <p><a target="_blank" href="{{data.picture}}">Media Link (opens new tab)</a></p>
+            <p><a target="_blank" href="{{data.url}}">Facebook Ad Link (opens new tab)</a></p>
+          {{/if}}
+
           <p>Ad Name:{{data.name}}</p>
           <p>Spend: {{data.spend}}</p>
           <p>Clicks: {{data.clicks}}</p>
@@ -19,16 +35,16 @@
           <p>CTR: {{data.ctr}}%</p>
           <p>Reach: {{data.reach}}</p>
           <p>Impressions: {{data.impressions}}</p>
+          {{#if data.link_click}}<p>Link Clicks: {{data.link_click}} | CP: {{data.cost_per_link_click}}</p>{{/if}}
           {{#if data.cost_per_page_engagement}}<p>CP Page Engagement: {{ data.cost_per_page_engagement}}</p>{{/if}}
           {{#if data.cost_per_post_engagement}}<p>CP Post Engagement: {{ data.cost_per_post_engagement}}</p>{{/if}}
+          {{#if data.video_view}}<p>Video Views: {{data.video_view}} | CP: {{data.cost_per_video_view}}</p>{{/if}}
+          {{#if data.video_play}}<p>Video Plays: {{data.video_play}} | CP: {{data.cost_per_video_play}}</p>{{/if}}
           <p>Website Clicks: {{data.website_clicks}}</p>
-          <p>Offsite Conversion Registration: {{data.offsite_conversion_registration}}</p>
-          <p>Offsite Conversion: {{data.offsite_conversion}}</p>
-          <p>CP Offsite Conversion: {{data.cost_per_offsite_conversion}}</p>
+          {{#if data.offsite_conversion_registration}}<p>Offsite Conversion Registration: {{data.offsite_conversion_registration}}</p>{{/if}}
+          {{#if data.offsite_conversion}}<p>Offsite Conversion: {{data.offsite_conversion}}</p>{{/if}}
+          {{#if data.cost_per_offsite_conversion}}<p>CP Offsite Conversion: {{data.cost_per_offsite_conversion}}</p>{{/if}}
 
-          <p>Image URL: <a href="{{image_url}}" target="_blank">{{data.image_url}}</a></p>
-          <p>Ad Creative Body: {{data.body}}</p>
-          <p>Ad Creative Title: {{data.title}}</p>
         </div>
         {{/each}}
 </template>
