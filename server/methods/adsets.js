@@ -6,7 +6,7 @@ Meteor.methods({
 });
 
 Meteor.methods({
-  'getAdSets': function (accountNumber, campaignName) {
+  'getAdSets': function (accountNumber) {
     let adSetsArray = [];
     let masterArray = [];
     let adSets;
