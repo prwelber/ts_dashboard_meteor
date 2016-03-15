@@ -1,61 +1,63 @@
 <template name="campaignInsights">
-        {{#each fetchInsights}}
-        <div class="sixteen wide column">
-            <h2>
-                <span class="campName">{{campaign_name}}</span>
-            </h2>
-            <h3>
-                Objective: {{cleanText objective}}
-            </h3>
-        </div>
-        <div class="eight wide column">
-            <br>
-            <button id="refresh-insights">Refresh Insights</button>
-            <h4>Insights Time Period: {{date_start}} -- {{date_stop}}</h4>
-            <p><strong>Often Viewed</strong></p>
-            <p>CPM: {{cpm}}</p>
-            <p>CPP: {{cpp}}</p>
-            <p>CTR: {{ctr}}%</p>
-            <p>Reach: {{reach}}</p>
-            <p>Impressions: {{impressions}}</p>
-            <p>Spend: {{spend}}</p>
-            {{#if clicks}}<p>Clicks: {{clicks}}</p>{{/if}}
-            {{#if cpc}}<p>CPC: {{cpc}}</p>{{/if}}
-            <p>Frequency: {{frequency}}</p>
-            <br />
-        </div>
-        <div class="four wide column">
-            <p><strong>Core Insights</strong></p>
-            {{#if comment}}<p>Comments: {{comment}} | Cost per: {{cost_per_comment}}</p>{{/if}}
-            {{#if like}}<p>Likes: {{like}} | Cost per: {{ cost_per_like}}</p>{{/if}}
-            {{#if link_click}}<p>Link Click: {{link_click}} | Cost per: {{cost_per_link_click}}</p>{{/if}}
-            {{#if website_clicks}}<p>Website Clicks: {{website_clicks}}</p>{{/if}}
-            {{#if link_click_ctr}}<p>Link Click CTR: {{link_click_ctr}}</p>{{/if}}
-            {{#if photo_view}}<p>Photo View: {{photo_view}} | Cost per: {{cost_per_photo_view}}</p>{{/if}}
-            {{#if post}}<p>Post: {{post}} | Cost per: {{cost_per_post}}</p>{{/if}}
-            {{#if post_like}}<p>Post Likes: {{post_like}} | Cost per: {{cost_per_post_like}}</p>{{/if}}
-            {{#if unlike}}<p>Unlikes: {{unlike}}</p>{{/if}}
-            {{#if video_play}}<p>Video Play: {{video_play}} | Cost per: {{cost_per_video_play}}</p>{{/if}}
-            {{#if video_view}}<p>Video View: {{video_view}} | Cost per: {{cost_per_video_view}}</p>{{/if}}
-            {{#if offsite_conversion}} <p>Offsite Conversion: {{offsite_conversion}}</p>{{/if}}
-            {{#if offsite_conversion_registration}} <p>Offsite Conversion Registration: {{offsite_conversion_registration}}</p>{{/if}}
-            {{#if offsite_conversion_fb_pixel_purchase}} <p>Offsite Conversion FB Pixel Purchase: {{offsite_conversion_fb_pixel_purchase}}</p>{{/if}}
-            {{#if cost_per_unlike}}<p>CP Unlike: {{cost_per_unlike}}</p>{{/if}}
-            {{#if cost_per_offsite_conversion_fb_pixel_purchase}} <p>CP Offsite Conversion FB Pixel Purchase: {{cost_per_offsite_conversion_fb_pixel_purchase}}</p>{{/if}}
-            {{#if cost_per_offsite_conversion}} <p>CP Offsite Conversion: {{cost_per_offsite_conversion}}</p>{{/if}}
-            {{#if cost_per_offsite_conversion_registration}} <p>CP Offsite Conversion Registration: {{cost_per_offsite_conversion_registration}}</p>{{/if}}
-            <p>CP Page Engagement: {{cost_per_page_engagement}}</p>
-            <p>CP Post Engagement: {{cost_per_post_engagement}}</p>
-            <br />
-            <p>CP Unique Click: {{cost_per_unique_click}}</p>
-            <p>CP Total Action: {{cost_per_total_action}}</p>
-            <p>Unique Impressions: {{unique_impressions}}</p>
-            <p>Total Actions: {{total_actions}}</p>
-            <p>Total Unique Actions: {{total_unique_actions}}</p>
-            <p>Unique Clicks: {{unique_clicks}}</p>
-            <p>Estimated Ad Recall Rate: {{estimated_ad_recall_rate}}</p>
-            <p>CP Estimated Ad Recallers: {{cost_per_estimated_ad_recallers}}</p>
-        </div>
-        {{/each}}
+  <div class="ui grid">
+      {{#each fetchInsights}}
+      <div class="sixteen wide column">
+        <h2>
+          <span class="campName">{{campaign_name}}</span>
+        </h2>
+        <h3>
+          Objective: {{cleanText objective}}
+        </h3>
+      </div>
+      <div class="eight wide column">
+        <br>
+        <button id="refresh-insights">Refresh Insights</button>
+        <h4>Insights Time Period: {{date_start}} -- {{date_stop}}</h4>
+        <p><strong>Often Viewed</strong></p>
+        <p>CPM: {{cpm}}</p>
+        <p>CPP: {{cpp}}</p>
+        <p>CTR: {{ctr}}%</p>
+        <p>Reach: {{reach}}</p>
+        <p>Impressions: {{impressions}}</p>
+        <p>Spend: {{spend}}</p>
+        {{#if clicks}}<p>Clicks: {{clicks}}</p>{{/if}}
+        {{#if cpc}}<p>CPC: {{cpc}}</p>{{/if}}
+        <p>Frequency: {{frequency}}</p>
+        <br />
+      </div>
+      <div class="four wide column">
+        <p><strong>Core Insights</strong></p>
+        {{#if comment}}<p>Comments: {{comment}} | Cost per: {{cost_per_comment}}</p>{{/if}}
+        {{#if like}}<p>Likes: {{like}} | Cost per: {{ cost_per_like}}</p>{{/if}}
+        {{#if link_click}}<p>Link Click: {{link_click}} | Cost per: {{cost_per_link_click}}</p>{{/if}}
+        {{#if website_clicks}}<p>Website Clicks: {{website_clicks}}</p>{{/if}}
+        {{#if link_click_ctr}}<p>Link Click CTR: {{link_click_ctr}}</p>{{/if}}
+        {{#if photo_view}}<p>Photo View: {{photo_view}} | Cost per: {{cost_per_photo_view}}</p>{{/if}}
+        {{#if post}}<p>Post: {{post}} | Cost per: {{cost_per_post}}</p>{{/if}}
+        {{#if post_like}}<p>Post Likes: {{post_like}} | Cost per: {{cost_per_post_like}}</p>{{/if}}
+        {{#if unlike}}<p>Unlikes: {{unlike}}</p>{{/if}}
+        {{#if video_play}}<p>Video Play: {{video_play}} | Cost per: {{cost_per_video_play}}</p>{{/if}}
+        {{#if video_view}}<p>Video View: {{video_view}} | Cost per: {{cost_per_video_view}}</p>{{/if}}
+        {{#if offsite_conversion}} <p>Offsite Conversion: {{offsite_conversion}}</p>{{/if}}
+        {{#if offsite_conversion_registration}} <p>Offsite Conversion Registration: {{offsite_conversion_registration}}</p>{{/if}}
+        {{#if offsite_conversion_fb_pixel_purchase}} <p>Offsite Conversion FB Pixel Purchase: {{offsite_conversion_fb_pixel_purchase}}</p>{{/if}}
+        {{#if cost_per_unlike}}<p>CP Unlike: {{cost_per_unlike}}</p>{{/if}}
+        {{#if cost_per_offsite_conversion_fb_pixel_purchase}} <p>CP Offsite Conversion FB Pixel Purchase: {{cost_per_offsite_conversion_fb_pixel_purchase}}</p>{{/if}}
+        {{#if cost_per_offsite_conversion}} <p>CP Offsite Conversion: {{cost_per_offsite_conversion}}</p>{{/if}}
+        {{#if cost_per_offsite_conversion_registration}} <p>CP Offsite Conversion Registration: {{cost_per_offsite_conversion_registration}}</p>{{/if}}
+        <p>CP Page Engagement: {{cost_per_page_engagement}}</p>
+        <p>CP Post Engagement: {{cost_per_post_engagement}}</p>
+        <br />
+        <p>CP Unique Click: {{cost_per_unique_click}}</p>
+        <p>CP Total Action: {{cost_per_total_action}}</p>
+        <p>Unique Impressions: {{unique_impressions}}</p>
+        <p>Total Actions: {{total_actions}}</p>
+        <p>Total Unique Actions: {{total_unique_actions}}</p>
+        <p>Unique Clicks: {{unique_clicks}}</p>
+        <p>Estimated Ad Recall Rate: {{estimated_ad_recall_rate}}</p>
+        <p>CP Estimated Ad Recallers: {{cost_per_estimated_ad_recallers}}</p>
+      </div>
+      {{/each}}
+  </div>
 </template>
 

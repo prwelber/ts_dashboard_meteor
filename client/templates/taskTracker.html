@@ -1,0 +1,21 @@
+<template name="taskTracker">
+  <div class="ui grid">
+    <div class="row">
+      <div class="column">
+        <h2>Campaign Task Tracker</h2>
+      </div>
+    </div>
+    <div class="three wide column">
+      <h5>Approved Targeting <input type="checkbox" class="tracker-checkbox" name="approvedTargeting" {{targetingChecked}}></h5>
+    </div>
+    <div class="three wide column">
+      <h5>Received Creative <input type="checkbox" class="tracker-checkbox" name="receivedCreative" {{creativeChecked}}></h5>
+    </div>
+    <div class="three wide column">
+      <h5>Received Tracking <input type="checkbox" class="tracker-checkbox" name="receivedTracking" {{trackingChecked}}></h5>
+    </div>
+    <div class="three wide column">
+      <h5>Signed IO <input type="checkbox" class="tracker-checkbox" name="signedIO" {{signedIoChecked}}></h5>
+    </div>
+  </div>
+</template>

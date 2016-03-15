@@ -7,7 +7,7 @@
     <br />
     <h2>All {{getName.name}} Campaigns</h2>
         {{#each campaign in displayCampaignBasics 1}}
-            <a href="/accounts/{{campaign.campaign_id}}/dashboard" >
+            <a href="/accounts/{{campaign.campaign_id}}/overview" >
                 <h4 class="insights-link" data-campaign="{{campaign.campaign_id}}" data-stop="{{campaign.stop_time}}">
                     {{campaign.name}}
                 </h4>
