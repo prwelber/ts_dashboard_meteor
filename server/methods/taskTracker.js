@@ -32,7 +32,3 @@ Meteor.methods({
     });
   }
 });
-
-Meteor.publish('campaignBasicsList', function () {
-  return CampaignBasics.find({}); // publish campaign basics
-});

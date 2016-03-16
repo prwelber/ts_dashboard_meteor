@@ -22,20 +22,73 @@ Meteor.methods({
         adsArray.forEach(el => { // pulls in creative attachments (picture, url, message)
           let attachments = {}
           // make 2nd api call with object_story_id to retrieve attachments
-          let attachment = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+el.adcreatives.data[0].object_story_id+'?fields=attachments,message&access_token='+token+'', {});
-          if (attachment.data.attachments.data[0].hasOwnProperty('subattachments')) {
-          // essentially, is this a carousel ad?
-            attachment.data.attachments.data[0].subattachments.data.forEach((element,index) => {
+          let attachment = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+el.adcreatives.data[0].object_story_id+'?fields=child_attachments,attachments,message&access_token='+token+'', {});
+
+          // determine if carousel ad
+          if (attachment.data.child_attachments && attachment.data.attachments.data[0].hasOwnProperty('subattachments')) {
+
+            attachment.data.child_attachments.forEach(element => {
               let carouselAttachments = {};
-              carouselAttachments['src'] = element.media.image.src;
-              carouselAttachments['title'] = element.title;
-              carouselAttachments['url'] = element.url;
+              carouselAttachments['id'] = element.id;
+              carouselAttachments['picture'] = element.picture;
+              carouselAttachments['name'] = element.name;
+              carouselAttachments['link'] = element.link;
               carouselAttachments['description'] = element.description;
               delete el.adcreatives;
               carouselArray.push(carouselAttachments);
             });
             el['carouselData'] = carouselArray;
             otherArray.push(el)
+
+            // now make another call for individual carousel stats and we will
+            // add it to the appropriate ID
+            let carouselNumbers = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/insights?fields=impressions,inline_link_clicks,actions,website_ctr&action_breakdowns=["action_type","action_carousel_card_id"]&access_token='+token+'', {});
+            // console.log(carouselNumbers);
+            // console.log(carouselNumbers.data.data[0]);
+            let numbers = carouselNumbers.data.data[0];
+
+            /*
+            in the section that follows, there are two if statements that
+            compare ID's in the existing carousel data with ID's in the newly
+            pulled in data on individual carousel media. This series of
+            actions will only run if the if statement on line 28 is true and
+            a carousel ad is detected
+            */
+
+            for (let key in numbers) {
+
+              if (key === "actions") {
+
+                numbers[key].forEach(element => {
+                  // here i want to start a loop over the carouselData
+                  // and look for matching ID's
+                  otherArray[0].carouselData.forEach(carousel => {
+
+                    if (carousel.id === element.action_carousel_card_id) {
+                      carousel['link_click'] = element.value;
+                      carousel['action_carousel_card_id'] = element.action_carousel_card_id;
+                    }
+                  });
+                  // console.log(element);
+                });
+              }
+
+              if (key === "website_ctr") {
+                numbers[key].forEach(element => {
+                  // here i want to start a loop over the carouselData
+                  // and look for matching ID's
+                  otherArray[0].carouselData.forEach(carousel => {
+
+                    if (carousel.id === element.action_carousel_card_id) {
+
+                      carousel['link_ctr'] = element.value;
+                      carousel['action_carousel_card_id'] = element.action_carousel_card_id;
+                    }
+                  });
+                });
+              }
+            } // end of for key in numbers loop
+
           } else {
             let obj = attachment.data.attachments.data[0];   // for readability purposes
             attachments['message'] = attachment.data.message;
@@ -48,7 +101,6 @@ Meteor.methods({
             otherArray.push(el)
           }
         });
-        // console.log(otherArray)
         // console.log(otherArray.length)
         otherArray.forEach(el => {
           data = {};
@@ -92,7 +144,7 @@ Meteor.methods({
               });
             }
           }
-          // check for carouselData
+          // check for carouselData with "if (el.carouselData)"
           if (el.attachments) {
             data['message'] = el.attachments.message;
             data['description'] = el.attachments.description;
@@ -102,6 +154,7 @@ Meteor.methods({
           } else if (el.carouselData) {
             data['carouselData'] = el.carouselData;
           }
+
           data['name'] = el.name;
           data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
           data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
@@ -110,6 +163,7 @@ Meteor.methods({
           delete data['cost_per_unique_action_type'];
 
           masterArray.push(data);
+          console.log(masterArray);
         });
         } catch(e) {
             console.log('Error pulling Ads data', e);

@@ -14,7 +14,7 @@ Meteor.methods({
     'getCampaigns': function (accountNumber) {
         let campaignOverviewArray = [];
         let campaignOverview;
-        try{
+        try {
             let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/act_'+accountNumber+'/campaigns?fields=name,created_time,start_time,stop_time,updated_time,objective,id,account_id&limit=50&access_token='+token+'', {});
             campaignOverview = result;
             campaignOverviewArray.push(campaignOverview.data.data);
