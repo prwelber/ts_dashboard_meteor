@@ -8,10 +8,11 @@
           {{#if data.carouselData}}
             <h3>Carousel Creative</h3>
             {{#each data.carouselData}}
-              <p>Title: {{title}}</p>
+              <p>Title: {{name}}</p>
               <p>Copy: {{description}}</p>
-              <p><a target="blank" href="{{src}}">Image Source</a></p>
-              <p><a target="blank" href="{{url}}">URL</a></p>
+              <p>Link Clicks: {{link_click}} | CTR: {{link_ctr}}</p>
+              <p><a target="blank" href="{{picture}}">Image Source</a></p>
+              <p><a target="blank" href="{{link}}">URL</a></p>
             {{/each}}
           {{else}}
             <h3>Creative</h3>
@@ -25,11 +26,9 @@
             <p><a target="_blank" href="{{data.picture}}">Media Link (opens new tab)</a></p>
             <p><a target="_blank" href="{{data.url}}">Facebook Ad Link (opens new tab)</a></p>
           {{/if}}
-
-          <p>Ad Name:{{data.name}}</p>
+          <h3>Insights</h3>
           <p>Spend: {{data.spend}}</p>
-          <p>Clicks: {{data.clicks}}</p>
-          <p>CPC: {{data.cpc}}</p>
+          <p>Clicks: {{data.clicks}} | Cost per: {{data.cpc}}</p>
           <p>CPM: {{data.cpm}}</p>
           <p>CPP: {{data.cpp}}</p>
           <p>CTR: {{data.ctr}}%</p>

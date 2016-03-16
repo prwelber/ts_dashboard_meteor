@@ -25,8 +25,8 @@ Meteor.methods({
           let attachment = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+el.adcreatives.data[0].object_story_id+'?fields=child_attachments,attachments,message&access_token='+token+'', {});
 
           // determine if carousel ad
+          console.log(attachment.data.child_attachments && attachment.data.attachments.data[0].hasOwnProperty('subattachments'))
           if (attachment.data.child_attachments && attachment.data.attachments.data[0].hasOwnProperty('subattachments')) {
-
             attachment.data.child_attachments.forEach(element => {
               let carouselAttachments = {};
               carouselAttachments['id'] = element.id;
@@ -58,18 +58,33 @@ Meteor.methods({
             for (let key in numbers) {
 
               if (key === "actions") {
-
+                // console.log(otherArray)
                 numbers[key].forEach(element => {
                   // here i want to start a loop over the carouselData
                   // and look for matching ID's
-                  otherArray[0].carouselData.forEach(carousel => {
-
-                    if (carousel.id === element.action_carousel_card_id) {
-                      carousel['link_click'] = element.value;
-                      carousel['action_carousel_card_id'] = element.action_carousel_card_id;
+                  // console.log(otherArray[0]);
+                  try {
+                    otherArray.forEach(carousel => {
+                    if (carousel.carouselData) {
+                      carousel.carouselData.forEach(car => {
+                        if (car.id === element.action_carousel_card_id) {
+                          car['link_click'] = element.value;
+                          car['action_carousel_card_id'] = element.action_carousel_card_id;
+                        }
+                      });
                     }
                   });
-                  // console.log(element);
+                  } catch(e) {
+                    console.log("Error with ID matching:", e);
+                  }
+
+                  // otherArray[0].carouselData.forEach(carousel => {
+
+                  //   if (carousel.id === element.action_carousel_card_id) {
+                  //     carousel['link_click'] = element.value;
+                  //     carousel['action_carousel_card_id'] = element.action_carousel_card_id;
+                  //   }
+                  // });
                 });
               }
 
@@ -77,14 +92,30 @@ Meteor.methods({
                 numbers[key].forEach(element => {
                   // here i want to start a loop over the carouselData
                   // and look for matching ID's
-                  otherArray[0].carouselData.forEach(carousel => {
+                  try {
+                    otherArray.forEach(carousel => {
+                      if (carousel.carouselData) {
+                        carousel.carouselData.forEach(car => {
+                          if (car.id === element.action_carousel_card_id) {
+                            car['link_ctr'] = element.value;
+                            car['action_carousel_card_id'] = element.action_carousel_card_id;
+                          }
+                        });
+                      }
+                    });
+                  } catch(e) {
+                    console.log("Error with ID matching:", e);
+                  }
 
-                    if (carousel.id === element.action_carousel_card_id) {
 
-                      carousel['link_ctr'] = element.value;
-                      carousel['action_carousel_card_id'] = element.action_carousel_card_id;
-                    }
-                  });
+                  // otherArray[0].carouselData.forEach(carousel => {
+
+                  //   if (carousel.id === element.action_carousel_card_id) {
+
+                  //     carousel['link_ctr'] = element.value;
+                  //     carousel['action_carousel_card_id'] = element.action_carousel_card_id;
+                  //   }
+                  // });
                 });
               }
             } // end of for key in numbers loop
@@ -101,7 +132,7 @@ Meteor.methods({
             otherArray.push(el)
           }
         });
-        // console.log(otherArray.length)
+        // console.log(otherArray)
         otherArray.forEach(el => {
           data = {};
           for (let key in el) {
@@ -163,7 +194,6 @@ Meteor.methods({
           delete data['cost_per_unique_action_type'];
 
           masterArray.push(data);
-          console.log(masterArray);
         });
         } catch(e) {
             console.log('Error pulling Ads data', e);
