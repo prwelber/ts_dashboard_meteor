@@ -49,19 +49,37 @@
           </a>
         </div>
       </div>
-      <div class="eight wide column">
-        <h3>Initiative Name</h3>
-        <h4>Agency</h4>
-        <h4>Brand</h4>
-        <h4>Products</h4>
-        <h4>Objective</h4>
+      {{#with getInitiative}}
+      <div class="six wide column">
+        <h3>Initiative Name: {{name}}</h3>
+        <p>Agency: {{agency}}</p>
+        <p>Brand: {{brand}}</p>
+        <p>Products: </p>
+        <p>Objective: {{objective}}</p>
       </div>
       <div class="six wide column">
-        <h4>Deal Type</h4>
-        <h4>Quantity</h4>
-        <h4>Budget</h4>
-        <h4>Platform</h4>
+        <p>Deal Type: {{dealType}}</p>
+        <p>Quantity: {{quantity}}</p>
+        <p>Budget: {{budget}}</p>
+        <p>Platform: {{platform}}</p>
+        <p>Dates: {{startDate}} -- {{endDate}}</p>
       </div>
+      {{/with}}
+      {{!-- <div class="sixteen wide column"> --}}
+        <div class="six wide column">
+          <h3>Initiative Aggregate</h3>
+          {{#with getAggregate}}
+            <p>Clicks: {{initiative.clicks}}</p>
+            <p>CPC: {{initiative.cpc}}</p>
+            <p>Reach: {{initiative.reach}}</p>
+            <p>CPM: {{initiative.cpm}}</p>
+            <p>Ends: {{ends}} | Days Left: {{timeLeft}}</p>
+          {{/with}}
+        </div>
+        <div class="eight wide column">
+          <h4>Placeholder</h4>
+        </div>
+      {{!-- </div> --}}
     </div>
     {{> Template.dynamic template=tasks}}
     {{> Template.dynamic template=dash}}

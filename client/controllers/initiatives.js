@@ -139,11 +139,10 @@ Template.initiativeAggregate.helpers({
         });
         let ends = moment(init.endDate, "MM-DD-YYYY");
         let timeLeft = ends.diff(moment(new Date), 'days')
-        console.log(timeLeft)
 
         // format currency data
-        init.aggregateData[0].cpc = mastFunc.makeMoney(init.aggregateData[0].cpc);
-        init.aggregateData[0].cpm = mastFunc.makeMoney(init.aggregateData[0].cpm);
+        init.aggregateData[0].cpc = mastFunc.money(init.aggregateData[0].cpc);
+        init.aggregateData[0].cpm = mastFunc.money(init.aggregateData[0].cpm);
         return init
     }
 });

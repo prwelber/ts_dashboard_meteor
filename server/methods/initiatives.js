@@ -81,6 +81,6 @@ Meteor.methods({
     }
 });
 
-Meteor.publish('InitiativesList', function () {
+Meteor.publish('Initiatives', function () {
     return Initiatives.find( {} );
 });
