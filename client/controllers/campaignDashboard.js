@@ -6,12 +6,13 @@ Tracker.autorun(function () {
   }
   if (FlowRouter.subsReady('Initiatives')) {
     console.log('Initiatives subs ready!');
+
   }
 });
 
 
 Template.campaignDashboard.onRendered(function () {
-    // console.log(this)
+    Session.set('dayNumber', 0);
 });
 
 dash.events({
@@ -31,6 +32,12 @@ dash.events({
       $("#dashboard-insights-button").popup({
         on: 'click'
       });
+    },
+    'click #project-up': function () {
+      Session.set("dayNumber", Session.get("dayNumber") + 1);
+    },
+    'click #project-down': function () {
+      Session.set("dayNumber", Session.get("dayNumber") - 1);
     }
 });
 
@@ -40,16 +47,8 @@ dash.helpers({
         let campaignNumber = FlowRouter.current().params.campaign_id;
         let camp = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
         if (camp) {
-          // Needed to included moment and formatting here
-          // because of a deprecation warning thrown by moment
-          // if (moment(camp.data.inserted, "MM-DD-YYYY hh:mm a").isAfter(moment(camp.data.date_stop, "MM-DD-YYYY hh:mm a"))) {
-          //   mastFunc.addToBox("This campaign has been updated after it ended, no need to refresh.");
-          // } else {
-          //   mastFunc.addToBox("last campaignInsights refresh: "+camp.data.inserted+", refreshing will give you live stats")
-          // }
-          // convert currency data types - may want to use underscore here
-          camp.data.cpm = mastFunc.makeMoney(camp.data.cpm);
-          camp.data.cpc = mastFunc.makeMoney(camp.data.cpc);
+          camp.data.cpm = mastFunc.money(camp.data.cpm);
+          camp.data.cpc = mastFunc.money(camp.data.cpc);
           return [camp.data];
         } else {
           var target = document.getElementById("spinner-div");
@@ -105,6 +104,13 @@ dash.helpers({
         ends: moment(ends).format("MM-DD-YYYY hh:mm a"),
         timeLeft: timeLeft
       };
+    },
+    'makeProjections': function () {
+      Meteor.call('makeProjections', name, days);
+    },
+    'getSessionDay': function () {
+      let day = Session.get('dayNumber');
+      return day;
     }
 
 });

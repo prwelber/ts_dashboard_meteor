@@ -60,6 +60,7 @@
       <div class="six wide column">
         <p>Deal Type: {{dealType}}</p>
         <p>Quantity: {{quantity}}</p>
+        <p>Price: {{price}}</p>
         <p>Budget: {{budget}}</p>
         <p>Platform: {{platform}}</p>
         <p>Dates: {{startDate}} -- {{endDate}}</p>
@@ -77,7 +78,9 @@
           {{/with}}
         </div>
         <div class="eight wide column">
-          <h4>Placeholder</h4>
+          <h3>Projection</h3>
+          <p>Days: {{getSessionDay}} <button id="project-up">+</button><button id="project-down">-</button></p>
+          
         </div>
       {{!-- </div> --}}
     </div>
