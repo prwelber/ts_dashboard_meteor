@@ -64,6 +64,7 @@ Meteor.methods({
         _id: name,
         clicks: {$sum: "$data.clicks"},
         reach: {$sum: "$data.reach"},
+        impressions: {$sum: "$data.impressions"},
         cpm: {$avg: "$data.cpm"},
         cpc: {$avg: "$data.cpc"},
         }
@@ -84,18 +85,27 @@ Meteor.methods({
     const now = moment(new Date);
     const started = moment(init.startDate, "MM-DD-YYYY");
     const timeDiff = now.diff(started, 'days');
-    console.log(timeDiff); // 383
-    let averageClicks = parseInt(init.aggregateData[0].clicks) / parseInt(timeDiff)
-    console.log("avg clicks", averageClicks); // 2.14621409921671
+    let avgClicks = parseInt(init.aggregateData[0].clicks) / parseInt(timeDiff);
+    let avgCPC = parseInt(init.aggregateData[0].cpc) / parseInt(timeDiff);
+    let avgCPM = parseInt(init.aggregateData[0].cpm) / parseInt(timeDiff);
+    console.log("avg clicks", avgClicks); // 2.14621409921671
     console.log('total clicks', init.aggregateData[0].clicks)
-    let projectionFunc = function projectionFunc (days) {
-      let avg = averageClicks;
-      let totalClicks = init.aggregateData[0].clicks;
+    /*
+    This function will be called with the avgStat, which is calculated above
+    the days, which will be passed in from client
+    the total, which will be taken from init.aggregateData[0].<statisticName>
+    */
+    let projectTotal = function projectTotal (avgStat, days, total) {
       let projection;
-      projection = totalClicks + (days * avg);
+      projection = total + (days * avgStat);
       return projection;
     }
-    console.log("projection", projectionFunc(days));
+    let projectAverage = function projectAverage (avgStat, days, total) {
+      let projection;
+      // cost per times days it's been running (timeDiff) + single cost per divided (timeDiff plus days)
+      // projection = 
+    }
+    console.log("projection", projectionFunc(avgCPM, days, init.aggregateData[0].cpm));
     return projectionFunc(days);
 
   }

@@ -63,6 +63,7 @@ Meteor.methods({
                 }
             });
             //overwrites data already in object with formatted values
+            data['impressions'] = parseInt(data.impressions);
             data['cpm'] = data.cpm;
             data['cpp'] = accounting.formatMoney(data.cpp, "$", 2);
             data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");

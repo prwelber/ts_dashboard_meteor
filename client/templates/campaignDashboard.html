@@ -67,7 +67,7 @@
       </div>
       {{/with}}
       {{!-- <div class="sixteen wide column"> --}}
-        <div class="six wide column">
+        <div class="five wide column">
           <h3>Initiative Aggregate</h3>
           {{#with getAggregate}}
             <p>Clicks: {{initiative.clicks}}</p>
@@ -77,10 +77,35 @@
             <p>Ends: {{ends}} | Days Left: {{timeLeft}}</p>
           {{/with}}
         </div>
-        <div class="eight wide column">
+        <div class="six wide column">
           <h3>Projection</h3>
           <p>Days: {{getSessionDay}} <button id="project-up">+</button><button id="project-down">-</button></p>
-          
+          <div class="ui labeled input">
+            <div class="ui label">
+              Daily Clicks
+            </div>
+            <input type="text" name="dailyClicks" value="{{averages.avgClicks}}">
+          </div>
+          <br>
+          <div class="ui labeled input">
+            <div class="ui label">
+              Daily Impressions
+            </div>
+            <input type="text" name="dailyImpressions" value="{{averages.avgImpressions}}">
+          </div>
+          <br>
+          <div class="ui labeled input">
+            <div class="ui label">
+              Daily Likes
+            </div>
+            <input type="text" name="dailyLikes" value="">
+          </div>
+        </div>
+        <div class="five wide column">
+          <h3>Projected Stats</h3>
+          <p>Clicks: {{clicksProjection}}</p>
+          <p>Impressions: </p>
+          <p>Likes: </p>
         </div>
       {{!-- </div> --}}
     </div>
