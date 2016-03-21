@@ -36,6 +36,7 @@ Template.campaignInsights.helpers({
           //   mastFunc.addToBox("last campaignInsights refresh: "+camp.data.inserted+", refreshing will give you live stats")
           // }
           // convert currency data types - may want to use underscore here
+          camp.data.cpl = accounting.formatMoney(camp.data.cpl, "$", 2);
           camp.data.cpm = accounting.formatMoney(camp.data.cpm, "$", 2);
           camp.data.cpc = accounting.formatMoney(camp.data.cpc, "$", 2);
           return [camp.data];

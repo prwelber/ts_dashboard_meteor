@@ -71,9 +71,12 @@
           <h3>Initiative Aggregate</h3>
           {{#with getAggregate}}
             <p>Clicks: {{initiative.clicks}}</p>
-            <p>CPC: {{initiative.cpc}}</p>
+            <p>Impressions: {{initiative.impressions}}</p>
             <p>Reach: {{initiative.reach}}</p>
+            <p>Likes: {{initiative.likes}}</p>
+            <p>CPC: {{initiative.cpc}}</p>
             <p>CPM: {{initiative.cpm}}</p>
+            <p>CPL: {{initiative.cpl}}</p>
             <p>Ends: {{ends}} | Days Left: {{timeLeft}}</p>
           {{/with}}
         </div>
@@ -98,14 +101,16 @@
             <div class="ui label">
               Daily Likes
             </div>
-            <input type="text" name="dailyLikes" value="">
+            <input type="text" name="dailyLikes" value="{{averages.avgLikes}}">
           </div>
         </div>
         <div class="five wide column">
           <h3>Projected Stats</h3>
-          <p>Clicks: {{clicksProjection}}</p>
-          <p>Impressions: </p>
-          <p>Likes: </p>
+          {{#with dataProjection}}
+            <p>Clicks: {{clicks}}</p>
+            <p>Impressions: {{impressions}}</p>
+            <p>Likes: {{likes}}</p>
+            {{/with}}
         </div>
       {{!-- </div> --}}
     </div>

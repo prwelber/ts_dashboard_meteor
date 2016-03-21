@@ -57,6 +57,7 @@ Meteor.methods({
     return data.name;
   },
   'getAggregate': function (name) {
+    console.log('getAggregate running')
     // This function aggregates campaignInsight data for an initiative
     let pipeline = [
       {$match: {"data.initiative": name}},
@@ -65,13 +66,21 @@ Meteor.methods({
         clicks: {$sum: "$data.clicks"},
         reach: {$sum: "$data.reach"},
         impressions: {$sum: "$data.impressions"},
+        likes: {$sum: "$data.like"},
+        cpl: {$avg: "$data.cpl"},
         cpm: {$avg: "$data.cpm"},
         cpc: {$avg: "$data.cpc"},
         }
       }
-    ]
+    ];
     let result = CampaignInsights.aggregate(pipeline);
-    result[0]['inserted'] = moment(new Date).format("MM-DD-YYYY hh:mm a");
+
+    try {
+      result[0]['inserted'] = moment(new Date).format("MM-DD-YYYY hh:mm a");
+    } catch(e) {
+      console.log('Error adding date to aggregate', e);
+    }
+
     Initiatives.update(
       {name: name},
       {$set: {
@@ -103,7 +112,7 @@ Meteor.methods({
     let projectAverage = function projectAverage (avgStat, days, total) {
       let projection;
       // cost per times days it's been running (timeDiff) + single cost per divided (timeDiff plus days)
-      // projection = 
+      // projection =
     }
     console.log("projection", projectionFunc(avgCPM, days, init.aggregateData[0].cpm));
     return projectionFunc(days);

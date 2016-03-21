@@ -94,16 +94,24 @@ dash.helpers({
       Meteor.call('getAggregate', init.name);
       // moment stuff to figure out timeLeft on initiative
       let ends = moment(init.endDate, "MM-DD-YYYY");
-      let starts = moment(init.startDate, "MM-DD-YYYY"); 
+      let starts = moment(init.startDate, "MM-DD-YYYY");
       let now = moment(new Date);
       let timeLeft;
       // if now is after the end date, timeleft is zero, else...
       now.isAfter(ends) ? timeLeft = 0 : timeLeft = ends.diff(now, 'days');
-      // format currency data
-      init.aggregateData[0].cpc = mastFunc.money(init.aggregateData[0].cpc);
-      init.aggregateData[0].cpm = mastFunc.money(init.aggregateData[0].cpm);
+
+      const agData = init.aggregateData[0] // for brevity later on
+
+      // format data
+      agData.clicks = numeral(agData.clicks).format("0,0");
+      agData.impressions = numeral(agData.impressions).format("0,0");
+      agData.reach = numeral(agData.reach).format("0,0");
+      agData.likes = numeral(agData.likes).format("0,0");
+      agData.cpc = mastFunc.money(agData.cpc);
+      agData.cpm = mastFunc.money(agData.cpm);
+      agData.cpl = mastFunc.money(agData.cpl);
       return {
-        initiative: init.aggregateData[0],
+        initiative: agData,
         ends: moment(ends).format("MM-DD-YYYY hh:mm a"),
         timeLeft: timeLeft
       };
@@ -126,28 +134,48 @@ dash.helpers({
         });
       const ended = moment(initiative.endDate, "MM-DD-YYYY");
       const started = moment(initiative.startDate, "MM-DD-YYYY");
-      const timeDiff = ended.diff(started, 'days');
-      // console.log(timeDiff)
+      const now = moment(new Date);
+      let timeDiff = ended.diff(started, 'days');
+      now.isAfter(ended) ? '' : timeDiff = now.diff(started, 'days');
       return {
-        avgClicks: initiative.aggregateData[0].clicks / timeDiff,
-        avgImpressions: initiative.aggregateData[0].impressions / timeDiff,
+        avgClicks: numeral(initiative.aggregateData[0].clicks / timeDiff).format("0,0"),
+        avgImpressions: numeral(initiative.aggregateData[0].impressions / timeDiff).format("0,0"),
         // TODO incorporate likes
-        avgLikes: 10
+        avgLikes: numeral(initiative.aggregateData[0].likes / timeDiff).format("0,0")
       }
     },
-    'clicksProjection': function () {
+    'dataProjection': function () {
       // TODO create a master function to handle this???
       const camp = CampaignBasics.findOne({campaign_id: FlowRouter.current().params.campaign_id});
       const initiative = Initiatives.findOne(
         {"campaign_names": {$in: [camp.name]}
         });
+
+      const agData = initiative.aggregateData[0] // for brevity
+      const sesh = Session.get('dayNumber') // for brevity
+
       const ended = moment(initiative.endDate, "MM-DD-YYYY");
       const started = moment(initiative.startDate, "MM-DD-YYYY");
       const now = moment(new Date);
       let timeDiff = ended.diff(started, 'days');
       now.isAfter(ended) ? '' : timeDiff = now.diff(started, 'days');
-      let avgClicks = initiative.aggregateData[0].clicks / timeDiff;
-      return initiative.aggregateData[0].clicks + (Session.get('dayNumber') * avgClicks);
+      console.log('timeDiff for projections', timeDiff);
+
+      let avgClicks = agData.clicks / timeDiff;
+      let avgImpressions = agData.impressions / timeDiff;
+      let avgLikes = agData.likes / timeDiff;
+      console.log('avgClicks', avgClicks);
+
+      let projectedClicks = agData.clicks + (sesh * avgClicks);
+      let projectedImpressions = agData.impressions + (sesh * avgImpressions);
+      let projectedLikes = agData.likes + (sesh * avgLikes);
+
+      console.log('projectedClicks', projectedClicks);
+      return {
+        clicks: numeral(projectedClicks).format("0,0"),
+        impressions: numeral(projectedImpressions).format("0,0"),
+        likes: numeral(projectedLikes).format("0,0")
+      }
 
     }
 

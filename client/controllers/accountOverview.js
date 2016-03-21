@@ -18,7 +18,7 @@ Template.accountOverview.onRendered(function () {
         let accountNumber = this.find(".account-id").textContent
         let campId = this.find(".account-id").textContent
         // console.log('accountNumber and campId:', accountNumber, campId);
-        Session.set("limit", 5);
+        Session.set("limit", 10);
 });
 
 // var myFunc = function () {console.log('this is a helper function')}

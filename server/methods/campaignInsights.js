@@ -63,6 +63,8 @@ Meteor.methods({
                 }
             });
             //overwrites data already in object with formatted values
+            // unformat for aggregating data reasons. needed it to be integer
+            data['cpl'] = accounting.unformat(data.cost_per_like);
             data['impressions'] = parseInt(data.impressions);
             data['cpm'] = data.cpm;
             data['cpp'] = accounting.formatMoney(data.cpp, "$", 2);
