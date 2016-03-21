@@ -25,17 +25,13 @@ Template.campaignInsights.events({
 Template.campaignInsights.helpers({
     'fetchInsights': function () {
         console.log('checking for insights');
-        let campaignNumber = FlowRouter.current().params.campaign_id;
+        const campaignNumber = FlowRouter.current().params.campaign_id;
         let camp = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
         if (camp) {
-          // // Needed to included moment and formatting here
-          // // because of a deprecation warning thrown by moment
-          // if (moment(camp.data.inserted, "MM-DD-YYYY hh:mm a").isAfter(moment(camp.data.date_stop, "MM-DD-YYYY hh:mm a"))) {
-          //   mastFunc.addToBox("This campaign has been updated after it ended, no need to refresh.");
-          // } else {
-          //   mastFunc.addToBox("last campaignInsights refresh: "+camp.data.inserted+", refreshing will give you live stats")
-          // }
           // convert currency data types - may want to use underscore here
+          camp.data.impressions = numeral(camp.data.impressions).format("0,0");
+          camp.data.ctr = camp.data.ctr.toString().substr(0,5);
+          camp.data.frequency = numeral(camp.data.frequency).format("0,0.00");
           camp.data.cpl = accounting.formatMoney(camp.data.cpl, "$", 2);
           camp.data.cpm = accounting.formatMoney(camp.data.cpm, "$", 2);
           camp.data.cpc = accounting.formatMoney(camp.data.cpc, "$", 2);

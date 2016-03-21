@@ -91,7 +91,24 @@ dash.helpers({
       let init = Initiatives.findOne(
         {"campaign_names": {$in: [camp.name]}
       });
-      Meteor.call('getAggregate', init.name);
+
+      /*
+      Note below use of Meteor.wrapAsync()..this takes an asynchronous function
+      From Meteor docs: the environment captured when the original function was called will be restored in the callback
+      */
+      let asyncCall = function asyncCall(methodName, initName, cb) {
+        Meteor.call(methodName, initName, function (err, res) {
+          if (err) {
+            throw new Meteor.Error("this is a meteor error");
+          } else {
+            cb && cb(null, console.log('logging from within callback'));
+          }
+        });
+      }
+
+      let syncCall = Meteor.wrapAsync(asyncCall);
+      let wrapped = syncCall('getAggregate', init.name);
+
       // moment stuff to figure out timeLeft on initiative
       let ends = moment(init.endDate, "MM-DD-YYYY");
       let starts = moment(init.startDate, "MM-DD-YYYY");
@@ -101,8 +118,9 @@ dash.helpers({
       now.isAfter(ends) ? timeLeft = 0 : timeLeft = ends.diff(now, 'days');
 
       const agData = init.aggregateData[0] // for brevity later on
-
+      let spendPercent = numeral((agData.spend / parseFloat(init.budget))).format("0.00%")
       // format data
+      agData.spend = mastFunc.money(agData.spend);
       agData.clicks = numeral(agData.clicks).format("0,0");
       agData.impressions = numeral(agData.impressions).format("0,0");
       agData.reach = numeral(agData.reach).format("0,0");
@@ -113,7 +131,8 @@ dash.helpers({
       return {
         initiative: agData,
         ends: moment(ends).format("MM-DD-YYYY hh:mm a"),
-        timeLeft: timeLeft
+        timeLeft: timeLeft,
+        spendPercent: spendPercent
       };
     },
     'makeProjections': function () {
@@ -140,8 +159,8 @@ dash.helpers({
       return {
         avgClicks: numeral(initiative.aggregateData[0].clicks / timeDiff).format("0,0"),
         avgImpressions: numeral(initiative.aggregateData[0].impressions / timeDiff).format("0,0"),
-        // TODO incorporate likes
-        avgLikes: numeral(initiative.aggregateData[0].likes / timeDiff).format("0,0")
+        avgLikes: numeral(initiative.aggregateData[0].likes / timeDiff).format("0,0"),
+        avgSpend: numeral(initiative.aggregateData[0].spend / timeDiff).format("$0,0.00")
       }
     },
     'dataProjection': function () {
@@ -157,26 +176,21 @@ dash.helpers({
       const ended = moment(initiative.endDate, "MM-DD-YYYY");
       const started = moment(initiative.startDate, "MM-DD-YYYY");
       const now = moment(new Date);
-      let timeDiff = ended.diff(started, 'days');
-      now.isAfter(ended) ? '' : timeDiff = now.diff(started, 'days');
-      console.log('timeDiff for projections', timeDiff);
-
-      let avgClicks = agData.clicks / timeDiff;
-      let avgImpressions = agData.impressions / timeDiff;
-      let avgLikes = agData.likes / timeDiff;
-      console.log('avgClicks', avgClicks);
-
-      let projectedClicks = agData.clicks + (sesh * avgClicks);
-      let projectedImpressions = agData.impressions + (sesh * avgImpressions);
-      let projectedLikes = agData.likes + (sesh * avgLikes);
-
-      console.log('projectedClicks', projectedClicks);
-      return {
-        clicks: numeral(projectedClicks).format("0,0"),
-        impressions: numeral(projectedImpressions).format("0,0"),
-        likes: numeral(projectedLikes).format("0,0")
+      // ternary to figure out time difference
+      let timeDiff = now.isAfter(ended) ?
+        ended.diff(started, 'days') :
+        now.diff(started, 'days');
+      let projections = function projections(action, session, timeDiff) {
+        let avg = action / timeDiff
+        let result =  action + (session * avg);
+        return numeral(result).format("0,0");
       }
 
+      return {
+        clicks: projections(agData.clicks, sesh, timeDiff),
+        impressions: projections(agData.impressions, sesh, timeDiff),
+        likes: projections(agData.likes, sesh, timeDiff)
+      }
     }
 
 });

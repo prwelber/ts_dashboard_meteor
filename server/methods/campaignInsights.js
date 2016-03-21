@@ -73,7 +73,6 @@ Meteor.methods({
             data['cost_per_total_action'] = mastFunc.makeMoney(data.cost_per_total_action);
             data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
             data['cpc'] = data.spend / data.clicks;
-            data['spend'] = mastFunc.makeMoney(data.spend);
             data['date_start'] = moment(data.date_start).format("MM-DD-YYYY hh:mm a");
             data['date_stop'] = moment(data.date_stop).format("MM-DD-YYYY hh:mm a");
 

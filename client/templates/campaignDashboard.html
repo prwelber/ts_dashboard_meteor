@@ -70,13 +70,11 @@
         <div class="five wide column">
           <h3>Initiative Aggregate</h3>
           {{#with getAggregate}}
-            <p>Clicks: {{initiative.clicks}}</p>
-            <p>Impressions: {{initiative.impressions}}</p>
+            <p>Spend: {{initiative.spend}} | Percentage: {{spendPercent}}</p>
+            <p>Clicks: {{initiative.clicks}} | CPC: {{initiative.cpc}}</p>
+            <p>Impressions: {{initiative.impressions}} | CPM: {{initiative.cpm}}</p>
+            <p>Likes: {{initiative.likes}} | CPL: {{initiative.cpl}}</p>
             <p>Reach: {{initiative.reach}}</p>
-            <p>Likes: {{initiative.likes}}</p>
-            <p>CPC: {{initiative.cpc}}</p>
-            <p>CPM: {{initiative.cpm}}</p>
-            <p>CPL: {{initiative.cpl}}</p>
             <p>Ends: {{ends}} | Days Left: {{timeLeft}}</p>
           {{/with}}
         </div>
@@ -102,6 +100,12 @@
               Daily Likes
             </div>
             <input type="text" name="dailyLikes" value="{{averages.avgLikes}}">
+          </div>
+          <div class="ui labeled input">
+            <div class="ui label">
+              Daily Spend
+            </div>
+            <input type="text" name="dailySpend" value="{{averages.avgSpend}}">
           </div>
         </div>
         <div class="five wide column">

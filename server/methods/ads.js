@@ -25,7 +25,6 @@ Meteor.methods({
           let attachment = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+el.adcreatives.data[0].object_story_id+'?fields=child_attachments,attachments,message&access_token='+token+'', {});
 
           // determine if carousel ad
-          console.log(attachment.data.child_attachments && attachment.data.attachments.data[0].hasOwnProperty('subattachments'))
           if (attachment.data.child_attachments && attachment.data.attachments.data[0].hasOwnProperty('subattachments')) {
             attachment.data.child_attachments.forEach(element => {
               let carouselAttachments = {};
@@ -77,14 +76,6 @@ Meteor.methods({
                   } catch(e) {
                     console.log("Error with ID matching:", e);
                   }
-
-                  // otherArray[0].carouselData.forEach(carousel => {
-
-                  //   if (carousel.id === element.action_carousel_card_id) {
-                  //     carousel['link_click'] = element.value;
-                  //     carousel['action_carousel_card_id'] = element.action_carousel_card_id;
-                  //   }
-                  // });
                 });
               }
 
@@ -106,16 +97,6 @@ Meteor.methods({
                   } catch(e) {
                     console.log("Error with ID matching:", e);
                   }
-
-
-                  // otherArray[0].carouselData.forEach(carousel => {
-
-                  //   if (carousel.id === element.action_carousel_card_id) {
-
-                  //     carousel['link_ctr'] = element.value;
-                  //     carousel['action_carousel_card_id'] = element.action_carousel_card_id;
-                  //   }
-                  // });
                 });
               }
             } // end of for key in numbers loop

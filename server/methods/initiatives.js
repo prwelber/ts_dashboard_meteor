@@ -63,6 +63,7 @@ Meteor.methods({
       {$match: {"data.initiative": name}},
       {$group: {
         _id: name,
+        spend: {$sum: "$data.spend"},
         clicks: {$sum: "$data.clicks"},
         reach: {$sum: "$data.reach"},
         impressions: {$sum: "$data.impressions"},
