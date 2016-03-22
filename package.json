@@ -1,0 +1,24 @@
+{
+  "name": "stats_prototyping",
+  "version": "1.0.0",
+  "description": "",
+  "main": "worker.js",
+  "devDependencies": {},
+  "dependencies": {
+    "moment": "^2.12.0",
+    "moment-range": "^2.2.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prwelber/stats_prototyping_with_meteor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/prwelber/stats_prototyping_with_meteor/issues"
+  },
+  "homepage": "https://github.com/prwelber/stats_prototyping_with_meteor#readme"
+}
