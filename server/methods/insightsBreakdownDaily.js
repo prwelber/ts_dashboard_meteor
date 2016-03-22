@@ -6,12 +6,12 @@ Meteor.methods({
 });
 
 Meteor.methods({
-    'getDailyBreakdown': function (accountNumber, campaignName, end_date) {
+    'getDailyBreakdown': function (accountNumber) {
         let dailyBreakdownArray = [];
         let masterArray = [];
         let breakdown;
         try {
-            let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/insights?fields=date_start,date_stop,campaign_id,total_actions,impressions,spend,reach,ctr,cpm,cpp,actions,cost_per_action_type&time_increment=1&access_token='+token+'', {});
+            let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/insights?fields=date_start,date_stop,campaign_id,campaign_name,total_actions,impressions,spend,reach,ctr,cpm,cpp,actions,cost_per_action_type&time_increment=1&access_token='+token+'', {});
             breakdown = result;
             //breakdown is an array of objects
             dailyBreakdownArray.push(breakdown.data.data);
@@ -69,12 +69,11 @@ Meteor.methods({
                 data['cpm'] = accounting.formatMoney(data.cpm, "$", 2);
                 data['cpp'] = accounting.formatMoney(data.cpp, "$", 2);
                 data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
-                data['campaign_name'] = campaignName;
+                data['campaign_name'] = data.campaign_name;
                 data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
                 data['cpc'] = accounting.formatMoney((data.spend / data.clicks), "$", 2);
                 data['spend'] = accounting.formatMoney(data.spend, "$", 2);
-                data['date_stop'] = moment(end_date).format("MM-DD-YYYY hh:mm a");
-                data['date_start'] = moment(data['date_start']).format("MM-DD-YYYY hh:mm a");
+                data['date_start'] = moment(data['date_start']).format("MM-DD-YYYY");
                 masterArray.push(data);
             });
             // console.log(masterArray);
