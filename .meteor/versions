@@ -59,6 +59,7 @@ less@2.5.2-beta.12
 livedata@1.0.15
 localstorage@1.0.6-beta.12
 logging@1.0.9-beta.12
+maazalik:highcharts@0.4.0
 mdg:validation-error@0.2.0
 meteor@1.1.11-beta.12
 meteor-base@1.0.1

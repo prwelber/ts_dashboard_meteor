@@ -40,7 +40,7 @@
                 </div>
             </div>
           </a>
-          <a href="#">
+          <a href="/accounts/{{getCampaignNumber}}/charts">
             <div class="column">
               <div class="ui button">
                 Visualization
@@ -50,23 +50,13 @@
         </div>
       </div>
       {{#with getInitiative}}
-      <div class="six wide column">
+      <div class="sixteen wide column">
         <h3>Initiative Name: {{name}}</h3>
-        <p>Agency: {{agency}}</p>
-        <p>Brand: {{brand}}</p>
-        <p>Products: </p>
-        <p>Objective: {{objective}}</p>
-      </div>
-      <div class="six wide column">
-        <p>Deal Type: {{dealType}}</p>
-        <p>Quantity: {{quantity}}</p>
-        <p>Price: {{price}}</p>
-        <p>Budget: {{budget}}</p>
-        <p>Platform: {{platform}}</p>
-        <p>Dates: {{startDate}} -- {{endDate}}</p>
+        <p>Agency: {{agency}} | Brand: {{brand}} | Product: placeholder</p>
+        <p>Deal Type: {{dealType}} | Quantity: {{quantity}} | Price: {{price}} | Budget: {{budget}}</p>
+        <p>Platform: {{platform}} | Dates: {{startDate}} -- {{endDate}} | Objective: {{objective}}</p>
       </div>
       {{/with}}
-      {{!-- <div class="sixteen wide column"> --}}
         <div class="five wide column">
           <h3>Initiative Aggregate</h3>
           {{#with getAggregate}}
@@ -116,7 +106,6 @@
             <p>Likes: {{likes}}</p>
             {{/with}}
         </div>
-      {{!-- </div> --}}
     </div>
     {{> Template.dynamic template=tasks}}
     {{> Template.dynamic template=dash}}

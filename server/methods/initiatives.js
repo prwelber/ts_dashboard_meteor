@@ -67,10 +67,7 @@ Meteor.methods({
         clicks: {$sum: "$data.clicks"},
         reach: {$sum: "$data.reach"},
         impressions: {$sum: "$data.impressions"},
-        likes: {$sum: "$data.like"},
-        cpl: {$avg: "$data.cpl"},
-        cpm: {$avg: "$data.cpm"},
-        cpc: {$avg: "$data.cpc"},
+        likes: {$sum: "$data.like"}
         }
       }
     ];
@@ -78,6 +75,9 @@ Meteor.methods({
 
     try {
       result[0]['inserted'] = moment(new Date).format("MM-DD-YYYY hh:mm a");
+      result[0]['cpc'] = result[0].spend / result[0].clicks;
+      result[0]['cpm'] = result[0].spend / (result[0].impressions / 1000);
+      result[0]['cpl'] = result[0].spend / result[0].likes;
     } catch(e) {
       console.log('Error adding date to aggregate', e);
     }

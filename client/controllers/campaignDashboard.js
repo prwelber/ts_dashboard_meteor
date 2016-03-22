@@ -9,8 +9,6 @@ Tracker.autorun(function () {
   }
 });
 
-
-
 Template.campaignDashboard.onRendered(function () {
     Session.set('dayNumber', 0);
 });
@@ -127,7 +125,9 @@ dash.helpers({
       agData.likes = numeral(agData.likes).format("0,0");
       agData.cpc = mastFunc.money(agData.cpc);
       agData.cpm = mastFunc.money(agData.cpm);
-      agData.cpl = mastFunc.money(agData.cpl);
+      agData.cpl === null || Infinity ?
+        agData.cpl = '0' :
+        agData.cpl = mastFunc.money(agData.cpl);
       return {
         initiative: agData,
         ends: moment(ends).format("MM-DD-YYYY hh:mm a"),
