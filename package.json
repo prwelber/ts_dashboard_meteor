@@ -1,7 +1,7 @@
 {
   "name": "stats_prototyping",
   "version": "1.0.0",
-  "description": "",
+  "description": "Description Placeholder",
   "main": "worker.js",
   "devDependencies": {},
   "dependencies": {

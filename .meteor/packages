@@ -29,11 +29,8 @@ email
 ejson
 percolate:synced-cron
 sacha:spin
-rajit:bootstrap3-datepicker
-tsega:bootstrap3-datetimepicker
 aldeed:collection2
 lepozepo:accounting
-aldeed:autoform
 msavin:mongol
 standard-minifier-css
 standard-minifier-js
@@ -42,4 +39,5 @@ meteorhacks:aggregate
 semantic:ui
 flemay:less-autoprefixer
 numeral:numeral
-chart:chart
+maazalik:highcharts
+

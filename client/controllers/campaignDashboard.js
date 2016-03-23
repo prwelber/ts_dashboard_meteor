@@ -76,18 +76,14 @@ dash.helpers({
         }
     },
     'getInitiative': function () {
-        let camp = CampaignBasics.findOne({campaign_id: FlowRouter.current().params.campaign_id});
-        // get campaign name and then use it to find the initiative
         let initiative = Initiatives.findOne(
-          {"campaign_names": {$in: [camp.name]}
+          {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
         });
         return initiative;
     },
     'getAggregate': function () {
-      let camp = CampaignBasics.findOne({campaign_id: FlowRouter.current().params.campaign_id});
-      // get campaign name and then use it to find the initiative
       let init = Initiatives.findOne(
-        {"campaign_names": {$in: [camp.name]}
+        {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
       });
 
       /*
@@ -136,9 +132,8 @@ dash.helpers({
       };
     },
     'makeProjections': function () {
-      let camp = CampaignBasics.findOne({campaign_id: FlowRouter.current().params.campaign_id});
       let initiative = Initiatives.findOne(
-        {"campaign_names": {$in: [camp.name]}
+        {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
         });
       Meteor.call('makeProjections', initiative.name, Session.get('dayNumber')); // call with initiative name and dayNumber
     },
@@ -147,9 +142,8 @@ dash.helpers({
       return day;
     },
     'averages': () => {
-      const camp = CampaignBasics.findOne({campaign_id: FlowRouter.current().params.campaign_id});
       const initiative = Initiatives.findOne(
-        {"campaign_names": {$in: [camp.name]}
+        {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
         });
       const ended = moment(initiative.endDate, "MM-DD-YYYY");
       const started = moment(initiative.startDate, "MM-DD-YYYY");
@@ -165,9 +159,8 @@ dash.helpers({
     },
     'dataProjection': function () {
       // TODO create a master function to handle this???
-      const camp = CampaignBasics.findOne({campaign_id: FlowRouter.current().params.campaign_id});
       const initiative = Initiatives.findOne(
-        {"campaign_names": {$in: [camp.name]}
+        {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
         });
 
       const agData = initiative.aggregateData[0] // for brevity
