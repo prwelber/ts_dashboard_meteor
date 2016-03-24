@@ -29,11 +29,16 @@ chart.helpers({
       let timeFormat = "MM-DD-YYYY";
       let days = moment(initiative.endDate, timeFormat).diff(moment(initiative.startDate, timeFormat), 'days');
       let avg = Math.round(initiative.quantity / days);
-      let avgData = []
+      let spendAvg = parseFloat(initiative.budget) / days;
+      let avgData = [];
+      let idealSpend = [];
+      let idealSpendTotal = 0;
       let total = 0;
       for (let i = 0; i < days; i++) {
         total = total + avg;
+        idealSpendTotal = idealSpendTotal + spendAvg;
         avgData.push(total);
+        idealSpend.push(idealSpendTotal);
       }
 
       // for getting x axis labels
@@ -52,8 +57,9 @@ chart.helpers({
       } else if (initiative.dealType === "CPC") {
         type = "clicks";
       } else if (initiative.dealType === "CPL") {
-        type = "likes";
+        type = "like";
       }
+
       let actionToChart = [];
       let spendChart = [];
       let spendTotal = 0;
@@ -64,7 +70,7 @@ chart.helpers({
 
       call('aggregateForChart', initiative).then(function (res) {
         Session.set('res', res);
-        console.log("result from Promise!", res)
+        console.log('returned from Promise!', res)
         totes = res[0].data[type]
       }).catch(function (err) {
         console.log('uh no error', err)
@@ -78,7 +84,6 @@ chart.helpers({
         spendChart.push(spendTotal);
           }
       console.log(actionToChart);
-
 
       //  // this works. not sure why...
       // let asyncCall = function asyncCall (methodName, init, callback) {
@@ -159,6 +164,9 @@ chart.helpers({
       }, {
         name: 'Spend',
         data: spendChart
+      }, {
+        name: 'Ideal Spend',
+        data: idealSpend
       }]
     }
 
