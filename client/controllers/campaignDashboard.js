@@ -1,11 +1,10 @@
+var Promise = require('bluebird');
+
 let dash = Template.campaignDashboard;
 
 Tracker.autorun(function () {
-  if (FlowRouter.subsReady('campaignInsightList')) {
-    console.log('campaignInsights subs ready!');
-  }
-  if (FlowRouter.subsReady('Initiatives')) {
-    console.log('Initiatives subs ready!');
+  if (FlowRouter.subsReady('campaignInsightList') && FlowRouter.subsReady('Initiatives')) {
+    // console.log('Insights and Initiatives subs are now ready!');
   }
 });
 
@@ -85,23 +84,33 @@ dash.helpers({
       let init = Initiatives.findOne(
         {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
       });
-
+      console.log('init in getAggregate', init);
       /*
       Note below use of Meteor.wrapAsync()..this takes an asynchronous function
       From Meteor docs: the environment captured when the original function was called will be restored in the callback
       */
-      let asyncCall = function asyncCall(methodName, initName, cb) {
-        Meteor.call(methodName, initName, function (err, res) {
-          if (err) {
-            throw new Meteor.Error("this is a meteor error");
-          } else {
-            cb && cb(null, console.log('logging from within callback'));
-          }
-        });
-      }
+      // let asyncCall = function asyncCall(methodName, initName, cb) {
+      //   Meteor.call(methodName, initName, function (err, res) {
+      //     if (err) {
+      //       throw new Meteor.Error("this is a meteor error");
+      //     } else {
+      //       cb && cb(null, console.log('logging from within callback'));
+      //     }
+      //   });
+      // }
 
-      let syncCall = Meteor.wrapAsync(asyncCall);
-      let wrapped = syncCall('getAggregate', init.name);
+      // let syncCall = Meteor.wrapAsync(asyncCall);
+      // let wrapped = syncCall('getAggregate', init.name);
+
+      var call = Promise.promisify(Meteor.call);
+      call('getAggregate', init.name).then(function (result) {
+        console.log('result from getAggregate', result);
+      }).catch(function (err) {
+        console.log('aggghhh error:', err)
+      })
+
+
+
 
       // moment stuff to figure out timeLeft on initiative
       let ends = moment(init.endDate, "MM-DD-YYYY");
@@ -121,9 +130,9 @@ dash.helpers({
       agData.likes = numeral(agData.likes).format("0,0");
       agData.cpc = mastFunc.money(agData.cpc);
       agData.cpm = mastFunc.money(agData.cpm);
-      agData.cpl === null || Infinity ?
-        agData.cpl = '0' :
-        agData.cpl = mastFunc.money(agData.cpl);
+      agData.cpl >= 0 ?
+        agData.cpl = mastFunc.money(agData.cpl) :
+        agData.cpl = '0';
       return {
         initiative: agData,
         ends: moment(ends).format("MM-DD-YYYY hh:mm a"),

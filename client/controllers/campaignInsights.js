@@ -2,7 +2,7 @@
 
 Tracker.autorun(function () {
   if (FlowRouter.subsReady('campaignInsightList')) {
-    console.log('campaignInsights subs ready!');
+    // console.log('campaignInsights subs ready!');
   }
 });
 

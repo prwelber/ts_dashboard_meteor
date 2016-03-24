@@ -1,5 +1,12 @@
 
 Meteor.methods({
+  'removeAccounts': function () {
+    Accounts.remove({});
+    console.log('accounts removed!');
+  }
+})
+
+Meteor.methods({
     'refreshAccountList': function () {
         console.log('refreshing account list')
         // delete all accounts and then refresh them

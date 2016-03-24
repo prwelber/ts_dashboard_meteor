@@ -15,7 +15,7 @@ Meteor.methods({
           'data.campaign_id': 1,
           'data.impressions': 1,
           'data.clicks': 1,
-          'data.likes': 1,
+          'data.like': 1,
           'data.spend': 1,
           'data.campaign_name': 1,
           _id: 0
@@ -26,13 +26,11 @@ Meteor.methods({
 
     arr = _.flatten(arr);
 
-    arr = _.sortBy(arr, function (el){ return el.data.date_start });
+    arr = _.sortBy(arr, function (el){ return moment(el.data.date_start, "MM-DD-YYYY").format("MM-DD-YYYY") });
 
     arr.forEach(el => {
       el.data.date_start = moment(el.data.date_start, "MM-DD-YYYY").format("MM-DD");
     });
-
-    console.log(arr)
 
     return arr;
 

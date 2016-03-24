@@ -8,19 +8,29 @@ if (Meteor.isServer) {
   // SyncedCron.add({
   //     name: 'log to the server',
   //     schedule: function (parser) {
-  //         return parser.text('every 5 seconds');
+  //         return parser.text('every 2 seconds');
   //     },
   //     job: function(intendedAt) {
   //         console.log('logging to server from job function');
+  //         m = function () {
+  //           emit(this.name, 1);
+  //         }
+
+  //         r = function (k, vals) {
+  //           return Array.sum(vals);
+  //         }
+
+  //         res = CampaignBasics.mapReduce(m,r, {out: "myDupesCollection"});
+
   //         console.log('job should be running at:', intendedAt);
   //     }
   // });
 
   // Meteor.startup(function () {
-  //   // must star the jobs
+  //   // must start the jobs
   //   SyncedCron.start();
-  //   // will stop jobs after 15 seconds
-  //   Meteor.setTimeout(function() {SyncedCron.stop(); }, 15 * 1000);
+  //   // will stop jobs after 10 seconds
+  //   Meteor.setTimeout(function() {SyncedCron.stop(); }, 4 * 1000);
   // });
 
 

@@ -5,6 +5,7 @@
   "main": "worker.js",
   "devDependencies": {},
   "dependencies": {
+    "bluebird": "^3.3.4",
     "moment": "^2.12.0",
     "moment-range": "^2.2.0"
   },

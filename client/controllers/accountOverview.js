@@ -10,7 +10,7 @@
 
 Tracker.autorun(function () {
     if (FlowRouter.subsReady('campaignBasicsList')) {
-        console.log('campaignBasics subs ready!');
+        // console.log('campaignBasics subs ready!');
     }
 });
 
