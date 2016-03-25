@@ -19,6 +19,7 @@ Meteor.methods({
           'data.spend': 1,
           'data.campaign_name': 1,
           'data.cost_per_like': 1,
+          'data.post_engagement': 1,
           'data.cost_per_post_engagement': 1,
           'data.cost_per_page_engagement': 1,
           'data.cost_per_video_view': 1,
@@ -98,6 +99,7 @@ Meteor.methods({
         temp['reach'] = obj.reach;
         temp['total_actions'] = obj.total_actions;
         temp['video_view'] = obj.video_view;
+        temp['post_engagement'] = obj.post_engagement;
       } else {
         temp['impressions'] += obj.impressions;
         temp['clicks'] += obj.clicks;
@@ -106,6 +108,7 @@ Meteor.methods({
         temp['reach'] += obj.reach;
         temp['total_actions'] += obj.total_actions;
         temp['video_view'] += obj.video_view;
+        temp['post_engagement'] += obj.post_engagement;
         temp['cpm'] = temp.spend / (temp.impressions / 1000);
         temp['cpc'] = temp.spend / temp.clicks;
         temp['cost_per_like'] = temp.spend / temp.like;

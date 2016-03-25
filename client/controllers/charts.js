@@ -216,12 +216,16 @@ chart.helpers({
     let cplChart = [];
     let cpvvChart = [];
     let postEngagementChart = [];
+    let totalPostEgagement = 0;
+    let totalPostEgagementChart = [];
     for (let i = 0; i < Session.get('costPerChart').length; i++) {
       cpmChart.push(Session.get('costPerChart')[i].cpm);
       cpcChart.push(Session.get('costPerChart')[i].cpc);
       cplChart.push(Session.get('costPerChart')[i].cost_per_like);
       cpvvChart.push(Session.get('costPerChart')[i].cost_per_video_view);
       postEngagementChart.push(Session.get('costPerChart')[i].cost_per_post_engagement);
+      totalPostEgagement += Session.get('costPerChart')[i].post_engagement;
+      totalPostEgagementChart.push(totalPostEgagement);
     }
 
 
@@ -287,6 +291,9 @@ chart.helpers({
       }, {
         name: 'CPPostEngagement',
         data: postEngagementChart
+      }, {
+        name: 'Post Engagements',
+        data: totalPostEgagementChart
       }]
     }
   }
