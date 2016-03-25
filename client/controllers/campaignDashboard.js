@@ -104,7 +104,7 @@ dash.helpers({
 
       var call = Promise.promisify(Meteor.call);
       call('getAggregate', init.name).then(function (result) {
-        console.log('result from getAggregate', result);
+        // console.log('result from getAggregate', result);
       }).catch(function (err) {
         console.log('aggghhh error:', err)
       })

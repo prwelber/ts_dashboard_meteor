@@ -3,7 +3,6 @@ var range = require('moment-range');
 var Promise = require('bluebird');
 // import Chart from "chart.js"
 
-let chart = Template.charts;
 Tracker.autorun(function () {
   if (FlowRouter.subsReady('campaignInsightList') && FlowRouter.subsReady('Initiatives')) {
     // console.log('Insights and Initiatives subs are now ready!');
@@ -11,19 +10,26 @@ Tracker.autorun(function () {
 });
 
 
-chart.onRendered( function (){
+Template.charts.onCreated( function () {
+  this.templateDict = new ReactiveDict();
+  const initiative = Initiatives.findOne(
+    {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
+  });
+  this.templateDict.set( 'initiative', initiative );
+
+})
+
+Template.charts.onRendered( function (){
 
 });
 
-chart.events({
+Template.charts.events({
 
 });
 
-chart.helpers({
+Template.charts.helpers({
   'topGenresChart': function () {
-      const initiative = Initiatives.findOne(
-        {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
-      });
+      const initiative = Template.instance().templateDict.get('initiative');
       // for getting evenly distrubuted output
       let labels = []; // this will be the date range
       let timeFormat = "MM-DD-YYYY";
@@ -71,7 +77,7 @@ chart.helpers({
 
       call('aggregateForChart', initiative).then(function (res) {
         Session.set('res', res);
-        console.log('returned from Promise!', res)
+        // console.log('returned from Promise!', res)
         totes = res[0][type]
       }).catch(function (err) {
         console.log('uh no error', err)
@@ -176,10 +182,8 @@ chart.helpers({
 
   },
   'costPerChart': function () {
-    const initiative = Initiatives.findOne(
-      {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
-    });
-    console.log("initiative from costPerChart", initiative)
+    const initiative = Template.instance().templateDict.get('initiative');
+
     // for getting x axis labels
     let labels = [];
     var start = new Date(initiative.startDate);
@@ -291,15 +295,143 @@ chart.helpers({
       }, {
         name: 'CPPostEngagement',
         data: postEngagementChart
-      }, {
-        name: 'Post Engagements',
-        data: totalPostEgagementChart
-      }]
+      }//, {
+        // name: 'Post Engagements',
+        // data: totalPostEgagementChart
+      //}
+    ]
+    } // end of chart return
+  },
+  'dualAxes': function () {
+    const initiative = Template.instance().templateDict.get('initiative');
+
+    // for getting x axis labels
+    let labels = [];
+    var start = new Date(initiative.startDate);
+    var end   = new Date(initiative.endDate);
+    var dr    = moment.range(start, end);
+    var arrayOfDays = dr.toArray('days');
+    arrayOfDays.forEach(el => {
+      labels.push(moment(el).format("MM-DD"))
+    });
+
+    //for setting dealType
+    let type;
+    let costType;
+    if (initiative.dealType === "CPM") {
+      type = "impressions";
+      costType = "cpm";
+    } else if (initiative.dealType === "CPC") {
+      type = "clicks";
+      costType = "cpc";
+    } else if (initiative.dealType === "CPL") {
+      type = "like";
+      costType = "cost_per_like";
     }
+    let total = 0;
+    let actionArray = [];
+    let costPerArray = [];
+
+    // seeing if Bluebird will work for promises and meteor.call
+    var call = Promise.promisify(Meteor.call, {context: Meteor});
+
+    call('aggregateForChart', initiative).then(function (res) {
+      console.log('returned from dualAxes Promise!', res);
+      Session.set('dualAxes', res);
+    }).catch(function (err) {
+      console.log('uh no error', err)
+    });
+
+       Session.get('dualAxes').forEach(el => {
+         total += el.impressions;
+         actionArray.push(total);
+         costPerArray.push(el.cpm);
+       });
+       console.log(actionArray);
+       console.log(costPerArray);
+
+    // console.log("sesh test", Session.get('dualAxes'))
+
+
+
+
+    return {
+      chart: {
+        zoomType: 'xy'
+      },
+      title: {
+        text: type + ' & cost per'
+      },
+      xAxis: [{
+        categories: labels,
+        crosshair: true
+      }],
+      yAxis: [{
+        // left axis
+        labels: {
+          format: 'CPM',
+          style: {
+            color: Highcharts.getOptions().colors[1]
+          }
+        },
+        title: {
+          text: 'CPM',
+          style: {
+            color: Highcharts.getOptions().colors[1]
+          }
+        }
+      }, {
+      // right axis
+      title: {
+        text: type,
+        style: {
+          color: Highcharts.getOptions().colors[0]
+        }
+      },
+      labels: {
+        format: type,
+        style: {
+          color: Highcharts.getOptions().colors[0]
+        }
+      },
+      opposite: true
+
+      }],
+      tooptip: {
+        shared: true
+      },
+      legend: {
+        layout: 'vertical',
+        align: 'left',
+        x: 120,
+        verticalAlign: 'top',
+        y: 100,
+        floating: true,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+      },
+      series: [{
+        //right axis
+        name: type,
+        type: 'column',
+        yAxis: 1,
+        data: actionArray,
+        tooltip: {
+          valueSuffix: ' ' + type
+        }
+      }, {
+        //left axis
+        name: 'CPM',
+        type: 'line',
+        data: costPerArray,
+        tooltip: {
+          valueSuffix: 'CPM'
+        }
+      }]
+    } // end of chart return
   }
 });
 
-chart.onDestroyed(func => {
+Template.charts.onDestroyed(func => {
 
 });
 

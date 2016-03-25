@@ -66,16 +66,6 @@ Meteor.methods({
     values. The next if statement has it's own explainer below.
     */
 
-    // 'data.cost_per_post_engagement': 1,
-    // 'data.cost_per_page_engagement': 1,
-    // 'data.cost_per_video_view': 1,
-    // 'data.cpc': 1,
-    // 'data.cpm': 1,
-    // 'data.cpp': 1,
-    // 'data.ctr': 1,
-    // 'data.reach': 1,
-    // 'data.total_actions': 1,
-    // 'data.video_view': 1,
     let temp = {}
     let obj = null;
     let otherArray = [];
