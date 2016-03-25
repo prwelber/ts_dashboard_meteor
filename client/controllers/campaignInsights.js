@@ -32,9 +32,10 @@ Template.campaignInsights.helpers({
           camp.data.impressions = numeral(camp.data.impressions).format("0,0");
           camp.data.ctr = camp.data.ctr.toString().substr(0,5);
           camp.data.frequency = numeral(camp.data.frequency).format("0,0.00");
-          camp.data.cpl = accounting.formatMoney(camp.data.cpl, "$", 2);
-          camp.data.cpm = accounting.formatMoney(camp.data.cpm, "$", 2);
-          camp.data.cpc = accounting.formatMoney(camp.data.cpc, "$", 2);
+          camp.data.cpl = mastFunc.money(camp.data.cpl);
+          camp.data.cpm = mastFunc.money(camp.data.cpm);
+          camp.data.cpc = mastFunc.money(camp.data.cpc);
+          camp.data.spend = mastFunc.money(camp.data.spend);
           return [camp.data];
         } else {
           var target = document.getElementById("spinner-div");
@@ -42,26 +43,26 @@ Template.campaignInsights.helpers({
           console.log('gotta get insights for this one', campaignNumber);
           Meteor.call('getInsights', campaignNumber, Session.get("end_date"), function (err, result) {
             if (err) {
-                console.log(err);
+              console.log(err);
             } else {
-                Blaze.remove(spun);
+              Blaze.remove(spun);
             }
           });
         }
     },
     'cleanText': function (text) {
-        return text.replace("_", " ").toLowerCase();
+      return text.replace("_", " ").toLowerCase();
     },
     'getCampaignNumber': function () {
-        return FlowRouter.current().params.campaign_id;
+      return FlowRouter.current().params.campaign_id;
     },
     'getAccountNumber': function () {
-        try {
-           let num = CampaignInsights.findOne({'data.campaign_id': FlowRouter.current().params.campaign_id});
-            return num.data.account_id;
-        } catch(e) {
-            console.log("this error is not important");
-        }
+      try {
+       let num = CampaignInsights.findOne({'data.campaign_id': FlowRouter.current().params.campaign_id});
+       return num.data.account_id;
+      } catch(e) {
+        console.log("this error is not important");
+      }
     },
     'findInitiative': function () {
         // console.log(this)

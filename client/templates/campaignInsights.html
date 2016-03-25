@@ -14,15 +14,15 @@
         <button id="refresh-insights">Refresh Insights</button>
         <h4>Insights Time Period: {{date_start}} -- {{date_stop}}</h4>
         <p><strong>Often Viewed</strong></p>
-        <p>CPM: {{cpm}}</p>
-        <p>CPP: {{cpp}}</p>
-        <p>CTR: {{ctr}}%</p>
-        <p>Reach: {{reach}}</p>
-        <p>Impressions: {{impressions}}</p>
         <p>Spend: {{spend}}</p>
-        {{#if clicks}}<p>Clicks: {{clicks}}</p>{{/if}}
-        {{#if cpc}}<p>CPC: {{cpc}}</p>{{/if}}
+        <p>Impressions: {{impressions}} | CPM: {{cpm}}</p>
+        {{#if clicks}}<p>Clicks: {{clicks}} | CPC: {{cpc}}</p>{{/if}}
+        <p>CTR: {{ctr}}%</p>
+        <p>CPP: {{cpp}}</p>
+        <p>Reach: {{reach}}</p>
         <p>Frequency: {{frequency}}</p>
+        <p>Page Engagement: {{page_engagement}} | Cost per: {{cost_per_page_engagement}}</p>
+        <p>Post Engagement: {{post_engagement}} | Cost per: {{cost_per_post_engagement}}</p>
         <br />
       </div>
       <div class="four wide column">
@@ -45,9 +45,6 @@
         {{#if cost_per_offsite_conversion_fb_pixel_purchase}} <p>CP Offsite Conversion FB Pixel Purchase: {{cost_per_offsite_conversion_fb_pixel_purchase}}</p>{{/if}}
         {{#if cost_per_offsite_conversion}} <p>CP Offsite Conversion: {{cost_per_offsite_conversion}}</p>{{/if}}
         {{#if cost_per_offsite_conversion_registration}} <p>CP Offsite Conversion Registration: {{cost_per_offsite_conversion_registration}}</p>{{/if}}
-        <p>CP Page Engagement: {{cost_per_page_engagement}}</p>
-        <p>CP Post Engagement: {{cost_per_post_engagement}}</p>
-        <br />
         <p>CP Unique Click: {{cost_per_unique_click}}</p>
         <p>CP Total Action: {{cost_per_total_action}}</p>
         <p>Unique Impressions: {{unique_impressions}}</p>
@@ -60,4 +57,3 @@
       {{/each}}
   </div>
 </template>
-
