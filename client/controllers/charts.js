@@ -128,7 +128,9 @@ Template.charts.helpers({
       },
 
       tooltip: {
-        valueSuffix: type
+        valueSuffix: type,
+        shared: true,
+        crosshairs: true
       },
       xAxis: {
         // type: 'datetime',
@@ -166,7 +168,6 @@ Template.charts.helpers({
         data: avgData
       }, {
         name: 'Real Distribution',
-        // data: [158, 224, 166, 43, 361, 332, 263, 65, 370, 452]
         data: actionToChart
       }, {
         name: 'Spend',
@@ -220,16 +221,12 @@ Template.charts.helpers({
     let cplChart = [];
     let cpvvChart = [];
     let postEngagementChart = [];
-    let totalPostEgagement = 0;
-    let totalPostEgagementChart = [];
     for (let i = 0; i < Session.get('costPerChart').length; i++) {
       cpmChart.push(Session.get('costPerChart')[i].cpm);
       cpcChart.push(Session.get('costPerChart')[i].cpc);
       cplChart.push(Session.get('costPerChart')[i].cost_per_like);
       cpvvChart.push(Session.get('costPerChart')[i].cost_per_video_view);
       postEngagementChart.push(Session.get('costPerChart')[i].cost_per_post_engagement);
-      totalPostEgagement += Session.get('costPerChart')[i].post_engagement;
-      totalPostEgagementChart.push(totalPostEgagement);
     }
 
 
@@ -250,7 +247,9 @@ Template.charts.helpers({
       },
 
       tooltip: {
-        valueSuffix: ''
+        valueSuffix: '',
+        shared: true,
+        crosshairs: true
       },
       xAxis: {
         // type: 'datetime',
@@ -290,15 +289,15 @@ Template.charts.helpers({
         name: 'CPC',
         data: cpcChart
       }, {
+        name: 'CPL',
+        data: cplChart
+      }, {
         name: 'CPVV',
         data: cpvvChart
-      }, {
-        name: 'CPPostEngagement',
-        data: postEngagementChart
       }//, {
-        // name: 'Post Engagements',
-        // data: totalPostEgagementChart
-      //}
+      //   name: 'CPPostEngagement',
+      //   data: postEngagementChart
+      // }
     ]
     } // end of chart return
   },
@@ -343,8 +342,8 @@ Template.charts.helpers({
     });
 
        Session.get('dualAxes').forEach(el => {
-         total += el.impressions;
-         actionArray.push(total);
+        //  total += el.impressions;
+         actionArray.push(el.impressions);
          costPerArray.push(el.cpm);
        });
        console.log(actionArray);
@@ -397,15 +396,16 @@ Template.charts.helpers({
       opposite: true
 
       }],
-      tooptip: {
-        shared: true
+      tooltip: {
+        shared: true,
+        crosshairs: true
       },
       legend: {
         layout: 'vertical',
         align: 'left',
         x: 120,
         verticalAlign: 'top',
-        y: 100,
+        y: 50,
         floating: true,
         backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
       },
@@ -421,7 +421,7 @@ Template.charts.helpers({
       }, {
         //left axis
         name: 'CPM',
-        type: 'line',
+        type: 'spline',
         data: costPerArray,
         tooltip: {
           valueSuffix: 'CPM'
