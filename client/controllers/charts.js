@@ -29,18 +29,19 @@ Template.charts.events({
 });
 
 Template.charts.helpers({
-  'topGenresChart': function () {
+  'deliveryChart': function () {
       const initiative = Template.instance().templateDict.get('initiative');
       // for getting evenly distrubuted output
-      let labels = []; // this will be the date range
-      let timeFormat = "MM-DD-YYYY";
-      let days = moment(initiative.endDate, timeFormat).diff(moment(initiative.startDate, timeFormat), 'days');
-      let avg = Math.round(initiative.quantity / days);
-      let spendAvg = parseFloat(initiative.budget) / days;
-      let avgData = [];
-      let idealSpend = [];
-      let idealSpendTotal = 0;
-      let total = 0;
+      let labels          = [], // this will be the date range
+          timeFormat      = "MM-DD-YYYY",
+          days            = moment(initiative.endDate, timeFormat).diff(moment(initiative.startDate, timeFormat), 'days'),
+          avg             = Math.round(initiative.quantity / days),
+          spendAvg        = parseFloat(initiative.budget) / days,
+          avgData         = [],
+          idealSpend      = [],
+          idealSpendTotal = 0,
+          total           = 0;
+          
       for (let i = 0; i < days; i++) {
         total = total + avg;
         idealSpendTotal = idealSpendTotal + spendAvg;
