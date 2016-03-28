@@ -172,7 +172,6 @@ Meteor.methods({
 
     return twentyFourHourArray;
 
-
   }
 });
 

@@ -396,140 +396,92 @@ Template.charts.helpers({
   },
   'hourlyChart': function () {
     const initiative = Template.instance().templateDict.get('initiative');
-
+    let cpc = {
+      name: "CPC",
+      data: []
+    }
+    let cpl = {
+      name: "CPL",
+      data: []
+    }
+    let cpm = {
+      name: "CPM",
+      data: []
+    }
+    let clicks = {
+      name: "clicks",
+      data: []
+    }
+    let impressions = {
+      name: "impressions",
+      data: []
+    }
+    let likes = {
+      name: "likes",
+      data: []
+    }
+    let spend = {
+      name: "Spend",
+      data: []
+    }
     var call = Promise.promisify(Meteor.call);
 
     call('pieChart', initiative)
     .then(function (resultData) {
       Session.set('resultData', resultData);
       console.log(resultData);
-    }).catch(function (err) {
+    })
+    .catch(function (err) {
       console.log('boooo error', err)
     });
 
+    Session.get('resultData').forEach(el => {
+      cpc.data.push(el[0].cpc);
+      cpl.data.push(el[0].cpl);
+      cpm.data.push(el[0].cpm);
+      spend.data.push(el[0].spend);
+      impressions.data.push(el[0].impressions);
+      clicks.data.push(el[0].clicks);
+      likes.data.push(el[0].likes);
+    });
 
-
-
-    // return {
-    //   chart: {
-    //         type: 'pie'
-    //     },
-    //     title: {
-    //         text: 'Hourly Breakdown With Drilldown'
-    //     },
-    //     subtitle: {
-    //         text: 'Click the slices to view details.'
-    //     },
-    //     plotOptions: {
-    //         series: {
-    //             dataLabels: {
-    //                 enabled: true,
-    //                 format: '{point.name}: {point.y:.1f}%'
-    //             }
-    //         }
-    //     },
-
-    //     tooltip: {
-    //         headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-    //         pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
-    //     },
-    //     series: [{
-    //         name: 'Brands',
-    //         colorByPoint: true,
-    //         data: [{
-    //             name: 'Microsoft Internet Explorer',
-    //             y: 56.33,
-    //             drilldown: 'Microsoft Internet Explorer'
-    //         }, {
-    //             name: 'Chrome',
-    //             y: 24.03,
-    //             drilldown: 'Chrome'
-    //         }, {
-    //             name: 'Firefox',
-    //             y: 10.38,
-    //             drilldown: 'Firefox'
-    //         }, {
-    //             name: 'Safari',
-    //             y: 4.77,
-    //             drilldown: 'Safari'
-    //         }, {
-    //             name: 'Opera',
-    //             y: 0.91,
-    //             drilldown: 'Opera'
-    //         }, {
-    //             name: 'Proprietary or Undetectable',
-    //             y: 0.2,
-    //             drilldown: null
-    //         }]
-    //     }],
-    //     drilldown: {
-    //         series: [{
-    //             name: 'Microsoft Internet Explorer',
-    //             id: 'Microsoft Internet Explorer',
-    //             data: [
-    //                 ['v11.0', 24.13],
-    //                 ['v8.0', 17.2],
-    //                 ['v9.0', 8.11],
-    //                 ['v10.0', 5.33],
-    //                 ['v6.0', 1.06],
-    //                 ['v7.0', 0.5]
-    //             ]
-    //         }, {
-    //             name: 'Chrome',
-    //             id: 'Chrome',
-    //             data: [
-    //                 ['v40.0', 5],
-    //                 ['v41.0', 4.32],
-    //                 ['v42.0', 3.68],
-    //                 ['v39.0', 2.96],
-    //                 ['v36.0', 2.53],
-    //                 ['v43.0', 1.45],
-    //                 ['v31.0', 1.24],
-    //                 ['v35.0', 0.85],
-    //                 ['v38.0', 0.6],
-    //                 ['v32.0', 0.55],
-    //                 ['v37.0', 0.38],
-    //                 ['v33.0', 0.19],
-    //                 ['v34.0', 0.14],
-    //                 ['v30.0', 0.14]
-    //             ]
-    //         }, {
-    //             name: 'Firefox',
-    //             id: 'Firefox',
-    //             data: [
-    //                 ['v35', 2.76],
-    //                 ['v36', 2.32],
-    //                 ['v37', 2.31],
-    //                 ['v34', 1.27],
-    //                 ['v38', 1.02],
-    //                 ['v31', 0.33],
-    //                 ['v33', 0.22],
-    //                 ['v32', 0.15]
-    //             ]
-    //         }, {
-    //             name: 'Safari',
-    //             id: 'Safari',
-    //             data: [
-    //                 ['v8.0', 2.56],
-    //                 ['v7.1', 0.77],
-    //                 ['v5.1', 0.42],
-    //                 ['v5.0', 0.3],
-    //                 ['v6.1', 0.29],
-    //                 ['v7.0', 0.26],
-    //                 ['v6.2', 0.17]
-    //             ]
-    //         }, {
-    //             name: 'Opera',
-    //             id: 'Opera',
-    //             data: [
-    //                 ['v12.x', 0.34],
-    //                 ['v28', 0.24],
-    //                 ['v27', 0.17],
-    //                 ['v29', 0.16]
-    //             ]
-    //         }]
-    //     }
-    // }
+    return {
+      chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Hourly Breakdown'
+        },
+        xAxis: {
+            categories: ['12am', '1am', '2am', '3am', '4am', '5am', 
+                         '6am', '7am', '8am', '9am', '10am', '11am', 
+                         '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', 
+                         '6pm', '7pm', '8pm', '9pm', '10pm', '11pm', 
+            ],
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Amount'
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.1,
+                borderWidth: 0
+            }
+        },
+        series: [cpc, cpm, cpl, spend, impressions, clicks, likes]            
+    }
   }
 });
 
