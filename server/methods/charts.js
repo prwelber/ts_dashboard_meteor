@@ -34,7 +34,7 @@ Meteor.methods({
           }
         }).fetch()
       x ? arr.push(x) : '';
-    })
+    });
 
     arr = _.flatten(arr);
 
@@ -122,5 +122,58 @@ Meteor.methods({
 
     return otherArray;
 
+  },
+  'pieChart': function (initiative) {
+    console.log('pieChart running');
+    let campaignIds = initiative.campaign_ids
+
+    let twentyFourHourArray = [];
+    var time = moment('12:00 am', 'hh:mm a');
+    /*
+    Here, we are aggregating from the hourlybreakdown collection. We are looking to match
+    based on hour (which has been set when the hourlybreakdown comes in) and the campaign id, which we are
+    matching to the array of campaign ID's from the initiative which is an argument in this function.
+    we are summing spend clicks impressions and likes and then adding cost per data in the loop.
+    The for loop goes until 23 because it starts at zero, not 1.
+    Upon each completion of a loop, the time is incremented by one hour.
+     */
+    for (var i = 0; i <= 23; i++) {
+      var pipeline = [
+        {$match: 
+          {$and: [
+              {'data.hour': time.format('hh:mm a')},
+              {'data.campaign_id': { $in: campaignIds } }
+              // {'data.campaign_id': { $in: campaignIds } }
+            ]
+          }
+        },
+        {$group: {
+          _id: time.format('hh:mm a'),
+          spend: {$sum: "$data.spend"},
+          clicks: {$sum: "$data.clicks"},
+          impressions: {$sum: "$data.impressions"},
+          likes: {$sum: "$data.like"}
+          }
+        }
+      ];
+      var result = HourlyBreakdowns.aggregate(pipeline);
+      result[0]['cpc'] = result[0].spend / result[0].clicks;
+      result[0]['cpm'] = result[0].spend / (result[0].impressions / 1000);
+      if (result[0].likes === 0) {
+        result[0]['cpl'] = 0;
+      } else {
+        result[0]['cpl'] = result[0].spend / result[0].likes;
+      }
+      twentyFourHourArray.push(result);
+      time = time.add(1, 'hour');
+      // console.log(time.format('hh:mm a'));
+    }
+    // console.log(twentyFourHourArray);
+
+    return twentyFourHourArray;
+
+
   }
 });
+
+

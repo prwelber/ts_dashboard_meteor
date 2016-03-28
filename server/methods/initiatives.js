@@ -60,7 +60,9 @@ Meteor.methods({
     console.log('getAggregate running')
     // This function aggregates campaignInsight data for an initiative
     let pipeline = [
-      {$match: {"data.initiative": name}},
+      {$match: 
+        {"data.initiative": name}
+      },
       {$group: {
         _id: name,
         spend: {$sum: "$data.spend"},

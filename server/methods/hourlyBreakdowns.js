@@ -53,13 +53,16 @@ Meteor.methods({
                         }
                     }
                 }
+                let reResult = data['hourly_stats_aggregated_by_audience_time_zone'].match(/\d\d:\d\d:\d\d/);
+                data['hour'] = reResult[0];
+                data.hour = moment(data.hour, 'hh:mm:ss').format('hh:mm a'); 
+                data['impressions'] = parseInt(data.impressions);
                 data['cpm'] = accounting.formatMoney(data.cpm, "$", 2);
                 data['cpp'] = accounting.formatMoney(data.cpp, "$", 2);
                 data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
                 data['campaign_name'] = campaignName;
                 data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
                 data['cpc'] = accounting.formatMoney((data.spend / data.clicks), "$", 2);
-                data['spend'] = accounting.formatMoney(data.spend, "$", 2);
                 data['date_stop'] = moment(end_date).format("MM-DD-YYYY hh:mm a");
                 masterArray.push(data);
             });
