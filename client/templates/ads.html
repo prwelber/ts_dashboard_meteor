@@ -23,7 +23,7 @@
             {{else}}
               <p>Message: {{data.message}}</p>
             {{/if}}
-            <p><a target="_blank" href="{{data.picture}}">Media Link (opens new tab)</a></p>
+            {{#if data.picture}}<p><a target="_blank" href="{{data.picture}}">Media Link (opens new tab)</a></p>{{/if}}
             <p><a target="_blank" href="{{data.url}}">Facebook Ad Link (opens new tab)</a></p>
           {{/if}}
           <h3>Insights</h3>

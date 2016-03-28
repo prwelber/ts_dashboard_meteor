@@ -14,105 +14,123 @@ Meteor.methods({
     let carouselArray = [];
     let ads;
     try {
-        let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/ads?fields=adcreatives{object_story_id},insights,account_id,adset_id,campaign_id,name,id&limit=75&access_token='+token+'', {});
+        let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/ads?fields=adcreatives{object_story_id,image_url,object_id,body,title,template_url,name,thumbnail_url,url_tags,link_url},insights,account_id,adset_id,campaign_id,name,id&limit=75&access_token='+token+'', {});
         ads = result;
         // ads variable is now an array of objects
         adsArray.push(ads.data.data);
         adsArray = _.flatten(adsArray);
+        console.log("adsArray from line 22:", adsArray);
+        console.log("adcreatives.data", adsArray[0].adcreatives.data)
+        
         adsArray.forEach(el => { // pulls in creative attachments (picture, url, message)
           let attachments = {}
-          // make 2nd api call with object_story_id to retrieve attachments
-          let attachment = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+el.adcreatives.data[0].object_story_id+'?fields=child_attachments,attachments,message&access_token='+token+'', {});
+          
+          if (! el.adcreatives.data[0].object_story_id) { // if there is no object story id
 
-          // determine if carousel ad
-          if (attachment.data.child_attachments && attachment.data.attachments.data[0].hasOwnProperty('subattachments')) {
-            attachment.data.child_attachments.forEach(element => {
-              let carouselAttachments = {};
-              carouselAttachments['id'] = element.id;
-              carouselAttachments['picture'] = element.picture;
-              carouselAttachments['name'] = element.name;
-              carouselAttachments['link'] = element.link;
-              carouselAttachments['description'] = element.description;
-              delete el.adcreatives;
-              carouselArray.push(carouselAttachments);
-            });
-            el['carouselData'] = carouselArray;
+            console.log("if no obj story id", el)
+            let obj = el.adcreatives.data[0] // for readability and concision
+            attachments['message'] = obj.body;
+            attachments['url'] = obj.image_url;
+            el['attachments'] = attachments;
+            delete el.adcreatives;
             otherArray.push(el)
 
-            // now make another call for individual carousel stats and we will
-            // add it to the appropriate ID
-            let carouselNumbers = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/insights?fields=impressions,inline_link_clicks,actions,website_ctr&action_breakdowns=["action_type","action_carousel_card_id"]&access_token='+token+'', {});
-            // console.log(carouselNumbers);
-            // console.log(carouselNumbers.data.data[0]);
-            let numbers = carouselNumbers.data.data[0];
+          } else { // if there is object story id, make the 2nd api call to get more details
 
-            /*
-            in the section that follows, there are two if statements that
-            compare ID's in the existing carousel data with ID's in the newly
-            pulled in data on individual carousel media. This series of
-            actions will only run if the if statement on line 28 is true and
-            a carousel ad is detected
-            */
+            // make 2nd api call with object_story_id to retrieve attachments
+            let attachment = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+el.adcreatives.data[0].object_story_id+'?fields=child_attachments,attachments,message&access_token='+token+'', {});
 
-            for (let key in numbers) {
+            // determine if carousel ad
+            if (attachment.data.child_attachments && attachment.data.attachments.data[0].hasOwnProperty('subattachments')) {
+              attachment.data.child_attachments.forEach(element => {
+                let carouselAttachments = {};
+                carouselAttachments['id'] = element.id;
+                carouselAttachments['picture'] = element.picture;
+                carouselAttachments['name'] = element.name;
+                carouselAttachments['link'] = element.link;
+                carouselAttachments['description'] = element.description;
+                delete el.adcreatives;
+                carouselArray.push(carouselAttachments);
+              });
+              el['carouselData'] = carouselArray;
+              otherArray.push(el)
 
-              if (key === "actions") {
-                // console.log(otherArray)
-                numbers[key].forEach(element => {
-                  // here i want to start a loop over the carouselData
-                  // and look for matching ID's
-                  // console.log(otherArray[0]);
-                  try {
-                    otherArray.forEach(carousel => {
-                    if (carousel.carouselData) {
-                      carousel.carouselData.forEach(car => {
-                        if (car.id === element.action_carousel_card_id) {
-                          car['link_click'] = element.value;
-                          car['action_carousel_card_id'] = element.action_carousel_card_id;
-                        }
-                      });
-                    }
-                  });
-                  } catch(e) {
-                    console.log("Error with ID matching:", e);
-                  }
-                });
-              }
+              // now make another call for individual carousel stats and we will
+              // add it to the appropriate ID
+              let carouselNumbers = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/insights?fields=impressions,inline_link_clicks,actions,website_ctr&action_breakdowns=["action_type","action_carousel_card_id"]&access_token='+token+'', {});
+              // console.log(carouselNumbers);
+              // console.log(carouselNumbers.data.data[0]);
+              let numbers = carouselNumbers.data.data[0];
 
-              if (key === "website_ctr") {
-                numbers[key].forEach(element => {
-                  // here i want to start a loop over the carouselData
-                  // and look for matching ID's
-                  try {
-                    otherArray.forEach(carousel => {
+              /*
+              in the section that follows, there are two if statements that
+              compare ID's in the existing carousel data with ID's in the newly
+              pulled in data on individual carousel media. This series of
+              actions will only run if the if statement on line 28 is true and
+              a carousel ad is detected
+              */
+
+              for (let key in numbers) {
+
+                if (key === "actions") {
+                  // console.log(otherArray)
+                  numbers[key].forEach(element => {
+                    // here i want to start a loop over the carouselData
+                    // and look for matching ID's
+                    // console.log(otherArray[0]);
+                    try {
+                      otherArray.forEach(carousel => {
                       if (carousel.carouselData) {
                         carousel.carouselData.forEach(car => {
                           if (car.id === element.action_carousel_card_id) {
-                            car['link_ctr'] = element.value;
+                            car['link_click'] = element.value;
                             car['action_carousel_card_id'] = element.action_carousel_card_id;
                           }
                         });
                       }
                     });
-                  } catch(e) {
-                    console.log("Error with ID matching:", e);
-                  }
-                });
-              }
-            } // end of for key in numbers loop
+                    } catch(e) {
+                      console.log("Error with ID matching:", e);
+                    }
+                  });
+                }
 
-          } else {
-            let obj = attachment.data.attachments.data[0];   // for readability purposes
-            attachments['message'] = attachment.data.message;
-            attachments['description'] = obj.description;
-            attachments['url'] = obj.target.url;
-            attachments['picture'] = obj.media.image.src;
-            attachments['title'] = obj.title;
-            el['attachments'] = attachments;
-            delete el.adcreatives;
-            otherArray.push(el)
-          }
+                if (key === "website_ctr") {
+                  numbers[key].forEach(element => {
+                    // here i want to start a loop over the carouselData
+                    // and look for matching ID's
+                    try {
+                      otherArray.forEach(carousel => {
+                        if (carousel.carouselData) {
+                          carousel.carouselData.forEach(car => {
+                            if (car.id === element.action_carousel_card_id) {
+                              car['link_ctr'] = element.value;
+                              car['action_carousel_card_id'] = element.action_carousel_card_id;
+                            }
+                          });
+                        }
+                      });
+                    } catch(e) {
+                      console.log("Error with ID matching:", e);
+                    }
+                  });
+                }
+              } // end of for key in numbers loop
+
+            } else {
+              let obj = attachment.data.attachments.data[0];   // for readability purposes
+              attachments['message'] = attachment.data.message;
+              attachments['description'] = obj.description;
+              attachments['url'] = obj.target.url;
+              attachments['picture'] = obj.media.image.src;
+              attachments['title'] = obj.title;
+              el['attachments'] = attachments;
+              delete el.adcreatives;
+              otherArray.push(el)
+            }
+          } // end of if/else that runs if no object_story_id found
         });
+        console.log(otherArray);
         // console.log(otherArray)
         otherArray.forEach(el => {
           data = {};
@@ -180,6 +198,7 @@ Meteor.methods({
             console.log('Error pulling Ads data', e);
         }
         try {
+          console.log("masterArray:", masterArray);
           masterArray.forEach(adDataObj => { // inserts data into Mongo
             Ads.insert({
               data: adDataObj

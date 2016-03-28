@@ -48,10 +48,11 @@ Template.charts.helpers({
       }
 
       // for getting x axis labels
-      var start = new Date(initiative.startDate);
-      var end   = new Date(initiative.endDate);
-      var dr    = moment.range(start, end);
-      var arrayOfDays = dr.toArray('days');
+      var start       = new Date(initiative.startDate),
+          end         = new Date(initiative.endDate),
+          dr          = moment.range(start, end),
+          arrayOfDays = dr.toArray('days');
+      
       arrayOfDays.forEach(el => {
         labels.push(moment(el).format("MM-DD"))
       });
@@ -66,12 +67,10 @@ Template.charts.helpers({
         type = "like";
       }
 
-      let actionToChart = [];
-      let spendChart = [];
-      let spendTotal = 0;
-      let totes = 0;
-      let cpmChart = [];
-
+      let actionToChart = [],
+          spendChart    = [],
+          spendTotal    = 0,
+          totes         = 0;
       // seeing if Bluebird will work for promises and meteor.call
       var call = Promise.promisify(Meteor.call);
 
@@ -89,7 +88,6 @@ Template.charts.helpers({
         spendTotal = spendTotal + parseFloat(accounting.unformat(Session.get('res')[i].spend).toFixed(2));
         actionToChart.push(totes);
         spendChart.push(spendTotal);
-        cpmChart.push(Session.get('res')[i].cpm);
       }
       // console.log(cpmChart);
 
@@ -175,9 +173,6 @@ Template.charts.helpers({
       }, {
         name: 'Ideal Spend',
         data: idealSpend
-      }, {
-        name: 'CPM',
-        data: cpmChart
       }]
     }
 
@@ -186,11 +181,12 @@ Template.charts.helpers({
     const initiative = Template.instance().templateDict.get('initiative');
 
     // for getting x axis labels
-    let labels = [];
-    var start = new Date(initiative.startDate);
-    var end   = new Date(initiative.endDate);
-    var dr    = moment.range(start, end);
-    var arrayOfDays = dr.toArray('days');
+    let labels      = [],
+        start       = new Date(initiative.startDate),
+        end         = new Date(initiative.endDate);
+        dr          = moment.range(start, end),
+        arrayOfDays = dr.toArray('days');
+
     arrayOfDays.forEach(el => {
       labels.push(moment(el).format("MM-DD"))
     });
@@ -205,10 +201,15 @@ Template.charts.helpers({
       type = "like";
     }
 
+    let cpmChart = [],
+        cpcChart = [],
+        cplChart = [];
+
     // seeing if Bluebird will work for promises and meteor.call
     var call = Promise.promisify(Meteor.call);
 
-    call('aggregateForChart', initiative).then(function (res) {
+    call('aggregateForChart', initiative)
+    .then(function (res) {
       Session.set('costPerChart', res);
       // console.log('returned from costPerChart Promise!', res)
       totes = res[0][type]
@@ -216,17 +217,15 @@ Template.charts.helpers({
       console.log('uh no error', err)
     });
 
-    let cpmChart = [];
-    let cpcChart = [];
-    let cplChart = [];
-    let cpvvChart = [];
-    let postEngagementChart = [];
+
+    // let cpvvChart = [];
+    // let postEngagementChart = [];
     for (let i = 0; i < Session.get('costPerChart').length; i++) {
       cpmChart.push(Session.get('costPerChart')[i].cpm);
       cpcChart.push(Session.get('costPerChart')[i].cpc);
       cplChart.push(Session.get('costPerChart')[i].cost_per_like);
-      cpvvChart.push(Session.get('costPerChart')[i].cost_per_video_view);
-      postEngagementChart.push(Session.get('costPerChart')[i].cost_per_post_engagement);
+      // cpvvChart.push(Session.get('costPerChart')[i].cost_per_video_view);
+      // postEngagementChart.push(Session.get('costPerChart')[i].cost_per_post_engagement);
     }
 
 
@@ -291,14 +290,7 @@ Template.charts.helpers({
       }, {
         name: 'CPL',
         data: cplChart
-      }, {
-        name: 'CPVV',
-        data: cpvvChart
-      }//, {
-      //   name: 'CPPostEngagement',
-      //   data: postEngagementChart
-      // }
-    ]
+      }]
     } // end of chart return
   },
   'dualAxes': function () {
