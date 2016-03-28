@@ -12,11 +12,12 @@ Tracker.autorun(function () {
 
 Template.charts.onCreated( function () {
   this.templateDict = new ReactiveDict();
+  // console.log(this) // this is the same as Template.instance()
+  // console.log(Template.instance())
   const initiative = Initiatives.findOne(
     {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
   });
   this.templateDict.set( 'initiative', initiative );
-
 })
 
 Template.charts.onRendered( function (){
@@ -70,27 +71,26 @@ Template.charts.helpers({
       let actionToChart = [],
           spendChart    = [],
           spendTotal    = 0,
-          totes         = 0;
+          totes         = 0; // Template.instance().templateDict.get('data')[0].type;
+      
       // seeing if Bluebird will work for promises and meteor.call
       var call = Promise.promisify(Meteor.call);
 
-      call('aggregateForChart', initiative).then(function (res) {
+      call('aggregateForChart', initiative)
+      .then(function (res) {
         Session.set('res', res);
-        // console.log('returned from Promise!', res)
         totes = res[0][type]
       }).catch(function (err) {
         console.log('uh no error', err)
       });
 
-
-      for (let i = 0; i < Session.get('res').length; i++) {
-        totes = totes + parseInt(Session.get('res')[i][type]);
-        spendTotal = spendTotal + parseFloat(accounting.unformat(Session.get('res')[i].spend).toFixed(2));
+      Session.get('res').forEach(el => {
+        totes += parseInt(el[type]);
+        spendTotal += parseFloat(accounting.unformat(el.spend).toFixed(2));
         actionToChart.push(totes);
         spendChart.push(spendTotal);
-      }
-      // console.log(cpmChart);
-
+      });
+      
       //  // this works. not sure why...
       // let asyncCall = function asyncCall (methodName, init, callback) {
       //   Meteor.call(methodName, init, function (err, res) {
@@ -205,30 +205,11 @@ Template.charts.helpers({
         cpcChart = [],
         cplChart = [];
 
-    // seeing if Bluebird will work for promises and meteor.call
-    var call = Promise.promisify(Meteor.call);
-
-    call('aggregateForChart', initiative)
-    .then(function (res) {
-      Session.set('costPerChart', res);
-      // console.log('returned from costPerChart Promise!', res)
-      totes = res[0][type]
-    }).catch(function (err) {
-      console.log('uh no error', err)
+    Session.get('res').forEach(el => {
+      cpmChart.push(el.cpm);
+      cpcChart.push(el.cpc);
+      cplChart.push(el.cost_per_like);
     });
-
-
-    // let cpvvChart = [];
-    // let postEngagementChart = [];
-    for (let i = 0; i < Session.get('costPerChart').length; i++) {
-      cpmChart.push(Session.get('costPerChart')[i].cpm);
-      cpcChart.push(Session.get('costPerChart')[i].cpc);
-      cplChart.push(Session.get('costPerChart')[i].cost_per_like);
-      // cpvvChart.push(Session.get('costPerChart')[i].cost_per_video_view);
-      // postEngagementChart.push(Session.get('costPerChart')[i].cost_per_post_engagement);
-    }
-
-
 
     // build chart
     return {
@@ -309,38 +290,29 @@ Template.charts.helpers({
     //for setting dealType
     let type;
     let costType;
-    if (initiative.dealType === "CPM") {
-      type = "impressions";
-      costType = "cpm";
-    } else if (initiative.dealType === "CPC") {
-      type = "clicks";
-      costType = "cpc";
-    } else if (initiative.dealType === "CPL") {
-      type = "like";
-      costType = "cost_per_like";
-    }
+
     let total = 0;
     let actionArray = [];
     let costPerArray = [];
 
-    // seeing if Bluebird will work for promises and meteor.call
-    var call = Promise.promisify(Meteor.call, {context: Meteor});
-
-    call('aggregateForChart', initiative).then(function (res) {
-      console.log('returned from dualAxes Promise!', res);
-      Session.set('dualAxes', res);
-    }).catch(function (err) {
-      console.log('uh no error', err)
-    });
-
-       Session.get('dualAxes').forEach(el => {
-        //  total += el.impressions;
-         actionArray.push(el.impressions);
-         costPerArray.push(el.cpm);
-       });
-       console.log(actionArray);
-       console.log(costPerArray);
-
+       Session.get('res').forEach(el => {
+        if (initiative.dealType === "CPM") {
+          actionArray.push(el.impressions);
+          costPerArray.push(el.cpm);
+          type = "impressions";
+          costType = "CPM";
+        } else if (initiative.dealType === "CPC") {
+          actionArray.push(el.clicks);
+          costPerArray.push(el.cpc);
+          type = "clicks";
+          costType = "CPC";
+        } else if (initiative.dealType === "CPL") {
+          actionArray.push(el.like);
+          costPerArray.push(el.cost_per_like);
+          type = "like";
+          costType = "CPL";
+        }
+     });
     // console.log("sesh test", Session.get('dualAxes'))
 
 
@@ -360,13 +332,13 @@ Template.charts.helpers({
       yAxis: [{
         // left axis
         labels: {
-          format: 'CPM',
+          format: '{value} ' + costType,
           style: {
             color: Highcharts.getOptions().colors[1]
           }
         },
         title: {
-          text: 'CPM',
+          text: costType,
           style: {
             color: Highcharts.getOptions().colors[1]
           }
@@ -380,7 +352,7 @@ Template.charts.helpers({
         }
       },
       labels: {
-        format: type,
+        format: '{value} ' + type,
         style: {
           color: Highcharts.getOptions().colors[0]
         }
@@ -412,11 +384,11 @@ Template.charts.helpers({
         }
       }, {
         //left axis
-        name: 'CPM',
+        name: costType,
         type: 'spline',
         data: costPerArray,
         tooltip: {
-          valueSuffix: 'CPM'
+          valueSuffix: costType
         }
       }]
     } // end of chart return

@@ -5,6 +5,8 @@ Meteor.methods({
   }
 });
 
+
+
 Meteor.methods({
   'getAds': function (accountNumber) {
     console.log("getAds running");
