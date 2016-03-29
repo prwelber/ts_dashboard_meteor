@@ -213,7 +213,8 @@ Template.charts.helpers({
       cpcChart.push(el.cpc);
       cplChart.push(el.cost_per_like);
     });
-    console.log("cpmChart from cost per", cpmChart)
+    console.log("cpmChart from cost per", cpmChart);
+    console.log('cpl chart', cplChart);
     // build chart
     return {
 

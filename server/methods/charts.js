@@ -39,31 +39,23 @@ Meteor.methods({
     arr = _.flatten(arr);
 
 
-    /*
-    Below, we are accounting for any gaps in the timeline since not all
-    campaigns run on sequential days. within the forEach we are looking for
-    difference between days and if that difference is more than 1 day (< -1)
-    then we loop the number of times as the difference and we use moment to add
-    one on each loop, giving us the missing days
-    As of this writing, we need to push those dates into the existing array
-    at the appropriate position and give them all null values
-    This is so that the graph will reflect accurately what happens on what days
-    */
 
-    // console.log(arr);
+    /*
+    In the below forEach, we are simply calculating the total number of
+    missing days. We are using that total number in the following loop
+    to determine how many times to iterate (we need to iterate over all
+    the existing dates plus the ones that have not been created yet)
+    */
     let timeForm = "MM-DD-YYYY"
     let total = 0;
-
-    console.log(arr.length)
-
     try {
 
       arr.forEach((el, index) => {
-        console.log("from first arr:", arr[index].data.date_start)
+        // console.log("from first arr:", arr[index].data.date_start)
           var diff = moment(arr[index].data.date_start, timeForm).diff(moment(arr[index + 1].data.date_start, timeForm), 'days');
 
           if (diff < -1) {
-            console.log('from first arr - days diff', Math.abs(diff));
+            // console.log('from first arr - days diff', Math.abs(diff));
             total += Math.abs(diff) - 1;
           }
       });
@@ -72,17 +64,29 @@ Meteor.methods({
         console.log("Error Message:", e.message);
     }
 
-    console.log('total number of days we need to generate', total);
-
+    // console.log('total number of days we need to generate', total);
+    /*
+    Below, we are accounting for any gaps in the timeline since not all
+    campaigns run on sequential days. within the for loop we are looking for
+    difference between days and if that difference is more than 1 day (< -1)
+    then we loop the number of times as the difference and we use moment to add
+    one on each loop, giving us the missing days
+    in the inner for loop, we splice (add to array) in a new object with all
+    null values except for the date. We do this so that the graph/chart
+    accurately reflects the data, since without this it will look like
+    all campaigns ran on consecutive days, when sometimes this is not
+    the case.
+    */
     try {
-
-
       for (var i = 0; i < arr.length + total; i++) {
         var diff = moment(arr[i].data.date_start, timeForm).diff(moment(arr[i + 1].data.date_start, timeForm), 'days');
 
         if (diff < -1) {
+
           for (var j = 1; j < Math.abs(diff); j++) {
+
             console.log("generated nums:", moment(arr[i].data.date_start, timeForm).add(j, 'd').format(timeForm));
+
             arr.splice(i + j, 0, {
               data: {
                 date_start: moment(arr[i].data.date_start, timeForm).add(j, 'd').format(timeForm),
@@ -144,17 +148,6 @@ Meteor.methods({
       // statements
       console.log(e);
     }
-
-
-
-    // arr.forEach((el,ind) => {
-    //   console.log(el.data);
-    // })
-
-
-
-
-
 
 
     arr = _.sortBy(arr, function (el){ return moment(el.data.date_start, "MM-DD-YYYY").format("MM-DD-YYYY") });
@@ -254,9 +247,12 @@ Meteor.methods({
         el.cpm = null;
         el.cpc = null;
       }
+      if (el.cost_per_like === Infinity) {
+        el.cost_per_like = 0;
+      }
     });
 
-    console.log(otherArray);
+    // console.log(otherArray);
 
     return otherArray;
 
