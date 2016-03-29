@@ -52,26 +52,104 @@ Meteor.methods({
 
     // console.log(arr);
     let timeForm = "MM-DD-YYYY"
+    let total = 0;
+
+    console.log(arr.length)
 
     try {
 
       arr.forEach((el, index) => {
-        console.log(arr[index].data.date_start)
-        var diff = moment(arr[index].data.date_start, timeForm).diff(moment(arr[index + 1].data.date_start, timeForm), 'days');
+        console.log("from first arr:", arr[index].data.date_start)
+          var diff = moment(arr[index].data.date_start, timeForm).diff(moment(arr[index + 1].data.date_start, timeForm), 'days');
 
-        if (diff < -1) {
-            // console.log('more than a day difference');
-            for (var i = 1; i < Math.abs(diff); i++) {
-              console.log(moment(arr[index].data.date_start, timeForm).add(i, 'd').format(timeForm));
-            }
+          if (diff < -1) {
+            console.log('from first arr - days diff', Math.abs(diff));
+            total += Math.abs(diff) - 1;
           }
       });
-
     } catch(e) {
-        console.log(e instanceof TypeError);
+        console.log("Is it a TypeError", e instanceof TypeError);
         console.log("Error Message:", e.message);
     }
 
+    console.log('total number of days we need to generate', total);
+
+    try {
+
+
+      for (var i = 0; i < arr.length + total; i++) {
+        var diff = moment(arr[i].data.date_start, timeForm).diff(moment(arr[i + 1].data.date_start, timeForm), 'days');
+
+        if (diff < -1) {
+          for (var j = 1; j < Math.abs(diff); j++) {
+            console.log("generated nums:", moment(arr[i].data.date_start, timeForm).add(j, 'd').format(timeForm));
+            arr.splice(i + j, 0, {
+              data: {
+                date_start: moment(arr[i].data.date_start, timeForm).add(j, 'd').format(timeForm),
+                impressions: null,
+                clicks: null,
+                like: null,
+                spend: null,
+                cost_per_like: null,
+                cost_per_page_engagement: null,
+                cost_per_post_engagement: null,
+                cost_per_video_view: null,
+                cpm: null,
+                cpc: null,
+                reach: null,
+                total_actions: null,
+                video_view: null,
+                post_engagement: null
+              }
+            })
+          }
+        }
+      }
+
+
+
+
+      // arr.forEach((el, index) => {
+
+      //   console.log(arr[index].data.date_start)
+      //   var diff = moment(arr[index].data.date_start, timeForm).diff(moment(arr[index + 1].data.date_start, timeForm), 'days');
+      //
+      //   if (diff < -1) {
+      //       for (var i = 1; i < Math.abs(diff); i++) {
+      //         console.log("generated nums:", moment(arr[index].data.date_start, timeForm).add(i, 'd').format(timeForm));
+      //         arr.splice(index + i, 0, {
+      //           data: {
+      //             date_start: "generated date " + moment(arr[index].data.date_start, timeForm).add(i, 'd').format(timeForm),
+      //             impressions: null,
+      //             clicks: null,
+      //             like: null,
+      //             spend: null,
+      //             cost_per_like: null,
+      //             cost_per_page_engagement: null,
+      //             cost_per_post_engagement: null,
+      //             cost_per_video_view: null,
+      //             cpm: null,
+      //             cpc: null,
+      //             reach: null,
+      //             total_actions: null,
+      //             video_view: null,
+      //             post_engagement: null
+
+      //           }
+      //         })
+      //       }
+      //     }
+      // });
+    } catch(e) {
+      // statements
+      console.log(e);
+    }
+
+
+
+    // arr.forEach((el,ind) => {
+    //   console.log(el.data);
+    // })
 
 
 
@@ -88,7 +166,10 @@ Meteor.methods({
     // needed to account for likes being undefined so we can add to zero
     // and format data so it can be added or averaged
     arr.forEach(el => {
+      el.data.impressions === null ?
+      el.data.impressions = null :
       el.data.impressions = parseInt(el.data.impressions);
+
       el.data.spend = parseFloat(accounting.unformat(el.data.spend).toFixed(2));
       el.data.cpm = parseFloat(accounting.unformat(el.data.cpm).toFixed(2));
       el.data.cpc = parseFloat(accounting.unformat(el.data.cpc).toFixed(2));
@@ -160,9 +241,24 @@ Meteor.methods({
       }
 
     }
-    // console.log(otherArray);
 
-    // return otherArray;
+
+    // make sure all values are null so the charts reflect that
+    otherArray.forEach(el => {
+      if (el.impressions === null) {
+        el.spend = null;
+        el.like = null;
+        el.cost_per_like = null;
+        el.cost_per_post_engagement = null;
+        el.cost_per_video_view = null;
+        el.cpm = null;
+        el.cpc = null;
+      }
+    });
+
+    console.log(otherArray);
+
+    return otherArray;
 
   },
   'hourlyChart': function (initiative) {

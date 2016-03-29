@@ -79,6 +79,7 @@ Template.charts.helpers({
 
       call('aggregateForChart', initiative)
       .then(function (res) {
+        console.log("result from promise", res)
         Session.set('res', res);
         totes = res[0][type]
       }).catch(function (err) {
@@ -86,8 +87,8 @@ Template.charts.helpers({
       });
 
       Session.get('res').forEach(el => {
-        totes += parseInt(el[type]);
-        spendTotal += parseFloat(accounting.unformat(el.spend).toFixed(2));
+        totes += el[type];
+        spendTotal += el.spend;
         actionToChart.push(totes);
         spendChart.push(spendTotal);
       });
@@ -110,7 +111,8 @@ Template.charts.helpers({
       //   }
       // });
       // console.log("res:", Session.get("res"));
-
+      // console.log(actionToChart);
+      // console.log(spendChart);
       // build chart
     return {
 
@@ -127,7 +129,7 @@ Template.charts.helpers({
       },
 
       tooltip: {
-        valueSuffix: type,
+        valueSuffix: " " + type,
         shared: true,
         crosshairs: true
       },
@@ -318,7 +320,6 @@ Template.charts.helpers({
 
 
 
-    console.log("labels from dualAxes", labels);
     return {
       chart: {
         zoomType: 'xy'
@@ -429,7 +430,7 @@ Template.charts.helpers({
     call('hourlyChart', initiative)
     .then(function (resultData) {
       Session.set('resultData', resultData);
-      console.log(resultData);
+      // console.log(resultData);
     })
     .catch(function (err) {
       console.log('boooo error', err)
