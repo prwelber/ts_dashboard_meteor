@@ -211,7 +211,7 @@ Template.charts.helpers({
       cpcChart.push(el.cpc);
       cplChart.push(el.cost_per_like);
     });
-
+    console.log("cpmChart from cost per", cpmChart)
     // build chart
     return {
 
@@ -318,7 +318,7 @@ Template.charts.helpers({
 
 
 
-
+    console.log("labels from dualAxes", labels);
     return {
       chart: {
         zoomType: 'xy'
@@ -426,7 +426,7 @@ Template.charts.helpers({
     }
     var call = Promise.promisify(Meteor.call);
 
-    call('pieChart', initiative)
+    call('hourlyChart', initiative)
     .then(function (resultData) {
       Session.set('resultData', resultData);
       console.log(resultData);

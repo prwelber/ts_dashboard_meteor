@@ -38,6 +38,47 @@ Meteor.methods({
 
     arr = _.flatten(arr);
 
+
+    /*
+    Below, we are accounting for any gaps in the timeline since not all
+    campaigns run on sequential days. within the forEach we are looking for
+    difference between days and if that difference is more than 1 day (< -1)
+    then we loop the number of times as the difference and we use moment to add
+    one on each loop, giving us the missing days
+    As of this writing, we need to push those dates into the existing array
+    at the appropriate position and give them all null values
+    This is so that the graph will reflect accurately what happens on what days
+    */
+
+    // console.log(arr);
+    let timeForm = "MM-DD-YYYY"
+
+    try {
+
+      arr.forEach((el, index) => {
+        console.log(arr[index].data.date_start)
+        var diff = moment(arr[index].data.date_start, timeForm).diff(moment(arr[index + 1].data.date_start, timeForm), 'days');
+
+        if (diff < -1) {
+            // console.log('more than a day difference');
+            for (var i = 1; i < Math.abs(diff); i++) {
+              console.log(moment(arr[index].data.date_start, timeForm).add(i, 'd').format(timeForm));
+            }
+          }
+      });
+
+    } catch(e) {
+        console.log(e instanceof TypeError);
+        console.log("Error Message:", e.message);
+    }
+
+
+
+
+
+
+
+
     arr = _.sortBy(arr, function (el){ return moment(el.data.date_start, "MM-DD-YYYY").format("MM-DD-YYYY") });
 
     arr.forEach(el => {
@@ -45,6 +86,7 @@ Meteor.methods({
     });
 
     // needed to account for likes being undefined so we can add to zero
+    // and format data so it can be added or averaged
     arr.forEach(el => {
       el.data.impressions = parseInt(el.data.impressions);
       el.data.spend = parseFloat(accounting.unformat(el.data.spend).toFixed(2));
@@ -120,10 +162,10 @@ Meteor.methods({
     }
     // console.log(otherArray);
 
-    return otherArray;
+    // return otherArray;
 
   },
-  'pieChart': function (initiative) {
+  'hourlyChart': function (initiative) {
     console.log('pieChart running');
     let campaignIds = initiative.campaign_ids
 
@@ -139,7 +181,7 @@ Meteor.methods({
      */
     for (var i = 0; i <= 23; i++) {
       var pipeline = [
-        {$match: 
+        {$match:
           {$and: [
               {'data.hour': time.format('hh:mm a')},
               {'data.campaign_id': { $in: campaignIds } }
