@@ -54,7 +54,7 @@ Template.charts.helpers({
           end         = new Date(initiative.endDate),
           dr          = moment.range(start, end),
           arrayOfDays = dr.toArray('days');
-      
+
       arrayOfDays.forEach(el => {
         labels.push(moment(el).format("MM-DD"))
       });
@@ -73,7 +73,7 @@ Template.charts.helpers({
           spendChart    = [],
           spendTotal    = 0,
           totes         = 0; // Template.instance().templateDict.get('data')[0].type;
-      
+
       // seeing if Bluebird will work for promises and meteor.call
       var call = Promise.promisify(Meteor.call);
 
@@ -91,7 +91,7 @@ Template.charts.helpers({
         actionToChart.push(totes);
         spendChart.push(spendTotal);
       });
-      
+
       //  // this works. not sure why...
       // let asyncCall = function asyncCall (methodName, init, callback) {
       //   Meteor.call(methodName, init, function (err, res) {
@@ -453,10 +453,10 @@ Template.charts.helpers({
             text: 'Hourly Breakdown'
         },
         xAxis: {
-            categories: ['12am', '1am', '2am', '3am', '4am', '5am', 
-                         '6am', '7am', '8am', '9am', '10am', '11am', 
-                         '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', 
-                         '6pm', '7pm', '8pm', '9pm', '10pm', '11pm', 
+            categories: ['12am', '1am', '2am', '3am', '4am', '5am',
+                         '6am', '7am', '8am', '9am', '10am', '11am',
+                         '12pm', '1pm', '2pm', '3pm', '4pm', '5pm',
+                         '6pm', '7pm', '8pm', '9pm', '10pm', '11pm',
             ],
             crosshair: true
         },
@@ -476,11 +476,11 @@ Template.charts.helpers({
         },
         plotOptions: {
             column: {
-                pointPadding: 0.1,
+                pointPadding: 0.0,
                 borderWidth: 0
             }
         },
-        series: [cpc, cpm, cpl, spend, impressions, clicks, likes]            
+        series: [cpc, cpm, cpl, spend, impressions, clicks, likes]
     }
   }
 });
