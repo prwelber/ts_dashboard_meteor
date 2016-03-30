@@ -3,18 +3,23 @@
 Tracker.autorun(function () {
     if (FlowRouter.subsReady('Initiatives')) {
         console.log('Initiatives subs ready!');
+        $('select').material_select();
     }
 })
 
 Template.newInitiative.helpers({
     'getBrands': function () {
-        return Accounts.find()
+        $('select').material_select();
+        return Accounts.find();
     }
 });
 
 
 Template.newInitiative.onRendered(function () {
-
+    $('select').material_select();
+    $('.collapsible').collapsible({
+        accordion: false
+    });
 });
 
 Template.newInitiative.events({
@@ -26,25 +31,23 @@ Template.newInitiative.events({
         newInitiative['name']      = event.target.name.value;
         newInitiative['brand']     = event.target.brand.value;
         newInitiative['agency']    = event.target.agency.value;
-        newInitiative['dealType']  = event.target.dealtype.value;
+        newInitiative['dealType']  = event.target.dealType.value;
         newInitiative['budget']    = event.target.budget.value;
         newInitiative['startDate'] = moment(event.target.startDate.value, "MM-DD-YYYY hh:mm a").format("MM-DD-YYYY hh:mm a");
         newInitiative['endDate']   = moment(event.target.endDate.value, "MM-DD-YYYY hh:mm a").format("MM-DD-YYYY hh:mm a");;
         newInitiative['notes']     = event.target.notes.value;
         newInitiative['quantity']  = event.target.quantity.value;
         newInitiative['price']     = event.target.price.value;
-        newInitiative['searchText']= event.target.searchText.value;
+        newInitiative['search-text']= event.target.searchText.value;
 
-        // let campaignInsight = CampaignInsights.findOne({'data.campaign_name': newInitiative.name});
-        // newInitiative['campaign_id'] = campaignInsight.data.campaign_id;
         console.log(newInitiative);
-        Meteor.call('insertNewInitiative', newInitiative, function (error, result) {
-            if (error) {
-                console.log(error);
-            } else {
-                alert('Initiative successfully submitted');
-            }
-        });
+        // Meteor.call('insertNewInitiative', newInitiative, function (error, result) {
+        //     if (error) {
+        //         console.log(error);
+        //     } else {
+        //         alert('Initiative successfully submitted');
+        //     }
+        // });
     },
     'blur #new-init-budget': function (event, template) {
         let re = /[^0-9.]/
@@ -53,6 +56,14 @@ Template.newInitiative.events({
         if (result == true) {
             alert('Budget format is incorrect. Only include numbers and one period.')
         }
+    },
+    'click #add-line-item': function (event, template) {
+        const lineItemHTML = '<div class="row"><h3>Line Item</h3><div class="input-field col s6"><input type="text" id="platform-input" name="platform"><label for="platform-input">Platform</label></div><div class="input-field col s6"><input type="text" id="objective-input" name="objective"><label for="objetive-input">Objective</label></div><div class="input-field col s4"><select name="dealType" id="dealType-dropdown" class="browser-default"><option value="CPC">CPC</option><option value="CPM">CPM</option><option value="CPL">CPL</option><option value="FACTOR">FACTOR</option></select><label class="active">Deal Type</label></div><div class="input-field col s4"><input type="text" id="start-date" name="startDate"><label for="start-date">Start Date</label></div><div class="input-field col s4"><input type="text" id="end-date" name="endDate"><label for="end-date">End Date</label></div><div class="input-field col s4"><input type="text" id="price-input" name="price"><label for="price-input">Price</label></div><div class="input-field col s4"><input type="text" id="budget-input" name="budget"><label for="budget-input">Budget (no commas in input, ex: 15000.00)</label></div><div class="input-field col s4"><input type="text" id="quantity-input" name="quantity"><label for="quantity-input">Quantity</label></div></div>'
+
+
+        console.log(event.target);
+        console.log(template)
+        $(lineItemHTML).insertBefore('#add-line-item')
     }
 });
 
