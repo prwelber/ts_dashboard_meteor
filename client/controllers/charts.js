@@ -32,7 +32,7 @@ Template.charts.helpers({
   'deliveryChart': function () {
       const initiative = Template.instance().templateDict.get('initiative');
       // for getting evenly distrubuted output
-      let labels          = [], // this will be the date range
+      const labels          = [], // this will be the date range
           timeFormat      = "MM-DD-YYYY",
           days            = moment(initiative.endDate, timeFormat).diff(moment(initiative.startDate, timeFormat), 'days'),
           avg             = Math.round(initiative.quantity / days),
