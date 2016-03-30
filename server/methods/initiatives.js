@@ -1,30 +1,63 @@
 Meteor.methods({
-  'insertNewInitiative': function (dataObj) {
-    let campArray = [];
-    let campNameArray = [];
+  'insertNewInitiative': function (data) {
+    const campArray = [];
+    const campNameArray = [];
 
     Initiatives.insert({
       inserted_date: moment().format("MM-DD-YYYY hh:mm a"),
-      brand: dataObj.brand,
-      agency: dataObj.agency,
-      budget: dataObj.budget,
-      dealType: dataObj.dealType,
-      endDate: dataObj.endDate,
-      name: dataObj.name,
-      notes: dataObj.notes,
-      startDate: dataObj.startDate,
-      quantity: dataObj.quantity,
-      price: dataObj.price,
+      name: data.name,
+      search_text: data.search_text,
+      brand: data.brand,
+      agency: data.agency,
+      notes: data.notes,
+      platform: data.platform,
+      dealType: data.dealType,
+      budget: data.budget,
+      startDate: data.startDate,
+      endDate: data.endDate,
+      quantity: data.quantity,
+      price: data.price,
+      platform2: data.platform2,
+      dealType2: data.dealType2,
+      budget2: data.budget2,
+      startDate2: data.startDate2,
+      endDate2: data.endDate2,
+      quantity2: data.quantity2,
+      price2: data.price2,
+      platform3: data.platform3,
+      dealType3: data.dealType3,
+      budget3: data.budget3,
+      startDate3: data.startDate3,
+      endDate3: data.endDate3,
+      quantity3: data.quantity3,
+      price3: data.price3,
+      platform4: data.platform4,
+      dealType4: data.dealType4,
+      budget4: data.budget4,
+      startDate4: data.startDate4,
+      endDate4: data.endDate4,
+      quantity4: data.quantity4,
+      price4: data.price4,
+      platform5: data.platform5,
+      dealType5: data.dealType5,
+      budget5: data.budget5,
+      startDate5: data.startDate5,
+      endDate5: data.endDate5,
+      quantity5: data.quantity5,
+      price5: data.price5,
       campaign_ids: campArray,
       campaign_names: campNameArray,
-      search_text: dataObj.searchText
     });
-    console.log("new initiative inserted into DB:", dataObj)
+    console.log("new initiative inserted into DB:", data)
     return "success";
   },
   'removeInitiatives': function () {
     Initiatives.remove( {} );
     return "initiatives removed!";
+  },
+  'deleteInitiative': function (_id) {
+    Initiatives.remove( {_id: _id} );
+    return "initiative deleted";
   },
   'updateInitiative': function (data) {
     Initiatives.update(
@@ -60,7 +93,7 @@ Meteor.methods({
     console.log('getAggregate running')
     // This function aggregates campaignInsight data for an initiative
     let pipeline = [
-      {$match: 
+      {$match:
         {"data.initiative": name}
       },
       {$group: {
@@ -90,6 +123,7 @@ Meteor.methods({
           aggregateData: result
       }
     });
+    console.log("result of getAggregate", result)
     return result;
   },
   'makeProjections': function (name, days) {
