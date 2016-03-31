@@ -193,6 +193,27 @@ dash.helpers({
         impressions: projections(agData.impressions, sesh, timeDiff),
         likes: projections(agData.likes, sesh, timeDiff)
       }
+    },
+    'overviewActive': function () {
+      return Session.get("route") === "overview" ? "active" : '';
+    },
+    'targetingActive': function () {
+      return Session.get("route") === "targeting" ? "active": '';
+    },
+    'creativeActive': function () {
+      return Session.get("route") === "creative" ? "active" : '';
+    },
+    'breakdownsActive': function () {
+      return Session.get("route") === "breakdowns" ? "active" : '';
+    },
+    'daybreakdownsActive': function () {
+      return Session.get("route") === "daybreakdowns" ? "active" : '';
+    },
+    'hourlybreakdownsActive': function () {
+      return Session.get("route") === "hourlyBreakdowns" ? "active" : '';
+    },
+    'chartsActive': function () {
+      return Session.get("route") === "charts" ? "active" : '';
     }
 
 });

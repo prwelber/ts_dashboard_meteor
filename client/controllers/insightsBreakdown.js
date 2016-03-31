@@ -39,6 +39,29 @@ Template.insightsBreakdown.helpers({
     },
     'campaignInfo': function () {
         return CampaignInsights.findOne({'data.campaign_id': FlowRouter.current().params.campaign_id}).data;
+    },
+      'isActive': function (pathName) {
+      let pathNameRegEx;
+      if (pathName === "overview") {
+        pathNameRegEx = /overview/;
+      } else if (pathName === "targeting") {
+        pathNameRegEx = /targeting/;
+      } else if (pathName === "creative") {
+        pathNameRegEx = /creative/;
+      } else if (pathName === "breakdowns") {
+        pathNameRegEx = /breakdowns/;
+      } else if (pathName === "daybreakdowns") {
+        pathNameRegEx = /daybreakdowns/;
+      } else if (pathName === "hourlybreakdowns") {
+        pathNameRegEx = /hourlybreakdowns/;
+      } else if (pathName === "charts") {
+        pathNameRegEx = /charts/;
+      }
+      if (pathNameRegEx.test(FlowRouter.current().path) === true) {
+        return "active";
+      } else {
+        return '';
+      }
     }
 });
 

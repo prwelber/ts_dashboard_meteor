@@ -3,31 +3,48 @@
 </head>
 <template name="index">
     <body>
-        <header>
-            <a href="/">Home</a>
-            {{> loginButtons}}
-            <a href="/admin">Admin</a>
-            <br />Today is <span class=date>{{getDate}}</span>
-        </header>
-        <h1>Stats 2.0 with Meteor</h1>
-        <div id="message-box">
-          <ul id="message-box-list">
-          </ul>
+      <header>
+      </header>
+      <div id="message-box">
+        <ul id="message-box-list">
+        </ul>
+      </div>
+      <main>
+        <div id="spinner-div">
         </div>
-        <main>
-            <div id="spinner-div">
+        <div id="container">
+            {{> Template.dynamic template=main}}
+        </div>
+      </main>
+      <div class="reporting-div">
+      </div>
+      <div>
+        {{> Template.dynamic template=other2}}
+      </div>
+      <footer class="page-footer">
+        <div class="container">
+          <div class="row">
+            <div class="col l6 s12">
+              <h5 class="white-text">Footer Content Here</h5>
+              {{> loginButtons}}
+              <p class="grey-text text-lighten-4">Today is {{getDate}}</p>
+              <p class="grey-text text-lighten-4">More Footer Content</p>
             </div>
-            <div id="container">
-                {{> Template.dynamic template=main}}
+            <div class="col l4 offset-12 s12">
+              <h5 class="white-text">Links</h5>
+              <ul>
+                <li> <a class="grey-text text-lighten-3" href="/">Home</a> </li>
+                <li> <a class="grey-text text-lighten-3" href="/admin">Admin</a> </li>
+              </ul>
             </div>
-        </main>
-        <div class="reporting-div">
+          </div>
         </div>
-        <div>
-            {{> Template.dynamic template=other2}}
-        </div>
-        <footer>
-            <p><strong>This is for the footer.</strong></p>
-        </footer>
+        <div class="footer-copyright">
+            <div class="container">
+            © 2016 Copyright
+            <a class="grey-text text-lighten-4 right" href="#!">Targeted Social Home</a>
+            </div>
+          </div>
+      </footer>
     </body>
 </template>
