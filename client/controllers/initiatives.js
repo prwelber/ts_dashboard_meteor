@@ -147,6 +147,13 @@ Template.initiative.events({
     }
 });
 
+Template.editInitiative.onRendered(function () {
+  $('.collapsible').collapsible({
+    accordion: false
+  });
+  $('.tooltipped').tooltip({delay: 50});
+});
+
 Template.editInitiative.helpers({
     'getInitiative': function () {
         return Initiatives.findOne({_id: FlowRouter.current().params._id})
@@ -166,31 +173,80 @@ Template.editInitiative.helpers({
 
 Template.editInitiative.events({
     'submit #edit-initiative-form': function (event, template) {
-        event.preventDefault();
-        let data = {};
-        data['name']      = event.target.name.value;
-        data['brand']     = event.target.brand.value;
-        data['agency']    = event.target.agency.value;
-        data['dealType']  = event.target.dealtype.value;
-        data['budget']    = event.target.budget.value;
-        data['startDate'] = moment(new Date(event.target.startDate.value)).format("MM-DD-YYYY hh:mm a");
-        data['endDate']   = moment(new Date(event.target.endDate.value)).format("MM-DD-YYYY hh:mm a");;
-        data['notes']     = event.target.notes.value;
-        data['quantity']  = event.target.quantity.value;
-        data['price']     = event.target.price.value;
-        data['search_text'] = event.target.search_text.value;
-        let selected = template.findAll("input[type=checkbox]:checked");
-        let campaigns = _.map(selected, function(item) {
-            return item.value;
-        });
 
-        data['campaign_names'] = campaigns;
-        console.log(data);
-        Meteor.call('updateInitiative', data, function (error, result) {
+
+      // prevent default behavior
+      event.preventDefault();
+
+      const updatedInitiative = {};
+      updatedInitiative['name']      = event.target.name.value;
+      updatedInitiative['search_text']= event.target.search_text.value;
+      updatedInitiative['brand']     = event.target.brand.value;
+      updatedInitiative['agency']    = event.target.agency.value;
+      updatedInitiative['notes']     = event.target.notes.value;
+      updatedInitiative['product']   = event.target.product.value;
+
+      updatedInitiative['platform']  = event.target.platform.value;
+      updatedInitiative['objective']  = event.target.objective.value;
+      updatedInitiative['dealType']  = event.target.dealType.value;
+      updatedInitiative['budget']    = event.target.budget.value;
+      updatedInitiative['startDate'] = moment(event.target.startDate.value, "MM-DD-YYYY hh:mm a").format("MM-DD-YYYY hh:mm a");
+      updatedInitiative['endDate']   = moment(event.target.endDate.value, "MM-DD-YYYY hh:mm a").format("MM-DD-YYYY hh:mm a");
+      updatedInitiative['quantity']  = event.target.quantity.value;
+      updatedInitiative['price']     = event.target.price.value;
+
+      updatedInitiative['platform2']  = event.target.platform2.value;
+      updatedInitiative['objective2']  = event.target.objective2.value;
+      updatedInitiative['dealType2']  = event.target.dealType2.value;
+      updatedInitiative['budget2']    = event.target.budget2.value;
+      updatedInitiative['startDate2'] = moment(event.target.startDate2.value, "MM-DD-YYYY hh:mm a").format("MM-DD-YYYY hh:mm a");
+      updatedInitiative['endDate2']   = moment(event.target.endDate2.value, "MM-DD-YYYY hh:mm a").format("MM-DD-YYYY hh:mm a");
+      updatedInitiative['quantity2']  = event.target.quantity2.value;
+      updatedInitiative['price2']     = event.target.price2.value;
+
+      updatedInitiative['platform3']  = event.target.platform3.value;
+      updatedInitiative['objective3']  = event.target.objective3.value;
+      updatedInitiative['dealType3']  = event.target.dealType3.value;
+      updatedInitiative['budget3']    = event.target.budget3.value;
+      updatedInitiative['startDate3'] = moment(event.target.startDate3.value, "MM-DD-YYYY hh:mm a").format("MM-DD-YYYY hh:mm a");
+      updatedInitiative['endDate3']   = moment(event.target.endDate3.value, "MM-DD-YYYY hh:mm a").format("MM-DD-YYYY hh:mm a");
+      updatedInitiative['quantity3']  = event.target.quantity3.value;
+      updatedInitiative['price3']     = event.target.price3.value;
+
+      updatedInitiative['platform4']  = event.target.platform4.value;
+      updatedInitiative['objective4']  = event.target.objective4.value;
+      updatedInitiative['dealType4']  = event.target.dealType4.value;
+      updatedInitiative['budget4']    = event.target.budget4.value;
+      updatedInitiative['startDate4'] = moment(event.target.startDate4.value, "MM-DD-YYYY hh:mm a").format("MM-DD-YYYY hh:mm a");
+      updatedInitiative['endDate4']   = moment(event.target.endDate4.value, "MM-DD-YYYY hh:mm a").format("MM-DD-YYYY hh:mm a");
+      updatedInitiative['quantity4']  = event.target.quantity4.value;
+      updatedInitiative['price4']     = event.target.price4.value;
+
+      updatedInitiative['platform5']  = event.target.platform5.value;
+      updatedInitiative['objective5']  = event.target.objective5.value;
+      updatedInitiative['dealType5']  = event.target.dealType5.value;
+      updatedInitiative['budget5']    = event.target.budget5.value;
+      updatedInitiative['startDate5'] = moment(event.target.startDate5.value, "MM-DD-YYYY hh:mm a").format("MM-DD-YYYY hh:mm a");
+      updatedInitiative['endDate5']   = moment(event.target.endDate5.value, "MM-DD-YYYY hh:mm a").format("MM-DD-YYYY hh:mm a");
+      updatedInitiative['quantity5']  = event.target.quantity5.value;
+      updatedInitiative['price5']     = event.target.price5.value;
+
+      for (let key in updatedInitiative) {
+        if (updatedInitiative[key] === "" || updatedInitiative[key] === "Invalid date") {
+          updatedInitiative[key] = null;
+        }
+      }
+      console.log(updatedInitiative);
+
+      if (updatedInitiative.name === null || updatedInitiative.search_text === null) {
+        Materialize.toast('Error: name, search text or both is empty', 5000);
+      } else {
+        Meteor.call('updateInitiative', updatedInitiative, function (error, result) {
             if (result) {
-                mastFunc.addToBox("Initiative "+result+" Updated Successfully!");
+              Materialize.toast('Success! You have updated the initiative.', 5000);
             }
         });
+      }
     }
 });
 

@@ -38,9 +38,10 @@ Template.charts.helpers({
           avg             = Math.round(initiative.quantity / days),
           spendAvg        = parseFloat(initiative.budget) / days,
           avgData         = [],
-          idealSpend      = [],
-          idealSpendTotal = 0,
-          total           = 0;
+          idealSpend      = [];
+      
+      let total           = 0,
+          idealSpendTotal = 0;
 
       for (let i = 0; i < days; i++) {
         total = total + avg;
