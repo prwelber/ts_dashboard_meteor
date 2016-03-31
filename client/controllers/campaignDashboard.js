@@ -78,6 +78,9 @@ dash.helpers({
         let initiative = Initiatives.findOne(
           {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
         });
+        initiative.budget = mastFunc.money(initiative.budget);
+        initiative.quantity = numeral(initiative.quantity).format("0,0");
+        initiative.price = mastFunc.money(initiative.price);
         return initiative;
     },
     'getAggregate': function () {
@@ -109,13 +112,10 @@ dash.helpers({
         console.log('aggghhh error:', err)
       })
 
-
-
-
       // moment stuff to figure out timeLeft on initiative
-      let ends = moment(init.endDate, "MM-DD-YYYY");
-      let starts = moment(init.startDate, "MM-DD-YYYY");
-      let now = moment(new Date);
+      const ends = moment(init.endDate, "MM-DD-YYYY");
+      const starts = moment(init.startDate, "MM-DD-YYYY");
+      const now = moment(new Date);
       let timeLeft;
       // if now is after the end date, timeleft is zero, else...
       now.isAfter(ends) ? timeLeft = 0 : timeLeft = ends.diff(now, 'days');

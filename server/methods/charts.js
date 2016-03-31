@@ -259,7 +259,7 @@ Meteor.methods({
   },
   'hourlyChart': function (initiative) {
     console.log('pieChart running');
-    let campaignIds = initiative.campaign_ids
+    let campaignIds = initiative.campaign_ids // array of campaign ids
 
     let twentyFourHourArray = [];
     var time = moment('12:00 am', 'hh:mm a');

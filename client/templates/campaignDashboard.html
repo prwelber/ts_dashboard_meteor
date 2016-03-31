@@ -49,25 +49,126 @@
           </a>
         </div>
       </div>
-      {{#with getInitiative}}
-      <div class="sixteen wide column">
-        <h3>Initiative Name: {{name}}</h3>
-        <p>Agency: {{agency}} | Brand: {{brand}} | Product: placeholder</p>
-        <p>Deal Type: {{dealType}} | Quantity: {{quantity}} | Price: {{price}} | Budget: {{budget}}</p>
-        <p>Platform: {{platform}} | Dates: {{startDate}} -- {{endDate}} | Objective: {{objective}}</p>
-      </div>
-      {{/with}}
-        <div class="five wide column">
-          <h3>Initiative Aggregate</h3>
-          {{#with getAggregate}}
-            <p>Spend: {{initiative.spend}} | Percentage: {{spendPercent}}</p>
-            <p>Clicks: {{initiative.clicks}} | CPC: {{initiative.cpc}}</p>
-            <p>Impressions: {{initiative.impressions}} | CPM: {{initiative.cpm}}</p>
-            <p>Likes: {{initiative.likes}} | CPL: {{initiative.cpl}}</p>
-            <p>Reach: {{initiative.reach}}</p>
-            <p>Ends: {{ends}} | Days Left: {{timeLeft}}</p>
+    </div>
+    <br><br><br>
+    {{!-- <div class="container"> --}}
+      <div class="row">
+        <div class="col s12">
+          <h3 class="center-align">Initiative Core</h3>
+          {{#with getInitiative}}
+          <table class="centered">
+            <thead>
+              <tr>
+                <th data-field="id">Name</th>
+                <th data-field="id">Agency</th>
+                <th data-field="id">Brand</th>
+                <th data-field="id">Product</th>
+                <th data-field="id">Objective</th>
+                <th data-field="id">Platform</th>
+                <th data-field="id">Deal Type</th>
+                <th data-field="id">Quantity</th>
+                <th data-field="id">Price</th>
+                <th data-field="id">Budget</th>
+                <th data-field="id">Start Date</th>
+                <th data-field="id">End Date</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>{{name}}</td>
+                <td>{{agency}}</td>
+                <td>{{brand}}</td>
+                <td>{{product}}</td>
+                <td>{{objective}}</td>
+                <td>{{platform}}</td>
+                <td>{{dealType}}</td>
+                <td>{{quantity}}</td>
+                <td>{{price}}</td>
+                <td>{{budget}}</td>
+                <td>{{startDate}}</td>
+                <td>{{endDate}}</td>
+              </tr>
+              <tr>
+                {{!-- can put another line item here --}}
+              </tr>
+            </tbody>
+          </table>
           {{/with}}
         </div>
+      </div>
+    {{!-- </div> --}}
+
+    <div class="row">
+      <div class="col s12">
+        <h3 class="center-align">Initiative Aggregate</h3>
+        {{#with getAggregate}}
+        <table class="centered">
+          <thead>
+              <tr>
+                <th data-field="id">Spend</th>
+                <th data-field="id">Spend %</th>
+                <th data-field="id">Clicks</th>
+                <th data-field="id">CPC</th>
+                <th data-field="id">Impressions</th>
+                <th data-field="id">CPM</th>
+                <th data-field="id">Likes</th>
+                <th data-field="id">CPL</th>
+                <th data-field="id">Reach</th>
+                <th data-field="id">Date Ends</th>
+                <th data-field="id">Days Left</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>{{initiative.spend}}</td>
+                <td>{{spendPercent}}</td>
+                <td>{{initiative.clicks}}</td>
+                <td>{{initiative.cpc}}</td>
+                <td>{{initiative.impressions}}</td>
+                <td>{{initiative.cpm}}</td>
+                <td>{{initiative.likes}}</td>
+                <td>{{initiative.cpl}}</td>
+                <td>{{initiative.reach}}</td>
+                <td>{{ends}}</td>
+                <td>{{timeLeft}}</td>
+              </tr>
+            </tbody>
+        </table>
+        {{/with}}
+      </div>
+    </div>
+
+    <div class="row">
+      <h3 class="center-align">Initiative Projection</h3>
+      <div class="col s3 offset-s1">
+        <p><button id="project-up" class="waves-effect waves-light btn">+</button> Days: {{getSessionDay}} <button id="project-down" class="waves-effect waves-light btn">-</button> </p>
+      </div>
+      <div class="col s2">
+        <p>Daily Clicks: {{averages.avgClicks}}</p>
+      </div>
+      <div class="col s2">
+        <p>Daily Impressions: {{averages.avgImpressions}}</p>
+      </div>
+      <div class="col s2">
+        <p>Daily Likes: {{averages.avgLikes}}</p>
+      </div>
+      <div class="col s2">
+        <p>Daily Spend: {{averages.avgSpend}}</p>
+      </div>
+      <div class="col s12">
+        {{#with dataProjection}}
+          <p>Clicks: {{clicks}}</p>
+          <p>Impressions: {{impressions}}</p>
+          <p>Likes: {{likes}}</p>
+        {{/with}}
+      </div>
+    </div>
+
+
+{{!--
+    <div>
         <div class="six wide column">
           <h3>Projection</h3>
           <p>Days: {{getSessionDay}} <button id="project-up">+</button><button id="project-down">-</button></p>
@@ -106,7 +207,7 @@
             <p>Likes: {{likes}}</p>
             {{/with}}
         </div>
-    </div>
+    </div> --}}
     {{> Template.dynamic template=tasks}}
     {{> Template.dynamic template=dash}}
 </template>
