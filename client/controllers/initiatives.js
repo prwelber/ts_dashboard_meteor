@@ -268,14 +268,20 @@ Template.initiativeAggregate.helpers({
     }
 });
 
+Template.editInitiativeCampaigns.onCreated( function () {
+  this.templateDict = new ReactiveDict();
+  const initiative = Initiatives.findOne({_id: FlowRouter.current().params._id});
+  this.templateDict.set('initiative', initiative);
+});
+
 Template.editInitiativeCampaigns.helpers({
     'getInitiative': function () {
-        let init =  Initiatives.findOne({_id: FlowRouter.current().params._id});
-        return [init];
+        const initiative = Template.instance().templateDict.get('initiative');
+        return [initiative];
     },
     'getCampaigns': function () {
-        let init =  Initiatives.findOne({_id: FlowRouter.current().params._id});
-        return init.campaign_names;
+        const initiative = Template.instance().templateDict.get('initiative');
+        return initiative.campaign_names;
     },
     'getAllCampaigns': function () {
         let camps = CampaignInsights.find().fetch();

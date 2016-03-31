@@ -82,6 +82,30 @@ Template.index.helpers({
         let date = new Date();
         date = date.toDateString();
         return date;
+    },
+    'getCampaignNumber': function () {
+        return FlowRouter.current().params.campaign_id;
+    },
+    'overviewActive': function () {
+      return Session.get("route") === "overview" ? "active" : '';
+    },
+    'targetingActive': function () {
+      return Session.get("route") === "targeting" ? "active": '';
+    },
+    'creativeActive': function () {
+      return Session.get("route") === "creative" ? "active" : '';
+    },
+    'breakdownsActive': function () {
+      return Session.get("route") === "breakdowns" ? "active" : '';
+    },
+    'daybreakdownsActive': function () {
+      return Session.get("route") === "daybreakdowns" ? "active" : '';
+    },
+    'hourlybreakdownsActive': function () {
+      return Session.get("route") === "hourlyBreakdowns" ? "active" : '';
+    },
+    'chartsActive': function () {
+      return Session.get("route") === "charts" ? "active" : '';
     }
 });
 

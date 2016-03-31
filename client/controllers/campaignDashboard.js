@@ -1,18 +1,25 @@
 var Promise = require('bluebird');
 
-let dash = Template.campaignDashboard;
-
 Tracker.autorun(function () {
   if (FlowRouter.subsReady('campaignInsightList') && FlowRouter.subsReady('Initiatives')) {
     // console.log('Insights and Initiatives subs are now ready!');
   }
 });
 
-Template.campaignDashboard.onRendered(function () {
-    Session.set('dayNumber', 0);
+Template.campaignDashboard.onCreated( function () {
+  this.templateDict = new ReactiveDict();
+  const initiative = Initiatives.findOne(
+    {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
+  });
+  this.templateDict.set('initiative', initiative);
 });
 
-dash.events({
+Template.campaignDashboard.onRendered(function () {
+    Session.set('dayNumber', 0);
+    $(".dropdown-button").dropdown({hover: true});
+});
+
+Template.campaignDashboard.events({
     'click .report-button': function () {
       let node = document.getElementsByClassName("reporting-div")[0];
       reporter = Blaze.render(Template.reporter, node);
@@ -38,7 +45,7 @@ dash.events({
     }
 });
 
-dash.helpers({
+Template.campaignDashboard.helpers({
     'fetchInsights': function () {
         console.log('checking for insights');
         let campaignNumber = FlowRouter.current().params.campaign_id;
@@ -75,18 +82,14 @@ dash.helpers({
         }
     },
     'getInitiative': function () {
-        let initiative = Initiatives.findOne(
-          {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
-        });
+        const initiative = Template.instance().templateDict.get('initiative');
         initiative.budget = mastFunc.money(initiative.budget);
         initiative.quantity = numeral(initiative.quantity).format("0,0");
         initiative.price = mastFunc.money(initiative.price);
         return initiative;
     },
     'getAggregate': function () {
-      let init = Initiatives.findOne(
-        {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
-      });
+      const init = Template.instance().templateDict.get('initiative');
       console.log('init in getAggregate', init);
       /*
       Note below use of Meteor.wrapAsync()..this takes an asynchronous function
@@ -141,9 +144,7 @@ dash.helpers({
       };
     },
     'makeProjections': function () {
-      let initiative = Initiatives.findOne(
-        {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
-        });
+      const initiative = Template.instance().templateDict.get('initiative');
       Meteor.call('makeProjections', initiative.name, Session.get('dayNumber')); // call with initiative name and dayNumber
     },
     'getSessionDay': function () {
@@ -151,9 +152,7 @@ dash.helpers({
       return day;
     },
     'averages': () => {
-      const initiative = Initiatives.findOne(
-        {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
-        });
+      const initiative = Template.instance().templateDict.get('initiative');
       const ended = moment(initiative.endDate, "MM-DD-YYYY");
       const started = moment(initiative.startDate, "MM-DD-YYYY");
       const now = moment(new Date);
@@ -168,9 +167,7 @@ dash.helpers({
     },
     'dataProjection': function () {
       // TODO create a master function to handle this???
-      const initiative = Initiatives.findOne(
-        {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
-        });
+      const initiative = Template.instance().templateDict.get('initiative');
 
       const agData = initiative.aggregateData[0] // for brevity
       const sesh = Session.get('dayNumber') // for brevity
@@ -194,30 +191,30 @@ dash.helpers({
         likes: projections(agData.likes, sesh, timeDiff)
       }
     },
-    'overviewActive': function () {
-      return Session.get("route") === "overview" ? "active" : '';
-    },
-    'targetingActive': function () {
-      return Session.get("route") === "targeting" ? "active": '';
-    },
-    'creativeActive': function () {
-      return Session.get("route") === "creative" ? "active" : '';
-    },
-    'breakdownsActive': function () {
-      return Session.get("route") === "breakdowns" ? "active" : '';
-    },
-    'daybreakdownsActive': function () {
-      return Session.get("route") === "daybreakdowns" ? "active" : '';
-    },
-    'hourlybreakdownsActive': function () {
-      return Session.get("route") === "hourlyBreakdowns" ? "active" : '';
-    },
-    'chartsActive': function () {
-      return Session.get("route") === "charts" ? "active" : '';
-    }
+    // 'overviewActive': function () {
+    //   return Session.get("route") === "overview" ? "active" : '';
+    // },
+    // 'targetingActive': function () {
+    //   return Session.get("route") === "targeting" ? "active": '';
+    // },
+    // 'creativeActive': function () {
+    //   return Session.get("route") === "creative" ? "active" : '';
+    // },
+    // 'breakdownsActive': function () {
+    //   return Session.get("route") === "breakdowns" ? "active" : '';
+    // },
+    // 'daybreakdownsActive': function () {
+    //   return Session.get("route") === "daybreakdowns" ? "active" : '';
+    // },
+    // 'hourlybreakdownsActive': function () {
+    //   return Session.get("route") === "hourlyBreakdowns" ? "active" : '';
+    // },
+    // 'chartsActive': function () {
+    //   return Session.get("route") === "charts" ? "active" : '';
+    // }
 
 });
 
-dash.onDestroyed(function () {
+Template.campaignDashboard.onDestroyed(function () {
     $("#message-box").text("");
 });
