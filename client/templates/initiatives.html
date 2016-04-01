@@ -777,14 +777,22 @@
         <br><br><br>
         <h4>Campaigns Currently Associated</h4>
         {{#each getCampaigns}}
-            <input type="checkbox" name="campaign" value={{this}} checked>{{this}} <br>
+          <p>
+            <input type="checkbox" id="{{this}}" name="campaign" value="{{this}}" checked="checked">
+            <label for="{{this}}">{{this}}</label>
+          </p>
         {{/each}}
-        <br>
+
         <h4>All Available Campaigns</h4>
         {{#each getAllCampaigns}}
-            <input type="checkbox" name="allCampaigns" value={{this.data.campaign_name}}>{{this.data.campaign_name}} <br>
+          <p>
+            <input type="checkbox" id="{{this.data.campaign_name}}" name="allCampaigns" value="{{this.data.campaign_name}}">
+            <label for="{{this.data.campaign_name}}">{{this.data.campaign_name}}</label>
+          </p>
         {{/each}}
         <br>
-        <input type="submit" value="Submit">
+        <button class="btn waves-effect waves-light" type="submit" name="action">
+          Update Initiative
+        </button>
     </form>
 </template>

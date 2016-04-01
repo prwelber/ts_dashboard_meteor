@@ -1,12 +1,16 @@
 Meteor.startup(function () {
-    CampaignInsights._ensureIndex({campUniqueId: 1});
+  CampaignInsights._ensureIndex({campUniqueId: 1});
 });
 
 Meteor.methods({
-    'removeInsights': function () {
-        console.log('removing CampaignInsightList collection')
+    'removeInsights': function (id) {
+      console.log('removing CampaignInsightList collection')
+      if (id) {
+        CampaignInsights.remove( {'data.campaign_id': id} )
+      } else {
         CampaignInsights.remove( {} );
-        return "CampaignInsights removed!";
+      }
+      return "CampaignInsights removed!";
     }
 });
 

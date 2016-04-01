@@ -83,10 +83,32 @@ Template.campaignDashboard.helpers({
     },
     'getInitiative': function () {
         const initiative = Template.instance().templateDict.get('initiative');
-        initiative.budget = mastFunc.money(initiative.budget);
-        initiative.quantity = numeral(initiative.quantity).format("0,0");
-        initiative.price = mastFunc.money(initiative.price);
+        // format data with accounting and numeral
+        for (let key in initiative) {
+          if (key.includes('quantity')) {
+            initiative[key] = numeral(initiative[key]).format("0,0");
+          }
+          if (key.includes('budget')) {
+            initiative[key] = mastFunc.money(initiative[key])
+          }
+          if (key.includes('price')) {
+            initiative[key] = mastFunc.money(initiative[key])
+          }
+        }
+        if (initiative.dealType2 === null) {
+          initiative.dealType2 = false;
+        }
+        initiative.dealType3 === null ? initiative.dealType3 = false : '';
+        initiative.dealType4 === null ? initiative.dealType4 = false : '';
+        initiative.dealType5 === null ? initiative.dealType5 = false : '';
+
+
         return initiative;
+    },
+    'getBudgetTotal': function () {
+      const init = Template.instance().templateDict.get('initiative');
+      const total = accounting.unformat(init.budget) + accounting.unformat(init.budget2) + accounting.unformat(init.budget3) + accounting.unformat(init.budget4) + accounting.unformat(init.budget5);
+      return mastFunc.money(total);
     },
     'getAggregate': function () {
       const init = Template.instance().templateDict.get('initiative');

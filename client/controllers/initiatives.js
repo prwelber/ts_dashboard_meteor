@@ -293,7 +293,7 @@ Template.editInitiativeCampaigns.events({
     'submit #edit-initiative-campaigns': function (event, template) {
         event.preventDefault();
 
-        let init = Initiatives.findOne({_id: FlowRouter.current().params._id})
+        const init = Template.instance().templateDict.get('initiative');
         let data = {};
         data['name'] = init.name
         let selected = template.findAll("input[type=checkbox]:checked");
@@ -304,7 +304,7 @@ Template.editInitiativeCampaigns.events({
         console.log(data)
         Meteor.call('updateInitiativeCampaigns', data, function (error, result) {
             if (result) {
-                mastFunc.addToBox("Campaigns for "+result+" updated successfully!");
+                Materialize.toast('Campaigns Updated!', 5000);
             }
         });
     }

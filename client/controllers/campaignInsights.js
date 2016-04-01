@@ -8,7 +8,7 @@ Tracker.autorun(function () {
 
 
 Template.campaignInsights.onRendered(function () {
-    // console.log(this)
+    $('.tooltipped').tooltip({delay: 25});
 });
 
 Template.campaignInsights.events({

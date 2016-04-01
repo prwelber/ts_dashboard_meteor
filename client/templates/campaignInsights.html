@@ -1,59 +1,141 @@
 <template name="campaignInsights">
-  <div class="ui grid">
+  <div class="container">
       {{#each fetchInsights}}
-      <div class="sixteen wide column">
-        <h2>
-          <span class="campName">{{campaign_name}}</span>
-        </h2>
-        <h3>
-          Objective: {{cleanText objective}}
-        </h3>
+      <div class="row">
+        <div class="col s12">
+          <h2>
+            <span class="campName">{{campaign_name}}</span>
+          </h2>
+          <h3>
+            Objective: {{cleanText objective}}
+          </h3>
+        </div>
       </div>
-      <div class="eight wide column">
-        <br>
-        <button id="refresh-insights">Refresh Insights</button>
-        <h4>Insights Time Period: {{date_start}} -- {{date_stop}}</h4>
-        <p><strong>Often Viewed</strong></p>
-        <p>Spend: {{spend}}</p>
-        <p>Impressions: {{impressions}} | CPM: {{cpm}}</p>
-        {{#if clicks}}<p>Clicks: {{clicks}} | CPC: {{cpc}}</p>{{/if}}
-        <p>CTR: {{ctr}}%</p>
-        <p>CPP: {{cpp}}</p>
-        <p>Reach: {{reach}}</p>
-        <p>Frequency: {{frequency}}</p>
-        <p>Page Engagement: {{page_engagement}} | Cost per: {{cost_per_page_engagement}}</p>
-        <p>Post Engagement: {{post_engagement}} | Cost per: {{cost_per_post_engagement}}</p>
-        <br />
-      </div>
-      <div class="four wide column">
-        <p><strong>Core Insights</strong></p>
-        {{#if comment}}<p>Comments: {{comment}} | Cost per: {{cost_per_comment}}</p>{{/if}}
-        {{#if like}}<p>Likes: {{like}} | Cost per: {{ cost_per_like}}</p>{{/if}}
-        {{#if link_click}}<p>Link Click: {{link_click}} | Cost per: {{cost_per_link_click}}</p>{{/if}}
-        {{#if website_clicks}}<p>Website Clicks: {{website_clicks}}</p>{{/if}}
-        {{#if link_click_ctr}}<p>Link Click CTR: {{link_click_ctr}}</p>{{/if}}
-        {{#if photo_view}}<p>Photo View: {{photo_view}} | Cost per: {{cost_per_photo_view}}</p>{{/if}}
-        {{#if post}}<p>Post: {{post}} | Cost per: {{cost_per_post}}</p>{{/if}}
-        {{#if post_like}}<p>Post Likes: {{post_like}} | Cost per: {{cost_per_post_like}}</p>{{/if}}
-        {{#if unlike}}<p>Unlikes: {{unlike}}</p>{{/if}}
-        {{#if video_play}}<p>Video Play: {{video_play}} | Cost per: {{cost_per_video_play}}</p>{{/if}}
-        {{#if video_view}}<p>Video View: {{video_view}} | Cost per: {{cost_per_video_view}}</p>{{/if}}
-        {{#if offsite_conversion}} <p>Offsite Conversion: {{offsite_conversion}}</p>{{/if}}
-        {{#if offsite_conversion_registration}} <p>Offsite Conversion Registration: {{offsite_conversion_registration}}</p>{{/if}}
-        {{#if offsite_conversion_fb_pixel_purchase}} <p>Offsite Conversion FB Pixel Purchase: {{offsite_conversion_fb_pixel_purchase}}</p>{{/if}}
-        {{#if cost_per_unlike}}<p>CP Unlike: {{cost_per_unlike}}</p>{{/if}}
-        {{#if cost_per_offsite_conversion_fb_pixel_purchase}} <p>CP Offsite Conversion FB Pixel Purchase: {{cost_per_offsite_conversion_fb_pixel_purchase}}</p>{{/if}}
-        {{#if cost_per_offsite_conversion}} <p>CP Offsite Conversion: {{cost_per_offsite_conversion}}</p>{{/if}}
-        {{#if cost_per_offsite_conversion_registration}} <p>CP Offsite Conversion Registration: {{cost_per_offsite_conversion_registration}}</p>{{/if}}
-        <p>CP Unique Click: {{cost_per_unique_click}}</p>
-        <p>CP Total Action: {{cost_per_total_action}}</p>
-        <p>Unique Impressions: {{unique_impressions}}</p>
-        <p>Total Actions: {{total_actions}}</p>
-        <p>Total Unique Actions: {{total_unique_actions}}</p>
-        <p>Unique Clicks: {{unique_clicks}}</p>
-        <p>Estimated Ad Recall Rate: {{estimated_ad_recall_rate}}</p>
-        <p>CP Estimated Ad Recallers: {{cost_per_estimated_ad_recallers}}</p>
-      </div>
+      <button id="refresh-insights" class="btn waves-effect waves-light tooltipped" name="action" data-position="right" data-tooltip="Refresh the insight for new data">
+        Refresh Insight
+      </button>
+      <div class="row">
+        <div class="col s12">
+          <h4>Insights Time Period: {{date_start}} -- {{date_stop}}</h4>
+          <table class="striped">
+            <tr>
+              <th>DATA</th>
+              <th>AMOUNT</th>
+              <th>COST PER</th>
+            </tr>
+            <tbody>
+              <tr>
+                <th>Spend</th>
+                <td>{{spend}}</td>
+              </tr>
+              <tr>
+                <th>Impressions</th>
+                <td>{{impressions}}</td>
+                <td>{{cpm}}</td>
+              </tr>
+              <tr>
+                <th>Clicks</th>
+                <td>{{clicks}}</td>
+                <td>{{cpc}}</td>
+              </tr>
+              <tr>
+                <th>Likes</th>
+                <td>{{like}}</td>
+                <td>{{cost_per_like}}</td>
+              </tr>
+              <tr>
+                <th>Page Engagement</th>
+                <td>{{page_engagement}}</td>
+                <td>{{cost_per_page_engagement}}</td>
+              </tr>
+              <tr>
+                <th>Post Engagement</th>
+                <td>{{post_engagement}}</td>
+                <td>{{cost_per_post_engagement}}</td>
+              </tr>
+              <tr>
+                <th>Total Actions</th>
+                <td>{{total_actions}}</td>
+                <td>{{cost_per_total_action}}</td>
+              </tr>
+              <tr>
+                <th>Reach</th>
+                <td>{{reach}}</td>
+              </tr>
+              <tr>
+                <th>CTR</th>
+                <td>{{ctr}}</td>
+              </tr>
+              <tr>
+                <th>CPP</th>
+                <td>{{cpp}}</td>
+              </tr>
+              <tr>
+                <th>Frequency</th>
+                <td>{{frequency}}</td>
+              </tr>
+              <tr>
+                <th>Comments</th>
+                <td>{{comment}}</td>
+                <td>{{cost_per_comment}}</td>
+              </tr>
+              <tr>
+                <th>Link Click</th>
+                <td>{{link_click}}</td>
+                <td>{{cost_per_link_click}}</td>
+              </tr>
+              <tr>
+                <th>Link Click CTR</th>
+                <td>{{link_click_ctr}}</td>
+              </tr>
+              <tr>
+                <th>Website Clicks</th>
+                <td>{{website_clicks}}</td>
+              </tr>
+              <tr>
+                <th>Photo View</th>
+                <td>{{photo_view}}</td>
+                <td>{{cost_per_photo_view}}</td>
+              </tr>
+              <tr>
+                <th>Post</th>
+                <td>{{post}}</td>
+                <td>{{cost_per_post}}</td>
+              </tr>
+              <tr>
+                <th>Post Likes</th>
+                <td>{{post_like}}</td>
+                <td>{{cost_per_post_like}}</td>
+              </tr>
+              <tr>
+                <th>Video Play</th>
+                <td>{{video_play}}</td>
+                <td>{{cost_per_video_play}}</td>
+              </tr>
+              <tr>
+                <th>Video View</th>
+                <td>{{video_view}}</td>
+                <td>{{cost_per_video_view}}</td>
+              </tr>
+              <tr>
+                <th>Offsite Conversion</th>
+                <td>{{offsite_conversion}}</td>
+                <td>{{cost_per_offsite_conversion}}</td>
+              </tr>
+              <tr>
+                <th>Offsite Conversion Registration</th>
+                <td>{{offsite_conversion_registration}}</td>
+                <td>{{cost_per_offsite_conversion_registration}}</td>
+              </tr>
+              <tr>
+                <th>Offsite Conversion FB Pixel Purchase</th>
+                <td>{{offsite_conversion_fb_pixel_purchase}}</td>
+                <td>{{cost_per_offsite_conversion_fb_pixel_purchase}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div> {{!-- end of row --}}
       {{/each}}
   </div>
 </template>

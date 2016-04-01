@@ -1,22 +1,5 @@
 <template name="campaignDashboard">
 
-  {{!-- <nav>
-    <div class="nav-wrapper">
-      <a href="#" class="brand-logo right">Dashboard</a>
-      <ul id="nav-mobile" class="left hide-on-med-and-down">
-        <li><a href="/">Home</a></li>
-        <li><a href="/admin">Admin</a></li>
-        <li class="{{overviewActive}}"><a href="/accounts/{{getCampaignNumber}}/overview">Overview</a></li>
-        <li class="{{targetingActive}}"><a href="/accounts/{{getCampaignNumber}}/targeting">Targeting</a></li>
-        <li class="{{creativeActive}}"><a href="/accounts/{{getCampaignNumber}}/creative">Creative</a></li>
-        <li class="{{breakdownsActive}}"><a href="/accounts/{{getCampaignNumber}}/breakdowns">Age & Gender</a></li>
-        <li class="{{daybreakdownsActive}}"><a href="/accounts/{{getCampaignNumber}}/daybreakdowns">Daily</a></li>
-        <li class="{{hourlybreakdownsActive}}"><a href="/accounts/{{getCampaignNumber}}/hourlybreakdowns">Hourly</a></li>
-        <li class="{{chartsActive}}"><a href="/accounts/{{getCampaignNumber}}/charts">Visualization</a></li>
-      </ul>
-    </div>
-  </nav> --}}
-  <br>
     {{!-- <div class="container"> --}}
       <div class="row">
         <div class="col s12">
@@ -57,6 +40,80 @@
               </tr>
               <tr>
                 {{!-- can put another line item here --}}
+                <td>{{name}}</td>
+                <td>{{agency}}</td>
+                <td>{{brand}}</td>
+                <td>{{product}}</td>
+                <td>{{objective2}}</td>
+                <td>{{platform2}}</td>
+                <td>{{dealType2}}</td>
+                <td>{{quantity2}}</td>
+                <td>{{price2}}</td>
+                <td>{{budget2}}</td>
+                <td>{{startDate2}}</td>
+                <td>{{endDate2}}</td>
+              </tr>
+              {{#if dealType3}}
+              <tr>
+                <td>{{name}}</td>
+                <td>{{agency}}</td>
+                <td>{{brand}}</td>
+                <td>{{product}}</td>
+                <td>{{objective3}}</td>
+                <td>{{platform3}}</td>
+                <td>{{dealType3}}</td>
+                <td>{{quantity3}}</td>
+                <td>{{price3}}</td>
+                <td>{{budget3}}</td>
+                <td>{{startDate3}}</td>
+                <td>{{endDate3}}</td>
+              </tr>
+              {{/if}}
+              {{#if dealType4}}
+              <tr>
+                <td>{{name}}</td>
+                <td>{{agency}}</td>
+                <td>{{brand}}</td>
+                <td>{{product}}</td>
+                <td>{{objective4}}</td>
+                <td>{{platform4}}</td>
+                <td>{{dealType4}}</td>
+                <td>{{quantity4}}</td>
+                <td>{{price4}}</td>
+                <td>{{budget4}}</td>
+                <td>{{startDate4}}</td>
+                <td>{{endDate4}}</td>
+              </tr>
+              {{/if}}
+              {{#if dealType5}}
+              <tr>
+                <td>{{name}}</td>
+                <td>{{agency}}</td>
+                <td>{{brand}}</td>
+                <td>{{product}}</td>
+                <td>{{objective5}}</td>
+                <td>{{platform5}}</td>
+                <td>{{dealType5}}</td>
+                <td>{{quantity5}}</td>
+                <td>{{price5}}</td>
+                <td>{{budget5}}</td>
+                <td>{{startDate5}}</td>
+                <td>{{endDate5}}</td>
+              </tr>
+              {{/if}}
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td> <strong style="border-top: .1em solid black;">{{getBudgetTotal}}</strong></td>
+                <td></td>
+                <td></td>
               </tr>
             </tbody>
           </table>
