@@ -321,3 +321,20 @@ Template.editInitiative.onDestroyed(func => {
 Template.initiativeAggregate.onDestroyed(func => {
     $("#message-box li").remove();
 })
+
+Template.initiativesHome.onRendered(function () {
+
+});
+
+Template.initiativesHome.helpers({
+  'getAllInitiatives': function () {
+    const inits = Initiatives.find({},
+      {sort: {endDate: 1}}
+    ).fetch();
+    return inits;
+  }
+});
+
+Template.initiativesHome.events({
+
+});

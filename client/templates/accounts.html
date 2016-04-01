@@ -1,12 +1,11 @@
-
 <template name="accounts">
-  <div class="ui grid">
-    <div class="sixteen wide column">
+  <div class="row">
+    <div class="col s12">
       <h3>Here is a list of all TS Accounts:</h3>
       <button class="refresh-accounts">Refresh Accounts</button>
       {{sessionSetter}}
     </div>
-      <div class="eight wide column">
+      <div class="col s8">
         {{#each accountList}}
           <h4> <a href="/accounts/{{account_id}}" class="account-link"> {{name}} </a> </h4>
           <p>Last Refresh: {{inserted}}</p>

@@ -171,7 +171,7 @@ Template.campaignDashboard.helpers({
       let day = Session.get('dayNumber');
       return day;
     },
-    'averages': () => {
+    'averages': function () {
       const initiative = Template.instance().templateDict.get('initiative');
       const ended = moment(initiative.endDate, "MM-DD-YYYY");
       const started = moment(initiative.startDate, "MM-DD-YYYY");
@@ -199,40 +199,23 @@ Template.campaignDashboard.helpers({
       let timeDiff = now.isAfter(ended) ?
         ended.diff(started, 'days') :
         now.diff(started, 'days');
+
       let projections = function projections(action, session, timeDiff) {
         let avg = action / timeDiff
         let result =  action + (session * avg);
         return numeral(result).format("0,0");
       }
 
-      return {
-        clicks: projections(agData.clicks, sesh, timeDiff),
-        impressions: projections(agData.impressions, sesh, timeDiff),
-        likes: projections(agData.likes, sesh, timeDiff)
-      }
-    },
-    // 'overviewActive': function () {
-    //   return Session.get("route") === "overview" ? "active" : '';
-    // },
-    // 'targetingActive': function () {
-    //   return Session.get("route") === "targeting" ? "active": '';
-    // },
-    // 'creativeActive': function () {
-    //   return Session.get("route") === "creative" ? "active" : '';
-    // },
-    // 'breakdownsActive': function () {
-    //   return Session.get("route") === "breakdowns" ? "active" : '';
-    // },
-    // 'daybreakdownsActive': function () {
-    //   return Session.get("route") === "daybreakdowns" ? "active" : '';
-    // },
-    // 'hourlybreakdownsActive': function () {
-    //   return Session.get("route") === "hourlyBreakdowns" ? "active" : '';
-    // },
-    // 'chartsActive': function () {
-    //   return Session.get("route") === "charts" ? "active" : '';
-    // }
+      const clicks = projections(agData.clicks, sesh, timeDiff);
+      const impressions = projections(agData.impressions, sesh, timeDiff);
+      const likes = projections(agData.likes, sesh, timeDiff);
 
+      return {
+        clicks: clicks,
+        impressions: impressions,
+        likes: likes
+      }
+    }
 });
 
 Template.campaignDashboard.onDestroyed(function () {

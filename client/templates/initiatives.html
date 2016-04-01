@@ -796,3 +796,34 @@
         </button>
     </form>
 </template>
+
+
+<template name="initiativesHome">
+  <div class="row">
+    {{#each getAllInitiatives}}
+      <div class="col s12 m6 l4">
+          <div class="card z-depth-3">
+            <div class="card-content">
+              <a href="/initiatives/{{_id}}/homepage"><span class="card-title">{{name}}</span></a>
+              <p>Dates: {{startDate}} -- {{endDate}}</p>
+              <p>Brand: {{brand}}</p>
+              <p>Agency: {{agency}}</p>
+              <p>Created: {{inserted_date}}</p>
+            </div>
+            <div class="card-action">
+              <a href="/admin/initiatives/{{_id}}">View & Edit Initiative</a>
+            </div>
+          </div>
+      </div>
+    {{/each}}
+  </div>
+    <div class="row">
+      <div class="col s12">
+        <a href="/viewaccounts">
+          <button class="btn waves-effect waves-light" name="action">
+            View By Accounts
+          </button>
+        </a>
+      </div>
+    </div>
+</template>

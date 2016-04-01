@@ -1,0 +1,20 @@
+<template name="initiativeHomepage">
+{{!-------- This is where campaigns within an initiative will go ---------}}
+  <h2 class="center-align">{{initiative.name}} Campaigns</h2>
+  {{!-- {{getCampaigns}} --}}
+  <div class="row">
+    {{#each getCampaigns}}
+      <div class="col s12 m6 l4">
+          <div class="card z-depth-2">
+            <div class="card-content">
+              <a href="/accounts/{{data.campaign_id}}/overview"><span class="card-title">{{data.campaign_name}}</span></a>
+              <p>End Date: {{data.date_stop}}</p>
+              <p>Objective: {{data.objective}}</p>
+            </div>
+            <div class="card-action">
+            </div>
+          </div>
+      </div>
+    {{/each}}
+  </div>
+</template>
