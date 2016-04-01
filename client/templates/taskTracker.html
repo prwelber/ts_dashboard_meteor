@@ -1,21 +1,35 @@
 <template name="taskTracker">
-  <div class="ui grid">
+  <div class="container">
     <div class="row">
-      <div class="column">
+      <div class="col s12">
         <h2>Campaign Task Tracker</h2>
       </div>
     </div>
-    <div class="three wide column">
-      <h5>Approved Targeting <input type="checkbox" class="tracker-checkbox" name="approvedTargeting" {{targetingChecked}}></h5>
-    </div>
-    <div class="three wide column">
-      <h5>Received Creative <input type="checkbox" class="tracker-checkbox" name="receivedCreative" {{creativeChecked}}></h5>
-    </div>
-    <div class="three wide column">
-      <h5>Received Tracking <input type="checkbox" class="tracker-checkbox" name="receivedTracking" {{trackingChecked}}></h5>
-    </div>
-    <div class="three wide column">
-      <h5>Signed IO <input type="checkbox" class="tracker-checkbox" name="signedIO" {{signedIoChecked}}></h5>
+    <div class="row">
+      <div class="col s3">
+        <h4>
+          <input type="checkbox" class="tracker-checkbox" name="approvedTargeting" id="approvedTargeting" {{targetingChecked}}>
+          <label for="approvedTargeting">Approved Targeting</label>
+        </h4>
+      </div>
+      <div class="col s3">
+        <h4>
+          <input type="checkbox" class="tracker-checkbox" name="receivedCreative" id="receivedCreative" {{creativeChecked}}>
+          <label for="receivedCreative">Received Creative</label>
+        </h4>
+      </div>
+      <div class="col s3">
+        <h4>
+          <input type="checkbox" class="tracker-checkbox" name="receivedTracking" id="receivedTracking" {{trackingChecked}}>
+          <label for="receivedTracking">Received Tracking</label>
+        </h4>
+      </div>
+      <div class="col s3">
+        <h4>
+          <input type="checkbox" class="tracker-checkbox" name="signedIO" id="signedIO" {{signedIoChecked}}>
+          <label for="signedIO">Signed IO</label>
+        </h4>
+      </div>
     </div>
   </div>
 </template>

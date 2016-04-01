@@ -76,6 +76,9 @@ Template.index.events({
 
 });
 
+Template.index.onRendered(function () {
+    $('.tooltipped').tooltip({delay: 10});
+});
 
 Template.index.helpers({
     'getDate': function () {

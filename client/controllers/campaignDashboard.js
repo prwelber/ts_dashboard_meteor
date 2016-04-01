@@ -95,9 +95,7 @@ Template.campaignDashboard.helpers({
             initiative[key] = mastFunc.money(initiative[key])
           }
         }
-        if (initiative.dealType2 === null) {
-          initiative.dealType2 = false;
-        }
+        initiative.dealType2 === null ? initiative.dealType2 = false : '';
         initiative.dealType3 === null ? initiative.dealType3 = false : '';
         initiative.dealType4 === null ? initiative.dealType4 = false : '';
         initiative.dealType5 === null ? initiative.dealType5 = false : '';
