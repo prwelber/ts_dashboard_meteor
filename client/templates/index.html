@@ -5,7 +5,7 @@
 <template name="index">
     <body>
       <nav>
-        <div class="nav-wrapper">
+        <div class="nav-wrapper indigo darken-2">
           <a href="#" class="brand-logo right">Dashboard</a>
           <ul id="nav-mobile" class="left hide-on-med-and-down">
             <li><a href="/">Home</a></li>
@@ -36,30 +36,30 @@
       <div>
         {{> Template.dynamic template=other2}}
       </div>
-      <footer class="page-footer">
+      <footer class="page-footer indigo darken-4">
         <div class="container">
           <div class="row">
             <div class="col l6 s12">
               <h5 class="white-text">Footer Content Here</h5>
               {{> loginButtons}}
-              <p class="grey-text text-lighten-4">Today is {{getDate}}</p>
-              <p class="grey-text text-lighten-4">More Footer Content</p>
+              <p class="white-text">Today is {{getDate}}</p>
+              <p class="white-text">More Footer Content</p>
             </div>
             <div class="col l4 offset-12 s12">
               <h5 class="white-text">Links</h5>
               <ul>
-                <li> <a class="grey-text text-lighten-3" href="/">Home</a> </li>
-                <li> <a class="grey-text text-lighten-3" href="/admin">Admin</a> </li>
+                <li> <a class="white-text" href="/">Home</a> </li>
+                <li> <a class="white-text" href="/admin">Admin</a> </li>
               </ul>
             </div>
           </div>
         </div>
-        <div class="footer-copyright">
-            <div class="container">
+        <div class="footer-copyright indigo darken-4">
+          <div class="container">
             © 2016 Copyright
-            <a class="grey-text text-lighten-4 right" href="#!">Targeted Social Home</a>
-            </div>
+            <a class="white-text right" href="#!">Targeted Social Home</a>
           </div>
+        </div>
       </footer>
     </body>
 </template>
