@@ -73,4 +73,5 @@ Template.campaignInsights.helpers({
 
 Template.campaignInsights.onDestroyed(function () {
     $("#message-box").text("");
+    $('.tooltipped').tooltip('remove');
 });

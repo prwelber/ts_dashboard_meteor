@@ -38,6 +38,9 @@ Meteor.methods({
 
     arr = _.flatten(arr);
 
+    // need to sort this array by date_start
+    arr = _.sortBy(arr, function (el){ return moment(el.data.date_start, "MM-DD-YYYY").format("MM-DD-YYYY") });
+    // console.log('after sortingby date_start', arr);
 
 
     /*
@@ -64,7 +67,7 @@ Meteor.methods({
         console.log("Error Message:", e.message);
     }
 
-    // console.log('total number of days we need to generate', total);
+    console.log('total number of days we need to generate', total);
     /*
     Below, we are accounting for any gaps in the timeline since not all
     campaigns run on sequential days. within the for loop we are looking for
@@ -308,5 +311,3 @@ Meteor.methods({
 
   }
 });
-
-
