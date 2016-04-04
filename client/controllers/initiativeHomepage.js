@@ -34,7 +34,12 @@ Template.initiativeHomepage.helpers({
     return camps;
   },
   'initiative': function () {
-    return Template.instance().templateDict.get('initiative');
+    const initiative = Template.instance().templateDict.get('initiative');
+    initiative.budget = mastFunc.money(initiative.budget);
+    initiative.quantity = numeral(initiative.quantity).format("0,0");
+    initiative.price = mastFunc.money(initiative.price);
+
+    return initiative;
   },
   'initiativeStats': function () {
     const init = Template.instance().templateDict.get('initiative');
