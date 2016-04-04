@@ -185,6 +185,16 @@ Meteor.methods({
     // console.log("projection", projectionFunc(avgCPM, days, init.aggregateData[0].cpm));
     return projectionFunc(days);
 
+  },
+  'moveCampaign': (initiative, campName, id) => {
+    Initiatives.update(
+      {_id: initiative._id},
+      {$pull: {
+        campaign_names: campName,
+        campaign_ids: id
+      }
+    });
+    return "success!";
   }
 });
 

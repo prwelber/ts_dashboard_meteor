@@ -767,34 +767,53 @@
 </template>
 
 <template name="editInitiativeCampaigns">
-    <h2>Edit Initiative Campaigns</h2>
-    <form id="edit-initiative-campaigns">
-        {{#each getInitiative}}
-            Initiative Name: {{name}}
-            <br>
-            Campaigns: {{campaign_names}}
-        {{/each}}
-        <br><br><br>
-        <h4>Campaigns Currently Associated</h4>
-        {{#each getCampaigns}}
-          <p>
-            <input type="checkbox" id="{{this}}" name="campaign" value="{{this}}" checked="checked">
-            <label for="{{this}}">{{this}}</label>
-          </p>
-        {{/each}}
+  <h2>Edit Initiative Campaigns</h2>
+  {{!-- <form id="edit-initiative-campaigns">
+    {{#each getInitiative}}
+      Initiative Name: {{name}}
+      <br>
+      Campaigns: {{campaign_names}}
+    {{/each}}
+    <br><br><br>
+    <h4>Campaigns Currently Associated</h4>
+    {{#each getCampaigns}}
+      <p>
+        <input type="checkbox" id="{{this}}" name="campaign" value="{{this}}" checked="checked">
+        <label for="{{this}}">{{this}}</label>
+      </p>
+    {{/each}}
 
-        <h4>All Available Campaigns</h4>
-        {{#each getAllCampaigns}}
-          <p>
-            <input type="checkbox" id="{{this.data.campaign_name}}" name="allCampaigns" value="{{this.data.campaign_name}}">
-            <label for="{{this.data.campaign_name}}">{{this.data.campaign_name}}</label>
-          </p>
-        {{/each}}
-        <br>
-        <button class="btn waves-effect waves-light" type="submit" name="action">
-          Update Initiative
-        </button>
-    </form>
+    <h4>All Available Campaigns</h4>
+    {{#each getAllCampaigns}}
+      <p>
+        <input type="checkbox" id="{{this.data.campaign_name}}" name="allCampaigns" value="{{this.data.campaign_name}}">
+        <label for="{{this.data.campaign_name}}">{{this.data.campaign_name}}</label>
+      </p>
+    {{/each}}
+    <br>
+    <button class="btn waves-effect waves-light" type="submit" name="action">
+      Update Initiative
+    </button>
+  </form> --}}
+
+  <div class="row">
+    <div id="left" class="col s6">
+      <h3>Currently Associated Campaigns</h3>
+      {{#each getCampaigns}}
+        <div class="teal" style="border: 1px solid black; height: 2em; font-size: 18px;">
+          <p>{{this}}</p>
+        </div>
+      {{/each}}
+    </div>
+    <div id="right" class="col s6">
+      <h3>All Available Campaigns</h3>
+      {{#each getAllCampaigns}}
+      <div style="border: 1px solid black; height: 2em; font-size: 18px;">
+        <p>{{this.data.campaign_name}}</p>
+      </div>
+      {{/each}}
+    </div>
+  </div>
 </template>
 
 

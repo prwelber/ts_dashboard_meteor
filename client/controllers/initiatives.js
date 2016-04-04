@@ -1,9 +1,10 @@
 // Meteor.subscribe('Initiatives');
 
+import dragula from 'dragula';
+
 Tracker.autorun(function () {
-    if (FlowRouter.subsReady('Initiatives')) {
-        console.log('Initiatives subs ready!');
-        $('select').material_select();
+    if (FlowRouter.subsReady('Initiatives') && FlowRouter.subsReady('campaignInsightList')) {
+        console.log('Initiatives and Insights subs ready!');
     }
 })
 
@@ -274,6 +275,62 @@ Template.editInitiativeCampaigns.onCreated( function () {
   this.templateDict.set('initiative', initiative);
 });
 
+Template.editInitiativeCampaigns.onRendered(function () {
+  console.log(dragula);
+  const initiative = Template.instance().templateDict.get('initiative');
+  dragula([document.getElementById("left"), document.getElementById("right")])
+    .on('drop',
+      function (el, container, source) {
+        const campName = $(el).text().trim()
+        console.log(campName);
+        const campaign = CampaignInsights.findOne({'data.campaign_name': campName});
+        let id;
+        if (campaign && campaign.data.campaign_id) {
+          id = campaign.data.campaign_id;
+          console.log('id reassigned!');
+        } else {
+          console.log('did not work');
+        }
+        // const id = campaign.data.campaign_id;
+        // console.log(el)
+        // console.log($(el).text().trim());
+        // console.log(container); // where it was dropped
+        // console.log($(container).attr('id'));
+        // console.log(source) // where it came from
+        /*
+        What we want to do here is to say if it goes from left to right,
+        remove that campaign and its ID from the initiative
+        And if it goes from right to left, we want to add that campaign
+        AND its ID to the initiative
+        TODO ---- remove the initiative name from the campaignInsight document in Mongo
+        */
+        if ($(source).attr('id') === "left" && $(container).attr('id') === "right") {
+          console.log($(el).text().trim())
+          Meteor.call("moveCampaign", initiative, campName, id, function (error, result) {
+            if (result) {
+              Materialize.toast('Initiative Updated!', 2000);
+            } else {
+              alert('Could not updated Initiative.')
+            }
+          });
+          Meteor.call("removeInitiativeFromCampaignInsight", campName, function (error, result) {
+            if (result) {
+              Materialize.toast('Initiative Name Removed From Campaign', 1000);
+            }
+          });
+
+
+          // Initiatives.update(
+          //   {_id: initiative._id},
+          //   {$pull: {
+          //     campaign_names: campName,
+          //     campaign_ids: campaign.data.campaign_id
+          //   }
+          // });
+        }
+      });
+});
+
 Template.editInitiativeCampaigns.helpers({
     'getInitiative': function () {
         const initiative = Template.instance().templateDict.get('initiative');
@@ -291,22 +348,22 @@ Template.editInitiativeCampaigns.helpers({
 
 Template.editInitiativeCampaigns.events({
     'submit #edit-initiative-campaigns': function (event, template) {
-        event.preventDefault();
+      event.preventDefault();
 
-        const init = Template.instance().templateDict.get('initiative');
-        let data = {};
-        data['name'] = init.name
-        let selected = template.findAll("input[type=checkbox]:checked");
-        let campaigns = _.map(selected, function(item) {
-            return item.value;
-        });
-        data['campaign_names'] = campaigns;
-        console.log(data)
-        Meteor.call('updateInitiativeCampaigns', data, function (error, result) {
-            if (result) {
-                Materialize.toast('Campaigns Updated!', 5000);
-            }
-        });
+      const init = Template.instance().templateDict.get('initiative');
+      let data = {};
+      data['name'] = init.name
+      let selected = template.findAll("input[type=checkbox]:checked");
+      let campaigns = _.map(selected, function(item) {
+        return item.value;
+      });
+      data['campaign_names'] = campaigns;
+      console.log(data)
+      Meteor.call('updateInitiativeCampaigns', data, function (error, result) {
+        if (result) {
+            Materialize.toast('Campaigns Updated!', 5000);
+        }
+      });
     }
 });
 

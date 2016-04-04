@@ -148,6 +148,15 @@ Meteor.methods({
             }
         });
         CampaignInsights.remove({'data.campaign_id': campaign_id});
+    },
+    'removeInitiativeFromCampaignInsight': (name) => {
+        CampaignInsights.update(
+            {'data.campaign_name': name},
+            {$set: {
+                initiative: ""
+            }
+        });
+        return "success!";
     }
 });
 
