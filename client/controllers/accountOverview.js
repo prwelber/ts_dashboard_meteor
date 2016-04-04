@@ -39,7 +39,7 @@ Template.accountOverview.helpers({
             return camps;
         } else {
             console.log('gotta get campaigns for this account', accountId);
-            // Meteor.call('getCampaigns', accountId)
+            // Meteor.addcall('getCampaigns', accountId)
         }
     },
     'isUserUpdated': function () {

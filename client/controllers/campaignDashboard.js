@@ -154,9 +154,11 @@ Template.campaignDashboard.helpers({
       agData.likes = numeral(agData.likes).format("0,0");
       agData.cpc = mastFunc.money(agData.cpc);
       agData.cpm = mastFunc.money(agData.cpm);
-      agData.cpl >= 0 ?
-        agData.cpl = mastFunc.money(agData.cpl) :
-        agData.cpl = '0';
+      if (agData.cpl === null || agData.cpl === Infinity) {
+        agData['cpl'] = "0";
+      } else if (typeof agData.cpl === "number") {
+        agData['cpl'] = mastFunc.money(agData.cpl);
+      }
       return {
         initiative: agData,
         ends: moment(ends).format("MM-DD-YYYY hh:mm a"),

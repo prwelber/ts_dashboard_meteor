@@ -15,6 +15,73 @@
       </ul>
     </div>
   </nav>
+
+
+  {{#with initiativeStats}}
+    <div class="row">
+      <div class="col s12">
+        <a id="view-initiative-stats-modal" class="waves-effect waves-light btn modal-trigger center-align" href="#modal1">View Initiative Stats</a>
+      </div>
+    </div>
+    <div id="modal1" class="modal">
+      <div class="modal-content">
+        <h4>{{initiative.name}}</h4>
+      </div>
+      <div class="col s12">
+        <table class="centered">
+          <thead>
+            <tr>
+              <th>Date Start</th>
+              <th>Date End</th>
+              <th>Budget</th>
+              <th>Deal Type</th>
+              <th>Quantity</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{initiative.startDate}}</td>
+              <td>{{initiative.endDate}}</td>
+              <td>{{initiative.budget}}</td>
+              <td>{{initiative.dealType}}</td>
+              <td>{{initiative.quantity}}</td>
+              <td>{{initiative.price}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="centered">
+          <thead>
+              <tr>
+                <th data-field="id">Spend</th>
+                <th data-field="id">Spend %</th>
+                <th data-field="id">Clicks</th>
+                <th data-field="id">CPC</th>
+                <th data-field="id">Impressions</th>
+                <th data-field="id">CPM</th>
+                <th data-field="id">Likes</th>
+                <th data-field="id">CPL</th>
+                <th data-field="id">Reach</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{spend}}</td>
+                <td>{{spendPercent}}</td>
+                <td>{{clicks}}</td>
+                <td>{{cpc}}</td>
+                <td>{{impressions}}</td>
+                <td>{{cpm}}</td>
+                <td>{{likes}}</td>
+                <td>{{cpl}}</td>
+                <td>{{reach}}</td>
+              </tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
+  {{/with}}
+
 {{!-------- This is where campaigns within an initiative will go ---------}}
   <h2 class="center-align">{{initiative.name}} Campaigns</h2>
     <div class="container">
@@ -26,8 +93,6 @@
                 <a href="/accounts/{{data.campaign_id}}/overview"><span class="card-title">{{data.campaign_name}}</span></a>
                 <p>{{data.date_start}} - {{data.date_stop}}</p>
                 <p>Objective: {{data.objective}}</p>
-              </div>
-              <div class="card-action">
               </div>
             </div>
           </div>
