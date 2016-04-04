@@ -39,7 +39,7 @@ Template.charts.helpers({
           spendAvg        = parseFloat(initiative.budget) / days,
           avgData         = [],
           idealSpend      = [];
-      
+
       let total           = 0,
           idealSpendTotal = 0;
 
@@ -214,8 +214,7 @@ Template.charts.helpers({
       cpcChart.push(el.cpc);
       cplChart.push(el.cost_per_like);
     });
-    console.log("cpmChart from cost per", cpmChart);
-    console.log('cpl chart', cplChart);
+
     // build chart
     return {
 
