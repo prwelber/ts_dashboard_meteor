@@ -17,6 +17,7 @@ Template.campaignDashboard.onCreated( function () {
 Template.campaignDashboard.onRendered(function () {
     Session.set('dayNumber', 0);
     $(".dropdown-button").dropdown({hover: true});
+    $(".button-collapse").sideNav();
 });
 
 Template.campaignDashboard.events({

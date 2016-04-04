@@ -36,7 +36,18 @@ Template.campaignInsights.helpers({
           camp.data.cpm = mastFunc.money(camp.data.cpm);
           camp.data.cpc = mastFunc.money(camp.data.cpc);
           camp.data.spend = mastFunc.money(camp.data.spend);
-          return [camp.data];
+          if (camp.data.video_view) {
+            camp.data['tenSecondView'] = camp.data['video_10_sec_watched_actions'][0]['value'];
+            camp.data['costPerTenSecondView'] = mastFunc.money(camp.data['cost_per_10_sec_video_view'][0]['value']);
+            camp.data['fifteenSecondView'] = camp.data['video_15_sec_watched_actions'][0]['value'];
+            camp.data['avgPctWatched'] = camp.data['video_avg_pct_watched_actions'][0]['value'];
+            camp.data['avgSecWatched'] = camp.data['video_avg_sec_watched_actions'][0]['value'];
+            camp.data['completeWatched'] = camp.data['video_complete_watched_actions'][0]['value'];
+
+            return [camp.data];
+          } else {
+            return [camp.data];
+          }
         } else {
           var target = document.getElementById("spinner-div");
           let spun = Blaze.render(Template.spin, target);

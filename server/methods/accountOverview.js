@@ -12,6 +12,7 @@ Meteor.methods({
 
 Meteor.methods({
     'getCampaigns': function (accountNumber) {
+        CampaignBasics.remove({account_id: accountNumber});
         let campaignOverviewArray = [];
         let campaignOverview;
         try {
@@ -57,7 +58,7 @@ Meteor.methods({
         } catch(e) {
             console.log('error in the mongo insert clause:', e)
         } finally {
-            return campaignOverviewArray;
+            return "success!";
         }
     }
 });

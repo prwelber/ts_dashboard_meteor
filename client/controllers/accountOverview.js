@@ -39,7 +39,7 @@ Template.accountOverview.helpers({
             return camps;
         } else {
             console.log('gotta get campaigns for this account', accountId);
-            Meteor.call('getCampaigns', accountId)
+            // Meteor.call('getCampaigns', accountId)
         }
     },
     'isUserUpdated': function () {
@@ -66,6 +66,16 @@ Template.accountOverview.events({
         Session.set("campaign_id", event.target.dataset.campaign);
         Session.set("end_date", event.target.dataset.stop);
         console.log("dataset:", event.target.dataset)
+    },
+    'click #refreshCampaigns': function (event, template) {
+        const accountNumber = FlowRouter.current().params.account_id;
+        const target = document.getElementById("spinner-div");
+        let spun = Blaze.render(Template.spin, target);
+        Meteor.call('getCampaigns', accountNumber, function (err, result) {
+            if (result) {
+                Blaze.remove(spun);
+            }
+        });
     }
 });
 
