@@ -4,6 +4,8 @@ SyncedCron.config({
     collectionName: 'cronCollection'
 });
 
+
+
 SyncedCron.add({
   name: "Background Campaign Insights Getter",
 
@@ -30,7 +32,11 @@ SyncedCron.add({
       }).fetch()
     // stuff is now an array of campaign Basics
     // each holding a campaign_id
-    let campIdArray = _.map(campaignBasicsArray, function (el) {return el.campaign_id});
+    let campIdArray = _.map(campaignBasicsArray, function (el) {
+      // TODO if el.inserted isAfter el.stop_time then continue
+      // else return that campaign_id
+      return el.campaign_id
+    });
 
     // campIdArray is an array of all the campaign ID's that are associated
     // with the accounts we originally searched for
@@ -166,3 +172,5 @@ SyncedCron.add({
 
   } //end of job
 });
+
+
