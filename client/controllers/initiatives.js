@@ -276,13 +276,13 @@ Template.editInitiativeCampaigns.onCreated( function () {
 });
 
 Template.editInitiativeCampaigns.onRendered(function () {
-  console.log(dragula);
   const initiative = Template.instance().templateDict.get('initiative');
   dragula([document.getElementById("left"), document.getElementById("right")])
     .on('drop',
+      // dragula throws off data on events, in this case were using the element
+      // container and source on the 'drop' event
       function (el, container, source) {
         const campName = $(el).text().trim()
-        console.log(campName);
         const campaign = CampaignInsights.findOne({'data.campaign_name': campName});
         let id;
         if (campaign && campaign.data.campaign_id) {
@@ -291,42 +291,53 @@ Template.editInitiativeCampaigns.onRendered(function () {
         } else {
           console.log('did not work');
         }
-        // const id = campaign.data.campaign_id;
-        // console.log(el)
-        // console.log($(el).text().trim());
-        // console.log(container); // where it was dropped
-        // console.log($(container).attr('id'));
-        // console.log(source) // where it came from
+
         /*
-        What we want to do here is to say if it goes from left to right,
-        remove that campaign and its ID from the initiative
-        And if it goes from right to left, we want to add that campaign
-        AND its ID to the initiative
-        TODO ---- remove the initiative name from the campaignInsight document in Mongo
+        'container' is where it was dropped into (the target)
+        'source' is where it came from
+        What we're doing here is using the dragula library to move campaigns around
+        and in and out of initiatives. Below, the psuedo code reads:
+        if it moves from left to right (actually this is reversed because I used
+        position: fixed to keep one of the divs always viewable) ..anyway, if it moves
+        from 'left' to 'right' remove the campaign from the initiative and remove the
+        initiative from the campaignInsight document. There are two seperate method calls
+        for these transactions. The reverse is executed below and they are very similar.
         */
+
         if ($(source).attr('id') === "left" && $(container).attr('id') === "right") {
-          console.log($(el).text().trim())
-          Meteor.call("moveCampaign", initiative, campName, id, function (error, result) {
+          console.log('removing campaign from initiative');
+          Meteor.call("removeCampaign", initiative, campName, id, function (error, result) {
             if (result) {
               Materialize.toast('Initiative Updated!', 2000);
             } else {
               alert('Could not updated Initiative.')
             }
           });
+          // this takes place in campaignInsight method file
           Meteor.call("removeInitiativeFromCampaignInsight", campName, function (error, result) {
             if (result) {
-              Materialize.toast('Initiative Name Removed From Campaign', 1000);
+              Materialize.toast('Initiative Name Removed From Campaign', 2000);
             }
           });
+        }
 
-
-          // Initiatives.update(
-          //   {_id: initiative._id},
-          //   {$pull: {
-          //     campaign_names: campName,
-          //     campaign_ids: campaign.data.campaign_id
-          //   }
-          // });
+        if ($(source).attr('id') === "right" && $(container).attr('id') === "left") {
+          console.log('adding campaign to initiative');
+          Meteor.call('addCampaign', initiative, campName, id, function (error, result) {
+            if (result) {
+              Materialize.toast('Campaign Added to Initiative!', 2000);
+            } else {
+              alert('Could not update initiative');
+            }
+          });
+          // this takes place in campaignInsight method file
+          Meteor.call('addInitiativeToCampaignInsight', campName, initiative, function (error, result) {
+            if (result) {
+              Materialize.toast('Initiative added to Campaign Insight', 2000);
+            } else {
+              alert('Could not update Campaign Insight');
+            }
+          });
         }
       });
 });

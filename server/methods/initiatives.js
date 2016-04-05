@@ -186,10 +186,20 @@ Meteor.methods({
     return projectionFunc(days);
 
   },
-  'moveCampaign': (initiative, campName, id) => {
+  'removeCampaign': (initiative, campName, id) => {
     Initiatives.update(
       {_id: initiative._id},
       {$pull: {
+        campaign_names: campName,
+        campaign_ids: id
+      }
+    });
+    return "success!";
+  },
+  'addCampaign': (initiative, campName, id) => {
+    Initiatives.update(
+      {_id: initiative._id},
+      {$addToSet: {
         campaign_names: campName,
         campaign_ids: id
       }
