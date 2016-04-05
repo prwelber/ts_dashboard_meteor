@@ -106,14 +106,6 @@ Meteor.methods({
       inits = inits[0];  // set "inits" equal to initiative with highest textScore
       data['initiative'] = inits.name; //assign initiative name to data object
 
-      // try and remove initiative id and name to guard against duplicates
-      // Initiatives.update(
-      //     {name: inits.name},
-      //     {$pull: {campaign_ids: data.campaign_id, campaign_names: data.campaign_name}
-      // });
-      // I might not need this since using addToSet below, which
-      // checks for duplicate values
-
       Initiatives.update(   // assign campaign id and name to matching initiative
         {name: inits.name},
         {$addToSet: {

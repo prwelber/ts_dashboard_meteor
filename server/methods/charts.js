@@ -294,16 +294,22 @@ Meteor.methods({
         }
       ];
       var result = HourlyBreakdowns.aggregate(pipeline);
-      result[0]['cpc'] = result[0].spend / result[0].clicks;
-      result[0]['cpm'] = result[0].spend / (result[0].impressions / 1000);
-      if (result[0].likes === 0) {
-        result[0]['cpl'] = 0;
-      } else {
-        result[0]['cpl'] = result[0].spend / result[0].likes;
-      }
-      twentyFourHourArray.push(result);
-      time = time.add(1, 'hour');
-      // console.log(time.format('hh:mm a'));
+        try {
+          result[0]['cpc'] = result[0].spend / result[0].clicks;
+          result[0]['cpm'] = result[0].spend / (result[0].impressions / 1000);
+          if (result[0].likes === 0) {
+            result[0]['cpl'] = 0;
+          } else {
+            result[0]['cpl'] = result[0].spend / result[0].likes;
+          }
+          twentyFourHourArray.push(result);
+          time = time.add(1, 'hour');
+        } catch(e) {
+          console.log(e);
+          continue;
+        }
+        // console.log(time.format('hh:mm a'));
+
     }
     // console.log(twentyFourHourArray);
 

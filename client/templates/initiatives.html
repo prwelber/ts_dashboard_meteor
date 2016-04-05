@@ -768,12 +768,11 @@
 
 <template name="editInitiativeCampaigns">
   <h2>Edit Initiative Campaigns</h2>
-
   <div class="row">
     <div id="left" class="col s6" style="position: fixed; left: 50%;">
       <h3>Currently Associated Campaigns</h3>
       {{#each getCampaigns}}
-        <div class="teal" style="border: 1px solid black; height: 2em; font-size: 18px; cursor: move;">
+        <div class="teal grabbable" style="border: 1px solid black; height: 2em; font-size: 18px;">
           <p>{{this}}</p>
         </div>
       {{/each}}
@@ -781,7 +780,7 @@
     <div id="right" class="col s6">
       <h3>All Available Campaigns</h3>
       {{#each getAllCampaigns}}
-      <div style="border: 1px solid black; height: 2em; font-size: 18px; cursor: move;">
+      <div class="grabbable" style="border: 1px solid black; height: 2em; font-size: 18px;">
         <p>{{this.data.campaign_name}}</p>
       </div>
       {{/each}}

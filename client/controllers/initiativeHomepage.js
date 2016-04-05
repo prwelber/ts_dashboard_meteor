@@ -30,7 +30,7 @@ Template.initiativeHomepage.helpers({
       {sort: {
         'data.date_stop': -1
       }
-    })
+    });
     return camps;
   },
   'initiative': function () {

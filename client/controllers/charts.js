@@ -431,10 +431,22 @@ Template.charts.helpers({
     call('hourlyChart', initiative)
     .then(function (resultData) {
       Session.set('resultData', resultData);
-      // console.log(resultData);
+      return resultData
     })
+    // .then(function (data) {
+    //   data.forEach(el => {
+    //     cpc.data.push(el[0].cpc);
+    //     cpl.data.push(el[0].cpl);
+    //     cpm.data.push(el[0].cpm);
+    //     spend.data.push(el[0].spend);
+    //     impressions.data.push(el[0].impressions);
+    //     clicks.data.push(el[0].clicks);
+    //     likes.data.push(el[0].likes);
+    //   });
+    // })
     .catch(function (err) {
       console.log('boooo error', err)
+      throw new Meteor.Error('this is a Meteor Error!!!!');
     });
 
     Session.get('resultData').forEach(el => {

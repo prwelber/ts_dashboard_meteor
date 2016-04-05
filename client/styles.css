@@ -11,7 +11,7 @@ body {
 table {
   margin-bottom: 35px;
 }
- /* ---------- For Dragula ------------ */
+ /* --------------- For Dragula ----------------- */
  .gu-mirror {
   position: fixed !important;
   margin: 0 !important;
@@ -34,3 +34,16 @@ table {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
   filter: alpha(opacity=20);
 }
+
+.grabbable {
+    cursor: move; /* fallback: no `url()` support or images disabled */
+    cursor: -webkit-grab; /* Chrome 1-21, Safari 4+ */
+    cursor: -moz-grab; /* Firefox 1.5-26 */
+    cursor: grab; /* W3C standards syntax, should come least */
+}
+.grabbable:active {
+    cursor: -webkit-grabbing;
+    cursor: -moz-grabbing;
+    cursor: grabbing;
+}
+/* --------------- For Dragula ----------------- */

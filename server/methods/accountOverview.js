@@ -13,6 +13,8 @@ Meteor.methods({
 Meteor.methods({
     'getCampaigns': function (accountNumber) {
         CampaignBasics.remove({account_id: accountNumber});
+        console.log('RUNNING getCampaigns!', accountNumber);
+
         let campaignOverviewArray = [];
         let campaignOverview;
         try {
@@ -32,7 +34,6 @@ Meteor.methods({
         } catch(e) {
             console.log('Error in top level try catch', e);
         }
-
         try {
             for (let i = 0; i < campaignOverviewArray.length; i++) {
                 for (let j = 0; j < campaignOverviewArray[i].length; j++) {
@@ -56,10 +57,10 @@ Meteor.methods({
                 }
             }
         } catch(e) {
-            console.log('error in the mongo insert clause:', e)
-        } finally {
-            return "success!";
+            console.log('error in the mongo insert clause:', e);
         }
+
+        return "success!";
     }
 });
 
