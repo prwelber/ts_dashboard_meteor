@@ -12,7 +12,7 @@ SyncedCron.add({
     name: 'tester',
     // schedule the function using parser from later.js
     schedule: function (parser) {
-        return parser.text('every 5 seconds');
+        return parser.text('every 10 seconds');
     },
     // the meat of the function, what will actually happen
     job: function (thing) {
@@ -28,6 +28,6 @@ Meteor.startup(function () {
   // must start the jobs
   // SyncedCron.start();
   // will stop jobs after 10 seconds
-  Meteor.setTimeout(function() {SyncedCron.stop(); }, 31 * 1000);
+  Meteor.setTimeout(function() {SyncedCron.stop(); }, 90 * 1000);
 });
 

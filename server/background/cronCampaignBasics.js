@@ -1,6 +1,6 @@
   /*
 SyncedCron.add({
-    name: "getCampaignBasics",
+    name: "Background Campaign Basics Getter",
     schedule: function (parser) {
         return parser.text('every 15 seconds');
         return parser.text('at 5:00pm');
