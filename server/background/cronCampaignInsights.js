@@ -9,7 +9,7 @@ SyncedCron.config({
 SyncedCron.add({
   name: "Clean null values from Insights",
   schedule: function (parser) {
-    return parser.text('at 1:38pm');
+    return parser.text('every 59 mins');
   },
   job: function (time) {
 
@@ -18,23 +18,21 @@ SyncedCron.add({
   }
 });
 
-
-
 SyncedCron.add({
   name: "Background Campaign Insights Getter",
 
   schedule: function (parser) {
-    return parser.text('at 1:21 pm');
+    return parser.text('at 2:32 pm');
   },
 
   job: function (time) {
 
-
-
     let idArray = Accounts.find(
       {name:
         {$in:
-          ["Ruffino", "Tom Gore"]
+          // ["Ruffino", "Tom Gore"]
+          // ["Kim Crawford", "Luchese"]
+          ["Tom Gore"]
         }
       }).fetch();
 
@@ -47,8 +45,7 @@ SyncedCron.add({
       }).fetch()
     console.log('length of basicsArray', campaignBasicsArray.length)
     let campIdArray = _.filter(campaignBasicsArray, function (el) {
-      // TODO if el.inserted isAfter el.stop_time then continue
-      // else return that campaign_id
+
       if (moment().isAfter(moment(el.start_time, "MM-DD-YYYY hh:mm a"))) {
         return el.campaign_id
       }
@@ -67,31 +64,26 @@ SyncedCron.add({
     console.log('length of campIdArray', campIdArray.length);
 
     if (campIdArray && campaignBasicsArray) {
-
       let counter = 0;
 
-      // while (true) {
+      const setIntervalId = Meteor.setInterval(function () {
 
-
-
-      var setIntervalId = Meteor.setInterval(function () {
+        CampaignInsights.remove({'data.campaign_id': null});
 
         let campaignData = CampaignInsights.findOne({'data.campaign_id': campIdArray[counter]});
+
         if (counter >= campIdArray.length) {
           console.log('nothing to do in cronCampaignInsights');
+          counter++;
           Meteor.clearInterval(setIntervalId);
-        }
-        // if (campaignData && campaignData.data.inserted) {
-          // check to see if inserted is after date_stop and then skip this
-          // one to lighten the load
-        if (campaignData && campaignData.data.inserted) {
+        } else if (campaignData && campaignData.data.inserted) {
           console.log('counter', counter)
           if (moment(campaignData.data.inserted, "MM-DD-YYYY").isAfter(moment(campaignData.data.date_stop, "MM-DD-YYYY"))) {
           console.log('inserted is after date stop');
           counter++;
           }
         } else {
-        // } // else {
+
           console.log('getInsights background job running');
           console.log("counter", counter)
           CampaignInsights.remove({'data.campaign_id': campIdArray[counter]});
@@ -205,17 +197,16 @@ SyncedCron.add({
           try {
             CampaignInsights.insert({
               data: data
-            })
+            });
+            console.log('Insight successfully inserted!');
           } catch(e) {
             console.log('error while inserting into collection:', e);
           }
         counter++;
         } // end of if (counter >= arr.length)
-      }, 4000) // end of setInterval
-      // }  // end of while loop
+      }, 1000) // end of setInterval
     } // end of if
-
   } //end of job
-});
+}); // end of SyncedCron.add
 
 
