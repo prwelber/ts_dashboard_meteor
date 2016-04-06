@@ -397,7 +397,7 @@ Template.initiativesHome.onRendered(function () {
 Template.initiativesHome.helpers({
   'getAllInitiatives': function () {
     const inits = Initiatives.find({},
-      {sort: {active: -1, recentlyEnded: -1}}
+      {sort: {active: -1, recentlyEnded: -1, lastThreeMonths: -1}}
     ).fetch();
 
     return inits;

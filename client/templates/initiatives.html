@@ -808,7 +808,7 @@
             <a href="/initiatives/{{_id}}/homepage"><span class="title" style="font-size: 20px;">{{name}}</span></a>
             <div class="row" style="margin-bottom: 5px;">
               <div class="col s8">
-                <p>Dates: {{startDate}} - {{endDate}}</p>
+                <p>{{startDate}} -- {{endDate}}</p>
               </div>
               <div class="col s4">
                 <p class="right-align {{isActiveClass}}">{{isActiveInitiative}}</p>
@@ -817,22 +817,6 @@
           </li>
         {{/each}}
       </ul>
-
-        {{!-- <div class="col s12 m6 l6">
-            <div class="card z-depth-3">
-              <div class="card-content">
-                <a href="/initiatives/{{_id}}/homepage"><span class="card-title">{{name}}</span></a>
-                <p>Dates: {{startDate}} -- {{endDate}}</p>
-                <p>Brand: {{brand}}</p>
-                <p>Agency: {{agency}}</p>
-                <p>Created: {{inserted_date}}</p>
-              </div>
-              <div class="card-action">
-                <a href="/admin/initiatives/{{_id}}">View & Edit Initiative</a>
-              </div>
-            </div>
-        </div>
-      {{/each}} --}}
     </div>
   </div>
     <div class="row">

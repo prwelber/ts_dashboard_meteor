@@ -1,34 +1,33 @@
-  /*
+
 SyncedCron.add({
     name: "Background Campaign Basics Getter",
     schedule: function (parser) {
-        return parser.text('every 15 seconds');
-        return parser.text('at 5:00pm');
+        return parser.text('at 11:00pm');
     },
 
     job: function(intendedAt) {
-      const stuff = Accounts.find(
+      const accts = Accounts.find(
         {name: {
           $in: ["Tom Gore", "Robert Mondavi Winery", "Luchese"]
         }
       }).fetch();
 
-      if (stuff && stuff[0].account_id) {
+      if (accts && accts[0].account_id) {
         let counter = 0;
 
         while (true) {
 
-          if (counter >= stuff.length) {
+          if (counter >= accts.length) {
             console.log('nothing to do');
             break;
           } else {
             console.log('running getCampaignBasics job!');
-            CampaignBasics.remove({account_id: stuff[counter].account_id});
+            CampaignBasics.remove({account_id: accts[counter].account_id});
             let campaignOverviewArray = [];
             let campaignOverview;
             try {
 
-              let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/act_'+stuff[counter].account_id+'/campaigns?fields=name,created_time,start_time,stop_time,updated_time,objective,id,account_id&limit=50&access_token='+token+'', {});
+              let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/act_'+accts[counter].account_id+'/campaigns?fields=name,created_time,start_time,stop_time,updated_time,objective,id,account_id&limit=50&access_token='+token+'', {});
               campaignOverview = result;
               campaignOverviewArray.push(campaignOverview.data.data);
 
@@ -78,4 +77,3 @@ SyncedCron.add({
     }
   }
 });
-  */
