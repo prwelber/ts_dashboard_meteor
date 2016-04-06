@@ -12,7 +12,7 @@ SyncedCron.add({
     name: 'tester',
     // schedule the function using parser from later.js
     schedule: function (parser) {
-        return parser.text('every 10 seconds');
+        return parser.text('every 30 seconds');
     },
     // the meat of the function, what will actually happen
     job: function (thing) {

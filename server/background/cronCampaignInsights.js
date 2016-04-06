@@ -1,7 +1,21 @@
 const later = require('later');
+import { Meteor } from 'meteor/meteor'
+
 
 SyncedCron.config({
     collectionName: 'cronCollection'
+});
+
+SyncedCron.add({
+  name: "Clean null values from Insights",
+  schedule: function (parser) {
+    return parser.text('at 1:38pm');
+  },
+  job: function (time) {
+
+    CampaignInsights.remove({'data.campaign_id': null});
+    console.log('Insight successfully removed');
+  }
 });
 
 
@@ -10,16 +24,17 @@ SyncedCron.add({
   name: "Background Campaign Insights Getter",
 
   schedule: function (parser) {
-    // return parser.text('every 15 seconds');
-    return parser.text('at 9:18pm');
+    return parser.text('at 1:21 pm');
   },
 
   job: function (time) {
 
+
+
     let idArray = Accounts.find(
       {name:
         {$in:
-          ["Tom Gore"]
+          ["Ruffino", "Tom Gore"]
         }
       }).fetch();
 
@@ -30,40 +45,55 @@ SyncedCron.add({
       {account_id:
         {$in: idArray}
       }).fetch()
-    let campIdArray = _.map(campaignBasicsArray, function (el) {
+    console.log('length of basicsArray', campaignBasicsArray.length)
+    let campIdArray = _.filter(campaignBasicsArray, function (el) {
       // TODO if el.inserted isAfter el.stop_time then continue
       // else return that campaign_id
-      return el.campaign_id
-
+      if (moment().isAfter(moment(el.start_time, "MM-DD-YYYY hh:mm a"))) {
+        return el.campaign_id
+      }
     });
+
+    // needed to use map here because filter returns the whole object
+    // map allows us to have an array of only campaign_id's
+    campIdArray = _.map(campIdArray, function (el) {
+      return el['campaign_id'];
+    });
+
 
     // campIdArray is an array of all the campaign ID's that are associated
     // with the accounts we originally searched for
     console.log(campIdArray);
+    console.log('length of campIdArray', campIdArray.length);
 
     if (campIdArray && campaignBasicsArray) {
+
       let counter = 0;
 
-      while (true) {
-        const campaignData = CampaignInsights.findOne({'data.campaign_id': campIdArray[counter]});
+      // while (true) {
+
+
+
+      var setIntervalId = Meteor.setInterval(function () {
+
+        let campaignData = CampaignInsights.findOne({'data.campaign_id': campIdArray[counter]});
         if (counter >= campIdArray.length) {
           console.log('nothing to do in cronCampaignInsights');
-          break;
-        } else if (campaignData && campaignData.data.inserted) {
+          Meteor.clearInterval(setIntervalId);
+        }
+        // if (campaignData && campaignData.data.inserted) {
+          // check to see if inserted is after date_stop and then skip this
+          // one to lighten the load
+        if (campaignData && campaignData.data.inserted) {
+          console.log('counter', counter)
           if (moment(campaignData.data.inserted, "MM-DD-YYYY").isAfter(moment(campaignData.data.date_stop, "MM-DD-YYYY"))) {
-            console.log('inserted is after date stop');
-            counter++;
-            continue;
+          console.log('inserted is after date stop');
+          counter++;
           }
-          // check to see if inserted is after date_stop and then skip this one to lighten the load
-
-          // console.log('inserted is after date_stop');
-          // continue;
-
         } else {
+        // } // else {
           console.log('getInsights background job running');
-          console.log(campIdArray[counter])
-          console.log(counter)
+          console.log("counter", counter)
           CampaignInsights.remove({'data.campaign_id': campIdArray[counter]});
           let insightsArray = [];
           let masterArray = [];
@@ -141,27 +171,30 @@ SyncedCron.add({
               "search_text": "text"
             });
 
-            let inits = Initiatives.find(
-              {$text: { $search: data.campaign_name}},
-              {
-                fields: { // giving each document a text score
-                  score: {$meta: "textScore"}
-                },
-                sort: { // sorting by highest text score
-                  score: {$meta: "textScore"}
+            // add check for when campaign_name is null
+            if (data && data.campaign_name) {
+              let inits = Initiatives.find(
+                {$text: { $search: data.campaign_name}},
+                {
+                  fields: { // giving each document a text score
+                    score: {$meta: "textScore"}
+                  },
+                  sort: { // sorting by highest text score
+                    score: {$meta: "textScore"}
+                  }
                 }
-              }
-            ).fetch();
-            inits = inits[0];  // set "inits" equal to initiative with highest textScore
-            data['initiative'] = inits.name; //assign initiative name to data object
+              ).fetch();
+              inits = inits[0];  // set "inits" equal to initiative with highest textScore
+              data['initiative'] = inits.name; //assign initiative name to data object
 
-            Initiatives.update(   // assign campaign id and name to matching initiative
-              {name: inits.name},
-              {$addToSet: {
-                campaign_names: data.campaign_name,
-                campaign_ids: data.campaign_id
-              }
-            });
+              Initiatives.update(   // assign campaign id and name to matching initiative
+                {name: inits.name},
+                {$addToSet: {
+                  campaign_names: data.campaign_name,
+                  campaign_ids: data.campaign_id
+                }
+              });
+            }
 
           } catch(e) {
             console.log(e);
@@ -177,9 +210,10 @@ SyncedCron.add({
             console.log('error while inserting into collection:', e);
           }
         counter++;
-        }
-      }
-    }
+        } // end of if (counter >= arr.length)
+      }, 4000) // end of setInterval
+      // }  // end of while loop
+    } // end of if
 
   } //end of job
 });
