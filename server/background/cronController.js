@@ -19,14 +19,12 @@ SyncedCron.add({
         console.log('log running from within job on original page');
         console.log(thing); // time when the job is scheduld to be run
     }
-})
-
-
+});
 
 
 Meteor.startup(function () {
   // must start the jobs
-  // SyncedCron.start();
+  SyncedCron.start();
   // will stop jobs after 10 seconds
   Meteor.setTimeout(function() {SyncedCron.stop(); }, 90 * 1000);
 });

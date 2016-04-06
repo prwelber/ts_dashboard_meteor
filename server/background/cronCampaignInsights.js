@@ -11,7 +11,7 @@ SyncedCron.add({
 
   schedule: function (parser) {
     // return parser.text('every 15 seconds');
-    return parser.text('at 5:27pm')
+    return parser.text('at 9:18pm');
   },
 
   job: function (time) {
@@ -30,25 +30,36 @@ SyncedCron.add({
       {account_id:
         {$in: idArray}
       }).fetch()
-    // stuff is now an array of campaign Basics
-    // each holding a campaign_id
     let campIdArray = _.map(campaignBasicsArray, function (el) {
       // TODO if el.inserted isAfter el.stop_time then continue
       // else return that campaign_id
       return el.campaign_id
+
     });
 
     // campIdArray is an array of all the campaign ID's that are associated
     // with the accounts we originally searched for
-    // console.log(campIdArray);
+    console.log(campIdArray);
 
     if (campIdArray && campaignBasicsArray) {
       let counter = 0;
 
       while (true) {
+        const campaignData = CampaignInsights.findOne({'data.campaign_id': campIdArray[counter]});
         if (counter >= campIdArray.length) {
           console.log('nothing to do in cronCampaignInsights');
           break;
+        } else if (campaignData && campaignData.data.inserted) {
+          if (moment(campaignData.data.inserted, "MM-DD-YYYY").isAfter(moment(campaignData.data.date_stop, "MM-DD-YYYY"))) {
+            console.log('inserted is after date stop');
+            counter++;
+            continue;
+          }
+          // check to see if inserted is after date_stop and then skip this one to lighten the load
+
+          // console.log('inserted is after date_stop');
+          // continue;
+
         } else {
           console.log('getInsights background job running');
           console.log(campIdArray[counter])
