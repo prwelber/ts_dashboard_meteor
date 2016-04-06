@@ -22,7 +22,7 @@ SyncedCron.add({
   name: "Background Campaign Insights Getter",
 
   schedule: function (parser) {
-    return parser.text('at 2:32 pm');
+    return parser.text('at 3:51 pm');
   },
 
   job: function (time) {
@@ -32,7 +32,8 @@ SyncedCron.add({
         {$in:
           // ["Ruffino", "Tom Gore"]
           // ["Kim Crawford", "Luchese"]
-          ["Tom Gore"]
+          // ["Tom Gore"]
+          ["Robert Mondavi Winery"]
         }
       }).fetch();
 
@@ -204,7 +205,7 @@ SyncedCron.add({
           }
         counter++;
         } // end of if (counter >= arr.length)
-      }, 1000) // end of setInterval
+      }, 5000) // end of setInterval
     } // end of if
   } //end of job
 }); // end of SyncedCron.add

@@ -2,6 +2,22 @@ Meteor.methods({
   'insertNewInitiative': function (data) {
     const campArray = [];
     const campNameArray = [];
+    let active = false;
+    let recentlyEnded = false;
+    let lastThreeMonths = false;
+    const now = moment();
+    // if now is after startDate AND now isBefore endDate active = true
+    if (now.isAfter(moment(data.startDate, "MM-DD-YYYY")) && now.isBefore(moment(data.endDate, "MM-DD-YYYY"))) {
+      active = true;
+    }
+
+    if (now.diff(moment(data.endDate, "MM-DD-YYYY"), "days") <= 31) {
+      recentlyEnded = true;
+    }
+
+    if (now.diff(moment(data.endDate, "MM-DD-YYYY"), "days") <= 90) {
+      lastThreeMonths = true;
+    }
 
     Initiatives.insert({
       inserted_date: moment().format("MM-DD-YYYY hh:mm a"),
@@ -47,6 +63,9 @@ Meteor.methods({
       price5: data.price5,
       campaign_ids: campArray,
       campaign_names: campNameArray,
+      active: active,
+      recentlyEnded: recentlyEnded,
+      lastThreeMonths: lastThreeMonths
     });
     console.log("new initiative inserted into DB:", data)
     return "success";
@@ -60,6 +79,21 @@ Meteor.methods({
     return "initiative deleted";
   },
   'updateInitiative': function (data) {
+    let active = false;
+    let recentlyEnded = false;
+    let lastThreeMonths = false;
+    const now = moment();
+    // if now is after startDate AND now isBefore endDate active = true
+    if (now.isAfter(moment(data.startDate, "MM-DD-YYYY")) && now.isBefore(moment(data.endDate, "MM-DD-YYYY"))) {
+      active = true;
+    }
+    if (now.diff(moment(data.endDate, "MM-DD-YYYY"), "days") <= 31) {
+      recentlyEnded = true;
+    }
+    if (now.diff(moment(data.endDate, "MM-DD-YYYY"), "days") <= 90) {
+      lastThreeMonths = true;
+    }
+
     Initiatives.update(
       {name: data.name},
       {$set: {
@@ -107,7 +141,10 @@ Meteor.methods({
         startDate5: data.startDate5,
         endDate5: data.endDate5,
         quantity5: data.quantity5,
-        price5: data.price5
+        price5: data.price5,
+        active: active,
+        recentlyEnded: recentlyEnded,
+        lastThreeMonths: lastThreeMonths
       }
     });
     return 'success!';
