@@ -1,0 +1,663 @@
+<template name="newInitiative">
+  <div class="container">
+    <div class="row">
+      <div class="col s6">
+        <h2>Create New Initiative</h2>
+      </div>
+    </div>
+    <form class="new-initiative col s12">
+      <div class="row">
+        <div class="input-field col s6">
+          <input type="text" id="initiative-name" name="name" >
+          <label for="initiative-name">Initiative Name</label>
+        </div>
+        <div class="input-field col s6">
+          <input type="text" id="search-text" name="search_text" >
+          <label for="search-text">Search Text</label>
+          <blockquote>
+            Search Text is used to identify associated campaigns. <br>
+            Ex: if campaign name is "Ruffino 2016 Page Post #50", write "Ruffino 2016 Page Post" <br>
+            This <strong>can</strong> be the same name as the initiative.
+          </blockquote>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s4">
+          <select name="brand" id="brand-select" class="browser-default">
+            <option value="" disabled selected>Choose Brand</option>
+            {{#each getBrands}}
+              <option value="{{name}}">{{name}}</option>
+            {{/each}}
+          </select>
+          <label class="active">Brand</label>
+        </div>
+        <div class="input-field col s4">
+          <select name="agency" id="agency-select" class="browser-default">
+            <option value="" disabled selected>Choose Agency</option>
+            <option value="Constellation">Constellation</option>
+            <option value="Horizon">Horizon</option>
+          </select>
+          <label class="active">Agency</label>
+        </div>
+        <div class="input-field col s4">
+          <select name="product" id="product-select" class="browser-default">
+            <option value="" disabled selected>Choose Product Type</option>
+            <option value="wine">Wine</option>
+            <option value="food">Food</option>
+          </select>
+          <label class="active">Product</label>
+        </div>
+        {{!-- <p>Product Category</p> --}}
+        {{!-- TODO product category needs to be completed --}}
+      </div>
+      <h2>Enter Line Items</h2>
+      <ul class="collapsible" data-collapsible="expandable">
+        <li>
+          <div class="collapsible-header active">
+            Line Item #1
+          </div>
+          <div class="collapsible-body">
+            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+              <div class="input-field col s6">
+                <select name="platform" id="" class="browser-default">
+                  <option value="" disabled selected>Choose Platform</option>
+                  <option value="facebook">Facebook</option>
+                  <option value="twitter">Twitter</option>
+                  <option value="google">Google</option>
+                  <option value="pinterest">Pinterest</option>
+                  <option value="instagram">Instagram</option>
+                  <option value="tumblr">Tumblr</option>
+                  <option value="youtube">YouTube</option>
+                </select>
+                <label class="active">Platform</label>
+              </div>
+              <div class="input-field col s6">
+                <input type="text" id="objective-input" name="objective">
+                <label for="objetive-input">Objective</label>
+              </div>
+              <div class="input-field col s4">
+                <select name="dealType" id="dealType-dropdown" class="browser-default">
+                  <option value="" disabled selected>Choose Deal Type</option>
+                  <option value="CPC">CPC</option>
+                  <option value="CPM">CPM</option>
+                  <option value="CPL">CPL</option>
+                  <option value="conversions">Conversions</option>
+                  <option value="appEngagement">App Engagement</option>
+                  <option value="postEngagement">Post Engagement</option>
+                  <option value="AppInstalls">App Installs</option>
+                  <option value="pageLikes">Page Likes</option>
+                  <option value="reach">Reach</option>
+                  <option value="eventAttendance">Event Attendance</option>
+                  <option value="offerClaims">Offer Claims</option>
+                  <option value="videoViews">Video Views</option>
+                  <option value="leads">Leads</option>
+                  <option value="FACTOR">FACTOR</option>
+                </select>
+                <label class="active">Deal Type</label>
+              </div>
+              <div class=" input-field col s2">
+                  <input type="checkbox" id="cost_plus" name="costplus">
+                  <label for="cost_plus">Cost Plus?</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="cost-plus-percent" name="costPlus">
+                <label for="cost-plus-percent">Cost Plus Percent</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="start-date" name="startDate">
+                <label for="start-date">Start Date</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="end-date" name="endDate">
+                <label for="end-date">End Date</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="price-input" name="price">
+                <label for="price-input">Price</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="budget-input" name="budget">
+                <label for="budget-input">Budget (no commas in input, ex: 1500.00)</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="quantity-input" name="quantity">
+                <label for="quantity-input">Quantity</label>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="collapsible-header">
+            Line Item #2
+          </div>
+          <div class="collapsible-body">
+            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+              <div class="input-field col s6">
+                <select name="platform2" id="" class="browser-default">
+                  <option value="" disabled selected>Choose Platform</option>
+                  <option value="facebook">Facebook</option>
+                  <option value="twitter">Twitter</option>
+                  <option value="google">Google</option>
+                  <option value="pinterest">Pinterest</option>
+                  <option value="instagram">Instagram</option>
+                  <option value="tumblr">Tumblr</option>
+                  <option value="youtube">YouTube</option>
+                </select>
+                <label class="active">Platform</label>
+              </div>
+              <div class="input-field col s6">
+                <input type="text" id="objective-input2" name="objective2">
+                <label for="objetive-input2">Objective</label>
+              </div>
+              <div class="input-field col s4">
+                <select name="dealType2" id="dealType-dropdown2" class="browser-default">
+                  <option value="" disabled selected>Choose Deal Type</option>
+                  <option value="CPC">CPC</option>
+                  <option value="CPM">CPM</option>
+                  <option value="CPL">CPL</option>
+                  <option value="conversions">Conversions</option>
+                  <option value="appEngagement">App Engagement</option>
+                  <option value="postEngagement">Post Engagement</option>
+                  <option value="AppInstalls">App Installs</option>
+                  <option value="pageLikes">Page Likes</option>
+                  <option value="reach">Reach</option>
+                  <option value="eventAttendance">Event Attendance</option>
+                  <option value="offerClaims">Offer Claims</option>
+                  <option value="videoViews">Video Views</option>
+                  <option value="leads">Leads</option>
+                  <option value="FACTOR">FACTOR</option>
+                </select>
+                <label class="active">Deal Type</label>
+              </div>
+              <div class=" input-field col s2">
+                  <input type="checkbox" id="cost-plus2" name="costplus2">
+                  <label for="cost-plus2">Cost Plus?</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="cost-plus-percent2" name="costPlus2">
+                <label for="cost-plus-percent2">Cost Plus Percent</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="start-date2" name="startDate2">
+                <label for="start-date2">Start Date</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="end-date2" name="endDate2">
+                <label for="end-date2">End Date</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="price-input2" name="price2">
+                <label for="price-input2">Price</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="budget-input2" name="budget2">
+                <label for="budget-input2">Budget (no commas in input, ex: 1500.00)</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="quantity-input2" name="quantity2">
+                <label for="quantity-input2">Quantity</label>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="collapsible-header">
+            Line Item #3
+          </div>
+          <div class="collapsible-body">
+            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+              <div class="input-field col s6">
+                <select name="platform3" id="" class="browser-default">
+                  <option value="" disabled selected>Choose Platform</option>
+                  <option value="facebook">Facebook</option>
+                  <option value="twitter">Twitter</option>
+                  <option value="google">Google</option>
+                  <option value="pinterest">Pinterest</option>
+                  <option value="instagram">Instagram</option>
+                  <option value="tumblr">Tumblr</option>
+                  <option value="youtube">YouTube</option>
+                </select>
+                <label class="active">Platform</label>
+              </div>
+              <div class="input-field col s6">
+                <input type="text" id="objective-input3" name="objective3">
+                <label for="objetive-input3">Objective</label>
+              </div>
+              <div class="input-field col s4">
+                <select name="dealType3" id="dealType-dropdown3" class="browser-default">
+                  <option value="" disabled selected>Choose Deal Type</option>
+                  <option value="CPC">CPC</option>
+                  <option value="CPM">CPM</option>
+                  <option value="CPL">CPL</option>
+                  <option value="conversions">Conversions</option>
+                  <option value="appEngagement">App Engagement</option>
+                  <option value="postEngagement">Post Engagement</option>
+                  <option value="AppInstalls">App Installs</option>
+                  <option value="pageLikes">Page Likes</option>
+                  <option value="reach">Reach</option>
+                  <option value="eventAttendance">Event Attendance</option>
+                  <option value="offerClaims">Offer Claims</option>
+                  <option value="videoViews">Video Views</option>
+                  <option value="leads">Leads</option>
+                  <option value="FACTOR">FACTOR</option>
+                </select>
+                <label class="active">Deal Type</label>
+              </div>
+              <div class=" input-field col s2">
+                  <input type="checkbox" id="cost-plus3" name="costplus3">
+                  <label for="cost-plus3">Cost Plus?</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="cost-plus-percent3" name="costPlus3">
+                <label for="cost-plus-percent3">Cost Plus Percent</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="start-date3" name="startDate3">
+                <label for="start-date3">Start Date</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="end-date3" name="endDate3">
+                <label for="end-date3">End Date</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="price-input3" name="price3">
+                <label for="price-input3">Price</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="budget-input3" name="budget3">
+                <label for="budget-input3">Budget (no commas in input, ex: 1500.00)</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="quantity-input3" name="quantity3">
+                <label for="quantity-input3">Quantity</label>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="collapsible-header">
+            Line Item #4
+          </div>
+          <div class="collapsible-body">
+            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+              <div class="input-field col s6">
+                <select name="platform4" id="" class="browser-default">
+                  <option value="" disabled selected>Choose Platform</option>
+                  <option value="facebook">Facebook</option>
+                  <option value="twitter">Twitter</option>
+                  <option value="google">Google</option>
+                  <option value="pinterest">Pinterest</option>
+                  <option value="instagram">Instagram</option>
+                  <option value="tumblr">Tumblr</option>
+                  <option value="youtube">YouTube</option>
+                </select>
+                <label class="active">Platform</label>
+              </div>
+              <div class="input-field col s6">
+                <input type="text" id="objective-input4" name="objective4">
+                <label for="objetive-input4">Objective</label>
+              </div>
+              <div class="input-field col s4">
+                <select name="dealType4" id="dealType-dropdown4" class="browser-default">
+                  <option value="" disabled selected>Choose Deal Type</option>
+                  <option value="CPC">CPC</option>
+                  <option value="CPM">CPM</option>
+                  <option value="CPL">CPL</option>
+                  <option value="conversions">Conversions</option>
+                  <option value="appEngagement">App Engagement</option>
+                  <option value="postEngagement">Post Engagement</option>
+                  <option value="AppInstalls">App Installs</option>
+                  <option value="pageLikes">Page Likes</option>
+                  <option value="reach">Reach</option>
+                  <option value="eventAttendance">Event Attendance</option>
+                  <option value="offerClaims">Offer Claims</option>
+                  <option value="videoViews">Video Views</option>
+                  <option value="leads">Leads</option>
+                  <option value="FACTOR">FACTOR</option>
+                </select>
+                <label class="active">Deal Type</label>
+              </div>
+              <div class=" input-field col s2">
+                  <input type="checkbox" id="cost-plus4" name="costplus4">
+                  <label for="cost-plus4">Cost Plus?</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="cost-plus-percent4" name="costPlus4">
+                <label for="cost-plus-percent4">Cost Plus Percent</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="start-date4" name="startDate4">
+                <label for="start-date4">Start Date</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="end-date4" name="endDate4">
+                <label for="end-date4">End Date</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="price-input4" name="price4">
+                <label for="price-input4">Price</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="budget-input4" name="budget4">
+                <label for="budget-input4">Budget (no commas in input, ex: 1500.00)</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="quantity-input4" name="quantity4">
+                <label for="quantity-input4">Quantity</label>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="collapsible-header">
+            Line Item #5
+          </div>
+          <div class="collapsible-body">
+            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+              <div class="input-field col s6">
+                <select name="platform5" id="" class="browser-default">
+                  <option value="" disabled selected>Choose Platform</option>
+                  <option value="facebook">Facebook</option>
+                  <option value="twitter">Twitter</option>
+                  <option value="google">Google</option>
+                  <option value="pinterest">Pinterest</option>
+                  <option value="instagram">Instagram</option>
+                  <option value="tumblr">Tumblr</option>
+                  <option value="youtube">YouTube</option>
+                </select>
+                <label class="active">Platform</label>
+              </div>
+              <div class="input-field col s6">
+                <input type="text" id="objective-input5" name="objective5">
+                <label for="objetive-input5">Objective</label>
+              </div>
+              <div class="input-field col s4">
+                <select name="dealType5" id="dealType-dropdown5" class="browser-default">
+                  <option value="" disabled selected>Choose Deal Type</option>
+                  <option value="CPC">CPC</option>
+                  <option value="CPM">CPM</option>
+                  <option value="CPL">CPL</option>
+                  <option value="conversions">Conversions</option>
+                  <option value="appEngagement">App Engagement</option>
+                  <option value="postEngagement">Post Engagement</option>
+                  <option value="AppInstalls">App Installs</option>
+                  <option value="pageLikes">Page Likes</option>
+                  <option value="reach">Reach</option>
+                  <option value="eventAttendance">Event Attendance</option>
+                  <option value="offerClaims">Offer Claims</option>
+                  <option value="videoViews">Video Views</option>
+                  <option value="leads">Leads</option>
+                  <option value="FACTOR">FACTOR</option>
+                </select>
+                <label class="active">Deal Type</label>
+              </div>
+              <div class=" input-field col s2">
+                  <input type="checkbox" id="cost-plus5" name="costplus5">
+                  <label for="cost-plus5">Cost Plus?</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="cost-plus-percent5" name="costPlus5">
+                <label for="cost-plus-percent5">Cost Plus Percent</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="start-date5" name="startDate5">
+                <label for="start-date5">Start Date</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="end-date5" name="endDate5">
+                <label for="end-date5">End Date</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="price-input5" name="price5">
+                <label for="price-input5">Price</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="budget-input5" name="budget5">
+                <label for="budget-input5">Budget (no commas in input, ex: 1500.00)</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="quantity-input5" name="quantity5">
+                <label for="quantity-input5">Quantity</label>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="collapsible-header">
+            Line Item #6
+          </div>
+          <div class="collapsible-body">
+            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+              <div class="input-field col s6">
+                <select name="platform6" id="" class="browser-default">
+                  <option value="" disabled selected>Choose Platform</option>
+                  <option value="facebook">Facebook</option>
+                  <option value="twitter">Twitter</option>
+                  <option value="google">Google</option>
+                  <option value="pinterest">Pinterest</option>
+                  <option value="instagram">Instagram</option>
+                  <option value="tumblr">Tumblr</option>
+                  <option value="youtube">YouTube</option>
+                </select>
+                <label class="active">Platform</label>
+              </div>
+              <div class="input-field col s6">
+                <input type="text" id="objective-input6" name="objective6">
+                <label for="objetive-input6">Objective</label>
+              </div>
+              <div class="input-field col s4">
+                <select name="dealType6" id="dealType-dropdown6" class="browser-default">
+                  <option value="" disabled selected>Choose Deal Type</option>
+                  <option value="CPC">CPC</option>
+                  <option value="CPM">CPM</option>
+                  <option value="CPL">CPL</option>
+                  <option value="conversions">Conversions</option>
+                  <option value="appEngagement">App Engagement</option>
+                  <option value="postEngagement">Post Engagement</option>
+                  <option value="AppInstalls">App Installs</option>
+                  <option value="pageLikes">Page Likes</option>
+                  <option value="reach">Reach</option>
+                  <option value="eventAttendance">Event Attendance</option>
+                  <option value="offerClaims">Offer Claims</option>
+                  <option value="videoViews">Video Views</option>
+                  <option value="leads">Leads</option>
+                  <option value="FACTOR">FACTOR</option>
+                </select>
+                <label class="active">Deal Type</label>
+              </div>
+              <div class=" input-field col s2">
+                  <input type="checkbox" id="cost-plus6" name="costplus6">
+                  <label for="cost-plus6">Cost Plus?</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="cost-plus-percent6" name="costPlus6">
+                <label for="cost-plus-percent6">Cost Plus Percent</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="start-date6" name="startDate6">
+                <label for="start-date6">Start Date</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="end-date6" name="endDate6">
+                <label for="end-date6">End Date</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="price-input6" name="price6">
+                <label for="price-input6">Price</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="budget-input6" name="budget6">
+                <label for="budget-input6">Budget (no commas in input, ex: 1500.00)</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="quantity-input6" name="quantity6">
+                <label for="quantity-input6">Quantity</label>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="collapsible-header">
+            Line Item #7
+          </div>
+          <div class="collapsible-body">
+            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+              <div class="input-field col s6">
+                <select name="platform7" id="" class="browser-default">
+                  <option value="" disabled selected>Choose Platform</option>
+                  <option value="facebook">Facebook</option>
+                  <option value="twitter">Twitter</option>
+                  <option value="google">Google</option>
+                  <option value="pinterest">Pinterest</option>
+                  <option value="instagram">Instagram</option>
+                  <option value="tumblr">Tumblr</option>
+                  <option value="youtube">YouTube</option>
+                </select>
+                <label class="active">Platform</label>
+              </div>
+              <div class="input-field col s6">
+                <input type="text" id="objective-input7" name="objective7">
+                <label for="objetive-input7">Objective</label>
+              </div>
+              <div class="input-field col s4">
+                <select name="dealType7" id="dealType-dropdown7" class="browser-default">
+                  <option value="" disabled selected>Choose Deal Type</option>
+                  <option value="CPC">CPC</option>
+                  <option value="CPM">CPM</option>
+                  <option value="CPL">CPL</option>
+                  <option value="conversions">Conversions</option>
+                  <option value="appEngagement">App Engagement</option>
+                  <option value="postEngagement">Post Engagement</option>
+                  <option value="AppInstalls">App Installs</option>
+                  <option value="pageLikes">Page Likes</option>
+                  <option value="reach">Reach</option>
+                  <option value="eventAttendance">Event Attendance</option>
+                  <option value="offerClaims">Offer Claims</option>
+                  <option value="videoViews">Video Views</option>
+                  <option value="leads">Leads</option>
+                  <option value="FACTOR">FACTOR</option>
+                </select>
+                <label class="active">Deal Type</label>
+              </div>
+              <div class=" input-field col s2">
+                  <input type="checkbox" id="cost-plus7" name="costplus7">
+                  <label for="cost-plus7">Cost Plus?</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="cost-plus-percent7" name="costPlus7">
+                <label for="cost-plus-percent7">Cost Plus Percent</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="start-date7" name="startDate7">
+                <label for="start-date7">Start Date</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="end-date7" name="endDate7">
+                <label for="end-date7">End Date</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="price-input7" name="price7">
+                <label for="price-input7">Price</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="budget-input7" name="budget7">
+                <label for="budget-input7">Budget (no commas in input, ex: 1700.00)</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="quantity-input7" name="quantity7">
+                <label for="quantity-input7">Quantity</label>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="collapsible-header">
+            Line Item #8
+          </div>
+          <div class="collapsible-body">
+            <div class="row" style="padding-left: 5px; padding-right: 5px;">
+              <div class="input-field col s6">
+                <select name="platform8" id="" class="browser-default">
+                  <option value="" disabled selected>Choose Platform</option>
+                  <option value="facebook">Facebook</option>
+                  <option value="twitter">Twitter</option>
+                  <option value="google">Google</option>
+                  <option value="pinterest">Pinterest</option>
+                  <option value="instagram">Instagram</option>
+                  <option value="tumblr">Tumblr</option>
+                  <option value="youtube">YouTube</option>
+                </select>
+                <label class="active">Platform</label>
+              </div>
+              <div class="input-field col s6">
+                <input type="text" id="objective-input8" name="objective8">
+                <label for="objetive-input8">Objective</label>
+              </div>
+              <div class="input-field col s4">
+                <select name="dealType8" id="dealType-dropdown8" class="browser-default">
+                  <option value="" disabled selected>Choose Deal Type</option>
+                  <option value="CPC">CPC</option>
+                  <option value="CPM">CPM</option>
+                  <option value="CPL">CPL</option>
+                  <option value="conversions">Conversions</option>
+                  <option value="appEngagement">App Engagement</option>
+                  <option value="postEngagement">Post Engagement</option>
+                  <option value="AppInstalls">App Installs</option>
+                  <option value="pageLikes">Page Likes</option>
+                  <option value="reach">Reach</option>
+                  <option value="eventAttendance">Event Attendance</option>
+                  <option value="offerClaims">Offer Claims</option>
+                  <option value="videoViews">Video Views</option>
+                  <option value="leads">Leads</option>
+                  <option value="FACTOR">FACTOR</option>
+                </select>
+                <label class="active">Deal Type</label>
+              </div>
+              <div class=" input-field col s2">
+                  <input type="checkbox" id="cost-plus8" name="costplus8">
+                  <label for="cost-plus8">Cost Plus?</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="cost-plus-percent8" name="costPlus8">
+                <label for="cost-plus-percent8">Cost Plus Percent</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="start-date8" name="startDate8">
+                <label for="start-date8">Start Date</label>
+              </div>
+              <div class="input-field col s2">
+                <input type="text" id="end-date8" name="endDate8">
+                <label for="end-date8">End Date</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="price-input8" name="price8">
+                <label for="price-input8">Price</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="budget-input8" name="budget8">
+                <label for="budget-input8">Budget (no commas in input, ex: 1800.00)</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" id="quantity-input8" name="quantity8">
+                <label for="quantity-input8">Quantity</label>
+              </div>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+      <div class="row">
+        <div class="input-field col s12">
+          <textarea name="notes" class="materialize-textarea" id="textarea1" placeholder="write down any notes for this initiative"></textarea>
+          <label for="textarea1"></label>
+        </div>
+      </div>
+      <button class="btn waves-effect waves-light tooltipped" type="submit" name="action" data-position="right" data-tooltip="Make sure everything is accurate!">
+        Create Initiative
+      </button>
+    </form>
+  </div>
+</template>
