@@ -1,2 +1,9 @@
 Order in which to run Cron Background Workers:
 
+
+cronController
+cronCampaignBasics
+cronCampaignInsights
+----- doesn't matter as much after this -----
+cronDailyInsights
+cronHourlyBreakdown
