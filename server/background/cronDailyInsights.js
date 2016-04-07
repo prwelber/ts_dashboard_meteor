@@ -9,7 +9,7 @@ SyncedCron.add({
   name: "Background Daily Insights Getter",
 
   schedule: function (parser) {
-    return parser.text('at 3:00pm');
+    return parser.text('at 11:50pm');
   },
 
   job: function (time) {
@@ -33,7 +33,10 @@ SyncedCron.add({
     *
     *
     **/
-    let insightIdArray = CampaignInsights.find({}, {'data.campaign_id': 1, _id: 0}).fetch();
+    let insightIdArray = CampaignInsights.find(
+    {'data.campaign_name': {$regex: /Lucchese/i}},
+    {'data.campaign_id': 1, _id: 0}
+    ).fetch();
 
 
     idArray = _.filter(insightIdArray, (el) => {
@@ -42,29 +45,121 @@ SyncedCron.add({
       }
     });
 
-
     idArray = _.map(idArray, (el) => {
       return el.data.campaign_id;
     });
-
-    // at this point we have a clean array of 
+    // at this point we have a clean array of
     // just campaign ID's
 
-    if (idArray) {
-      
+    if (idArray.length > 1) {
+
       let counter = 0;
 
       const setIntervalId = Meteor.setInterval(function () {
-
-        const campaignData = CampaignInsights.findOne({
+        console.log('start of interval');
+        const dayBreakdown = InsightsBreakdownsByDays.findOne({
           'data.campaign_id': idArray[counter]
         });
 
-        
+        if (counter >= idArray.length) {
+          console.log('nothing to do in cronDailyInsights');
+          counter++;
+          Meteor.clearInterval(setIntervalId);
+        } else if (dayBreakdown && dayBreakdown.data.inserted) {
+          console.log('counter from inside dayBreakdown && dayBreakdown.data', counter);
+          if (moment(dayBreakdown.data.inserted, "MM-DD-YYYY").isAfter(moment(dayBreakdown.data.date_stop, "YYYY-MM-DD"))) {
+            console.log('inserted is after date stop');
+            counter++;
+          }
+        } else {
 
-      }); // end of Meteor.setInterval
+          console.log('getDailyBreakdown background job running');
+          console.log('counter', counter);
+          // remove any old versions
+          InsightsBreakdownsByDays.remove({'data.campaign_id': idArray[counter]});
 
+          // this begins the portion of the code taken from
+          // the server method
+
+          let dailyBreakdownArray = [];
+          const masterArray = [];
+          let breakdown;
+
+          let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+idArray[counter]+'/insights?fields=date_start,date_stop,campaign_id,campaign_name,total_actions,impressions,spend,reach,ctr,cpm,cpp,actions,cost_per_action_type&time_increment=1&access_token='+token+'', {});
+          breakdown = result;
+          //breakdown is an array of objects
+          dailyBreakdownArray.push(breakdown.data.data);
+          while (true) {
+              try {
+                  breakdown = HTTP.call('GET', breakdown.data.paging['next'], {});
+                  dailyBreakdownArray.push(breakdown.data.data);
+              } catch(e) {
+                  console.log('no more pages or error in while true loop', e);
+                  break;
+              }
+          }
+            // flattens the array so I can loop over the whole thing at once
+          dailyBreakdownArray = _.flatten(dailyBreakdownArray);
+
+          dailyBreakdownArray.forEach(el => {
+              let data = {};
+              for (let key in el) {
+                  if (key == "actions") {
+                      el[key].forEach(el => {
+                          // this check looks for a period in the key name and
+                          // replaces it with an underscore if found
+                          // this check is used two more times below
+                          if (/\W/g.test(el.action_type)) {
+                              // console.log("before key", el.action_type)
+                              el.action_type = el.action_type.replace(/\W/g, "_");
+                              // console.log("after key", el.action_type)
+                              data[el.action_type] = el.value;
+                          }
+                          data[el.action_type] = el.value;
+                      });
+                  } else if (key == "cost_per_action_type") {
+                       el[key].forEach(el => {
+                          if (/\W/g.test(el.action_type)) {
+                              el.action_type = el.action_type.replace(/\W/g, "_");
+                              data["cost_per_"+el.action_type] = accounting.formatMoney(el.value, "$", 2);
+                          } else {
+                              data["cost_per_"+el.action_type] = accounting.formatMoney(el.value, "$", 2);
+                          }
+                      });
+                  } else {
+                      // this check looks for a period in the key name and
+                      // replaces it with an underscore
+                      if (/\W/g.test(key)) {
+                          key = key.replace(/\W/g, "_");
+                          data[key] = el[key];
+                      } else {
+                          data[key] = el[key]
+                      }
+                  }
+              }
+              data['cpm'] = mastFunc.makeMoney(data.cpm);
+              data['cpp'] = mastFunc.makeMoney(data.cpp);
+              data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
+              data['campaign_name'] = data.campaign_name;
+              data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
+              data['cpc'] = mastFunc.makeMoney((data.spend / data.clicks));
+              data['spend'] = mastFunc.makeMoney(data.spend);
+              data['date_start'] = moment(data['date_start']).format("MM-DD-YYYY");
+              masterArray.push(data);
+          }); // end of dailyBreakdownArray.forEach
+
+          try {
+            masterArray.forEach(el => {
+              InsightsBreakdownsByDays.insert({
+                data: el
+              });
+            });
+          } catch(e) {
+            console.log('Error inserting data into DB', e);
+          }
+          counter++;
+        } // end of else block in if (counter >= idArray.length)
+      }, 5000); // end of Meteor.setInterval
     } // end if if(idArray)
-
   } // end of job
 });

@@ -352,7 +352,18 @@ Template.editInitiativeCampaigns.helpers({
         return initiative.campaign_names;
     },
     'getAllCampaigns': function () {
-        let camps = CampaignInsights.find().fetch();
+        /**
+        * grabs templateDict, which has the initiative for this page
+        * matches the first word in the initiative name
+        * turns the first word in the name into a regular expression object
+        * uses that RegEx to find a list of campaign names so that the list
+        * of possible campaigns to match isn't so long
+        **/
+
+        const initiative = Template.instance().templateDict.get('initiative');
+        const reResult = initiative['name'].match(/\w*/);
+        const re = new RegExp(reResult[0], "i");
+        const camps = CampaignInsights.find({'data.campaign_name': {$regex: re}}).fetch();
         return camps
     }
 });
