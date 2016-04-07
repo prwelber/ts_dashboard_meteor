@@ -6,7 +6,7 @@ SyncedCron.config({
 });
 
 SyncedCron.add({
-  name: "Background Daily Insights Getter",
+  name: "Daily Insights Background Getter",
 
   schedule: function (parser) {
     return parser.text('at 11:50pm');
@@ -51,7 +51,7 @@ SyncedCron.add({
     // at this point we have a clean array of
     // just campaign ID's
 
-    if (idArray.length > 1) {
+    if (idArray.length >= 1) {
 
       let counter = 0;
 

@@ -19,7 +19,7 @@ SyncedCron.add({
 });
 
 SyncedCron.add({
-  name: "Background Campaign Insights Getter",
+  name: "Campaign Insights Background Getter",
 
   schedule: function (parser) {
     return parser.text('at 11:51 pm');
