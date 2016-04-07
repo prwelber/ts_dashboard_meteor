@@ -33,9 +33,38 @@ SyncedCron.add({
     *
     *
     **/
+    let insightIdArray = CampaignInsights.find({}, {'data.campaign_id': 1, _id: 0}).fetch();
 
 
+    idArray = _.filter(insightIdArray, (el) => {
+      if (moment().isAfter(moment(el.data.date_start, "MM-DD-YYYY hh:mm a"))) {
+        return el
+      }
+    });
 
+
+    idArray = _.map(idArray, (el) => {
+      return el.data.campaign_id;
+    });
+
+    // at this point we have a clean array of 
+    // just campaign ID's
+
+    if (idArray) {
+      
+      let counter = 0;
+
+      const setIntervalId = Meteor.setInterval(function () {
+
+        const campaignData = CampaignInsights.findOne({
+          'data.campaign_id': idArray[counter]
+        });
+
+        
+
+      }); // end of Meteor.setInterval
+
+    } // end if if(idArray)
 
   } // end of job
 });
