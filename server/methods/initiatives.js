@@ -245,6 +245,7 @@ Meteor.methods({
   },
   'getAggregate': function (name) {
     console.log('getAggregate running')
+
     // This function aggregates campaignInsight data for an initiative
     let pipeline = [
       {$match:
@@ -279,6 +280,73 @@ Meteor.methods({
     });
     // console.log("result of getAggregate", result)
     return result;
+  },
+  'aggregateObjective': function (name) {
+
+
+    /*
+    * Here, we aggregate by objective and create different data sets by objective
+    * first, find an intiative by the name which is passed in on the client side
+    * then create an array of all the objectives in the initiative
+    * then remove any null values
+    * then we create a function that just returns a prebuilt pipeline
+    * then we loop over array of objectives and on each loop we do the
+      aggregation according to name of initiative and objective, which we
+      split and join to get into proper format
+    * then another for loop where we insert the data into the Initiative
+    */
+
+    const initiative = Initiatives.findOne({name: name});
+    const objectiveArr = [initiative.objective, initiative.objective2, initiative.objective3, initiative.objective4, initiative.objective5, initiative.objective6, initiative.objective7, initiative.objective8];
+    const cleanedArr = _.without(objectiveArr, null); // removes any null values
+    // console.log(cleanedArr);
+    let objective; // to be reassigned and used in the pipeline
+
+    const makePipeline = function makePipeline (name, objective) {
+      return [
+        {$match:
+          {"data.initiative": name, 'data.objective': objective}
+        },
+        {$group: {
+          _id: objective,
+          spend: {$sum: "$data.spend"},
+          clicks: {$sum: "$data.clicks"},
+          reach: {$sum: "$data.reach"},
+          impressions: {$sum: "$data.impressions"},
+          likes: {$sum: "$data.like"}
+          }
+        }
+      ];
+    }
+
+    const objectiveAggregateArray = [];
+
+    for (let i = 0; i < cleanedArr.length; i++) {
+      cleanedArr[i] = cleanedArr[i].toUpperCase().split(' ').join('_');
+      // console.log(cleanedArr[i]);
+      let result = CampaignInsights.aggregate(makePipeline(name, cleanedArr[i]));
+      try {
+        result[0]['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
+        result[0]['cpc'] = result[0].spend / result[0].clicks;
+        result[0]['cpm'] = result[0].spend / (result[0].impressions / 1000);
+        result[0]['cpl'] = result[0].spend / result[0].likes;
+      } catch(e) {
+        console.log('Error adding cost per data to aggregate', e);
+      }
+        objectiveAggregateArray.push(result);
+    }
+    let setObject = {};
+    for (let i = 0; i < objectiveAggregateArray.length; i++) {
+      setObject = {[objectiveAggregateArray[i][0]['_id']]: objectiveAggregateArray[i]};
+      console.log(setObject);
+      Initiatives.update(
+        {name: name},
+        {$set: setObject
+      });
+    }
+
+    return "success!";
+
   },
   'makeProjections': function (name, days) {
     const init = Initiatives.findOne({name: name});

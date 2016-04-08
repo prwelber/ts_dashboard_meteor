@@ -10,6 +10,9 @@ Template.initiativeHomepage.onCreated(function () {
   this.templateDict = new ReactiveDict();
   const initiative = Initiatives.findOne({_id: FlowRouter.current().params._id});
   this.templateDict.set('initiative', initiative);
+
+  const campaigns = CampaignInsights.find({'data.initiative': initiative.name}).fetch();
+  this.templateDict.set('campaigns', campaigns);
 });
 
 Template.initiativeHomepage.onRendered(function () {
@@ -19,6 +22,9 @@ Template.initiativeHomepage.onRendered(function () {
     in_duration: 400,
     out_duration: 300
   });
+
+  Meteor.call('aggregateObjective', Initiatives.findOne({_id: FlowRouter.current().params._id}).name)
+
 });
 
 Template.initiativeHomepage.helpers({
@@ -44,25 +50,37 @@ Template.initiativeHomepage.helpers({
   'initiativeStats': function () {
     const init = Template.instance().templateDict.get('initiative');
     const agData = init.aggregateData[0];
-    console.log(agData);
-    console.log(agData.cpl);
     const spendPercent = numeral((agData.spend / parseFloat(init.budget))).format("0.00%");
+
+    //function for formatting data with numeral
+    const niceNum = function niceNum (data) {
+      return numeral(data).format("0,0");
+    }
+
     agData['spendPercent'] = spendPercent;
     agData.spend = mastFunc.money(agData.spend);
-    agData.clicks = numeral(agData.clicks).format("0,0");
-    agData.impressions = numeral(agData.impressions).format("0,0");
-    agData.reach = numeral(agData.reach).format("0,0");
-    agData.likes = numeral(agData.likes).format("0,0");
+    agData.clicks = niceNum(agData.clicks);
+    agData.impressions = niceNum(agData.impressions);
+    agData.reach = niceNum(agData.reach);
+    agData.likes = niceNum(agData.likes)
     agData.cpc = mastFunc.money(agData.cpc);
     agData.cpm = mastFunc.money(agData.cpm);
+
     if (agData.cpl === null || agData.cpl === Infinity) {
       agData['cpl'] = "0";
     } else if (typeof agData.cpl === "number") {
       agData['cpl'] = mastFunc.money(agData.cpl);
     }
-    console.log(agData);
-    console.log(agData.cpl);
+
     return init.aggregateData[0];
+  },
+  'objectiveAggregates': function () {
+    const init = Template.instance().templateDict.get('initiative');
+    // TODO RIGHT HERE
+    const camps = Template.instance().templateDict.get('campaigns');
+    console.log(camps);
+    // const campaigns = CampaignInsights.find({""})
+
   }
 });
 
