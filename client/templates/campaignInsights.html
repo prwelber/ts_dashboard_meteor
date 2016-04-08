@@ -17,77 +17,92 @@
       <div class="row">
         <div class="col s12">
           <br>
-          <h4>Insights Time Period: {{date_start}} -- {{date_stop}}</h4>
+          <h3>Insights Time Period: {{date_start}} -- {{date_stop}}</h3>
+          <h3>Spend: {{spend}}</h3>
 
-          <table class="centered">
+          <table class="striped centered">
             <thead>
               <tr>
-                <th data-field="id">Spend</th>
-                <th data-field="id">Clicks</th>
-                <th data-field="id">CPC</th>
-                <th data-field="id">Impressions</th>
-                <th data-field="id">CPM</th>
-                <th data-field="id">Likes</th>
-                <th data-field="id">CPL</th>
-                <th data-field="id">Page Engagement</th>
-                <th data-field="id">Cost Per Page Eng</th>
-                <th data-field="id">Post Engagement</th>
-                <th data-field="id">Cost Per Post Eng</th>
-                <th data-field="id">CTR</th>
-                <th data-field="id">CPP</th>
+                <th class="insights-table-header">Clicks</th>
+                <th class="insights-table-header">CPC</th>
+                <th class="insights-table-header">Impressions</th>
+                <th class="insights-table-header">CPM</th>
+                <th class="insights-table-header">Likes</th>
+                <th class="insights-table-header">CPL</th>
               </tr>
             </thead>
-
             <tbody>
               <tr>
-                <td>{{spend}}</td>
-                <td>{{clicks}}</td>
-                <td>{{cpc}}</td>
-                <td>{{impressions}}</td>
-                <td>{{cpm}}</td>
-                <td>{{like}}</td>
-                <td>{{cpl}}</td>
-                <td>{{page_engagement}}</td>
-                <td>{{cost_per_page_engagement}}</td>
-                <td>{{post_engagement}}</td>
-                <td>{{cost_per_post_engagement}}</td>
-                <td>{{ctr}}</td>
-                <td>{{cpp}}</td>
+                <td class="insights-table-data">{{clicks}}</td>
+                <td class="insights-table-data">{{cpc}}</td>
+                <td class="insights-table-data">{{impressions}}</td>
+                <td class="insights-table-data">{{cpm}}</td>
+                <td class="insights-table-data">{{like}}</td>
+                <td class="insights-table-data">{{cpl}}</td>
               </tr>
             </tbody>
-          </table>
-          <table class="centered">
             <thead>
               <tr>
-                <th data-field="id">Reach</th>
-                <th data-field="id">Frequency</th>
-                <th data-field="id">Total Actions</th>
-                <th data-field="id">Cost Per Total Action</th>
-                <th data-field="id">Comments</th>
-                <th data-field="id">Cost Per Comment</th>
-                <th data-field="id">Post</th>
-                <th data-field="id">Cost Per Post</th>
-                <th data-field="id">Photo View</th>
-                <th data-field="id">Cost Per Photo View</th>
-                <th>Estimated Ad Recall Rate</th>
-                <th>Cost Per Est Ad Recaller</th>
+                <th class="insights-table-header">Reach</th>
+                <th class="insights-table-header">Frequency</th>
+                <th class="insights-table-header">Total Actions</th>
+                <th class="insights-table-header">Cost Per Total Action</th>
+                <th class="insights-table-header">Comments</th>
+                <th class="insights-table-header">Cost Per Comment</th>
               </tr>
             </thead>
 
             <tbody>
               <tr>
-                <td>{{reach}}</td>
-                <td>{{frequency}}</td>
-                <td>{{total_actions}}</td>
-                <td>{{cost_per_total_action}}</td>
-                <td>{{comment}}</td>
-                <td>{{cost_per_comment}}</td>
-                <td>{{post}}</td>
-                <td>{{cost_per_post}}</td>
-                <td>{{photo_view}}</td>
-                <td>{{cost_per_photo_view}}</td>
-                <td>{{estimated_ad_recall_rate}}</td>
-                <td>{{cost_per_estimated_ad_recallers}}</td>
+                <td class="insights-table-data">{{reach}}</td>
+                <td class="insights-table-data">{{frequency}}</td>
+                <td class="insights-table-data">{{total_actions}}</td>
+                <td class="insights-table-data">{{cost_per_total_action}}</td>
+                <td class="insights-table-data">{{comment}}</td>
+                <td class="insights-table-data">{{cost_per_comment}}</td>
+              </tr>
+            </tbody>
+
+            <thead>
+              <tr>
+                <th class="insights-table-header">Page Engagement</th>
+                <th class="insights-table-header">Cost Per Page Eng</th>
+                <th class="insights-table-header">Post Engagement</th>
+                <th class="insights-table-header">Cost Per Post Eng</th>
+                <th class="insights-table-header">CTR</th>
+                <th class="insights-table-header">CPP</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="insights-table-data">{{page_engagement}}</td>
+                <td class="insights-table-data">{{cost_per_page_engagement}}</td>
+                <td class="insights-table-data">{{post_engagement}}</td>
+                <td class="insights-table-data">{{cost_per_post_engagement}}</td>
+                <td class="insights-table-data">{{ctr}}</td>
+                <td class="insights-table-data">{{cpp}}</td>
+              </tr>
+            </tbody>
+
+            <thead>
+              <tr>
+                <th class="insights-table-header">Post</th>
+                <th class="insights-table-header">Cost Per Post</th>
+                <th class="insights-table-header">Photo View</th>
+                <th class="insights-table-header">Cost Per Photo View</th>
+                <th class="insights-table-header">Estimated Ad Recall Rate</th>
+                <th class="insights-table-header">Cost Per Est Ad Recaller</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="insights-table-data">{{post}}</td>
+                <td class="insights-table-data">{{cost_per_post}}</td>
+                <td class="insights-table-data">{{photo_view}}</td>
+                <td class="insights-table-data">{{cost_per_photo_view}}</td>
+                <td class="insights-table-data">{{estimated_ad_recall_rate}}</td>
+                <td class="insights-table-data">{{cost_per_estimated_ad_recallers}}</td>
               </tr>
             </tbody>
           </table>
@@ -95,30 +110,30 @@
             <table class="centered">
               <thead>
                 <tr>
-                  <th>Video Plays</th>
-                  <th>Video View</th>
-                  <th>Cost Per Video Play</th>
-                  <th>Cost Per Video View</th>
-                  <th>Video 10 Sec View</th>
-                  <th>Cost Per 10 Sec View</th>
-                  <th>15 Sec View</th>
-                  <th>Avg Percent Watched</th>
-                  <th>Avg Seconds Watched</th>
-                  <th>Completely Watched</th>
+                  <th class="insights-table-header">Video Plays</th>
+                  <th class="insights-table-header">Video View</th>
+                  <th class="insights-table-header">Cost Per Video Play</th>
+                  <th class="insights-table-header">Cost Per Video View</th>
+                  <th class="insights-table-header">Video 10 Sec View</th>
+                  <th class="insights-table-header">Cost Per 10 Sec View</th>
+                  <th class="insights-table-header">15 Sec View</th>
+                  <th class="insights-table-header">Avg Percent Watched</th>
+                  <th class="insights-table-header">Avg Seconds Watched</th>
+                  <th class="insights-table-header">Completely Watched</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>{{video_play}}</td>
-                  <td>{{video_view}}</td>
-                  <td>{{cost_per_video_play}}</td>
-                  <td>{{cost_per_video_view}}</td>
-                  <td>{{tenSecondView}}</td>
-                  <td>{{costPerTenSecondView}}</td>
-                  <td>{{fifteenSecondView}}</td>
-                  <td>{{avgPctWatched}}</td>
-                  <td>{{avgSecWatched}}</td>
-                  <td>{{completeWatched}}</td>
+                  <td class="insights-table-data">{{video_play}}</td>
+                  <td class="insights-table-data">{{video_view}}</td>
+                  <td class="insights-table-data">{{cost_per_video_play}}</td>
+                  <td class="insights-table-data">{{cost_per_video_view}}</td>
+                  <td class="insights-table-data">{{tenSecondView}}</td>
+                  <td class="insights-table-data">{{costPerTenSecondView}}</td>
+                  <td class="insights-table-data">{{fifteenSecondView}}</td>
+                  <td class="insights-table-data">{{avgPctWatched}}</td>
+                  <td class="insights-table-data">{{avgSecWatched}}</td>
+                  <td class="insights-table-data">{{completeWatched}}</td>
                 </tr>
               </tbody>
             </table>
