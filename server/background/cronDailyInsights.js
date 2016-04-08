@@ -9,7 +9,7 @@ SyncedCron.add({
   name: "Daily Insights Background Getter",
 
   schedule: function (parser) {
-    return parser.text('at 11:50pm');
+    return parser.text('at 10:06pm');
   },
 
   job: function (time) {
@@ -33,10 +33,13 @@ SyncedCron.add({
     *
     *
     **/
-    let insightIdArray = CampaignInsights.find(
-    {'data.campaign_name': {$regex: /Lucchese/i}},
-    {'data.campaign_id': 1, _id: 0}
-    ).fetch();
+
+    // let insightIdArray = CampaignInsights.find(
+    // {'data.campaign_name': {$regex: /Lucchese/i}},
+    // {'data.campaign_id': 1, _id: 0}
+    // ).fetch();
+
+    const insightIdArray = CampaignInsights.find({}).fetch()
 
 
     idArray = _.filter(insightIdArray, (el) => {
@@ -61,6 +64,13 @@ SyncedCron.add({
           'data.campaign_id': idArray[counter]
         });
 
+        /*
+        * These if / else if statements say the following:
+        * if the counter is greater than or equal to the array length, quit
+        * if inserted date is after end date of campaign, do nothing
+        * else, run the download job
+        */
+
         if (counter >= idArray.length) {
           console.log('nothing to do in cronDailyInsights');
           counter++;
@@ -70,6 +80,10 @@ SyncedCron.add({
           if (moment(dayBreakdown.data.inserted, "MM-DD-YYYY").isAfter(moment(dayBreakdown.data.date_stop, "YYYY-MM-DD"))) {
             console.log('inserted is after date stop');
             counter++;
+          } else if (idArray.length - counter === 1) {
+            console.log('should exit after this');
+            counter++;
+            // Meteor.clearInterval(setIntervalId);
           }
         } else {
 
@@ -159,7 +173,7 @@ SyncedCron.add({
           }
           counter++;
         } // end of else block in if (counter >= idArray.length)
-      }, 5000); // end of Meteor.setInterval
+      }, 100); // end of Meteor.setInterval
     } // end if if(idArray)
   } // end of job
 });

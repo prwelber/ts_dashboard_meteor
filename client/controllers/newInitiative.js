@@ -128,17 +128,17 @@ Template.newInitiative.events({
         }
         console.log(newInitiative);
 
-        // if (newInitiative.name === null || newInitiative.search_text === null) {
-        //   Materialize.toast('Error: name, search text or both is empty.', 5000);
-        // } else {
-        //   Meteor.call('insertNewInitiative', newInitiative, function (error, result) {
-        //     if (error) {
-        //       console.log(error);
-        //     } else {
-        //       Materialize.toast('Initiative Created!', 2500);
-        //     }
-        //   });
-        // }
+        if (newInitiative.name === null || newInitiative.search_text === null) {
+          Materialize.toast('Error: name, search text or both is empty.', 5000);
+        } else {
+          Meteor.call('insertNewInitiative', newInitiative, function (error, result) {
+            if (error) {
+              console.log(error);
+            } else {
+              Materialize.toast('Initiative Created!', 2500);
+            }
+          });
+        }
 
 
 
