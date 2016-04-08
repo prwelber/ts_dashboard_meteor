@@ -4,9 +4,9 @@ body {
     flex-direction: column;
   }
 
-  main {
-    flex: 1 0 auto;
-  }
+main {
+  flex: 1 0 auto;
+}
 
 table {
   margin-bottom: 35px;
@@ -59,4 +59,10 @@ table {
 
 .card-title {
   font-size: 20px;
+}
+
+/* --------------- Link Styles ---------------------- */
+
+li a:hover {
+  color: orange;
 }

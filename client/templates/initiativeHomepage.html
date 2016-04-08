@@ -1,21 +1,22 @@
 <template name="initiativeHomepage">
   <nav>
-    <div class="nav-wrapper indigo darken-2">
+    <div class="nav-wrapper blue-grey darken-2">
       <a href="#" class="brand-logo right">Dashboard</a>
       <ul id="nav-mobile" class="left hide-on-med-and-down">
         <li><a href="/">Home</a></li>
         <li><a href="/admin">Admin</a></li>
+        <li><a id="view-initiative-stats-modal" class="modal-trigger" href="#modal1">Initiative Stats</a></li>
       </ul>
     </div>
   </nav>
 
 
   {{#with initiativeStats}}
-    <div class="row">
+    {{!-- <div class="row">
       <div class="col s12">
         <a id="view-initiative-stats-modal" class="waves-effect waves-light btn modal-trigger center-align" href="#modal1">View Initiative Stats</a>
       </div>
-    </div>
+    </div> --}}
     <div id="modal1" class="modal">
       <div class="modal-content">
         <h4>{{initiative.name}}</h4>
