@@ -262,7 +262,8 @@ Meteor.methods({
       }
     ];
     let result = CampaignInsights.aggregate(pipeline);
-
+    console.log("pipeline:", pipeline);
+    console.log('aggregate result:', result);
     try {
       result[0]['inserted'] = moment(new Date).format("MM-DD-YYYY hh:mm a");
       result[0]['cpc'] = result[0].spend / result[0].clicks;
@@ -282,7 +283,7 @@ Meteor.methods({
     return result;
   },
   'aggregateObjective': function (name) {
-
+    console.log('aggregateObjective running with name:', name);
 
     /*
     * Here, we aggregate by objective and create different data sets by objective
@@ -299,7 +300,7 @@ Meteor.methods({
     const initiative = Initiatives.findOne({name: name});
     const objectiveArr = [initiative.objective, initiative.objective2, initiative.objective3, initiative.objective4, initiative.objective5, initiative.objective6, initiative.objective7, initiative.objective8];
     const cleanedArr = _.without(objectiveArr, null); // removes any null values
-    // console.log(cleanedArr);
+    console.log(cleanedArr);
     let objective; // to be reassigned and used in the pipeline
 
     const makePipeline = function makePipeline (name, objective) {
@@ -323,8 +324,10 @@ Meteor.methods({
 
     for (let i = 0; i < cleanedArr.length; i++) {
       cleanedArr[i] = cleanedArr[i].toUpperCase().split(' ').join('_');
-      // console.log(cleanedArr[i]);
+      console.log("cleanedArr[i]", cleanedArr[i]);
       let result = CampaignInsights.aggregate(makePipeline(name, cleanedArr[i]));
+      console.log("result", result);
+      console.log("result[0]", result[0]);
       try {
         result[0]['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
         result[0]['cpc'] = result[0].spend / result[0].clicks;
@@ -335,10 +338,12 @@ Meteor.methods({
       }
         objectiveAggregateArray.push(result);
     }
+    console.log('objectiveAggregateArray:', objectiveAggregateArray);
     let setObject = {};
     for (let i = 0; i < objectiveAggregateArray.length; i++) {
       setObject = {[objectiveAggregateArray[i][0]['_id']]: objectiveAggregateArray[i]};
-      console.log(setObject);
+      console.log("setObject:", setObject);
+      // inserting objectiveAggregate data into the intiative
       Initiatives.update(
         {name: name},
         {$set: setObject

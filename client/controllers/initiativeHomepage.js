@@ -23,7 +23,9 @@ Template.initiativeHomepage.onRendered(function () {
     out_duration: 300
   });
 
-  Meteor.call('aggregateObjective', Initiatives.findOne({_id: FlowRouter.current().params._id}).name)
+  const initiative = Initiatives.findOne({_id: FlowRouter.current().params._id})
+
+  Meteor.call('aggregateObjective', initiative.name);
 
 });
 
@@ -78,8 +80,43 @@ Template.initiativeHomepage.helpers({
     const init = Template.instance().templateDict.get('initiative');
     // TODO RIGHT HERE
     const camps = Template.instance().templateDict.get('campaigns');
-    console.log(camps);
+    console.log("campaigns", camps);
+    console.log('initiative', init);
     // const campaigns = CampaignInsights.find({""})
+
+    const returnArray = [];
+
+    init.VIDEO_VIEWS ? returnArray.push(init.VIDEO_VIEWS[0]) : '';
+    init.POST_ENGAGEMENT ? returnArray.push(init.POST_ENGAGEMENT[0]) : '';
+    init.LINK_CLICKS ? returnArray.push(init.LINK_CLICKS[0]) : '';
+    init.PAGE_LIKES ? returnArray.push(init.PAGE_LIKES[0]) : '';
+    init.REACH ? returnArray.push(init.REACH[0]) : '';
+    init.CONVERSIONS ? returnArray.push(init.CONVERSIONS[0]) : '';
+    init.APP_ENGAGEMENT ? returnArray.push(init.APP_ENGAGEMENT[0]) : '';
+    init.APP_INSTALLS ? returnArray.push(init.APP_INSTALLS[0]) : '';
+
+    //function for formatting data with numeral
+    const niceNum = function niceNum (data) {
+      return numeral(data).format("0,0");
+    }
+    _.each(returnArray, function (el) {
+      el.cpc = mastFunc.money(el.cpc);
+      el.cpl = mastFunc.money(el.cpl);
+      el.cpm = mastFunc.money(el.cpm);
+      el.spend = mastFunc.money(el.spend);
+      el.impressions = niceNum(el.impressions);
+
+    });
+
+    console.log("returnArray:", returnArray);
+
+    return returnArray;
+
+    // return {
+    //   videoViews: init.VIDEO_VIEWS[0],
+    //   postEngagement: init.POST_ENGAGEMENT[0]
+    // }
+
 
   }
 });
