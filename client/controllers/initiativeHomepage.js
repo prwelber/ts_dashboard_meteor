@@ -170,7 +170,7 @@ Template.initiativeHomepage.helpers({
 
       call('aggregateForChart', initiative)
       .then(function (res) {
-        // console.log("result from promise", res)
+        console.log("result from promise", res)
         Session.set('res', res);
         totes = res[0][type]
       }).catch(function (err) {
@@ -183,6 +183,7 @@ Template.initiativeHomepage.helpers({
         actionToChart.push(totes);
         spendChart.push(spendTotal);
       });
+      console.log(actionToChart);
 
       return {
         chart: {

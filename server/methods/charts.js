@@ -221,7 +221,7 @@ Meteor.methods({
       }
     });
 
-    // console.log(otherArray);
+    console.log(otherArray);
 
     return otherArray;
 
@@ -260,6 +260,7 @@ Meteor.methods({
         }
       ];
       var result = HourlyBreakdowns.aggregate(pipeline);
+      console.log(result);
         try {
           result[0]['cpc'] = result[0].spend / result[0].clicks;
           result[0]['cpm'] = result[0].spend / (result[0].impressions / 1000);

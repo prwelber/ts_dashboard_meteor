@@ -9,7 +9,7 @@ SyncedCron.add({
   name: "Daily Insights Background Getter",
 
   schedule: function (parser) {
-    return parser.text('at 10:06pm');
+    return parser.text('at 3:48pm');
   },
 
   job: function (time) {
@@ -39,7 +39,8 @@ SyncedCron.add({
     // {'data.campaign_id': 1, _id: 0}
     // ).fetch();
 
-    const insightIdArray = CampaignInsights.find({}).fetch()
+    // const insightIdArray = CampaignInsights.find({}).fetch();
+    const insightIdArray = CampaignInsights.find({'data.campaign_name': 'Kim Crawford FY17 NZ Campaign'}).fetch();
 
 
     idArray = _.filter(insightIdArray, (el) => {
@@ -75,16 +76,15 @@ SyncedCron.add({
           console.log('nothing to do in cronDailyInsights');
           counter++;
           Meteor.clearInterval(setIntervalId);
-        } else if (dayBreakdown && dayBreakdown.data.inserted) {
-          console.log('counter from inside dayBreakdown && dayBreakdown.data', counter);
-          if (moment(dayBreakdown.data.inserted, "MM-DD-YYYY").isAfter(moment(dayBreakdown.data.date_stop, "YYYY-MM-DD"))) {
-            console.log('inserted is after date stop');
-            counter++;
-          } else if (idArray.length - counter === 1) {
-            console.log('should exit after this');
-            counter++;
-            // Meteor.clearInterval(setIntervalId);
-          }
+        } else if ((dayBreakdown && dayBreakdown.data.inserted) && (moment(dayBreakdown.data.inserted, "MM-DD-YYYY").isAfter(moment(dayBreakdown.data.date_stop, "MM-DD-YYYY")))) {
+          console.log('no need to update old data')
+          console.log('counter', counter);
+          counter++;
+
+        // } else if (idArray.length - counter === 1) {
+        //   console.log('should exit after this');
+        //   counter++;
+        //   // Meteor.clearInterval(setIntervalId);
         } else {
 
           console.log('getDailyBreakdown background job running');
@@ -173,7 +173,7 @@ SyncedCron.add({
           }
           counter++;
         } // end of else block in if (counter >= idArray.length)
-      }, 100); // end of Meteor.setInterval
+      }, 5000); // end of Meteor.setInterval
     } // end if if(idArray)
   } // end of job
 });

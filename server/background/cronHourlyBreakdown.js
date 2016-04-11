@@ -8,13 +8,13 @@ SyncedCron.config({
 SyncedCron.add({
   name: "Hourly Breakdown Background Getter",
   schedule: function (parser) {
-    return parser.text('at 11:52pm');
+    return parser.text('at 3:32pm');
   },
 
   job: function (time) {
 
     let insightIdArray = CampaignInsights.find(
-      {'data.campaign_name': {$regex: /Lucchese/i}}
+      {'data.campaign_name': {$regex: /Crawford/i}}
     ).fetch();
 
     idArray = _.filter(insightIdArray, (el) => {
@@ -41,12 +41,14 @@ SyncedCron.add({
           console.log('nothing to do in cronHourlyBreakdowns');
           counter++;
           Meteor.clearInterval(setIntervalId);
-        } else if (hourlyBreakdown && hourlyBreakdown.data.inserted) {
-          console.log('counter from inside else if hourlyBreakdown', counter);
-          if (moment(hourlyBreakdown.data.inserted, "MM-DD-YYYY").isAfter(moment(hourlyBreakdown.data.date_stop, "MM-DD-YYYY"))) {
-            console.log('inserted is after date stop');
-            counter++;
-          }
+        } else if ((hourlyBreakdown && hourlyBreakdown.data.inserted) && (moment(hourlyBreakdown.data.inserted, "MM-DD-YYYY").isAfter(moment(hourlyBreakdown.data.date_stop, "MM-DD-YYYY")))) {
+          console.log('counter', counter);
+          console.log('no need to update old data');
+          counter++;
+          // if (moment(hourlyBreakdown.data.inserted, "MM-DD-YYYY").isAfter(moment(hourlyBreakdown.data.date_stop, "MM-DD-YYYY"))) {
+          //   console.log('inserted is after date stop');
+          //   counter++;
+          // }
         } else {
 
           console.log('hourlyBreakdown background job running');

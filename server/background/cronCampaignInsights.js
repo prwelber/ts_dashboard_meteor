@@ -77,12 +77,15 @@ SyncedCron.add({
           console.log('nothing to do in cronCampaignInsights');
           counter++;
           Meteor.clearInterval(setIntervalId);
-        } else if (campaignData && campaignData.data.inserted) {
-          console.log('counter', counter)
-          if (moment(campaignData.data.inserted, "MM-DD-YYYY").isAfter(moment(campaignData.data.date_stop, "MM-DD-YYYY"))) {
-          console.log('inserted is after date stop');
+        } else if ((campaignData && campaignData.data.inserted) && (moment(campaignData.data.inserted, "MM-DD-YYYY").isAfter(moment(campaignData.data.date_stop, "MM-DD-YYYY")))) {
+          console.log('counter', counter);
+          console.log('no need to update data');
           counter++;
-          }
+
+          // if (moment(campaignData.data.inserted, "MM-DD-YYYY").isAfter(moment(campaignData.data.date_stop, "MM-DD-YYYY"))) {
+          // console.log('inserted is after date stop');
+          // counter++;
+          // }
         } else {
 
           console.log('getInsights background job running');
