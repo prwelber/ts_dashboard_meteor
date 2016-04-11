@@ -412,17 +412,6 @@ Template.charts.helpers({
       Session.set('resultData', resultData);
       return resultData
     })
-    // .then(function (data) {
-    //   data.forEach(el => {
-    //     cpc.data.push(el[0].cpc);
-    //     cpl.data.push(el[0].cpl);
-    //     cpm.data.push(el[0].cpm);
-    //     spend.data.push(el[0].spend);
-    //     impressions.data.push(el[0].impressions);
-    //     clicks.data.push(el[0].clicks);
-    //     likes.data.push(el[0].likes);
-    //   });
-    // })
     .catch(function (err) {
       console.log('boooo error', err)
       throw new Meteor.Error('this is a Meteor Error!!!!');
@@ -474,6 +463,84 @@ Template.charts.helpers({
             }
         },
         series: [cpc, cpm, cpl, spend, impressions, clicks, likes]
+    }
+  },
+  'ageGenderChart': function () {
+    const initiative = Template.instance().templateDict.get('initiative');
+    var call = Promise.promisify(Meteor.call);
+
+    call('ageGenderChart', initiative)
+    .then(function (ageGenderData) {
+      Session.set('ageGenderData', ageGenderData);
+      return ageGenderData;
+    })
+    .catch(function (err) {
+      console.log('boooo error', err)
+      throw new Meteor.Error('this is a Meteor Error!!!!');
+    });
+
+
+    // Age categories
+    var categories = ['18-24', '25-34', '35-44', '45-54',
+            '55-64', '65+'];
+
+    return {
+
+      chart: {
+          type: 'bar'
+      },
+      title: {
+          text: 'Age and Gender Chart'
+      },
+      subtitle: {
+          text: 'Placeholder for more text'
+      },
+      xAxis: [{
+          categories: categories,
+          reversed: false,
+          labels: {
+              step: 1
+          }
+      }, { // mirror axis on right side
+          opposite: true,
+          reversed: false,
+          categories: categories,
+          linkedTo: 0,
+          labels: {
+              step: 1
+          }
+      }],
+      yAxis: {
+          title: {
+              text: "yAxis text here"
+          },
+          labels: {
+              formatter: function () {
+                  return Math.abs(this.value) + '%';
+              }
+          }
+      },
+
+      plotOptions: {
+          series: {
+              stacking: 'normal'
+          }
+      },
+
+      tooltip: {
+          formatter: function () {
+              return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
+                  'Population: ' + Highcharts.numberFormat(Math.abs(this.point.y), 0);
+          }
+      },
+
+      series: [{
+          name: 'Male',
+          data: [-2.2, -2.2, -2.3, -2.5, -2.7, -3.1]
+      }, {
+          name: 'Female',
+          data: [2.1, 2.0, 2.2, 2.4, 2.6, 3.0]
+      }]
     }
   }
 });

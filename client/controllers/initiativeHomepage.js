@@ -183,7 +183,7 @@ Template.initiativeHomepage.helpers({
         actionToChart.push(totes);
         spendChart.push(spendTotal);
       });
-      console.log(actionToChart);
+      // console.log(actionToChart);
 
       return {
         chart: {

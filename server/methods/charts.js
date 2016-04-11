@@ -282,5 +282,33 @@ Meteor.methods({
 
     return twentyFourHourArray;
 
+  },
+  'ageGenderChart': function (initiative) {
+    console.log('ageGender running')
+    const campaignIds = initiative.campaign_ids // array of campaign ids
+    console.log(campaignIds);
+    let ageGenderArray = [];
+    let breakdown;
+    campaignIds.forEach(el => {
+      breakdown = InsightsBreakdowns.find({'data.campaign_id': el}).fetch();
+      ageGenderArray.push(breakdown);
+    });
+    console.log(ageGenderArray.length);
+    var len = ageGenderArray.length
+    var newArr = []
+    ageGenderArray.forEach(el => {
+      if (el._id) {
+        newArr.push(el);
+      }
+    });
+    console.log(newArr)
+    // for (var i = ageGenderArray.length - 1; i >= 0; i--) {
+    //   if (ageGenderArray[i].data.gender === "unknown") {
+    //     console.log('removing unknown gender object');
+    //     ageGenderArray.splice(i, 1);
+    //   }
+    // }
+
+    // console.log(ageGenderArray);
   }
 });

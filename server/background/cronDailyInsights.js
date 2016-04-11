@@ -9,7 +9,7 @@ SyncedCron.add({
   name: "Daily Insights Background Getter",
 
   schedule: function (parser) {
-    return parser.text('at 3:48pm');
+    return parser.text('at 4:20pm');
   },
 
   job: function (time) {
@@ -40,7 +40,7 @@ SyncedCron.add({
     // ).fetch();
 
     // const insightIdArray = CampaignInsights.find({}).fetch();
-    const insightIdArray = CampaignInsights.find({'data.campaign_name': 'Kim Crawford FY17 NZ Campaign'}).fetch();
+    const insightIdArray = CampaignInsights.find({'data.initiative': 'Kim Crawford 2017 Q1 Page Post'}).fetch();
 
 
     idArray = _.filter(insightIdArray, (el) => {
