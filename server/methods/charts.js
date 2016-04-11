@@ -113,40 +113,6 @@ Meteor.methods({
         }
       }
 
-
-
-
-      // arr.forEach((el, index) => {
-
-      //   console.log(arr[index].data.date_start)
-      //   var diff = moment(arr[index].data.date_start, timeForm).diff(moment(arr[index + 1].data.date_start, timeForm), 'days');
-      //
-      //   if (diff < -1) {
-      //       for (var i = 1; i < Math.abs(diff); i++) {
-      //         console.log("generated nums:", moment(arr[index].data.date_start, timeForm).add(i, 'd').format(timeForm));
-      //         arr.splice(index + i, 0, {
-      //           data: {
-      //             date_start: "generated date " + moment(arr[index].data.date_start, timeForm).add(i, 'd').format(timeForm),
-      //             impressions: null,
-      //             clicks: null,
-      //             like: null,
-      //             spend: null,
-      //             cost_per_like: null,
-      //             cost_per_page_engagement: null,
-      //             cost_per_post_engagement: null,
-      //             cost_per_video_view: null,
-      //             cpm: null,
-      //             cpc: null,
-      //             reach: null,
-      //             total_actions: null,
-      //             video_view: null,
-      //             post_engagement: null
-
-      //           }
-      //         })
-      //       }
-      //     }
-      // });
     } catch(e) {
       // statements
       console.log(e);

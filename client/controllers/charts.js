@@ -32,11 +32,11 @@ Template.charts.helpers({
   'deliveryChart': function () {
       const initiative = Template.instance().templateDict.get('initiative');
       // for getting evenly distrubuted output
-      const labels          = [], // this will be the date range
+      const labels        = [], // this will be the date range
           timeFormat      = "MM-DD-YYYY",
           days            = moment(initiative.endDate, timeFormat).diff(moment(initiative.startDate, timeFormat), 'days'),
-          avg             = Math.round(initiative.quantity / days),
-          spendAvg        = parseFloat(initiative.budget) / days,
+          avg             = parseFloat(numeral(initiative.quantity / days).format("0.00")),
+          spendAvg        = parseFloat(numeral(initiative.budget / days).format("0.00")),
           avgData         = [],
           idealSpend      = [];
 
@@ -94,27 +94,6 @@ Template.charts.helpers({
         spendChart.push(spendTotal);
       });
 
-      //  // this works. not sure why...
-      // let asyncCall = function asyncCall (methodName, init, callback) {
-      //   Meteor.call(methodName, init, function (err, res) {
-      //     if (err) {
-      //       throw new Meteor.Error('This is a Meteor Error!');
-      //     } else {
-      //       callback && callback(null, console.log("res:", res));
-      //     }
-      //   });
-      // }
-
-      // Meteor.call('aggregateForChart', initiative, function (err, res) {
-      //   if (res) {
-      //     console.log(res);
-      //     Session.set("res", res);
-      //   }
-      // });
-      // console.log("res:", Session.get("res"));
-      // console.log(actionToChart);
-      // console.log(spendChart);
-      // build chart
     return {
 
       chart: {

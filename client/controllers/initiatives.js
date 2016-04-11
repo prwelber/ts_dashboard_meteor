@@ -2,7 +2,7 @@ import dragula from 'dragula';
 
 Tracker.autorun(function () {
     if (FlowRouter.subsReady('Initiatives') && FlowRouter.subsReady('campaignInsightList')) {
-        console.log('Initiatives and Insights subs ready!');
+        // console.log('Initiatives and Insights subs ready!');
     }
 });
 

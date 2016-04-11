@@ -1,7 +1,11 @@
+var moment = require('moment');
+var range = require('moment-range');
+var Promise = require('bluebird');
+// import Chart from "chart.js"
 
 Tracker.autorun(function () {
   if (FlowRouter.subsReady('campaignInsightList') && FlowRouter.subsReady('Initiatives')) {
-    console.log('Insights and Initiatives subs are now ready!');
+    // console.log('Insights and Initiatives subs are now ready!');
   }
 });
 
@@ -80,8 +84,8 @@ Template.initiativeHomepage.helpers({
     const init = Template.instance().templateDict.get('initiative');
     // TODO RIGHT HERE
     const camps = Template.instance().templateDict.get('campaigns');
-    console.log("campaigns", camps);
-    console.log('initiative', init);
+    // console.log("campaigns", camps);
+    // console.log('initiative', init);
     // const campaigns = CampaignInsights.find({""})
 
     const returnArray = [];
@@ -108,16 +112,141 @@ Template.initiativeHomepage.helpers({
 
     });
 
-    console.log("returnArray:", returnArray);
+    // console.log("returnArray:", returnArray);
 
     return returnArray;
+  },
+  'modalDeliveryChart': function () {
+    const initiative = Template.instance().templateDict.get('initiative');
+    // console.log('initiative for chart:', initiative);
+    const labels     = [], // this will be the date range
+          timeFormat = "MM-DD-YYYY",
+          days       = moment(initiative.endDate, timeFormat).diff(moment(initiative.startDate, timeFormat), 'days'),
+          avg        = parseFloat(numeral(initiative.quantity / days).format("0.00")),
+          spendAvg   = parseFloat(numeral(initiative.budget / days).format("0.00")),
+          avgData    = [],
+          idealSpend = [];
 
-    // return {
-    //   videoViews: init.VIDEO_VIEWS[0],
-    //   postEngagement: init.POST_ENGAGEMENT[0]
-    // }
+    // console.log('days:', days);
+    let total           = 0,
+        idealSpendTotal = 0;
+    // console.log('avg', avg);
+    for (let i = 0; i < days; i++) {
+        total = total + avg;
+        idealSpendTotal = idealSpendTotal + spendAvg;
+        avgData.push(total);
+        idealSpend.push(idealSpendTotal);
+      }
 
+      // for getting x axis labels
+      var start       = new Date(initiative.startDate),
+          end         = new Date(initiative.endDate),
+          dr          = moment.range(start, end),
+          arrayOfDays = dr.toArray('days');
+      // console.log(arrayOfDays);
+      // console.log(dr)
+      arrayOfDays.forEach(el => {
+        labels.push(moment(el).format("MM-DD"))
+      });
+      // console.log("labels:", labels)
 
+      //for setting dealType
+      let type;
+      if (initiative.dealType === "CPM") {
+        type = "impressions";
+      } else if (initiative.dealType === "CPC") {
+        type = "clicks";
+      } else if (initiative.dealType === "CPL") {
+        type = "like";
+      }
+
+      let actionToChart = [],
+          spendChart    = [],
+          spendTotal    = 0,
+          totes         = 0; // Template.instance().templateDict.get('data')[0].type;
+
+      // seeing if Bluebird will work for promises and meteor.call
+      var call = Promise.promisify(Meteor.call);
+
+      call('aggregateForChart', initiative)
+      .then(function (res) {
+        // console.log("result from promise", res)
+        Session.set('res', res);
+        totes = res[0][type]
+      }).catch(function (err) {
+        console.log('uh no error', err)
+      });
+
+      Session.get('res').forEach(el => {
+        totes += el[type];
+        spendTotal += el.spend;
+        actionToChart.push(totes);
+        spendChart.push(spendTotal);
+      });
+
+      return {
+        chart: {
+          zoomType: 'x'
+        },
+
+        title: {
+          text: type.substr(0,1).toUpperCase() + type.substr(1, type.length) + " Delivery for Initiative"
+        },
+
+        subtitle: {
+          text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+        },
+
+        tooltip: {
+          valueSuffix: " " + type,
+          shared: true,
+          crosshairs: true
+        },
+        xAxis: {
+          // type: 'datetime',
+          categories: labels
+        },
+
+        yAxis: {
+          title: {
+            text: type
+          },
+          plotLines: [{
+            value: 0,
+            width: 1,
+            color: '#808080'
+          }]
+        },
+
+        plotOptions: { // removes the markers along the plot lines
+          series: {
+            marker: {
+              enabled: false
+            }
+          }
+        },
+
+        legend: {
+          layout: 'vertical',
+          align: 'right',
+          verticalAlign: 'middle',
+          borderWidth: 0
+        },
+
+        series: [{
+          name: 'Ideal Distribution',
+          data: avgData
+        }, {
+          name: 'Real Distribution',
+          data: actionToChart
+        }, {
+          name: 'Spend',
+          data: spendChart
+        }, {
+          name: 'Ideal Spend',
+          data: idealSpend
+        }]
+      }
   }
 });
 
