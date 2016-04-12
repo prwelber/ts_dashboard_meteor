@@ -76,3 +76,23 @@ a:hover {
   border: 1px solid rgba(128, 128, 128, 0.3);
   /*border: 1px solid rgba(128, 128, 128, 0.3);*/
 }
+
+
+
+
+
+
+
+
+/* ---------------- Admin Pages ---------------- */
+#admin-home-row {
+  text-align: center;
+}
+
+#createUser-agency-select {
+  height: 20em;
+}
+
+#createUser-initiative-select {
+  height: 20em;
+}

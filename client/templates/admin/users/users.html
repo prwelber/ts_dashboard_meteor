@@ -1,26 +1,90 @@
 <template name="newUser">
-    <h2>Make Changes To User Profile</h2>
-    <form class="new-user-form">
-        <h5>Username</h5>
-        <input type="text" name="username" value="{{populateFields.username}}">
-        <h5>First Name</h5>
-        <input type="text" name="firstName" placeholder="First Name" value="{{populateFields.firstName}}">
-        <h5>Last Name</h5>
-        <input type="text" name="lastName" placeholder="Last Name" value="{{populateFields.lastName}}">
-        <h5>Company or Agency</h5>
-        <input type="text" name="company" value="{{populateFields.company}}">
-        <h5>Email</h5>
-        <input type="text" name="email" id="user-form-email" value="{{populateFields.email}}">
-        <h5>Admin Privileges</h5>
-        <input type="radio" name="admin" value="yes" id="user-form-admin" {{adminRadioYes}}>Yes
-        <input type="radio" name="admin" value="no" {{adminRadioNo}}>No
-        <h5>Associated Initiatives</h5>
-            {{#each getInitiatives}}
-                <input type="checkbox" name="initiatives" value={{name}}>{{name}} <br />
-            {{/each}}
-        <input type="submit" value="Submit">
-    </form>
+  <h2>Make Changes To User Profile</h2>
+  <form class="new-user-form">
+    <h5>Username</h5>
+    <input type="text" name="username" value="{{populateFields.username}}">
+    <h5>First Name</h5>
+    <input type="text" name="firstName" placeholder="First Name" value="{{populateFields.firstName}}">
+    <h5>Last Name</h5>
+    <input type="text" name="lastName" placeholder="Last Name" value="{{populateFields.lastName}}">
+    <h5>Company or Agency</h5>
+    <input type="text" name="company" value="{{populateFields.company}}">
+    <h5>Email</h5>
+    <input type="text" name="email" id="user-form-email" value="{{populateFields.email}}">
+    <h5>Admin Privileges</h5>
+    <input type="radio" name="admin" value="yes" id="user-form-admin" {{adminRadioYes}}>Yes
+    <input type="radio" name="admin" value="no" {{adminRadioNo}}>No
+    <h5>Associated Initiatives</h5>
+        {{#each getInitiatives}}
+          <input type="checkbox" name="initiatives" value={{name}}>{{name}} <br />
+        {{/each}}
+    <input type="submit" value="Submit">
+  </form>
 </template>
+
+<template name="createUser">
+  <div class="row">
+    <h2 class="center-align">Create New User</h2>
+    <form id="create-user-form" class="col s12">
+      <div class="row">
+
+        <div class="input-field col s6">
+          <input type="text" id="first_name" class="validate" name="first-name">
+          <label for="first_name">First Name</label>
+        </div>
+        <div class="input-field col s6">
+          <input type="text" id="last_name" class="validate" name="last-name">
+          <label for="last_name">Last Name</label>
+        </div>
+
+        <div class="input-field col s6">
+          <input type="email" id="email" class="validate" placeholder="This will the username for logging in">
+          <label for="email" class="active">Email</label>
+        </div>
+        <div class="input-field col s6">
+          <input type="password" id="password" class="validate">
+          <label for="password">Password</label>
+        </div>
+
+        <div class="col s12">
+          <blockquote>
+            You can choose one or multiple initiatives instead of an agency.
+          </blockquote>
+        </div>
+
+        <div class="input-field col s6">
+          <select multiple name="agency" id="createUser-agency-select" class="browser-default">
+            <option value="" disabled selected>Choose Agency</option>
+            <option value="Constellation">Constellation</option>
+            <option value="Horizon">Horizon</option>
+            <option value="Icon">Icon</option>
+            <option value="High Wide & Handsome">High Wide & Handsome</option>
+            <option value="Cornerstone">Cornerstone</option>
+            <option value="Rachael Piper">Rachael Piper</option>
+            <option value="Hitachi">Hitachi</option>
+          </select>
+          <label class="active">Agency</label>
+        </div>
+
+        <div class="input-field col s6">
+          <select multiple name="initiatives" id="createUser-initiative-select" class="browser-default">
+            <option value="" disabled selected>Choose Initiative</option>
+            {{#each getInits}}
+              <option value="{{name}}">{{name}}</option>
+            {{/each}}
+          </select>
+          <label class="active">Initiatives</label>
+        </div>
+      </div>
+      <button class="btn waves-effect waves-light" type="submit" name="action">
+        Create User
+      </button>
+    </form>
+  </div>
+</template>
+
+
+
 
 <template name="allUsers">
     <h2>All Users</h2>
@@ -35,3 +99,5 @@
         </p>
     {{/each}}
 </template>
+
+
