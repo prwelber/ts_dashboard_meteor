@@ -124,6 +124,7 @@ Meteor.methods({
     return "initiative deleted";
   },
   'updateInitiative': function (data) {
+    console.log('updating initiative with data:', data);
     let active = false;
     let recentlyEnded = false;
     let lastThreeMonths = false;
@@ -142,6 +143,7 @@ Meteor.methods({
     Initiatives.update(
       {name: data.name},
       {$set: {
+        name: data.name,
         search_text: data.search_text,
         brand: data.brand,
         agency: data.agency,

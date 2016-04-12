@@ -1,42 +1,110 @@
 <template name="adsets">
   <div class="ten wide column">
-    <h2>AdSet Insights and Targeting</h2>
+    <h2 class="center-align">AdSet Insights and Targeting</h2>
+    <div class="divider"></div>
   </div>
     {{#each getAdSets}}
     <div class="twelve wide column">
       <h3>{{data.name}}</h3>
       <p>AdSet runtime: {{data.start_time}} -- {{data.end_time}}</p>
       <p>Optimization Goal: {{data.optimization_goal}}</p>
-      <p><strong>Targeting</strong></p>
-      {{#if data.interests}}<p>Interests: {{data.interests}}</p>{{/if}}
-      {{#if data.age_range}}<p>Age Range: {{data.age_range}}</p>{{/if}}
-      {{#if data.behaviors}}<p>Behaviors: {{data.behaviors}}</p>{{/if}}
-      {{#if data.location}}<p>Location: {{data.location}}</p>{{/if}}
-      {{#if data.locations}}<p>Locations: {{data.locations}}</p>{{/if}}
-      {{#if data.placements}}<p>Placements: {{data.placements}}</p>{{/if}}
-      {{#if data.connections}}<p>Connections: {{data.connections}}</p>{{/if}}
-      {{#if data.match}}<p>People Who Match: {{data.match}}</p>{{/if}}
-      {{#if data.also_match}}<p>And Who Also Match: {{data.also_match}}</p>{{/if}}
-      <p><strong>Insights</strong></p>
-      <p>Spend: {{data.spend}}</p>
-      <p>Reach: {{data.reach}}</p>
-      <p>Clicks: {{data.clicks}} | Cost per: {{data.cpc}}</p>
-      <p>CTR: {{data.ctr}}%</p>
-      <p>CPM: {{data.cpm}}</p>
-      <p>Impressions: {{data.impressions}}</p>
+
+
+
+      <ul class="collection with-header">
+        <li class="collection-header"><h3>Targeting</h3></li>
+        {{#if data.interests}}<li class="collection-item">Interests: {{data.interests}}</li>{{/if}}
+        {{#if data.age_range}}<li class="collection-item">Age Range: {{data.age_range}}</li>{{/if}}
+        {{#if data.behaviors}}<li class="collection-item">Behaviors: {{data.behaviors}}</li>{{/if}}
+        {{#if data.location}}<li class="collection-item">Location: {{data.location}}</li>{{/if}}
+        {{#if data.locations}}<li class="collection-item">Locations: {{data.locations}}</li>{{/if}}
+        {{#if data.placements}}<li class="collection-item">Placements: {{data.placements}}</li>{{/if}}
+        {{#if data.connections}}<li class="collection-item">Connections: {{data.connections}}</li>{{/if}}
+        {{#if data.match}}<li class="collection-item">People Who Match: {{data.match}}</li>{{/if}}
+        {{#if data.also_match}}<li class="collection-item">And Who Also Match: {{data.also_match}}</li>{{/if}}
+      </ul>
+
+      <h4>Spend: {{data.spend}}</h4>
       <p>CPP: {{data.cpp}}</p>
-      {{#if data.like}}<p>Likes: {{data.like}} | Cost per: {{data.cost_per_like}}</p>{{/if}}
-      {{#if data.link_click}}<p>Link Click: {{data.link_click}} | Cost per: {{data.cost_per_link_click}}</p>{{/if}}
-      {{#if data.cost_per_page_engagement}}<p>CP Page Engagement: {{ data.cost_per_page_engagement}}</p>{{/if}}
-      {{#if data.cost_per_post_engagement}}<p>CP Post Engagement: {{ data.cost_per_post_engagement}}</p>{{/if}}
-      {{#if data.website_clicks}}<p>Website Clicks: {{data.website_clicks}}</p>{{/if}}
-      {{#if data.photo_view}}<p>Photo View: {{data.photo_view}} | Cost per: {{data.cost_per_photo_view}}</p>{{/if}}
-      {{#if data.post}}<p>Post: {{data.post}} | Cost per: {{data.cost_per_post}}</p>{{/if}}
-      {{#if data.comment}}<p>Comments: {{data.comment}} | Cost per: {{data.cost_per_comment}}</p>{{/if}}
-      {{#if data.post_like}}<p>Post Likes: {{data.post_like}} | Cost per: {{data.cost_per_post_like}}</p>{{/if}}
-      {{#if data.unlike}}<p>Unlikes: {{data.unlike}}</p>{{/if}}
-      {{#if data.video_play}}<p>Video Play: {{data.video_play}} | Cost per: {{data.cost_per_video_play}}</p>{{/if}}
-      {{#if data.video_view}}<p>Video View: {{data.video_view}} | Cost per: {{data.cost_per_video_view}}</p>{{/if}}
+      <table class="striped centered">
+        <thead>
+          <tr>
+            <th class="insights-table-header">Clicks</th>
+            <th class="insights-table-header">CPC</th>
+            <th class="insights-table-header">Impressions</th>
+            <th class="insights-table-header">CPM</th>
+            <th class="insights-table-header">Likes</th>
+            <th class="insights-table-header">CPL</th>
+            <th class="insights-table-header">Reach</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="insights-table-data">{{data.clicks}}</td>
+            <td class="insights-table-data">{{data.cpc}}</td>
+            <td class="insights-table-data">{{data.impressions}}</td>
+            <td class="insights-table-data">{{data.cpm}}</td>
+            <td class="insights-table-data">{{data.like}}</td>
+            <td class="insights-table-data">{{data.cpl}}</td>
+            <td class="insights-table-data">{{data.reach}}</td>
+          </tr>
+        </tbody>
+        <thead>
+          <tr>
+            <th class="insights-table-header">Link Click</th>
+            <th class="insights-table-header">CP Link Click</th>
+            <th class="insights-table-header">CP Page Eng</th>
+            <th class="insights-table-header">CP Post Eng</th>
+            <th class="insights-table-header">Website Click</th>
+            <th class="insights-table-header">CP Website Click</th>
+            <th class="insights-table-header">CTR</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="insights-table-data">{{data.link_click}}</td>
+            <td class="insights-table-data">{{data.cost_per_link_click}}</td>
+            <td class="insights-table-data">{{data.cost_per_page_engagement}}</td>
+            <td class="insights-table-data">{{data.cost_per_post_engagement}}</td>
+            <td class="insights-table-data">{{data.website_clicks}}</td>
+            <td class="insights-table-data">{{data.cost_per_website_clicks}}</td>
+            <td class="insights-table-data">{{data.ctr}}</td>
+          </tr>
+        </tbody>
+      </table>
+      {{#if data.video_play}}
+        <table class="centered">
+          <thead>
+            <tr>
+              <th class="insights-table-header">Video Plays</th>
+              <th class="insights-table-header">Video View</th>
+              <th class="insights-table-header">Cost Per Video Play</th>
+              <th class="insights-table-header">Cost Per Video View</th>
+              <th class="insights-table-header">Video 10 Sec View</th>
+              <th class="insights-table-header">Cost Per 10 Sec View</th>
+              <th class="insights-table-header">15 Sec View</th>
+              <th class="insights-table-header">Avg Percent Watched</th>
+              <th class="insights-table-header">Avg Seconds Watched</th>
+              <th class="insights-table-header">Completely Watched</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="insights-table-data">{{data.video_play}}</td>
+              <td class="insights-table-data">{{data.video_view}}</td>
+              <td class="insights-table-data">{{data.cost_per_video_play}}</td>
+              <td class="insights-table-data">{{data.cost_per_video_view}}</td>
+              <td class="insights-table-data">{{data.tenSecondView}}</td>
+              <td class="insights-table-data">{{data.costPerTenSecondView}}</td>
+              <td class="insights-table-data">{{data.fifteenSecondView}}</td>
+              <td class="insights-table-data">{{data.avgPctWatched}}</td>
+              <td class="insights-table-data">{{data.avgSecWatched}}</td>
+              <td class="insights-table-data">{{data.completeWatched}}</td>
+            </tr>
+          </tbody>
+        </table>
+      {{/if}}
+
     </div>
     {{else}}
       <p>No AdSets</p>

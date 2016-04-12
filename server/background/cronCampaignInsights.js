@@ -22,7 +22,7 @@ SyncedCron.add({
   name: "Campaign Insights Background Getter",
 
   schedule: function (parser) {
-    return parser.text('at 11:51 pm');
+    return parser.text('at 10:07 am');
   },
 
   job: function (time) {
@@ -30,10 +30,10 @@ SyncedCron.add({
     let idArray = Accounts.find(
       {name:
         {$in:
-          // ["Ruffino", "Tom Gore"]
+          ["Ruffino", "Tom Gore", "Robert Mondavi Winery", "Luchese", "Kim Crawford"]
           // ["Kim Crawford", "Luchese"]
           // ["Tom Gore"]
-          ["Robert Mondavi Winery"]
+          // ["Robert Mondavi Winery"]
         }
       }).fetch();
 
@@ -82,10 +82,6 @@ SyncedCron.add({
           console.log('no need to update data');
           counter++;
 
-          // if (moment(campaignData.data.inserted, "MM-DD-YYYY").isAfter(moment(campaignData.data.date_stop, "MM-DD-YYYY"))) {
-          // console.log('inserted is after date stop');
-          // counter++;
-          // }
         } else {
 
           console.log('getInsights background job running');
@@ -208,7 +204,7 @@ SyncedCron.add({
           }
         counter++;
         } // end of if (counter >= arr.length)
-      }, 5000) // end of setInterval
+      }, 4000) // end of setInterval
     } // end of if
   } //end of job
 }); // end of SyncedCron.add

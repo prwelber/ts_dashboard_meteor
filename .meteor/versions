@@ -59,6 +59,7 @@ localstorage@1.0.8
 logging@1.0.11
 maazalik:highcharts@0.4.0
 materialize:materialize@0.97.5
+matteodem:server-session@0.4.2
 mdg:validation-error@0.2.0
 meteor@1.1.13
 meteor-base@1.0.3

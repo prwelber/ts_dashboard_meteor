@@ -88,7 +88,7 @@ Meteor.methods({
 
           for (var j = 1; j < Math.abs(diff); j++) {
 
-            console.log("generated nums:", moment(arr[i].data.date_start, timeForm).add(j, 'd').format(timeForm));
+            // console.log("generated nums:", moment(arr[i].data.date_start, timeForm).add(j, 'd').format(timeForm));
 
             arr.splice(i + j, 0, {
               data: {
@@ -221,7 +221,7 @@ Meteor.methods({
       }
     });
 
-    console.log(otherArray);
+    // console.log(otherArray);
 
     return otherArray;
 
@@ -260,7 +260,7 @@ Meteor.methods({
         }
       ];
       var result = HourlyBreakdowns.aggregate(pipeline);
-      console.log(result);
+      // console.log(result);
         try {
           result[0]['cpc'] = result[0].spend / result[0].clicks;
           result[0]['cpm'] = result[0].spend / (result[0].impressions / 1000);

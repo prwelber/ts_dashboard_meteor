@@ -9,7 +9,7 @@ SyncedCron.add({
   name: "Daily Insights Background Getter",
 
   schedule: function (parser) {
-    return parser.text('at 4:20pm');
+    return parser.text('at 10:51am');
   },
 
   job: function (time) {
@@ -39,8 +39,8 @@ SyncedCron.add({
     // {'data.campaign_id': 1, _id: 0}
     // ).fetch();
 
-    // const insightIdArray = CampaignInsights.find({}).fetch();
-    const insightIdArray = CampaignInsights.find({'data.initiative': 'Kim Crawford 2017 Q1 Page Post'}).fetch();
+    const insightIdArray = CampaignInsights.find({}).fetch();
+    // const insightIdArray = CampaignInsights.find({'data.initiative': 'Kim Crawford 2017 Q1 Page Post'}).fetch();
 
 
     idArray = _.filter(insightIdArray, (el) => {
@@ -59,6 +59,7 @@ SyncedCron.add({
 
       let counter = 0;
 
+      console.log('idArray length', idArray.length);
       const setIntervalId = Meteor.setInterval(function () {
         console.log('start of interval');
         const dayBreakdown = InsightsBreakdownsByDays.findOne({
@@ -71,7 +72,6 @@ SyncedCron.add({
         * if inserted date is after end date of campaign, do nothing
         * else, run the download job
         */
-
         if (counter >= idArray.length) {
           console.log('nothing to do in cronDailyInsights');
           counter++;
@@ -173,7 +173,7 @@ SyncedCron.add({
           }
           counter++;
         } // end of else block in if (counter >= idArray.length)
-      }, 5000); // end of Meteor.setInterval
+      }, 4000); // end of Meteor.setInterval
     } // end if if(idArray)
   } // end of job
 });
