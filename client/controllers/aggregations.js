@@ -28,3 +28,7 @@ Template.aggregations.events({
     });
   }
 });
+
+Template.aggregations.onDestroyed(function () {
+  delete Session.keys['aggregateData'];
+});
