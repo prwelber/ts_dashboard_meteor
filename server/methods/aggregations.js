@@ -1,12 +1,22 @@
 Meteor.methods({
   'initiativeAggregation': function (params) {
     console.log('aggregate running with params', params);
+    let matchObj = {};
+    const data = Object.keys(params); // data is an array of the params keys
+    console.log(Object.keys(params));
 
-    const makePipeline = function makePipeline (params) {
+    for (let i = 0; i < data.length; i++) {
+      console.log(data[i]);
+      console.log(params[data[i]])
+      matchObj[data[i]] = params[data[i]];
+    }
+
+    console.log("matchObj after loop", matchObj);
+
+
+    const makePipeline = function makePipeline (params, matchObj) {
       return [
-        {$match:
-          {agency: params.agency, product: params.product, objective: params.objective}
-        },
+        {$match: matchObj},
         {$group: {
           _id: null,
           spend: {$sum: "$aggregateData.spend"},
@@ -19,16 +29,24 @@ Meteor.methods({
       ];
     }
 
-    const result = Initiatives.aggregate(makePipeline(params));
+    const result = Initiatives.aggregate(makePipeline(params, matchObj));
+    console.log('result before cost per additions', result);
 
-    if (result && result[0]['spend']) {
-      result[0]['cpc'] = result[0].spend / result[0].clicks;
-      result[0]['cpm'] = result[0].spend / (result[0].impressions / 1000);
-      result[0]['cpl'] = result[0].spend / result[0].likes;
+    try {
+      if (result && result[0]['spend']) {
+        result[0]['cpc'] = result[0].spend / result[0].clicks;
+        result[0]['cpm'] = result[0].spend / (result[0].impressions / 1000);
+        result[0]['cpl'] = result[0].spend / result[0].likes;
+
+        console.log(result);
+        return result[0];
+
+      } else {
+        return "nothing to show";
+      }
+    } catch (e) {
+      console.log('Error aggregating initiatives', e);
+      return {error: "nothing to show"};
     }
-    console.log(result);
-
-    return result[0];
-
   }
 });

@@ -15,7 +15,7 @@
     <br><br>
     <form class="aggregations-form">
 
-      <div class="input-field col s4">
+      <div class="input-field col s3">
         <select name="products" id="product-select" class="browser-default">
           <option value="" disabled selected>Choose Product</option>
           <option value="Wine">Wine</option>
@@ -26,7 +26,7 @@
         <label class="active">Product</label>
       </div>
 
-      <div class="input-field col s4">
+      <div class="input-field col s3">
         <select name="objective" id="objective-select" class="browser-default">
           <option value="" disabled selected>Choose Objective</option>
           <option value="Conversions">Conversions</option>
@@ -44,7 +44,7 @@
         <label class="active">Objective</label>
       </div>
 
-      <div class="input-field col s4">
+      <div class="input-field col s3">
         <select name="agency" id="agency-select" class="browser-default">
           <option value="" disabled selected>Choose Agency</option>
           <option value="Constellation">Constellation</option>
@@ -57,11 +57,33 @@
         </select>
         <label class="active">Agency</label>
       </div>
+
+      <div class="input-field col s3">
+        <select name="brand" id="brand-select" class="browser-default">
+          <option value="" disabled selected>Choose Brand</option>
+          {{#each getBrands}}
+            <option value="{{name}}">{{name}}</option>
+          {{/each}}
+        </select>
+        <label class="active">Brand</label>
+      </div>
+
       <div class="col s12">
         <button class="btn waves-effect waves-light" type="submit">
           Run Aggregation
         </button>
       </div>
     </form>
+  </div>
+  <div class="row">
+    <div class="container">
+      {{#if getAgData.error}}
+        <p>{{getAgData.error}}</p>
+      {{else}}
+        {{#with getAgData}}
+          <p>Impressions: {{impressions}}</p>
+        {{/with}}
+      {{/if}}
+    </div>
   </div>
 </template>
