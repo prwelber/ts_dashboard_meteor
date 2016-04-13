@@ -1,83 +1,102 @@
 Meteor.subscribe("usersList");
 
-Template.newUser.helpers({
-    'populateFields': function () {
-        let user = Meteor.user();
-        return user;
-    },
-    'adminRadioYes': function () {
-        return (Meteor.user().admin === "yes") ? 'checked' : '';
-    },
-    'adminRadioNo': function () {
-        return Meteor.user().admin === "no" ? 'checked' : "";
-    },
-    'getInitiatives': function () {
-        return Initiatives.find().fetch();
+Template.editUser.helpers({
+  'populateFields': function () {
+    let user = Meteor.users.findOne({_id: FlowRouter.current().params._id});
+    return user;
+  },
+  'isAdmin': function () {
+    const user = Meteor.users.findOne({_id: FlowRouter.current().params._id});
+
+    if (user && user._id) {
+      if (user.admin === true) {
+        return "checked"
+      } else {
+        return "";
+      }
     }
+  },
+  'getInits': function () {
+    return Initiatives.find({}, {sort: {name: 1}});
+  },
+  'initiativeSelected': function (name) {
+    const user = Meteor.users.findOne({_id: FlowRouter.current().params._id});
+    if (user['initiatives'].indexOf(name) >= 0) {
+      return "selected";
+    }
+  },
+  'agencySelected': function (name) {
+    const user = Meteor.users.findOne({_id: FlowRouter.current().params._id});
+    if (user['agency'].indexOf(name) >= 0) {
+      return "selected";
+    }
+  }
 });
 
-Template.newUser.events({
-    'submit .new-user-form': function (event, template) {
-        event.preventDefault();
-        let user = {};
-        user['username'] = event.target.username.value;
-        user['firstName'] = event.target.firstName.value;
-        user['lastName'] = event.target.lastName.value;
-        user['company'] = event.target.company.value;
-        user['email'] = event.target.email.value;
-        user['admin'] = event.target.admin.value;
-        user['_id'] = Meteor.userId();
+Template.editUser.events({
+  'submit .edit-user-form': function (event, template) {
+    event.preventDefault();
 
-        let selected = template.findAll("input[type=checkbox]:checked");
-        let inits = _.map(selected, function(item) {
-            return item.value;
-        });
-        user['initiativePermissions'] = inits;
-
-        user['admin'] === "" ? alert('please finish filling in form') : console.log('admin section compelted');
-        if (/@targetedsocial\.com/.test(user.email)) {
-            console.log('TS employee');
-            Meteor.call('insertNewUser', user, function (error, result) {
-                if (result) {
-                    $("#message-box").text("");
-                    $("#message-box").append("Your profile has been successfully updated");
-                }
-            });
-        } else if (!/@targetedsocial\.com/.test(user.email) && user.admin == "yes") {
-            alert('You cannot be an admin');
-        } else if (!/@targetedsocial\.com/.test(user.email) && user.admin == "no") {
-            console.log('hit the right one!')
-            // Meteor.call('insertNewUser', user, function (error, result) {
-            //     if (error) {
-            //         console.log("error");
-            //     } else {
-            //         alert('Your record has been successfully updated.')
-            //     }
-            // });
-        }
-        console.log(user);
-
-        // Meteor.call('insertNewUser', user);
-    },
-    'click #user-form-admin': function (event, template) {
-            let email = document.getElementById("user-form-email").value
-
+    const select = document.getElementsByName("agency");
+    const agencyArray = [];
+    for (let i = 0; i < select[0].length; i++) {
+      if (select[0][i].selected === true) {
+        agencyArray.push(select[0][i].value);
+      }
     }
+
+    // get all initiatives
+    const initSelect = document.getElementsByName("initiatives");
+    const initArray = [];
+    for (let i = 0; i < initSelect[0].length; i++) {
+      if (initSelect[0][i].selected === true) {
+        initArray.push(initSelect[0][i].value);
+      }
+    }
+
+    let user = {
+      firstName: event.target.firstName.value,
+      lastName: event.target.lastName.value,
+      email: event.target.email.value,
+      admin: event.target.admin.checked,
+      agency: agencyArray,
+      initiatives: initArray
+    };
+
+    // let selected = template.findAll("input[type=checkbox]:checked");
+    // let inits = _.map(selected, function(item) {
+    //     return item.value;
+    // });
+    // user['initiativePermissions'] = inits;
+
+
+    console.log(user);
+    const _id = FlowRouter.current().params._id;
+    Meteor.call('updateUser', _id, user, function (err, res) {
+      if (res) {
+        Materialize.toast('User Updated!', 2000);
+      }
+    });
+
+  },
+  'click #user-form-admin': function (event, template) {
+    let email = document.getElementById("user-form-email").value
+  }
 });
 
 Template.allUsers.events({
     "click .delete-user": function () {
-        let userId = this._id;
-        Meteor.call('deleteUser', userId);
+      let userId = this._id;
+      Meteor.call('deleteUser', userId);
     }
 })
 
 Template.allUsers.helpers({
     'fetchUsers': function () {
-        return Meteor.users.find({});
+      return Meteor.users.find({});
     }
 });
 
-Template.newUser.onDestroyed(function () {
-    $("#message-box").text("");
+Template.editUser.onDestroyed(function () {
+  $("#message-box").text("");
 })

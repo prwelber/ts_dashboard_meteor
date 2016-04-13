@@ -144,7 +144,7 @@ Template.campaignDashboard.helpers({
       // if now is after the end date, timeleft is zero, else...
       now.isAfter(ends) ? timeLeft = 0 : timeLeft = ends.diff(now, 'days');
 
-      const agData = init.aggregateData[0] // for brevity later on
+      const agData = init.aggregateData // for brevity later on
       let spendPercent = numeral((agData.spend / parseFloat(init.budget))).format("0.00%")
       // format data
       agData.spend = mastFunc.money(agData.spend);
@@ -182,17 +182,17 @@ Template.campaignDashboard.helpers({
       let timeDiff = ended.diff(started, 'days');
       now.isAfter(ended) ? '' : timeDiff = now.diff(started, 'days');
       return {
-        avgClicks: numeral(initiative.aggregateData[0].clicks / timeDiff).format("0,0"),
-        avgImpressions: numeral(initiative.aggregateData[0].impressions / timeDiff).format("0,0"),
-        avgLikes: numeral(initiative.aggregateData[0].likes / timeDiff).format("0,0"),
-        avgSpend: numeral(initiative.aggregateData[0].spend / timeDiff).format("$0,0.00")
+        avgClicks: numeral(initiative.aggregateData.clicks / timeDiff).format("0,0"),
+        avgImpressions: numeral(initiative.aggregateData.impressions / timeDiff).format("0,0"),
+        avgLikes: numeral(initiative.aggregateData.likes / timeDiff).format("0,0"),
+        avgSpend: numeral(initiative.aggregateData.spend / timeDiff).format("$0,0.00")
       }
     },
     'dataProjection': function () {
       // TODO create a master function to handle this???
       const initiative = Template.instance().templateDict.get('initiative');
 
-      const agData = initiative.aggregateData[0] // for brevity
+      const agData = initiative.aggregateData // for brevity
       const sesh = Session.get('dayNumber') // for brevity
 
       const ended = moment(initiative.endDate, "MM-DD-YYYY");

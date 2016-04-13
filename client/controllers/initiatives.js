@@ -47,15 +47,15 @@ Template.initiativeAggregate.helpers({
         let init = Initiatives.findOne({_id: FlowRouter.current().params._id});
         Meteor.call('getAggregate', init.name, (error, result) => {
             if (result) {
-                // mastFunc.addToBox("data refreshed on " +result[0].inserted);
+
             }
         });
         let ends = moment(init.endDate, "MM-DD-YYYY");
         let timeLeft = ends.diff(moment(new Date), 'days')
 
         // format currency data
-        init.aggregateData[0].cpc = mastFunc.money(init.aggregateData[0].cpc);
-        init.aggregateData[0].cpm = mastFunc.money(init.aggregateData[0].cpm);
+        init.aggregateData.cpc = mastFunc.money(init.aggregateData.cpc);
+        init.aggregateData.cpm = mastFunc.money(init.aggregateData.cpm);
         return init
     }
 });

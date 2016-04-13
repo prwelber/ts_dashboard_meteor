@@ -278,11 +278,11 @@ Meteor.methods({
     Initiatives.update(
       {name: name},
       {$set: {
-          aggregateData: result
+          aggregateData: result[0]
       }
     });
     // console.log("result of getAggregate", result)
-    return result;
+    return result[0];
   },
   'aggregateObjective': function (name) {
     console.log('aggregateObjective running with name:', name);

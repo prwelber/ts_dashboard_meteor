@@ -1,15 +1,16 @@
 Meteor.methods({
-  'insertNewUser': function (data) {
+  'updateUser': function (_id, data) {
     Meteor.users.update(
-      {_id: data._id},
+      {_id: _id},
       {
         $set: {
           firstName: data.firstName,
           lastName: data.lastName,
           admin: data.admin,
           email: data.email,
-          company: data.company,
-          inserted: moment(new Date()).format("MM-DD-YYYY hh:mm a")
+          agency: data.agency,
+          initiatives: data.initiatives,
+          updatedOn: moment().format("MM-DD-YYYY hh:mm a")
         }
       }
     ) //end of update
@@ -27,6 +28,7 @@ Accounts.onCreateUser(function (options, user) {
   user['agency'] = options.agency;
   user['initiatives'] = options.initiatives;
   user['admin'] = options.admin;
+  user['createdOn'] = moment().format('MM-DD-YYYY hh:mm a');
   // user.password = options.password;
   return user;
 });

@@ -54,19 +54,5 @@ Template.createUser.events({
       }
     })
 
-    // Accounts.createUser({
-    //   firstName: options.firstName,
-    //   lastName: options.lastName,
-    //   email: options.email,
-    //   agency: options.agency,
-    //   initiatives: options.initiatives,
-    //   admin: options.admin,
-    //   password: options.password
-    // }, function (err, res) {
-    //   if (res) {
-    //     console.log('user created');
-    //   }
-    // });
-
   }
 });

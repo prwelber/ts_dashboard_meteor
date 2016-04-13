@@ -1,26 +1,63 @@
-<template name="newUser">
-{{!-- THIS IS ACTUALLY TO UPDATE CURRENT USER --}}
+<template name="editUser">
+{{!-- THIS IS TO UPDATE CURRENT USER --}}
   <h2>Make Changes To User Profile</h2>
-  <form class="new-user-form">
-    <h5>Username</h5>
-    <input type="text" name="username" value="{{populateFields.username}}">
-    <h5>First Name</h5>
-    <input type="text" name="firstName" placeholder="First Name" value="{{populateFields.firstName}}">
-    <h5>Last Name</h5>
-    <input type="text" name="lastName" placeholder="Last Name" value="{{populateFields.lastName}}">
-    <h5>Company or Agency</h5>
-    <input type="text" name="company" value="{{populateFields.company}}">
-    <h5>Email</h5>
-    <input type="text" name="email" id="user-form-email" value="{{populateFields.email}}">
-    <h5>Admin Privileges</h5>
-    <input type="radio" name="admin" value="yes" id="user-form-admin" {{adminRadioYes}}>Yes
-    <input type="radio" name="admin" value="no" {{adminRadioNo}}>No
-    <h5>Associated Initiatives</h5>
-        {{#each getInitiatives}}
-          <input type="checkbox" name="initiatives" value={{name}}>{{name}} <br />
-        {{/each}}
-    <input type="submit" value="Submit">
-  </form>
+  <div class="row">
+    <h2 class="center-align">Edit User</h2>
+    <form class="edit-user-form">
+      <div class="input-field col s6">
+        <input type="text" id="first_name" class="validate" name="firstName" value="{{populateFields.firstName}}">
+        <label for="first_name" class="active">First Name</label>
+      </div>
+      <div class="input-field col s6">
+        <input type="text" id="last_name" class="validate" name="lastName" value="{{populateFields.lastName}}">
+        <label for="last_name" class="active">Last Name</label>
+      </div>
+      <div class="input-field col s6">
+        <input type="email" id="email" class="validate" value="{{populateFields.email}}" name="email">
+        <label for="email" class="active">Email</label>
+      </div>
+      <div class="col s12">
+        <p>
+          <input type="checkbox" id="admin" name="admin" checked="{{isAdmin}}">
+          <label for="admin">Admin Permissions? | Admins Have Access To Everything</label>
+        </p>
+      </div>
+
+      <div class="col s12">
+        <blockquote>
+          You can choose one or multiple initiatives instead of an agency. <br>
+          This is what the user will be able to see. You cannot select both.
+        </blockquote>
+      </div>
+
+      <div class="input-field col s6">
+        <select multiple name="agency" id="createUser-agency-select" class="browser-default">
+          <option value="Constellation" {{agencySelected "Constellation"}}>Constellation</option>
+          <option value="Cornerstone" {{agencySelected "Cornerstone"}}>Cornerstone</option>
+          <option value="High Wide & Handsome" {{agencySelected "High Wide & Handsome"}}>High Wide & Handsome</option>
+          <option value="Hitachi" {{agencySelected "Hitachi"}}>Hitachi</option>
+          <option value="Horizon" {{agencySelected "Horizon"}}>Horizon</option>
+          <option value="Icon" {{agencySelected "Icon"}}>Icon</option>
+          <option value="Rachael Piper" {{agencySelected "Rachael Piper"}}>Rachael Piper</option>
+        </select>
+        <label class="active">Agency</label>
+      </div>
+
+      <div class="input-field col s6">
+        <select multiple name="initiatives" id="createUser-initiative-select" class="browser-default">
+          {{#each getInits}}
+            <option value="{{name}}" {{initiativeSelected name}}>{{name}}</option>
+          {{/each}}
+        </select>
+        <label class="active">Initiatives</label>
+      </div>
+      <div class="col s12">
+        <button class="btn waves-effect waves-light" type="submit">
+          Update User
+        </button>
+      </div>
+    </form>
+  </div>
 </template>
 
 
@@ -75,7 +112,6 @@
 
         <div class="input-field col s6">
           <select multiple name="agency" id="createUser-agency-select" class="browser-default">
-            {{!-- <option value="" disabled selected>Choose Agency</option> --}}
             <option value="Constellation">Constellation</option>
             <option value="Cornerstone">Cornerstone</option>
             <option value="High Wide & Handsome">High Wide & Handsome</option>
@@ -89,7 +125,6 @@
 
         <div class="input-field col s6">
           <select multiple name="initiatives" id="createUser-initiative-select" class="browser-default">
-            {{!-- <option value="" disabled selected>Choose Initiative</option> --}}
             {{#each getInits}}
               <option value="{{name}}">{{name}}</option>
             {{/each}}
