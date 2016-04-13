@@ -81,7 +81,34 @@
         <p>{{getAgData.error}}</p>
       {{else}}
         {{#with getAgData}}
-          <p>Impressions: {{impressions}}</p>
+          <table class="striped centered">
+            <thead>
+              <tr>
+                <th>Spend</th>
+                <th>Impressions</th>
+                <th>CPM</th>
+                <th>Clicks</th>
+                <th>CPC</th>
+                <th>Likes</th>
+                <th>CPL</th>
+                <th>Reach</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{spend}}</td>
+                <td>{{impressions}}</td>
+                <td>{{cpm}}</td>
+                <td>{{clicks}}</td>
+                <td>{{cpc}}</td>
+                <td>{{likes}}</td>
+                <td>{{cpl}}</td>
+                <td>{{reach}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          {{!-- <p>Impressions: {{impressions}}</p> --}}
         {{/with}}
       {{/if}}
     </div>
