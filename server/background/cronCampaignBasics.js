@@ -6,13 +6,13 @@ SyncedCron.add({
     },
 
     job: function(intendedAt) {
-      const accts = Accounts.find(
+      const accts = MasterAccounts.find(
         {name: {
           $in: ["Tom Gore", "Robert Mondavi Winery", "Luchese", "Ruffino", "Kim Crawford"]
           // $in: ['Ruffino']
         }
       }).fetch();
-      // const accts = Accounts.find({}).fetch()
+      // const accts = MasterAccounts.find({}).fetch()
 
       const idArray = _.map(accts, function (el) { return el.account_id; });
       console.log("idArray", idArray);

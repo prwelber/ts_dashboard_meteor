@@ -27,7 +27,7 @@ SyncedCron.add({
 
   job: function (time) {
 
-    let idArray = Accounts.find(
+    let idArray = MasterAccounts.find(
       {name:
         {$in:
           ["Ruffino", "Tom Gore", "Robert Mondavi Winery", "Luchese", "Kim Crawford"]

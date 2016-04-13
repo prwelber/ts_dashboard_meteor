@@ -1,7 +1,7 @@
 
 Meteor.methods({
   'removeAccounts': function () {
-    Accounts.remove({});
+    MasterAccounts.remove({});
     console.log('accounts removed!');
   }
 })
@@ -10,7 +10,7 @@ Meteor.methods({
     'refreshAccountList': function () {
         console.log('refreshing account list')
         // delete all accounts and then refresh them
-        Accounts.remove( {} );
+        MasterAccounts.remove( {} );
         let accountsDataArray = [];
         let accountsData;
         try {
@@ -33,7 +33,7 @@ Meteor.methods({
         try {
             for (let i = 0; i < accountsDataArray.length; i++) {
                 for (let j = 0; j < accountsDataArray[i].length; j++) {
-                    Accounts.insert({
+                    MasterAccounts.insert({
                         name: accountsDataArray[i][j].name,
                         account_id: accountsDataArray[i][j].account_id,
                         amount_spent: accounting.formatMoney(accountsDataArray[i][j].amount_spent, "$", 2),
@@ -50,5 +50,5 @@ Meteor.methods({
 });
 
 Meteor.publish('fbAccountList', function () {
-    return Accounts.find({}); //publish all accounts
+    return MasterAccounts.find({}); //publish all accounts
 })

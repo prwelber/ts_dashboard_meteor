@@ -26,7 +26,7 @@ Template.accountOverview.onRendered(function () {
 Template.accountOverview.helpers({
     'getName': function () {
         let mongoId = FlowRouter.current().params.account_id
-        let account = Accounts.findOne({account_id: mongoId})
+        let account = MasterAccounts.findOne({account_id: mongoId})
         return account
     },
     'displayCampaignBasics': function (count) {

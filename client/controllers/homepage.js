@@ -27,7 +27,7 @@ Template.accounts.helpers({
   'accountList': function () {
     let userId = Meteor.userId();
     if (userId) {
-      return Accounts.find({
+      return MasterAccounts.find({
         "name": { "$in": [
           "Ruffino",
           "Tom Gore",

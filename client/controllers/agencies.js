@@ -8,7 +8,7 @@ Template.agencies.helpers({
 
 Template.updateAgency.helpers({
     'getBrands': function () {
-        return Accounts.find();
+        return MasterAccounts.find();
     }
 });
 
@@ -21,7 +21,7 @@ Template.agencies.events({
 
 Template.newAgency.helpers({
     'getBrands': function () {
-        return Accounts.find()
+        return MasterAccounts.find()
     }
 });
 

@@ -10,7 +10,7 @@ Template.editInitiative.helpers({
       return Initiatives.findOne({_id: FlowRouter.current().params._id})
     },
     'getBrands': function () {
-      return Accounts.find()
+      return MasterAccounts.find()
     },
     'getCampaigns': function () {
       const init =  Initiatives.findOne({_id: FlowRouter.current().params._id});

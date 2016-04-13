@@ -7,7 +7,7 @@ Tracker.autorun(function () {
 Template.newInitiative.helpers({
     'getBrands': function () {
         $('select').material_select();
-        return Accounts.find();
+        return MasterAccounts.find();
     }
 });
 
