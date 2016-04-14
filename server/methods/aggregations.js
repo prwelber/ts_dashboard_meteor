@@ -1,5 +1,5 @@
 Meteor.methods({
-  'initiativeAggregation': function (params, afterDate) {
+  'initiativeAggregation': function (params, afterDate, beforeDate) {
     console.log('aggregate running with params', params);
     let matchObj = {};
     const data = Object.keys(params); // data is an array of the params keys
@@ -13,11 +13,25 @@ Meteor.methods({
 
     console.log("matchObj after loop" + '\n' +  JSON.stringify(matchObj));
 
-    // let start = moment("1-1-2016", "MM-DD-YYYY").toISOString();
-    const start = afterDate;
-
-    matchObj['startDate'] = {
-      '$gte': start
+    if (afterDate && beforeDate) {
+      const start = afterDate;
+      const end = beforeDate;
+      matchObj['startDate'] = {
+        '$gte': start
+      }
+      matchObj['endDate'] = {
+        '$lte': end
+      }
+    } else if (beforeDate) {
+      const end = beforeDate;
+      matchObj['endDate'] = {
+        '$lte': end
+      }
+    } else if (afterDate) {
+      const start = afterDate;
+      matchObj['startDate'] = {
+        '$gte': start
+      }
     }
 
     console.log('matchObj after date addition:' + '\n' + JSON.stringify(matchObj));

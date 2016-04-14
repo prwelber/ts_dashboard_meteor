@@ -15,7 +15,7 @@ Template.aggregations.helpers({
     if (data && data.spend) {
       return mastFunc.formatAll(data);
     } else {
-      return {error: "There has been an error with this query."}
+      return {error: "There has been an error with this query or there is no data."}
     }
   }
 });
@@ -23,7 +23,6 @@ Template.aggregations.helpers({
 Template.aggregations.events({
   'submit .aggregations-form': function (event, template) {
     event.preventDefault();
-
     const et = event.target;
     let params = {};
 
@@ -33,11 +32,15 @@ Template.aggregations.events({
     et.brand.value ? params['brand'] = et.brand.value : '';
 
     let afterDate;
-    et.date.value ? afterDate = moment(et.date.value, "DD MMMM, YYYY").toISOString() : '';
+    let beforeDate;
+    et.afterDate.value ? afterDate = moment(et.afterDate.value, "DD MMMM, YYYY").toISOString() : '';
+    et.beforeDate.value ? beforeDate = moment(et.beforeDate.value, "DD MMMM, YYYY").toISOString() : '';
 
     console.log(params);
+    console.log(afterDate);
+    console.log(beforeDate);
     console.log(Object.keys(params).length); // this works, returns #
-    Meteor.call('initiativeAggregation', params, afterDate, function (err, res) {
+    Meteor.call('initiativeAggregation', params, afterDate, beforeDate, function (err, res) {
       if (res) {
         Session.set("aggregateData", res);
       }
