@@ -122,19 +122,18 @@ Template.initiativeHomepage.helpers({
   },
   'modalDeliveryChart': function () {
     const initiative = Template.instance().templateDict.get('initiative');
-    // console.log('initiative for chart:', initiative);
+    console.log('initiative for chart:', initiative);
     const labels     = [], // this will be the date range
           timeFormat = "MM-DD-YYYY",
-          days       = moment(initiative.endDate, timeFormat).diff(moment(initiative.startDate, timeFormat), 'days'),
-          avg        = parseFloat(numeral(initiative.quantity / days).format("0.00")),
-          spendAvg   = parseFloat(numeral(initiative.budget / days).format("0.00")),
+          days       = moment(initiative.endDate).diff(moment(initiative.startDate), 'days'),
+          avg        = parseFloat(initiative.quantity / days),
+          spendAvg   = parseFloat(initiative.budget / days),
           avgData    = [],
           idealSpend = [];
 
-    // console.log('days:', days);
     let total           = 0,
         idealSpendTotal = 0;
-    // console.log('avg', avg);
+    console.log('avg', avg);
     for (let i = 0; i < days; i++) {
         total = total + avg;
         idealSpendTotal = idealSpendTotal + spendAvg;
@@ -174,7 +173,7 @@ Template.initiativeHomepage.helpers({
 
       call('aggregateForChart', initiative)
       .then(function (res) {
-        // console.log("result from promise", res)
+        console.log("result from promise", res)
         Session.set('res', res);
         totes = res[0][type]
       }).catch(function (err) {
@@ -187,15 +186,15 @@ Template.initiativeHomepage.helpers({
         actionToChart.push(totes);
         spendChart.push(spendTotal);
       });
-      // console.log(actionToChart);
+      console.log(actionToChart);
 
       return {
         chart: {
           zoomType: 'x'
         },
-
+        // TODO FIX THIS
         title: {
-          text: type.substr(0,1).toUpperCase() + type.substr(1, type.length) + " Delivery for Initiative"
+          text: "Some Text Here"
         },
 
         subtitle: {

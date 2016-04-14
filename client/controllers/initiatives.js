@@ -207,8 +207,8 @@ Template.initiativesHome.helpers({
     ).fetch();
 
     inits.forEach(el => {
-      el.startDate = moment(el.startDate, "YYYY-MM-DDThh:mm:ss").format("MM-DD-YYYY hh:mm a");
-      el.endDate = mastFunc.time(el.endDate);
+      el.startDate = moment(el.startDate).format("MM-DD-YYYY hh:mm a");
+      el.endDate = moment(el.endDate).format("MM-DD-YYYY hh:mm a");
     });
 
     return inits;
@@ -217,7 +217,7 @@ Template.initiativesHome.helpers({
     const now = moment()
     if (this.active === true) {
       return "Active"
-    } else if (now.diff(moment(this.endDate, "MM-DD-YYYY"), "days") <= 45) {
+    } else if (now.diff(moment(this.endDate), "days") <= 45) {
       return "Ended within the last 45 days"
     } else {
       return "Not Active"
@@ -227,7 +227,7 @@ Template.initiativesHome.helpers({
     const now = moment()
     if (this.active === true) {
       return "green-text"
-    } else if (now.diff(moment(this.endDate, "MM-DD-YYYY"), "days") <= 45) {
+    } else if (now.diff(moment(this.endDate), "days") <= 45) {
       return "orange-text"
     } else {
       return "red-text"
