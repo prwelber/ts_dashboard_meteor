@@ -16,13 +16,17 @@ Tracker.autorun(function () {
 
 Template.initiatives.helpers({
     'getInitiatives': function () {
-        return Initiatives.find().fetch();
+      let inits =  Initiatives.find().fetch();
+      inits.forEach(el => {
+        el.startDate = moment(el.startDate).format("MM-DD-YYYY");
+      });
+      return inits;
     }
 });
 
 Template.initiative.helpers({
     'getInitiative': function () {
-        return Initiatives.findOne({_id: FlowRouter.current().params._id})
+      return Initiatives.findOne({_id: FlowRouter.current().params._id})
     }
 });
 
@@ -201,6 +205,11 @@ Template.initiativesHome.helpers({
     const inits = Initiatives.find({},
       {sort: {active: -1, recentlyEnded: -1, lastThreeMonths: -1}}
     ).fetch();
+
+    inits.forEach(el => {
+      el.startDate = moment(el.startDate, "YYYY-MM-DDThh:mm:ss").format("MM-DD-YYYY hh:mm a");
+      el.endDate = mastFunc.time(el.endDate);
+    });
 
     return inits;
   },

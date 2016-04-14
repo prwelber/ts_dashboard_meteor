@@ -24,7 +24,7 @@ Template.campaignInsights.events({
 
 Template.campaignInsights.helpers({
     'fetchInsights': function () {
-        console.log('checking for insights');
+        // console.log('checking for insights');
         const campaignNumber = FlowRouter.current().params.campaign_id;
         let camp = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
         if (camp) {

@@ -7,7 +7,10 @@ Template.editInitiative.onRendered(function () {
 
 Template.editInitiative.helpers({
     'getInitiative': function () {
-      return Initiatives.findOne({_id: FlowRouter.current().params._id})
+      let init =  Initiatives.findOne({_id: FlowRouter.current().params._id});
+      init.startDate = mastFunc.time(init.startDate);
+      init.endDate = mastFunc.time(init.endDate);
+      return init;
     },
     'getBrands': function () {
       return MasterAccounts.find()

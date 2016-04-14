@@ -30,8 +30,8 @@ Meteor.methods({
       objective: data.objective,
       dealType: data.dealType,
       budget: data.budget,
-      startDate: data.startDate,
-      endDate: data.endDate,
+      startDate: moment(data.startDate, "MM-DD-YYYY").toISOString(),
+      endDate: moment(data.endDate, "MM-DD-YYYY").toISOString(),
       quantity: data.quantity,
       price: data.price,
       costPlus: data.cost_plus,
@@ -40,8 +40,8 @@ Meteor.methods({
       objective2: data.objective2,
       dealType2: data.dealType2,
       budget2: data.budget2,
-      startDate2: data.startDate2,
-      endDate2: data.endDate2,
+      startDate2: moment(data.startDate2, "MM-DD-YYYY").toISOString(),
+      endDate2: moment(data.endDate2, "MM-DD-YYYY").toISOString(),
       quantity2: data.quantity2,
       price2: data.price2,
       costPlus2: data.cost_plus2,
@@ -50,7 +50,7 @@ Meteor.methods({
       objective3: data.objective3,
       dealType3: data.dealType3,
       budget3: data.budget3,
-      startDate3: data.startDate3,
+      startDate3: moment(data.startDate3, "MM-DD-YYYY").toISOString(),
       endDate3: data.endDate3,
       quantity3: data.quantity3,
       price3: data.price3,
@@ -60,7 +60,7 @@ Meteor.methods({
       objective4: data.objective4,
       dealType4: data.dealType4,
       budget4: data.budget4,
-      startDate4: data.startDate4,
+      startDate4: moment(data.startDate4, "MM-DD-YYYY").toISOString(),
       endDate4: data.endDate4,
       quantity4: data.quantity4,
       price4: data.price4,
@@ -70,7 +70,7 @@ Meteor.methods({
       objective5: data.objective5,
       dealType5: data.dealType5,
       budget5: data.budget5,
-      startDate5: data.startDate5,
+      startDate5: moment(data.startDate5, "MM-DD-YYYY").toISOString(),
       endDate5: data.endDate5,
       quantity5: data.quantity5,
       price5: data.price5,
@@ -112,7 +112,6 @@ Meteor.methods({
       recentlyEnded: recentlyEnded,
       lastThreeMonths: lastThreeMonths
     });
-    console.log("new initiative inserted into DB:", data)
     return "success";
   },
   'removeInitiatives': function () {
@@ -124,7 +123,7 @@ Meteor.methods({
     return "initiative deleted";
   },
   'updateInitiative': function (data) {
-    console.log('updating initiative with data:', data);
+    console.log('updating initiative');
     let active = false;
     let recentlyEnded = false;
     let lastThreeMonths = false;
@@ -153,8 +152,8 @@ Meteor.methods({
         objective: data.objective,
         dealType: data.dealType,
         budget: data.budget,
-        startDate: data.startDate,
-        endDate: data.endDate,
+        startDate: moment(data.startDate, "MM-DD-YYYY").toISOString(),
+        endDate: moment(data.endDate, "MM-DD-YYYY").toISOString(),
         quantity: data.quantity,
         price: data.price,
         costPlus: data.cost_plus,
@@ -163,8 +162,8 @@ Meteor.methods({
         objective2: data.objective2,
         dealType2: data.dealType2,
         budget2: data.budget2,
-        startDate2: data.startDate2,
-        endDate2: data.endDate2,
+        startDate2: moment(data.startDate2, "MM-DD-YYYY").toISOString(),
+        endDate2: moment(data.endDate2, "MM-DD-YYYY").toISOString(),
         quantity2: data.quantity2,
         price2: data.price2,
         costPlus2: data.cost_plus2,
@@ -173,7 +172,7 @@ Meteor.methods({
         objective3: data.objective3,
         dealType3: data.dealType3,
         budget3: data.budget3,
-        startDate3: data.startDate3,
+        startDate3: moment(data.startDate3, "MM-DD-YYYY").toISOString(),
         endDate3: data.endDate3,
         quantity3: data.quantity3,
         price3: data.price3,
@@ -183,7 +182,7 @@ Meteor.methods({
         objective4: data.objective4,
         dealType4: data.dealType4,
         budget4: data.budget4,
-        startDate4: data.startDate4,
+        startDate4: moment(data.startDate4, "MM-DD-YYYY").toISOString(),
         endDate4: data.endDate4,
         quantity4: data.quantity4,
         price4: data.price4,
@@ -193,7 +192,7 @@ Meteor.methods({
         objective5: data.objective5,
         dealType5: data.dealType5,
         budget5: data.budget5,
-        startDate5: data.startDate5,
+        startDate5: moment(data.startDate5, "MM-DD-YYYY").toISOString(),
         endDate5: data.endDate5,
         quantity5: data.quantity5,
         price5: data.price5,

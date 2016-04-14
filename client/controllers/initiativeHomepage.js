@@ -42,7 +42,11 @@ Template.initiativeHomepage.helpers({
       {sort: {
         'data.date_stop': -1
       }
-    });
+    }).fetch();
+
+    camps.forEach(el => {
+      el.startDate = moment(el.startDate).format("MM-DD-YYYY");
+    })
     return camps;
   },
   'initiative': function () {
@@ -55,7 +59,7 @@ Template.initiativeHomepage.helpers({
   },
   'initiativeStats': function () {
     const init = Template.instance().templateDict.get('initiative');
-    const agData = init.aggregateData[0];
+    const agData = init.aggregateData;
     const spendPercent = numeral((agData.spend / parseFloat(init.budget))).format("0.00%");
 
     //function for formatting data with numeral
@@ -78,7 +82,7 @@ Template.initiativeHomepage.helpers({
       agData['cpl'] = mastFunc.money(agData.cpl);
     }
 
-    return init.aggregateData[0];
+    return init.aggregateData;
   },
   'objectiveAggregates': function () {
     const init = Template.instance().templateDict.get('initiative');
@@ -170,7 +174,7 @@ Template.initiativeHomepage.helpers({
 
       call('aggregateForChart', initiative)
       .then(function (res) {
-        console.log("result from promise", res)
+        // console.log("result from promise", res)
         Session.set('res', res);
         totes = res[0][type]
       }).catch(function (err) {

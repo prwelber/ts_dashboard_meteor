@@ -1,9 +1,22 @@
+Template.aggregations.onRendered(function () {
+  $('.datepicker').pickadate({
+    selectMonths: true,
+    selectYears: 10
+  });
+});
+
 Template.aggregations.helpers({
   getBrands: function () {
     return MasterAccounts.find();
   },
   getAgData: function () {
-    return Session.get("aggregateData");
+    let data = Session.get("aggregateData");
+
+    if (data && data.spend) {
+      return mastFunc.formatAll(data);
+    } else {
+      return {error: "There has been an error with this query."}
+    }
   }
 });
 
@@ -19,9 +32,12 @@ Template.aggregations.events({
     et.objective.value ? params['objective'] = et.objective.value : '';
     et.brand.value ? params['brand'] = et.brand.value : '';
 
+    let afterDate;
+    et.date.value ? afterDate = moment(et.date.value, "DD MMMM, YYYY").toISOString() : '';
+
     console.log(params);
     console.log(Object.keys(params).length); // this works, returns #
-    Meteor.call('initiativeAggregation', params, function (err, res) {
+    Meteor.call('initiativeAggregation', params, afterDate, function (err, res) {
       if (res) {
         Session.set("aggregateData", res);
       }

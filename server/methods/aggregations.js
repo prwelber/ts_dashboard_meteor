@@ -1,5 +1,5 @@
 Meteor.methods({
-  'initiativeAggregation': function (params) {
+  'initiativeAggregation': function (params, afterDate) {
     console.log('aggregate running with params', params);
     let matchObj = {};
     const data = Object.keys(params); // data is an array of the params keys
@@ -11,7 +11,16 @@ Meteor.methods({
       matchObj[data[i]] = params[data[i]];
     }
 
-    console.log("matchObj after loop", matchObj);
+    console.log("matchObj after loop" + '\n' +  JSON.stringify(matchObj));
+
+    // let start = moment("1-1-2016", "MM-DD-YYYY").toISOString();
+    const start = afterDate;
+
+    matchObj['startDate'] = {
+      '$gte': start
+    }
+
+    console.log('matchObj after date addition:' + '\n' + JSON.stringify(matchObj));
 
 
     const makePipeline = function makePipeline (params, matchObj) {

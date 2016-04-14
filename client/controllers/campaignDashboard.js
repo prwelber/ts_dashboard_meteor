@@ -144,21 +144,12 @@ Template.campaignDashboard.helpers({
       // if now is after the end date, timeleft is zero, else...
       now.isAfter(ends) ? timeLeft = 0 : timeLeft = ends.diff(now, 'days');
 
-      const agData = init.aggregateData // for brevity later on
+      let agData = init.aggregateData // for brevity later on
       let spendPercent = numeral((agData.spend / parseFloat(init.budget))).format("0.00%")
-      // format data
-      agData.spend = mastFunc.money(agData.spend);
-      agData.clicks = numeral(agData.clicks).format("0,0");
-      agData.impressions = numeral(agData.impressions).format("0,0");
-      agData.reach = numeral(agData.reach).format("0,0");
-      agData.likes = numeral(agData.likes).format("0,0");
-      agData.cpc = mastFunc.money(agData.cpc);
-      agData.cpm = mastFunc.money(agData.cpm);
-      if (agData.cpl === null || agData.cpl === Infinity) {
-        agData['cpl'] = "0";
-      } else if (typeof agData.cpl === "number") {
-        agData['cpl'] = mastFunc.money(agData.cpl);
-      }
+
+      // formats numbers
+      agData = mastFunc.formatAll(agData);
+
       return {
         initiative: agData,
         ends: moment(ends).format("MM-DD-YYYY hh:mm a"),

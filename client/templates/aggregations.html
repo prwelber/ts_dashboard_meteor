@@ -17,7 +17,7 @@
 
       <div class="input-field col s3">
         <select name="products" id="product-select" class="browser-default">
-          <option value="" disabled selected>Choose Product</option>
+          <option value="" selected>None</option>
           <option value="Wine">Wine</option>
           <option value="Food">Food</option>
           <option value="Cars">Cars</option>
@@ -28,7 +28,7 @@
 
       <div class="input-field col s3">
         <select name="objective" id="objective-select" class="browser-default">
-          <option value="" disabled selected>Choose Objective</option>
+          <option value="" selected>None</option>
           <option value="Conversions">Conversions</option>
           <option value="Link Clicks">Link Clicks</option>
           <option value="App Engagement">App Engagement</option>
@@ -46,7 +46,7 @@
 
       <div class="input-field col s3">
         <select name="agency" id="agency-select" class="browser-default">
-          <option value="" disabled selected>Choose Agency</option>
+          <option value="" selected>None</option>
           <option value="Constellation">Constellation</option>
           <option value="Cornerstone">Cornerstone</option>
           <option value="High Wide & Handsome">High Wide & Handsome</option>
@@ -60,12 +60,16 @@
 
       <div class="input-field col s3">
         <select name="brand" id="brand-select" class="browser-default">
-          <option value="" disabled selected>Choose Brand</option>
+          <option value="" selected>None</option>
           {{#each getBrands}}
             <option value="{{name}}">{{name}}</option>
           {{/each}}
         </select>
         <label class="active">Brand</label>
+      </div>
+
+      <div class="col s4">
+        <input type="date" class="datepicker" placeholder="After This Date" name="date">
       </div>
 
       <div class="col s12">
@@ -107,8 +111,6 @@
               </tr>
             </tbody>
           </table>
-
-          {{!-- <p>Impressions: {{impressions}}</p> --}}
         {{/with}}
       {{/if}}
     </div>
