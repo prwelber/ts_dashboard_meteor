@@ -217,7 +217,7 @@ Template.initiativesHome.helpers({
     const now = moment()
     if (this.active === true) {
       return "Active"
-    } else if (now.diff(moment(this.endDate), "days") <= 45) {
+    } else if (now.diff(moment(this.endDate, moment.ISO_8601), "days") <= 45) {
       return "Ended within the last 45 days"
     } else {
       return "Not Active"
@@ -227,7 +227,7 @@ Template.initiativesHome.helpers({
     const now = moment()
     if (this.active === true) {
       return "green-text"
-    } else if (now.diff(moment(this.endDate), "days") <= 45) {
+    } else if (now.diff(moment(this.endDate, moment.ISO_8601), "days") <= 45) {
       return "orange-text"
     } else {
       return "red-text"
