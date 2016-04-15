@@ -471,8 +471,8 @@ Template.charts.helpers({
 
     call('ageGenderChart', initiative)
     .then(function (ageGenderData) {
-      Session.set('ageGenderData', ageGenderData);
-      return ageGenderData;
+      Session.set('maleData', ageGenderData.male);
+      Session.set('femaleData', ageGenderData.female);
     })
     .catch(function (err) {
       console.log('boooo error', err)

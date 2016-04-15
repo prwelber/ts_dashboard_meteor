@@ -101,6 +101,13 @@ Template.campaignDashboard.helpers({
         initiative.dealType4 === null ? initiative.dealType4 = false : '';
         initiative.dealType5 === null ? initiative.dealType5 = false : '';
 
+        for (let key in initiative) {
+          if (/Date/.test(key) === true) {
+            if (initiative[key] !== null) {
+              initiative[key] = moment(initiative[key], moment.ISO_8601).format("MM-DD-YYYY");
+            }
+          }
+        }
 
         return initiative;
     },

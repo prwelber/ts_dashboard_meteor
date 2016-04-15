@@ -286,29 +286,114 @@ Meteor.methods({
   'ageGenderChart': function (initiative) {
     console.log('ageGender running')
     const campaignIds = initiative.campaign_ids // array of campaign ids
-    console.log(campaignIds);
-    let ageGenderArray = [];
+    const ageGenderArray = [];
     let breakdown;
     campaignIds.forEach(el => {
       breakdown = InsightsBreakdowns.find({'data.campaign_id': el}).fetch();
       ageGenderArray.push(breakdown);
     });
-    console.log(ageGenderArray.length);
-    var len = ageGenderArray.length
-    var newArr = []
-    ageGenderArray.forEach(el => {
-      if (el._id) {
-        newArr.push(el);
-      }
+    const flattened = _.flatten(ageGenderArray);
+    // cleaned is an array that has the unknown gender values removed
+    const cleaned = _.reject(flattened, function (el) {
+      return el.data.gender === "unknown";
     });
-    console.log(newArr)
-    // for (var i = ageGenderArray.length - 1; i >= 0; i--) {
-    //   if (ageGenderArray[i].data.gender === "unknown") {
-    //     console.log('removing unknown gender object');
-    //     ageGenderArray.splice(i, 1);
-    //   }
-    // }
+    const maleArray = _.filter(cleaned, function (el) {
+      return el.data.gender === "male";
+    });
+    const femaleArray = _.filter(cleaned, function (el) {
+      return el.data.gender === "female";
+    });
 
-    // console.log(ageGenderArray);
+    // function pulls certain data out of objects
+    const makeClean = function makeClean (array) {
+      var cleanedArray = [];
+      array.forEach(el => {
+        el.data.impressions = parseInt(el.data.impressions);
+        el.data.spend = accounting.unformat(el.data.spend);
+        el.data.cost_per_post_engagement = accounting.unformat(el.data.cost_per_post_engagement);
+        el.data.video_view === undefined ? el.data.video_view = 0 : '';
+        el.data.post_like === undefined ? el.data.post_like = 0 : '';
+        let newEl = {
+          spend: el.data.spend,
+          impressions: el.data.impressions,
+          cpm: (el.data.impressions / el.data.spend),
+          likes: el.data.post_like,
+          cpl: (el.data.post_like / el.data.spend),
+          clicks: el.data.clicks,
+          cpc: (el.data.clicks / el.data.spend),
+          reach: el.data.reach,
+          postEng: el.data.cost_per_post_engagement,
+          videoView: el.data.video_view,
+          costVideoView: el.data.cost_per_video_view,
+          age: el.data.age,
+          gender: el.data.gender
+        }
+
+        cleanedArray.push(newEl);
+      });
+      return cleanedArray;
+    }
+
+    var cleanedMaleArray = makeClean(maleArray);
+    var cleanedFemaleArray = makeClean(femaleArray);
+
+    const sumAge = function sumAge (array, ageRange) {
+      var temp = {
+        impressions: 0,
+        clicks: 0,
+        likes: 0,
+        spend: 0,
+        postEng: 0,
+        reach: 0,
+        videoView: 0
+      };
+      var newArray = [];
+      var count = 0;
+      array.forEach(el => {
+        if (el.age === ageRange) {
+          temp['age'] = ageRange;
+          temp['gender'] = el.gender;
+          temp.impressions += el.impressions;
+          temp.clicks += el.clicks;
+          temp.likes += el.likes;
+          temp.reach += el.reach;
+          temp.videoView += el.videoView;
+          temp.postEng += el.postEng;
+          temp.spend += el.spend;
+          count++;
+        }
+      });
+
+      temp.postEng = temp.postEng / count;
+      return temp;
+    }
+
+    /*
+    what needs to happen here is to loop over an array of the age ranges
+    while having an inner loop that always goes over the cleanedArray
+    then we can push each returned object into a final array that will be
+    suitable for graphing
+    */
+
+    const ageRanges = ['18-24', '25-34', '35-44', '45-54','55-64', '65+'];
+    const finalFemale = [];
+    const finalMale = [];
+
+    for (let i = 0; i < ageRanges.length; i++) {
+      var obj;
+      obj = sumAge(cleanedFemaleArray, ageRanges[i]);
+      finalFemale.push(obj);
+    }
+
+    for (let i = 0; i < ageRanges.length; i++) {
+      var obj;
+      obj = sumAge(cleanedMaleArray, ageRanges[i]);
+      finalMale.push(obj);
+    }
+
+    // console.log(finalFemale);
+
+    return {male: finalMale, female: finalFemale};
+
   }
 });
