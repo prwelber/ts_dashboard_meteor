@@ -51,16 +51,6 @@ Template.charts.helpers({
         idealSpend.push(idealSpendTotal);
       }
 
-      // for getting x axis labels
-      var start       = new Date(initiative.startDate),
-          end         = new Date(initiative.endDate),
-          dr          = moment.range(start, end),
-          arrayOfDays = dr.toArray('days');
-
-      arrayOfDays.forEach(el => {
-        labels.push(moment(el).format("MM-DD"))
-      });
-
       //for setting dealType
       let type;
       if (initiative.dealType === "CPM") {
@@ -93,6 +83,16 @@ Template.charts.helpers({
         spendTotal += el.spend;
         actionToChart.push(totes);
         spendChart.push(spendTotal);
+      });
+
+      // for getting x axis labels
+      var start       = moment(Session.get('res')[0]['date'], "MM-DD"),
+          end         = new Date(initiative.endDate),
+          dr          = moment.range(start, end),
+          arrayOfDays = dr.toArray('days');
+
+      arrayOfDays.forEach(el => {
+        labels.push(moment(el).format("MM-DD"))
       });
 
     return {
@@ -164,17 +164,6 @@ Template.charts.helpers({
   'costPerChart': function () {
     const initiative = Template.instance().templateDict.get('initiative');
 
-    // for getting x axis labels
-    let labels      = [],
-        start       = new Date(initiative.startDate),
-        end         = new Date(initiative.endDate);
-        dr          = moment.range(start, end),
-        arrayOfDays = dr.toArray('days');
-
-    arrayOfDays.forEach(el => {
-      labels.push(moment(el).format("MM-DD"))
-    });
-
     //for setting dealType
     let type;
     if (initiative.dealType === "CPM") {
@@ -193,6 +182,17 @@ Template.charts.helpers({
       cpmChart.push(el.cpm);
       cpcChart.push(el.cpc);
       cplChart.push(el.cost_per_like);
+    });
+
+    // for getting x axis labels
+    let labels      = [],
+        start       = moment(Session.get('res')[0]['date'], "MM-DD"),
+        end         = new Date(initiative.endDate);
+        dr          = moment.range(start, end),
+        arrayOfDays = dr.toArray('days');
+
+    arrayOfDays.forEach(el => {
+      labels.push(moment(el).format("MM-DD"))
     });
 
     // build chart
@@ -263,10 +263,11 @@ Template.charts.helpers({
 
     // for getting x axis labels
     let labels = [];
-    var start = new Date(initiative.startDate);
-    var end   = new Date(initiative.endDate);
-    var dr    = moment.range(start, end);
+    var start  = moment(Session.get('res')[0]['date'], "MM-DD");
+    var end    = new Date(initiative.endDate);
+    var dr     = moment.range(start, end);
     var arrayOfDays = dr.toArray('days');
+
     arrayOfDays.forEach(el => {
       labels.push(moment(el).format("MM-DD"))
     });

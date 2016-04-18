@@ -137,20 +137,6 @@ Template.initiativeHomepage.helpers({
         idealSpend.push(idealSpendTotal);
       }
 
-      // for getting x axis labels
-      var start       = new Date(initiative.startDate),
-          end         = new Date(initiative.endDate),
-          dr          = moment.range(start, end),
-          arrayOfDays = dr.toArray('days');
-      // console.log(arrayOfDays);
-      // console.log(dr)
-      if (arrayOfDays) {
-        arrayOfDays.forEach(el => {
-          labels.push(moment(el).format("MM-DD"))
-        });
-      }
-      // console.log("labels:", labels)
-
       //for setting dealType
       let type;
       if (initiative.dealType === "CPM") {
@@ -184,7 +170,18 @@ Template.initiativeHomepage.helpers({
         actionToChart.push(totes);
         spendChart.push(spendTotal);
       });
-      // console.log(actionToChart);
+
+      // for getting x axis labels
+      let start       = moment(Session.get('res')[0]['date'], "MM-DD"),
+          end         = new Date(initiative.endDate),
+          dr          = moment.range(start, end),
+          arrayOfDays = dr.toArray('days');
+
+      if (arrayOfDays) {
+        arrayOfDays.forEach(el => {
+          labels.push(moment(el).format("MM-DD"))
+        });
+      }
 
       return {
         chart: {

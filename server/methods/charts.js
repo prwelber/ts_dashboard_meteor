@@ -40,7 +40,7 @@ Meteor.methods({
 
     // need to sort this array by date_start
     arr = _.sortBy(arr, function (el){ return moment(el.data.date_start, "MM-DD-YYYY").format("MM-DD-YYYY") });
-
+    console.log('sorted arr', arr);
 
     /*
     In the below forEach, we are simply calculating the total number of
@@ -83,7 +83,7 @@ Meteor.methods({
 
           for (var j = 1; j < Math.abs(diff); j++) {
 
-            // console.log("generated nums:", moment(arr[i].data.date_start, timeForm).add(j, 'd').format(timeForm));
+            console.log("generated nums:", moment(arr[i].data.date_start, timeForm).add(j, 'd').format(timeForm));
 
             arr.splice(i + j, 0, {
               data: {
@@ -154,7 +154,7 @@ Meteor.methods({
       obj = arr[i].data;
 
       if (! temp[obj.date_start]) {
-        temp[obj.date_start] = obj.date_start;
+        temp['date'] = obj.date_start;
         temp['impressions'] = obj.impressions;
         temp['clicks'] = obj.clicks;
         temp['spend'] = obj.spend;
@@ -215,7 +215,7 @@ Meteor.methods({
         el.cost_per_like = 0;
       }
     });
-
+    // console.log()
     return otherArray;
 
   },
@@ -380,9 +380,6 @@ Meteor.methods({
       obj = sumAge(cleanedMaleArray, ageRanges[i]);
       finalMale.push(obj);
     }
-
-    console.log(finalFemale);
-
     return {male: finalMale, female: finalFemale};
 
   }
