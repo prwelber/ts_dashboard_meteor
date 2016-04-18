@@ -21,7 +21,9 @@ Template.charts.onCreated( function () {
 })
 
 Template.charts.onRendered( function (){
-
+  $(document).ready(function(){
+    $('ul.tabs').tabs();
+  });
 });
 
 Template.charts.events({
@@ -32,9 +34,8 @@ Template.charts.helpers({
   'deliveryChart': function () {
       const initiative = Template.instance().templateDict.get('initiative');
       // for getting evenly distrubuted output
-      const labels        = [], // this will be the date range
-          timeFormat      = "MM-DD-YYYY",
-          days            = moment(initiative.endDate, timeFormat).diff(moment(initiative.startDate, timeFormat), 'days'),
+      const labels        = [], // this will be the date range,
+          days            = moment(initiative.endDate, moment.ISO_8601).diff(moment(initiative.startDate, moment.ISO_8601), 'days'),
           avg             = parseFloat(numeral(initiative.quantity / days).format("0.00")),
           spendAvg        = parseFloat(numeral(initiative.budget / days).format("0.00")),
           avgData         = [],
@@ -468,6 +469,7 @@ Template.charts.helpers({
   'ageGenderChart': function () {
     const initiative = Template.instance().templateDict.get('initiative');
     var call = Promise.promisify(Meteor.call);
+    const dealType = initiative.dealType;
 
     call('ageGenderChart', initiative)
     .then(function (ageGenderData) {
@@ -479,6 +481,31 @@ Template.charts.helpers({
       throw new Meteor.Error('this is a Meteor Error!!!!');
     });
 
+    let action;
+
+    if (initiative.dealType === "CPC") {
+      action = "clicks"
+    } else if (initiative.dealType === "CPM") {
+      action = "impressions"
+    } else if (initiative.dealType === "CPL") {
+      action = "likes"
+    }
+
+
+    const maleData = [];
+    const femaleData = [];
+    // set maleData
+    if (Session.get('maleData') && Session.get('maleData')[0].spend) {
+      for (let i = 0; i < 6; i++ ) {
+        maleData.push(Session.get('maleData')[i][action]);
+      }
+    }
+
+    if (Session.get('femaleData') && Session.get('femaleData')[0].spend) {
+      for (let i = 0; i < 6; i++ ) {
+        femaleData.push(Session.get('femaleData')[i][action] * -1);
+      }
+    }
 
     // Age categories
     var categories = ['18-24', '25-34', '35-44', '45-54',
@@ -493,7 +520,7 @@ Template.charts.helpers({
           text: 'Age and Gender Chart'
       },
       subtitle: {
-          text: 'Placeholder for more text'
+          text: 'For Initiative'
       },
       xAxis: [{
           categories: categories,
@@ -512,13 +539,11 @@ Template.charts.helpers({
       }],
       yAxis: {
           title: {
-              text: "yAxis text here"
+              text: action
           },
           labels: {
-              formatter: function () {
-                  return Math.abs(this.value) + '%';
-              }
-          }
+
+            }
       },
 
       plotOptions: {
@@ -530,16 +555,16 @@ Template.charts.helpers({
       tooltip: {
           formatter: function () {
               return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
-                  'Population: ' + Highcharts.numberFormat(Math.abs(this.point.y), 0);
+                  action+ " " + Highcharts.numberFormat(Math.abs(this.point.y), 0);
           }
       },
 
       series: [{
-          name: 'Male',
-          data: [-2.2, -2.2, -2.3, -2.5, -2.7, -3.1]
-      }, {
           name: 'Female',
-          data: [2.1, 2.0, 2.2, 2.4, 2.6, 3.0]
+          data: femaleData
+      }, {
+          name: 'Male',
+          data: maleData
       }]
     }
   }

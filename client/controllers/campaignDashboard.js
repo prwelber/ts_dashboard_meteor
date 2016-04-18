@@ -144,8 +144,8 @@ Template.campaignDashboard.helpers({
       })
 
       // moment stuff to figure out timeLeft on initiative
-      const ends = moment(init.endDate, "MM-DD-YYYY");
-      const starts = moment(init.startDate, "MM-DD-YYYY");
+      const ends = moment(init.endDate, moment.ISO_8601);
+      const starts = moment(init.startDate, moment.ISO_8601);
       const now = moment(new Date);
       let timeLeft;
       // if now is after the end date, timeleft is zero, else...
@@ -174,11 +174,15 @@ Template.campaignDashboard.helpers({
     },
     'averages': function () {
       const initiative = Template.instance().templateDict.get('initiative');
-      const ended = moment(initiative.endDate, "MM-DD-YYYY");
-      const started = moment(initiative.startDate, "MM-DD-YYYY");
+      const ended = moment(initiative.endDate, moment.ISO_8601);
+      const started = moment(initiative.startDate, moment.ISO_8601);
       const now = moment(new Date);
       let timeDiff = ended.diff(started, 'days');
+
       now.isAfter(ended) ? '' : timeDiff = now.diff(started, 'days');
+
+      console.log(numeral(initiative.aggregateData.clicks / timeDiff).format("0,0"))
+
       return {
         avgClicks: numeral(initiative.aggregateData.clicks / timeDiff).format("0,0"),
         avgImpressions: numeral(initiative.aggregateData.impressions / timeDiff).format("0,0"),
@@ -193,8 +197,8 @@ Template.campaignDashboard.helpers({
       const agData = initiative.aggregateData // for brevity
       const sesh = Session.get('dayNumber') // for brevity
 
-      const ended = moment(initiative.endDate, "MM-DD-YYYY");
-      const started = moment(initiative.startDate, "MM-DD-YYYY");
+      const ended = moment(initiative.endDate, moment.ISO_8601);
+      const started = moment(initiative.startDate, moment.ISO_8601);
       const now = moment(new Date);
       // ternary to figure out time difference
       let timeDiff = now.isAfter(ended) ?

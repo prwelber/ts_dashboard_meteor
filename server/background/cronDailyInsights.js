@@ -81,10 +81,6 @@ SyncedCron.add({
           console.log('counter', counter);
           counter++;
 
-        // } else if (idArray.length - counter === 1) {
-        //   console.log('should exit after this');
-        //   counter++;
-        //   // Meteor.clearInterval(setIntervalId);
         } else {
 
           console.log('getDailyBreakdown background job running');

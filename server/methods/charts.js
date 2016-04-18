@@ -40,7 +40,6 @@ Meteor.methods({
 
     // need to sort this array by date_start
     arr = _.sortBy(arr, function (el){ return moment(el.data.date_start, "MM-DD-YYYY").format("MM-DD-YYYY") });
-    // console.log('after sortingby date_start', arr);
 
 
     /*
@@ -54,20 +53,16 @@ Meteor.methods({
     try {
 
       arr.forEach((el, index) => {
-        // console.log("from first arr:", arr[index].data.date_start)
           var diff = moment(arr[index].data.date_start, timeForm).diff(moment(arr[index + 1].data.date_start, timeForm), 'days');
 
           if (diff < -1) {
-            // console.log('from first arr - days diff', Math.abs(diff));
             total += Math.abs(diff) - 1;
           }
       });
     } catch(e) {
-        console.log("Is it a TypeError", e instanceof TypeError);
         console.log("Error Message:", e.message);
     }
 
-    console.log('total number of days we need to generate', total);
     /*
     Below, we are accounting for any gaps in the timeline since not all
     campaigns run on sequential days. within the for loop we are looking for
@@ -221,8 +216,6 @@ Meteor.methods({
       }
     });
 
-    // console.log(otherArray);
-
     return otherArray;
 
   },
@@ -260,7 +253,6 @@ Meteor.methods({
         }
       ];
       var result = HourlyBreakdowns.aggregate(pipeline);
-      // console.log(result);
         try {
           result[0]['cpc'] = result[0].spend / result[0].clicks;
           result[0]['cpm'] = result[0].spend / (result[0].impressions / 1000);
@@ -275,10 +267,8 @@ Meteor.methods({
           console.log(e);
           continue;
         }
-        // console.log(time.format('hh:mm a'));
 
     }
-    // console.log(twentyFourHourArray);
 
     return twentyFourHourArray;
 
@@ -391,7 +381,7 @@ Meteor.methods({
       finalMale.push(obj);
     }
 
-    // console.log(finalFemale);
+    console.log(finalFemale);
 
     return {male: finalMale, female: finalFemale};
 

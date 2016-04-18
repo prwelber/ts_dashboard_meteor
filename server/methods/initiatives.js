@@ -263,8 +263,6 @@ Meteor.methods({
       }
     ];
     let result = CampaignInsights.aggregate(pipeline);
-    // console.log("pipeline:", pipeline);
-    // console.log('aggregate result:', result);
     try {
       result[0]['inserted'] = moment(new Date).format("MM-DD-YYYY hh:mm a");
       result[0]['cpc'] = result[0].spend / result[0].clicks;
@@ -284,8 +282,6 @@ Meteor.methods({
     return result[0];
   },
   'aggregateObjective': function (name) {
-    console.log('aggregateObjective running with name:', name);
-
     /*
     * Here, we aggregate by objective and create different data sets by objective
     * first, find an intiative by the name which is passed in on the client side
