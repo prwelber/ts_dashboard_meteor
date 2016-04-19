@@ -32,68 +32,73 @@ Template.charts.events({
 
 Template.charts.helpers({
   'deliveryChart': function () {
-      const initiative = Template.instance().templateDict.get('initiative');
-      // for getting evenly distrubuted output
-      const labels        = [], // this will be the date range,
-          days            = moment(initiative.endDate, moment.ISO_8601).diff(moment(initiative.startDate, moment.ISO_8601), 'days'),
-          avg             = parseFloat(numeral(initiative.quantity / days).format("0.00")),
-          spendAvg        = parseFloat(numeral(initiative.budget / days).format("0.00")),
-          avgData         = [],
-          idealSpend      = [];
+    const initiative = Template.instance().templateDict.get('initiative');
+    // for getting evenly distrubuted output
+    const labels        = [], // this will be the date range,
+        days            = moment(initiative.endDate, moment.ISO_8601).diff(moment(initiative.startDate, moment.ISO_8601), 'days'),
+        avg             = parseFloat(numeral(initiative.lineItems[0].quantity / days).format("0.00")),
+        spendAvg        = parseFloat(numeral(initiative.lineItems[0].budget / days).format("0.00")),
+        avgData         = [],
+        idealSpend      = [];
 
-      let total           = 0,
-          idealSpendTotal = 0;
+    let total           = 0,
+        idealSpendTotal = 0;
 
-      for (let i = 0; i < days; i++) {
-        total = total + avg;
-        idealSpendTotal = idealSpendTotal + spendAvg;
-        avgData.push(total);
-        idealSpend.push(idealSpendTotal);
-      }
+    for (let i = 0; i < days; i++) {
+      total = total + avg;
+      idealSpendTotal = idealSpendTotal + spendAvg;
+      avgData.push(total);
+      idealSpend.push(idealSpendTotal);
+    }
 
-      //for setting dealType
-      let type;
-      if (initiative.dealType === "CPM") {
-        type = "impressions";
-      } else if (initiative.dealType === "CPC") {
-        type = "clicks";
-      } else if (initiative.dealType === "CPL") {
-        type = "like";
-      }
+    //for setting dealType
+    let type;
+    if (initiative.lineItems[0].dealType === "CPM") {
+      type = "impressions";
+    } else if (initiative.lineItems[0].dealType === "CPC") {
+      type = "clicks";
+    } else if (initiative.lineItems[0].dealType === "CPL") {
+      type = "like";
+    }
 
-      let actionToChart = [],
-          spendChart    = [],
-          spendTotal    = 0,
-          totes         = 0; // Template.instance().templateDict.get('data')[0].type;
+    let actionToChart = [],
+        spendChart    = [],
+        spendTotal    = 0,
+        totes         = 0; // Template.instance().templateDict.get('data')[0].type;
 
-      // seeing if Bluebird will work for promises and meteor.call
-      var call = Promise.promisify(Meteor.call);
+    // seeing if Bluebird will work for promises and meteor.call
+    var call = Promise.promisify(Meteor.call);
 
-      call('aggregateForChart', initiative)
-      .then(function (res) {
-        console.log("result from promise", res)
-        Session.set('res', res);
-        totes = res[0][type]
-      }).catch(function (err) {
-        console.log('uh no error', err)
-      });
+    call('aggregateForChart', initiative)
+    .then(function (res) {
+      console.log("result from promise", res)
+      Session.set('res', res);
+      totes = res[0][type]
+    }).catch(function (err) {
+      console.log('uh no error', err)
+    });
 
+    Meteor.setTimeout(function () {
       Session.get('res').forEach(el => {
         totes += el[type];
         spendTotal += el.spend;
         actionToChart.push(totes);
         spendChart.push(spendTotal);
       });
+    }, 100)
 
-      // for getting x axis labels
-      var start       = moment(Session.get('res')[0]['date'], "MM-DD"),
-          end         = new Date(initiative.endDate),
-          dr          = moment.range(start, end),
-          arrayOfDays = dr.toArray('days');
+    // for getting x axis labels
+    var start       = moment(Session.get('res')[0]['date'], "MM-DD"),
+        end         = new Date(initiative.endDate),
+        dr          = moment.range(start, end),
+        arrayOfDays = dr.toArray('days');
 
-      arrayOfDays.forEach(el => {
-        labels.push(moment(el).format("MM-DD"))
-      });
+    arrayOfDays.forEach(el => {
+      labels.push(moment(el).format("MM-DD"))
+    });
+
+    console.log(actionToChart);
+    console.log(spendChart);
 
     return {
 

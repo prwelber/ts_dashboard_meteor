@@ -23,6 +23,7 @@ Meteor.methods({
       search_text: data.search_text,
       brand: data.brand,
       agency: data.agency,
+      product: data.product,
       notes: data.notes,
       tags: data.tags,
       lineItems: data.lineItems,
@@ -50,105 +51,28 @@ Meteor.methods({
     let lastThreeMonths = false;
     const now = moment();
     // if now is after startDate AND now isBefore endDate active = true
-    if (now.isAfter(moment(data.startDate, "MM-DD-YYYY")) && now.isBefore(moment(data.endDate, "MM-DD-YYYY"))) {
+    if (now.isAfter(moment(data.lineItems[0].startDate, moment.ISO_8601)) && now.isBefore(moment(data.lineItems[0].endDate, moment.ISO_8601))) {
       active = true;
     }
-    if (now.diff(moment(data.endDate, "MM-DD-YYYY"), "days") <= 31) {
+    if (now.diff(moment(data.lineItems[0].endDate, moment.ISO_8601), "days") <= 31) {
       recentlyEnded = true;
     }
-    if (now.diff(moment(data.endDate, "MM-DD-YYYY"), "days") <= 90) {
+    if (now.diff(moment(data.lineItems[0].endDate, moment.ISO_8601), "days") <= 90) {
       lastThreeMonths = true;
     }
 
     Initiatives.update(
-      {name: data.name},
+      {_id: data.mongoId},
       {$set: {
+        updated: moment().toISOString(),
         name: data.name,
         search_text: data.search_text,
         brand: data.brand,
         agency: data.agency,
         notes: data.notes,
+        tags: data.tags,
         product: data.product,
-        platform: data.platform,
-        objective: data.objective,
-        dealType: data.dealType,
-        budget: data.budget,
-        startDate: moment(data.startDate, "MM-DD-YYYY").toISOString(),
-        endDate: moment(data.endDate, "MM-DD-YYYY").toISOString(),
-        quantity: data.quantity,
-        price: data.price,
-        costPlus: data.cost_plus,
-        costPlusPercent: data.costPlusPercent,
-        platform2: data.platform2,
-        objective2: data.objective2,
-        dealType2: data.dealType2,
-        budget2: data.budget2,
-        startDate2: moment(data.startDate2, "MM-DD-YYYY").toISOString(),
-        endDate2: moment(data.endDate2, "MM-DD-YYYY").toISOString(),
-        quantity2: data.quantity2,
-        price2: data.price2,
-        costPlus2: data.cost_plus2,
-        costPlusPercent2: data.costPlusPercent2,
-        platform3: data.platform3,
-        objective3: data.objective3,
-        dealType3: data.dealType3,
-        budget3: data.budget3,
-        startDate3: moment(data.startDate3, "MM-DD-YYYY").toISOString(),
-        endDate3: data.endDate3,
-        quantity3: data.quantity3,
-        price3: data.price3,
-        costPlus3: data.cost_plus3,
-        costPlusPercent3: data.costPlusPercent3,
-        platform4: data.platform4,
-        objective4: data.objective4,
-        dealType4: data.dealType4,
-        budget4: data.budget4,
-        startDate4: moment(data.startDate4, "MM-DD-YYYY").toISOString(),
-        endDate4: data.endDate4,
-        quantity4: data.quantity4,
-        price4: data.price4,
-        costPlus4: data.cost_plus4,
-        costPlusPercent4: data.costPlusPercent4,
-        platform5: data.platform5,
-        objective5: data.objective5,
-        dealType5: data.dealType5,
-        budget5: data.budget5,
-        startDate5: moment(data.startDate5, "MM-DD-YYYY").toISOString(),
-        endDate5: data.endDate5,
-        quantity5: data.quantity5,
-        price5: data.price5,
-        costPlus5: data.cost_plus5,
-        costPlusPercent5: data.costPlusPercent5,
-        platform6: data.platform6,
-        objective6: data.objective6,
-        dealType6: data.dealType6,
-        budget6: data.budget6,
-        startDate6: data.startDate6,
-        endDate6: data.endDate6,
-        quantity6: data.quantity6,
-        price6: data.price6,
-        costPlus6: data.cost_plus6,
-        costPlusPercent6: data.costPlusPercent6,
-        platform7: data.platform7,
-        objective7: data.objective7,
-        dealType7: data.dealType7,
-        budget7: data.budget7,
-        startDate7: data.startDate7,
-        endDate7: data.endDate7,
-        quantity7: data.quantity7,
-        price7: data.price7,
-        costPlus7: data.cost_plus7,
-        costPlusPercent7: data.costPlusPercent7,
-        platform8: data.platform8,
-        objective8: data.objective8,
-        dealType8: data.dealType8,
-        budget8: data.budget8,
-        startDate8: data.startDate8,
-        endDate8: data.endDate8,
-        quantity8: data.quantity8,
-        price8: data.price8,
-        costPlus8: data.cost_plus8,
-        costPlusPercent8: data.costPlusPercent8,
+        lineItems: data.lineItems,
         active: active,
         recentlyEnded: recentlyEnded,
         lastThreeMonths: lastThreeMonths
@@ -216,9 +140,13 @@ Meteor.methods({
     */
 
     const initiative = Initiatives.findOne({name: name});
-    const objectiveArr = [initiative.objective, initiative.objective2, initiative.objective3, initiative.objective4, initiative.objective5, initiative.objective6, initiative.objective7, initiative.objective8];
-    const cleanedArr = _.without(objectiveArr, null); // removes any null values
-    // console.log(cleanedArr);
+
+    let objectiveArr = _.map(initiative.lineItems, function (el) {
+      return el.objective;
+    })
+    // const objectiveArr = [initiative.objective, initiative.objective2, initiative.objective3, initiative.objective4, initiative.objective5, initiative.objective6, initiative.objective7, initiative.objective8];
+    let cleanedArr = _.without(objectiveArr, null, ''); // removes any null values
+    console.log(cleanedArr);
     let objective; // to be reassigned and used in the pipeline
 
     const makePipeline = function makePipeline (name, objective) {

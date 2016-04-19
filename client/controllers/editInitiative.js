@@ -94,21 +94,20 @@ Template.editInitiative.events({
         });
         finalObj['lineItems'] = lineItemArray;
         console.log(finalObj);
+        finalObj['mongoId'] = FlowRouter.current().params._id;
         return finalObj;
       }
 
-      const updatedInitiative = makeUpdatedInit(event);
+      const updatedInitiative = makeUpdatedInit(event); // run the function
 
-      // if (updatedInitiative.name === null || updatedInitiative.search_text === null) {
-      //   Materialize.toast('Error: name, search text or both is empty', 5000);
-      // } else {
-      //   Meteor.call('updateInitiative', updatedInitiative, function (error, result) {
-      //       if (result) {
-      //         Materialize.toast('Success! You have updated the initiative.', 5000);
-      //       }
-      //   });
-      // }
-
-
+      if (updatedInitiative.name === null || updatedInitiative.search_text === null) {
+        Materialize.toast('Error: name, search text or both is empty', 5000);
+      } else {
+        Meteor.call('updateInitiative', updatedInitiative, function (error, result) {
+            if (result) {
+              Materialize.toast('Success! You have updated the initiative.', 5000);
+            }
+        });
+      }
     }
 });

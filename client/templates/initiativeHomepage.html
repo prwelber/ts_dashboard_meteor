@@ -10,146 +10,124 @@
       </ul>
     </div>
   </nav>
-  {{!-- {{objectiveAggregates}} --}}
 
-  <div id="modal1" class="modal" style="width: 75%;">
+  <div id="modal1" class="modal" style="width: 95%;">
     <div class="modal-content">
-      <h4>{{initiative.name}}</h4>
-    </div>
-    <div class="col s10">
-      {{#with initiativeStats}}
+    <h5>Initiative</h5>
+      <div class="row dashboard-initiative-header">
+        <div class="col s3">
+          <p class="center-align border-bottom">Name</p>
+          <h4 class="center-align no-top-margin">{{initiative.name}}</h4>
+        </div>
+        <div class="col s3">
+          <p class="center-align border-bottom">Agency</p>
+          <h4 class="center-align no-top-margin">{{initiative.agency}}</h4>
+        </div>
+        <div class="col s3">
+        <p class="center-align border-bottom">Brand</p>
+          <h4 class="center-align no-top-margin">{{initiative.brand}}</h4>
+        </div>
+        <div class="col s3">
+        <p class="center-align border-bottom">Product</p>
+          <h4 class="center-align no-top-margin">{{initiative.product}}</h4>
+        </div>
+      </div>
+      <h5>Line Items</h5>
       <table class="centered">
+        {{#each initiative.lineItems}}
         <thead>
           <tr>
-            <th class="insights-table-header">Objective</th>
-            <th class="insights-table-header">Platform</th>
-            <th class="insights-table-header">Deal Type</th>
-            <th class="insights-table-header">Quantity</th>
-            <th class="insights-table-header">Price</th>
-            <th class="insights-table-header">Budget</th>
-            <th class="insights-table-header">Start Date</th>
-            <th class="insights-table-header">End Date</th>
+            {{#if objective}} <th>Objective</th> {{/if}}
+            {{#if platform}} <th>Platform</th> {{/if}}
+            {{#if dealType}} <th>Deal Type</th> {{/if}}
+            {{#if quantity}} <th>Quantity</th> {{/if}}
+            {{#if price}} <th>Price</th> {{/if}}
+            {{#if budget}} <th>Budget</th> {{/if}}
+            {{#if startDate}} <th>Start Date</th> {{/if}}
+            {{#if endDate}} <th>End Date</th> {{/if}}
+            {{#if costPlusPercent}} <th>Cost Plus</th> {{/if}}
+            {{#if percentTotalPercent}} <th>Percent Total</th> {{/if}}
+            {{#if isClientPercent}} <th>Client</th> {{/if}}
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="insights-table-data">{{initiative.objective}}</td>
-            <td class="insights-table-data">{{initiative.platform}}</td>
-            <td class="insights-table-data">{{initiative.dealType}}</td>
-            <td class="insights-table-data">{{initiative.quantity}}</td>
-            <td class="insights-table-data">{{initiative.price}}</td>
-            <td class="insights-table-data">{{initiative.budget}}</td>
-            <td class="insights-table-data">{{initiative.startDate}}</td>
-            <td class="insights-table-data">{{initiative.endDate}}</td>
+            {{#if objective}}<td>{{objective}}</td>{{/if}}
+            {{#if platform}}<td>{{platform}}</td>{{/if}}
+            {{#if dealType}}<td>{{dealType}}</td>{{/if}}
+            {{#if quantity}}<td>{{quantity}}</td>{{/if}}
+            {{#if price}}<td>{{price}}</td>{{/if}}
+            {{#if budget}}<td>{{budget}}</td>{{/if}}
+            {{#if startDate}}<td>{{formatDate startDate}}</td>{{/if}}
+            {{#if endDate}}<td>{{formatDate endDate}}</td>{{/if}}
+            {{#if costPlusPercent}}<td>{{costPlusPercent}}%</td>{{/if}}
+            {{#if percentTotalPercent}}<td>{{percentTotalPercent}}%</td>{{/if}}
+            {{#if isClientPercent}}<td>{{isClientPercent}}%</td>{{/if}}
           </tr>
-          {{#if initiative.dealType2}}
-            <tr>
-              <td class="insights-table-data">{{initiative.objective2}}</td>
-              <td class="insights-table-data">{{initiative.platform2}}</td>
-              <td class="insights-table-data">{{initiative.dealType2}}</td>
-              <td class="insights-table-data">{{initiative.quantity2}}</td>
-              <td class="insights-table-data">{{initiative.price2}}</td>
-              <td class="insights-table-data">{{initiative.budget2}}</td>
-              <td class="insights-table-data">{{initiative.startDate2}}</td>
-              <td class="insights-table-data">{{initiative.endDate2}}</td>
-            </tr>
-            {{/if}}
-            {{#if intiative.dealType3}}
-            <tr>
-              <td class="insights-table-data">{{initiative.objective3}}</td>
-              <td class="insights-table-data">{{initiative.platform3}}</td>
-              <td class="insights-table-data">{{initiative.dealType3}}</td>
-              <td class="insights-table-data">{{initiative.quantity3}}</td>
-              <td class="insights-table-data">{{initiative.price3}}</td>
-              <td class="insights-table-data">{{initiative.budget3}}</td>
-              <td class="insights-table-data">{{initiative.startDate3}}</td>
-              <td class="insights-table-data">{{initiative.endDate3}}</td>
-            </tr>
-            {{/if}}
-            {{#if initiative.dealType4}}
-            <tr>
-              <td class="insights-table-data">{{initiative.objective4}}</td>
-              <td class="insights-table-data">{{initiative.platform4}}</td>
-              <td class="insights-table-data">{{initiative.dealType4}}</td>
-              <td class="insights-table-data">{{initiative.quantity4}}</td>
-              <td class="insights-table-data">{{initiative.price4}}</td>
-              <td class="insights-table-data">{{initiative.budget4}}</td>
-              <td class="insights-table-data">{{initiative.startDate4}}</td>
-              <td class="insights-table-data">{{initiative.endDate4}}</td>
-            </tr>
-            {{/if}}
-            {{#if initiative.dealType5}}
-            <tr>
-              <td class="insights-table-data">{{initiative.objective5}}</td>
-              <td class="insights-table-data">{{initiative.platform5}}</td>
-              <td class="insights-table-data">{{initiative.dealType5}}</td>
-              <td class="insights-table-data">{{initiative.quantity5}}</td>
-              <td class="insights-table-data">{{initiative.price5}}</td>
-              <td class="insights-table-data">{{initiative.budget5}}</td>
-              <td class="insights-table-data">{{initiative.startDate5}}</td>
-              <td class="insights-table-data">{{initiative.endDate5}}</td>
-            </tr>
-          {{/if}}
-
         </tbody>
+        {{/each}}
       </table>
-      <h5>Initiative Aggregate</h5>
-      <table class="centered">
-        <thead>
-            <tr>
-              <th class="insights-table-header">Spend</th>
-              <th class="insights-table-header">Spend %</th>
-              <th class="insights-table-header">Clicks</th>
-              <th class="insights-table-header">CPC</th>
-              <th class="insights-table-header">Impressions</th>
-              <th class="insights-table-header">CPM</th>
-              <th class="insights-table-header">Likes</th>
-              <th class="insights-table-header">CPL</th>
-              <th class="insights-table-header">Reach</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="insights-table-data">{{spend}}</td>
-              <td class="insights-table-data">{{spendPercent}}</td>
-              <td class="insights-table-data">{{clicks}}</td>
-              <td class="insights-table-data">{{cpc}}</td>
-              <td class="insights-table-data">{{impressions}}</td>
-              <td class="insights-table-data">{{cpm}}</td>
-              <td class="insights-table-data">{{likes}}</td>
-              <td class="insights-table-data">{{cpl}}</td>
-              <td class="insights-table-data">{{reach}}</td>
-            </tr>
-          </tbody>
-        </table>
-      {{/with}}
-      {{#each objectiveAggregates}}
-        <h5>{{_id}}</h5>
+      <br>
+      <div class="col s10">
+        {{#with initiativeStats}}
+        <h5>Initiative Aggregate</h5>
         <table class="centered">
           <thead>
-            <tr>
-              <th class="insights-table-header">Spend</th>
-              <th class="insights-table-header">Clicks</th>
-              <th class="insights-table-header">CPC</th>
-              <th class="insights-table-header">Impressions</th>
-              <th class="insights-table-header">CPM</th>
-              <th class="insights-table-header">Likes</th>
-              <th class="insights-table-header">CPL</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="insights-table-data">{{spend}}</td>
-              <td class="insights-table-data">{{clicks}}</td>
-              <td class="insights-table-data">{{cpc}}</td>
-              <td class="insights-table-data">{{impressions}}</td>
-              <td class="insights-table-data">{{cpm}}</td>
-              <td class="insights-table-data">{{likes}}</td>
-              <td class="insights-table-data">{{cpl}}</td>
-            </tr>
-          </tbody>
-        </table>
-      {{/each}}
+              <tr>
+                <th class="insights-table-header">Spend</th>
+                <th class="insights-table-header">Spend %</th>
+                <th class="insights-table-header">Clicks</th>
+                <th class="insights-table-header">CPC</th>
+                <th class="insights-table-header">Impressions</th>
+                <th class="insights-table-header">CPM</th>
+                <th class="insights-table-header">Likes</th>
+                <th class="insights-table-header">CPL</th>
+                <th class="insights-table-header">Reach</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="insights-table-data">{{spend}}</td>
+                <td class="insights-table-data">{{spendPercent}}</td>
+                <td class="insights-table-data">{{clicks}}</td>
+                <td class="insights-table-data">{{cpc}}</td>
+                <td class="insights-table-data">{{impressions}}</td>
+                <td class="insights-table-data">{{cpm}}</td>
+                <td class="insights-table-data">{{likes}}</td>
+                <td class="insights-table-data">{{cpl}}</td>
+                <td class="insights-table-data">{{reach}}</td>
+              </tr>
+            </tbody>
+          </table>
+        {{/with}}
+        {{#each objectiveAggregates}}
+          <h5>Aggregate for Objective {{_id}}</h5>
+          <table class="centered">
+            <thead>
+              <tr>
+                <th class="insights-table-header">Spend</th>
+                <th class="insights-table-header">Clicks</th>
+                <th class="insights-table-header">CPC</th>
+                <th class="insights-table-header">Impressions</th>
+                <th class="insights-table-header">CPM</th>
+                <th class="insights-table-header">Likes</th>
+                <th class="insights-table-header">CPL</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="insights-table-data">{{spend}}</td>
+                <td class="insights-table-data">{{clicks}}</td>
+                <td class="insights-table-data">{{cpc}}</td>
+                <td class="insights-table-data">{{impressions}}</td>
+                <td class="insights-table-data">{{cpm}}</td>
+                <td class="insights-table-data">{{likes}}</td>
+                <td class="insights-table-data">{{cpl}}</td>
+              </tr>
+            </tbody>
+          </table>
+        {{/each}}
+      </div>
     </div>
   </div>
 

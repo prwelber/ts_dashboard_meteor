@@ -40,7 +40,6 @@ Meteor.methods({
 
     // need to sort this array by date_start
     arr = _.sortBy(arr, function (el){ return moment(el.data.date_start, "MM-DD-YYYY").format("MM-DD-YYYY") });
-    console.log('sorted arr', arr);
 
     /*
     In the below forEach, we are simply calculating the total number of
@@ -109,12 +108,12 @@ Meteor.methods({
       }
 
     } catch(e) {
-      // statements
       console.log(e);
     }
 
 
     arr = _.sortBy(arr, function (el){ return moment(el.data.date_start, "MM-DD-YYYY").format("MM-DD-YYYY") });
+
 
     arr.forEach(el => {
       el.data.date_start = moment(el.data.date_start, "MM-DD-YYYY").format("MM-DD");
@@ -199,7 +198,6 @@ Meteor.methods({
 
     }
 
-
     // make sure all values are null so the charts reflect that
     otherArray.forEach(el => {
       if (el.impressions === null) {
@@ -215,7 +213,7 @@ Meteor.methods({
         el.cost_per_like = 0;
       }
     });
-    // console.log()
+    // console.log("otherArray at the end", otherArray);
     return otherArray;
 
   },

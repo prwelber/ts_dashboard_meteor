@@ -27,129 +27,59 @@
       </ul>
     </div>
   </nav>
-    {{!-- <div class="container"> --}}
-      <div class="row">
-        <div class="col s12">
-          <h3 class="center-align">Initiative Core</h3>
-          {{#with getInitiative}}
-          <table class="centered">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Agency</th>
-                <th>Brand</th>
-                <th>Product</th>
-                <th>Objective</th>
-                <th>Platform</th>
-                <th>Deal Type</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Budget</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr>
-                <td>{{name}}</td>
-                <td>{{agency}}</td>
-                <td>{{brand}}</td>
-                <td>{{product}}</td>
-                <td>{{objective}}</td>
-                <td>{{platform}}</td>
-                <td>{{dealType}}</td>
-                <td>{{quantity}}</td>
-                <td>{{price}}</td>
-                <td>{{budget}}</td>
-                <td>{{startDate}}</td>
-                <td>{{endDate}}</td>
-              </tr>
-              {{#if dealType2}}
-              <tr>
-                {{!-- can put another line item here --}}
-                <td>{{name}}</td>
-                <td>{{agency}}</td>
-                <td>{{brand}}</td>
-                <td>{{product}}</td>
-                <td>{{objective2}}</td>
-                <td>{{platform2}}</td>
-                <td>{{dealType2}}</td>
-                <td>{{quantity2}}</td>
-                <td>{{price2}}</td>
-                <td>{{budget2}}</td>
-                <td>{{startDate2}}</td>
-                <td>{{endDate2}}</td>
-              </tr>
-              {{/if}}
-              {{#if dealType3}}
-              <tr>
-                <td>{{name}}</td>
-                <td>{{agency}}</td>
-                <td>{{brand}}</td>
-                <td>{{product}}</td>
-                <td>{{objective3}}</td>
-                <td>{{platform3}}</td>
-                <td>{{dealType3}}</td>
-                <td>{{quantity3}}</td>
-                <td>{{price3}}</td>
-                <td>{{budget3}}</td>
-                <td>{{startDate3}}</td>
-                <td>{{endDate3}}</td>
-              </tr>
-              {{/if}}
-              {{#if dealType4}}
-              <tr>
-                <td>{{name}}</td>
-                <td>{{agency}}</td>
-                <td>{{brand}}</td>
-                <td>{{product}}</td>
-                <td>{{objective4}}</td>
-                <td>{{platform4}}</td>
-                <td>{{dealType4}}</td>
-                <td>{{quantity4}}</td>
-                <td>{{price4}}</td>
-                <td>{{budget4}}</td>
-                <td>{{startDate4}}</td>
-                <td>{{endDate4}}</td>
-              </tr>
-              {{/if}}
-              {{#if dealType5}}
-              <tr>
-                <td>{{name}}</td>
-                <td>{{agency}}</td>
-                <td>{{brand}}</td>
-                <td>{{product}}</td>
-                <td>{{objective5}}</td>
-                <td>{{platform5}}</td>
-                <td>{{dealType5}}</td>
-                <td>{{quantity5}}</td>
-                <td>{{price5}}</td>
-                <td>{{budget5}}</td>
-                <td>{{startDate5}}</td>
-                <td>{{endDate5}}</td>
-              </tr>
-              {{/if}}
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td> <strong style="border-top: .1em solid black;">{{getBudgetTotal}}</strong></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-          {{/with}}
-        </div>
-      </div>
-    {{!-- </div> --}}
+  <div class="row dashboard-initiative-header">
+    <h2>Initiative & Line Items</h2>
+    <div class="col s3">
+      <p class="center-align border-bottom">Name</p>
+      <h4 class="center-align no-top-margin">{{getInitiative.name}}</h4>
+    </div>
+    <div class="col s3">
+      <p class="center-align border-bottom">Agency</p>
+      <h4 class="center-align no-top-margin">{{getInitiative.agency}}</h4>
+    </div>
+    <div class="col s3">
+    <p class="center-align border-bottom">Brand</p>
+      <h4 class="center-align no-top-margin">{{getInitiative.brand}}</h4>
+    </div>
+    <div class="col s3">
+    <p class="center-align border-bottom">Product</p>
+      <h4 class="center-align no-top-margin">{{getInitiative.product}}</h4>
+    </div>
+  </div>
+    <table class="centered">
+      {{#each getInitiative.lineItems}}
+        <thead>
+          <tr>
+            {{#if objective}} <th>Objective</th> {{/if}}
+            {{#if platform}} <th>Platform</th> {{/if}}
+            {{#if dealType}} <th>Deal Type</th> {{/if}}
+            {{#if quantity}} <th>Quantity</th> {{/if}}
+            {{#if price}} <th>Price</th> {{/if}}
+            {{#if budget}} <th>Budget</th> {{/if}}
+            {{#if startDate}} <th>Start Date</th> {{/if}}
+            {{#if endDate}} <th>End Date</th> {{/if}}
+            {{#if costPlusPercent}} <th>Cost Plus</th> {{/if}}
+            {{#if percentTotalPercent}} <th>Percent Total</th> {{/if}}
+            {{#if isClientPercent}} <th>Client</th> {{/if}}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {{#if objective}}<td>{{objective}}</td>{{/if}}
+            {{#if platform}}<td>{{platform}}</td>{{/if}}
+            {{#if dealType}}<td>{{dealType}}</td>{{/if}}
+            {{#if quantity}}<td>{{quantity}}</td>{{/if}}
+            {{#if price}}<td>{{price}}</td>{{/if}}
+            {{#if budget}}<td>{{budget}}</td>{{/if}}
+            {{#if startDate}}<td>{{formatDate startDate}}</td>{{/if}}
+            {{#if endDate}}<td>{{formatDate endDate}}</td>{{/if}}
+            {{#if costPlusPercent}}<td>{{costPlusPercent}}%</td>{{/if}}
+            {{#if percentTotalPercent}}<td>{{percentTotalPercent}}%</td>{{/if}}
+            {{#if isClientPercent}}<td>{{isClientPercent}}%</td>{{/if}}
+          </tr>
+        </tbody>
+      {{/each}}
+    </table>
     <br>
     <div class="row">
       <div class="col s12">
@@ -219,47 +149,6 @@
     </div>
 
 
-{{!--
-    <div>
-        <div class="six wide column">
-          <h3>Projection</h3>
-          <p>Days: {{getSessionDay}} <button id="project-up">+</button><button id="project-down">-</button></p>
-          <div class="ui labeled input">
-            <div class="ui label">
-              Daily Clicks
-            </div>
-            <input type="text" name="dailyClicks" value="{{averages.avgClicks}}">
-          </div>
-          <br>
-          <div class="ui labeled input">
-            <div class="ui label">
-              Daily Impressions
-            </div>
-            <input type="text" name="dailyImpressions" value="{{averages.avgImpressions}}">
-          </div>
-          <br>
-          <div class="ui labeled input">
-            <div class="ui label">
-              Daily Likes
-            </div>
-            <input type="text" name="dailyLikes" value="{{averages.avgLikes}}">
-          </div>
-          <div class="ui labeled input">
-            <div class="ui label">
-              Daily Spend
-            </div>
-            <input type="text" name="dailySpend" value="{{averages.avgSpend}}">
-          </div>
-        </div>
-        <div class="five wide column">
-          <h3>Projected Stats</h3>
-          {{#with dataProjection}}
-            <p>Clicks: {{clicks}}</p>
-            <p>Impressions: {{impressions}}</p>
-            <p>Likes: {{likes}}</p>
-            {{/with}}
-        </div>
-    </div> --}}
     {{> Template.dynamic template=tasks}}
     {{> Template.dynamic template=dash}}
 </template>

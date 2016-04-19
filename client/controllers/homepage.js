@@ -30,7 +30,7 @@ Template.accounts.helpers({
       return MasterAccounts.find({
         "name": { "$in": [
           "Ruffino",
-          "Tom Gore",
+          "Woodbridge",
           "Luchese",
           "Robert Mondavi Winery",
           "Kim Crawford"

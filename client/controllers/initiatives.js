@@ -232,6 +232,9 @@ Template.initiativesHome.helpers({
     } else {
       return "red-text"
     }
+  },
+  'formatDate': (date) => {
+    return moment(date, moment.ISO_8601).format("MM-DD-YYYY hh:mm a");
   }
 });
 

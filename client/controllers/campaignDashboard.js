@@ -48,25 +48,25 @@ Template.campaignDashboard.events({
 
 Template.campaignDashboard.helpers({
     'fetchInsights': function () {
-        console.log('checking for insights');
-        let campaignNumber = FlowRouter.current().params.campaign_id;
-        let camp = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
-        if (camp) {
-          camp.data.cpm = mastFunc.money(camp.data.cpm);
-          camp.data.cpc = mastFunc.money(camp.data.cpc);
-          return [camp.data];
-        } else {
-          var target = document.getElementById("spinner-div");
-          let spun = Blaze.render(Template.spin, target);
-          console.log('gotta get insights for this one', campaignNumber);
-          Meteor.call('getInsights', campaignNumber, Session.get("end_date"), function (err, result) {
-            if (err) {
-                console.log(err);
-            } else {
-                Blaze.remove(spun);
-            }
-          });
-        }
+      console.log('checking for insights');
+      let campaignNumber = FlowRouter.current().params.campaign_id;
+      let camp = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
+      if (camp) {
+        camp.data.cpm = mastFunc.money(camp.data.cpm);
+        camp.data.cpc = mastFunc.money(camp.data.cpc);
+        return [camp.data];
+      } else {
+        var target = document.getElementById("spinner-div");
+        let spun = Blaze.render(Template.spin, target);
+        console.log('gotta get insights for this one', campaignNumber);
+        Meteor.call('getInsights', campaignNumber, Session.get("end_date"), function (err, result) {
+          if (err) {
+              console.log(err);
+          } else {
+              Blaze.remove(spun);
+          }
+        });
+      }
     },
     'cleanText': function (text) {
         return text.replace("_", " ").toLowerCase();
@@ -84,31 +84,6 @@ Template.campaignDashboard.helpers({
     },
     'getInitiative': function () {
         const initiative = Template.instance().templateDict.get('initiative');
-        // format data with accounting and numeral
-        for (let key in initiative) {
-          if (key.includes('quantity')) {
-            initiative[key] = numeral(initiative[key]).format("0,0");
-          }
-          if (key.includes('budget')) {
-            initiative[key] = mastFunc.money(initiative[key])
-          }
-          if (key.includes('price')) {
-            initiative[key] = mastFunc.money(initiative[key])
-          }
-        }
-        initiative.dealType2 === null ? initiative.dealType2 = false : '';
-        initiative.dealType3 === null ? initiative.dealType3 = false : '';
-        initiative.dealType4 === null ? initiative.dealType4 = false : '';
-        initiative.dealType5 === null ? initiative.dealType5 = false : '';
-
-        for (let key in initiative) {
-          if (/Date/.test(key) === true) {
-            if (initiative[key] !== null) {
-              initiative[key] = moment(initiative[key], moment.ISO_8601).format("MM-DD-YYYY");
-            }
-          }
-        }
-
         return initiative;
     },
     'getBudgetTotal': function () {
@@ -119,22 +94,6 @@ Template.campaignDashboard.helpers({
     'getAggregate': function () {
       const init = Template.instance().templateDict.get('initiative');
       console.log('init in getAggregate', init);
-      /*
-      Note below use of Meteor.wrapAsync()..this takes an asynchronous function
-      From Meteor docs: the environment captured when the original function was called will be restored in the callback
-      */
-      // let asyncCall = function asyncCall(methodName, initName, cb) {
-      //   Meteor.call(methodName, initName, function (err, res) {
-      //     if (err) {
-      //       throw new Meteor.Error("this is a meteor error");
-      //     } else {
-      //       cb && cb(null, console.log('logging from within callback'));
-      //     }
-      //   });
-      // }
-
-      // let syncCall = Meteor.wrapAsync(asyncCall);
-      // let wrapped = syncCall('getAggregate', init.name);
 
       var call = Promise.promisify(Meteor.call);
       call('getAggregate', init.name).then(function (result) {
@@ -144,15 +103,16 @@ Template.campaignDashboard.helpers({
       })
 
       // moment stuff to figure out timeLeft on initiative
-      const ends = moment(init.endDate, moment.ISO_8601);
-      const starts = moment(init.startDate, moment.ISO_8601);
+      const ends = moment(init.lineItems[0].endDate, moment.ISO_8601);
+      const starts = moment(init.lineItems[0].startDate, moment.ISO_8601);
       const now = moment(new Date);
       let timeLeft;
       // if now is after the end date, timeleft is zero, else...
       now.isAfter(ends) ? timeLeft = 0 : timeLeft = ends.diff(now, 'days');
 
       let agData = init.aggregateData // for brevity later on
-      let spendPercent = numeral((agData.spend / parseFloat(init.budget))).format("0.00%")
+
+      const spendPercent = numeral((agData.spend / parseFloat(init.lineItems[0].budget))).format("0.00%")
 
       // formats numbers
       agData = mastFunc.formatAll(agData);
@@ -174,8 +134,8 @@ Template.campaignDashboard.helpers({
     },
     'averages': function () {
       const initiative = Template.instance().templateDict.get('initiative');
-      const ended = moment(initiative.endDate, moment.ISO_8601);
-      const started = moment(initiative.startDate, moment.ISO_8601);
+      const ended = moment(initiative.lineItems[0].endDate, moment.ISO_8601);
+      const started = moment(initiative.lineItems[0].startDate, moment.ISO_8601);
       const now = moment(new Date);
       let timeDiff = ended.diff(started, 'days');
 
@@ -241,6 +201,9 @@ Template.campaignDashboard.helpers({
     },
     'chartsActive': function () {
       return Session.get("route") === "charts" ? "active" : '';
+    },
+    'formatDate': (date) => {
+      return moment(date, moment.ISO_8601).format("MM-DD-YYYY hh:mm a");
     }
 });
 

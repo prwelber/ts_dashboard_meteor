@@ -49,26 +49,29 @@ Template.initiativeHomepage.helpers({
     })
     return camps;
   },
+  'formatDate': (date) => {
+    return moment(date, moment.ISO_8601).format("MM-DD-YYYY hh:mm a");
+  },
   'initiative': function () {
     const initiative = Template.instance().templateDict.get('initiative');
     initiative.budget = mastFunc.money(initiative.budget);
     initiative.quantity = numeral(initiative.quantity).format("0,0");
     initiative.price = mastFunc.money(initiative.price);
 
-    for (let key in initiative) {
-      if (/Date/.test(key) === true) {
-        if (initiative[key] !== null) {
-          initiative[key] = moment(initiative[key], moment.ISO_8601).format("MM-DD-YYYY");
-        }
-      }
-    }
+    // for (let key in initiative) {
+    //   if (/Date/.test(key) === true) {
+    //     if (initiative[key] !== null) {
+    //       initiative[key] = moment(initiative[key], moment.ISO_8601).format("MM-DD-YYYY");
+    //     }
+    //   }
+    // }
 
     return initiative;
   },
   'initiativeStats': function () {
     const init = Template.instance().templateDict.get('initiative');
     let agData = init.aggregateData;
-    const spendPercent = numeral((agData.spend / parseFloat(init.budget))).format("0.00%");
+    const spendPercent = numeral((agData.spend / parseFloat(init.lineItems[0].budget))).format("0.00%");
 
     //function for formatting data with numeral
     const niceNum = function niceNum (data) {
@@ -121,9 +124,9 @@ Template.initiativeHomepage.helpers({
     // console.log('initiative for chart:', initiative);
     const labels     = [], // this will be the date range
           timeFormat = "MM-DD-YYYY",
-          days       = moment(initiative.endDate).diff(moment(initiative.startDate), 'days'),
-          avg        = parseFloat(initiative.quantity / days),
-          spendAvg   = parseFloat(initiative.budget / days),
+          days       = moment(initiative.lineItems[0].endDate).diff(moment(initiative.lineItems[0].startDate), 'days'),
+          avg        = parseFloat(initiative.lineItems[0].quantity / days),
+          spendAvg   = parseFloat(initiative.lineItems[0].budget / days),
           avgData    = [],
           idealSpend = [];
 
@@ -139,11 +142,11 @@ Template.initiativeHomepage.helpers({
 
       //for setting dealType
       let type;
-      if (initiative.dealType === "CPM") {
+      if (initiative.lineItems[0].dealType === "CPM") {
         type = "impressions";
-      } else if (initiative.dealType === "CPC") {
+      } else if (initiative.lineItems[0].dealType === "CPC") {
         type = "clicks";
-      } else if (initiative.dealType === "CPL") {
+      } else if (initiative.lineItems[0].dealType === "CPL") {
         type = "like";
       }
 
@@ -157,9 +160,10 @@ Template.initiativeHomepage.helpers({
 
       call('aggregateForChart', initiative)
       .then(function (res) {
-        // console.log("result from promise", res)
+        console.log("result from promise", res)
         Session.set('res', res);
         totes = res[0][type]
+        console.log('totes', totes);
       }).catch(function (err) {
         console.log('uh no error', err)
       });
@@ -173,15 +177,20 @@ Template.initiativeHomepage.helpers({
 
       // for getting x axis labels
       let start       = moment(Session.get('res')[0]['date'], "MM-DD"),
-          end         = new Date(initiative.endDate),
+          end         = new Date(initiative.lineItems[0].endDate),
           dr          = moment.range(start, end),
           arrayOfDays = dr.toArray('days');
+
+      console.log(start);
 
       if (arrayOfDays) {
         arrayOfDays.forEach(el => {
           labels.push(moment(el).format("MM-DD"))
         });
       }
+
+      console.log(arrayOfDays);
+      console.log(labels);
 
       return {
         chart: {

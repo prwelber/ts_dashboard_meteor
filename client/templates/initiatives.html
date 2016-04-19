@@ -92,7 +92,7 @@
             <a href="/initiatives/{{_id}}/homepage"><span class="title" style="font-size: 20px;">{{name}}</span></a>
             <div class="row" style="margin-bottom: 5px;">
               <div class="col s8">
-                <p>{{startDate}} -- {{endDate}}</p>
+                <p>{{formatDate lineItems.[0].startDate}} -- {{formatDate lineItems.[0].endDate}}</p>
               </div>
               <div class="col s4">
                 <p class="right-align {{isActiveClass}}">{{isActiveInitiative}}</p>

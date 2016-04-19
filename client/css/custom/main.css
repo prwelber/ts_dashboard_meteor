@@ -96,3 +96,23 @@ a:hover {
 #createUser-initiative-select {
   height: 20em;
 }
+
+
+
+
+.dashboard-initiative-header {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.no-top-margin {
+  margin-top: 0px;
+  padding-bottom: 1em;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #4db6ac;
+  text-align: center;
+  margin-bottom: 8px;
+}
