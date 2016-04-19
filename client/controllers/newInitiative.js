@@ -34,6 +34,7 @@ Template.newInitiative.events({
             finalObj['brand']     = event.target.brand.value;
             finalObj['agency']    = event.target.agency.value;
             finalObj['notes']     = event.target.notes.value;
+            finalObj['product']   = event.target.product.value;
             finalObj['tags']      = [];
 
             for (let i = 1; i <= 8; i++) {
@@ -43,8 +44,8 @@ Template.newInitiative.events({
                 testObj['objective'] = event.target['objective' + i].value;
                 testObj['dealType']  = event.target['dealType' + i].value;
                 testObj['budget']    = event.target['budget' + i].value;
-                testObj['startDate'] = moment(event.target['startDate' + i].value, "MM-DD-YYYY hh:mm a").format("MM-DD-YYYY hh:mm a");
-                testObj['endDate']   = moment(event.target['endDate' + i].value, "MM-DD-YYYY hh:mm a").format("MM-DD-YYYY hh:mm a");
+                testObj['startDate'] = moment(event.target['startDate' + i].value, "MM-DD-YYYY hh:mm a").toISOString();
+                testObj['endDate']   = moment(event.target['endDate' + i].value, "MM-DD-YYYY hh:mm a").toISOString();
                 testObj['quantity']  = event.target['quantity' + i].value;
                 testObj['price']     = event.target['price' + i].value;
                 testObj['costPlusPercent'] = event.target['costPlus' + i].value;

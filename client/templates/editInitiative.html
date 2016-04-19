@@ -8,69 +8,67 @@
       </ul>
     </div>
   </nav>
-
   <div class="container">
     <div class="row">
       <div class="col s6">
         <h2>Edit Initiative</h2>
       </div>
     </div>
-      <form id="edit-initiative-form" class="col s12">
-        {{#with getInitiative}}
-          <div class="row">
-            <div class="input-field col s6">
-              <input type="text" id="initiative-name" name="name" value="{{name}}">
-              <label for="initiative-name" class="active">Initiative Name</label>
-            </div>
-            <div class="input-field col s6">
-              <input type="text" id="search-text" name="search_text" value={{search_text}}>
-              <label for="search-text" class="active">Search Text</label>
-              <blockquote>
-                Search Text is used to identify associated campaigns. <br>
-                Ex: if campaign name is "Ruffino 2016 Page Post #50", write "Ruffino 2016 Page Post" <br>
-                This <strong>can</strong> be the same name as the initiative.
-              </blockquote>
-            </div>
+    <form id="edit-initiative-form" class="col s12">
+      {{#with getInitiative}}
+        <div class="row">
+          <div class="input-field col s6">
+            <input type="text" id="initiative-name" name="name" value="{{name}}">
+            <label for="initiative-name" class="active">Initiative Name</label>
           </div>
-          <div class="row">
-            <div class="input-field col s4">
-              <select name="brand" id="brand-select" class="browser-default">
-                <option value="{{brand}}" selected>{{brand}}</option>
-                {{!-- <option value="" disabled selected>Choose Brand</option> --}}
-                {{#each getBrands}}
-                  <option value="{{name}}">{{name}}</option>
-                {{/each}}
-              </select>
-              <label class="active">Brand</label>
-            </div>
-            <div class="input-field col s4">
-              <select name="agency" id="agency-select" class="browser-default">
-                <option value="{{agency}}" selected>{{agency}}</option>
-                {{!-- <option value="" disabled selected>Choose Agency</option> --}}
-                <option value="Constellation">Constellation</option>
-                <option value="Horizon">Horizon</option>
-              </select>
-              <label class="active">Agency</label>
-            </div>
-            <div class="input-field col s4">
-              <select name="product" id="product-select" class="browser-default">
-                <option value="{{product}}" selected>{{product}}</option>
-                <option value="Wine">Wine</option>
-                <option value="Food">Food</option>
-              </select>
-              <label class="active">Product</label>
-            </div>
+          <div class="input-field col s6">
+            <input type="text" id="search-text" name="search_text" value={{search_text}}>
+            <label for="search-text" class="active">Search Text</label>
+            <blockquote>
+              Search Text is used to identify associated campaigns. <br>
+              Ex: if campaign name is "Ruffino 2016 Page Post #50", write "Ruffino 2016 Page Post" <br>
+              This <strong>can</strong> be the same name as the initiative.
+            </blockquote>
           </div>
-          <h2>Enter Line Items</h2>
+        </div>
+        <div class="row">
+          <div class="input-field col s4">
+            <select name="brand" id="brand-select" class="browser-default">
+              <option value="{{brand}}" selected>{{brand}}</option>
+              {{#each getBrands}}
+                <option value="{{name}}">{{name}}</option>
+              {{/each}}
+            </select>
+            <label class="active">Brand</label>
+          </div>
+          <div class="input-field col s4">
+            <select name="agency" id="agency-select" class="browser-default">
+              <option value="{{agency}}" selected>{{agency}}</option>
+              <option value="Constellation">Constellation</option>
+              <option value="Horizon">Horizon</option>
+            </select>
+            <label class="active">Agency</label>
+          </div>
+          <div class="input-field col s4">
+            <select name="product" id="product-select" class="browser-default">
+              <option value="{{product}}" selected>{{product}}</option>
+              <option value="Wine">Wine</option>
+              <option value="Food">Food</option>
+            </select>
+            <label class="active">Product</label>
+          </div>
+        </div>
+        <h2>Enter Line Items</h2>
+        {{#each getInitiative.lineItems}}
           <ul class="collapsible" data-collapsible="expandable">
             <li>
-              <div class="collapsible-header">
-                Line Item #1
+              <div class="collapsible-header active">
+                Line Item {{addOne @index}}
               </div>
               <div class="collapsible-body">
-                <div class="row">
+                <div class="row" style="padding-left: 5px; padding-right: 5px;">
                   <div class="input-field col s6">
-                    <select name="platform" id="" class="browser-default">
+                    <select name="platform{{addOne @index}}" id="" class="browser-default">
                       <option value="{{platform}}" selected>{{platform}}</option>
                       <option value="Facebook">Facebook</option>
                       <option value="Twitter">Twitter</option>
@@ -83,9 +81,8 @@
                     <label class="active">Platform</label>
                   </div>
                   <div class="input-field col s6">
-                    {{!-- <input type="text" id="objective-input" name="objective" value="{{objective}}"> --}}
-                    <select name="objective" id="objective-input" class="browser-default">
-                      <option value="{{objective}}" selected>{{objective}}</option>
+                    <select name="objective{{addOne @index}}" id="objective-input" class="browser-default">
+                      <option value="{{objective}}">{{objective}}</option>
                       <option value="Conversions">Conversions</option>
                       <option value="Link Clicks">Link Clicks</option>
                       <option value="App Engagement">App Engagement</option>
@@ -97,13 +94,12 @@
                       <option value="Offer Claims">Offer Claims</option>
                       <option value="Video Views">Video Views</option>
                       <option value="Leads">Leads</option>
-                      <option value="FACTOR">FACTOR</option>
                     </select>
-                    <label for="objetive-input" class="active">Objective</label>
+                    <label for="objetive-input" class="active"> Objective</label>
                   </div>
                   <div class="input-field col s4">
-                    <select name="dealType" id="dealType-dropdown" class="browser-default">
-                      <option value="{{dealType}}" selected>{{dealType}}</option>
+                    <select name="dealType{{addOne @index}}" id="dealType-dropdown" class="browser-default">
+                    <option value="{{dealType}}">{{dealType}}</option>
                       <option value="CPC">CPC</option>
                       <option value="CPM">CPM</option>
                       <option value="CPL">CPL</option>
@@ -122,686 +118,82 @@
                     </select>
                     <label class="active">Deal Type</label>
                   </div>
-                  <div class=" input-field col s2">
-                      <input type="checkbox" id="cost_plus" name="costplus" checked="{{isChecked}}">
-                      <label for="cost_plus">Cost Plus?</label>
+                  <div class="input-field col s3">
+                    <input type="text" id="start-date{{addOne @index}}" name="startDate{{addOne @index}}" value={{dateFormatter startDate}}>
+                    <label for="start-date{{addOne @index}}" class="active">Start Date</label>
                   </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="cost-plus-percent" name="costPlus" value="{{costPlusPercent}}">
-                    <label for="cost-plus-percent" class="active">Cost Plus Percent</label>
+                  <div class="input-field col s3">
+                    <input type="text" id="end-date{{addOne @index}}" name="endDate{{addOne @index}}" value={{dateFormatter endDate}}>
+                    <label for="end-date{{addOne @index}}" class="active">End Date</label>
                   </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="start-date" name="startDate" value="{{startDate}}">
-                    <label for="start-date" class="active">Start Date</label>
+                  <div class=" input-field col s3">
+                      <input type="checkbox" id="cost_plus{{addOne @index}}" name="costplus{{addOne @index}}" checked="{{costPlusChecked @index}}">
+                      <label for="cost_plus{{addOne @index}}">Cost Plus?</label>
                   </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="end-date" name="endDate" value="{{endDate}}">
-                    <label for="end-date" class="active">End Date</label>
+                  <div class="input-field col s9">
+                    <input type="text" id="cost-plus-percent" name="costPlus{{addOne @index}}" value="{{costPlusPercent}}">
+                    <label for="cost-plus-percent{{addOne @index}}" class="active">Cost Plus Percentage</label>
                   </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="price-input" name="price" value="{{price}}">
-                    <label for="price-input" class="active">Price</label>
+                  <div class=" input-field col s3">
+                      <input type="checkbox" id="percent-total{{addOne @index}}" name="percentTotal{{addOne @index}}" checked="{{percentTotalChecked @index}}">
+                      <label for="percent-total{{addOne @index}}">Percent of Total?</label>
                   </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="budget-input" name="budget" value="{{budget}}">
-                    <label for="budget-input" class="active">Budget (no commas in input, ex: 1500.00)</label>
+                  <div class="input-field col s9">
+                    <input type="text" id="percent-total-percentage{{addOne @index}}" name="percentTotalPercentage{{addOne @index}}" value="{{percentTotalPercent}}">
+                    <label for="percent-total-percentage{{addOne @index}}" class="active">Percent of Total Percentage</label>
                   </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="quantity-input" name="quantity" value={{quantity}}>
-                    <label for="quantity-input" class="active">Quantity</label>
+                  <div class=" input-field col s3">
+                      <input type="checkbox" id="is-client{{addOne @index}}" name="isClient{{addOne @index}}" checked="{{isClientChecked @index}}">
+                      <label for="is-client{{addOne @index}}">Is there a client?</label>
                   </div>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="collapsible-header">
-                Line Item #2
-              </div>
-              <div class="collapsible-body">
-                <div class="row">
-                  <div class="input-field col s6">
-                    <select name="platform2" id="" class="browser-default">
-                      <option value="{{platform2}}" selected>{{platform2}}</option>
-                      <option value="Facebook">Facebook</option>
-                      <option value="Twitter">Twitter</option>
-                      <option value="Google">Google</option>
-                      <option value="Pinterest">Pinterest</option>
-                      <option value="Instagram">Instagram</option>
-                      <option value="Tumblr">Tumblr</option>
-                      <option value="Youtube">YouTube</option>
-                    </select>
-                    <label class="active">Platform</label>
+                  <div class="input-field col s9">
+                    <input type="text" id="client-percentage{{addOne @index}}" name="clientPercentage{{addOne @index}}" value="{{isClientPercent}}">
+                    <label for="client-percentage{{addOne @index}}" class="active">Client Percentage</label>
                   </div>
-                  <div class="input-field col s6">
-                    <select name="objective2" id="objective-input2" class="browser-default">
-                      <option value="{{objective2}}" selected>{{objective2}}</option>
-                      <option value="Conversions">Conversions</option>
-                      <option value="Link Clicks">Link Clicks</option>
-                      <option value="App Engagement">App Engagement</option>
-                      <option value="Post Engagement">Post Engagement</option>
-                      <option value="App Installs">App Installs</option>
-                      <option value="Page Likes">Page Likes</option>
-                      <option value="Reach">Reach</option>
-                      <option value="Event Attendance">Event Attendance</option>
-                      <option value="Offer Claims">Offer Claims</option>
-                      <option value="Video Views">Video Views</option>
-                      <option value="Leads">Leads</option>
-                      <option value="FACTOR">FACTOR</option>
-                    </select>
-                    <label for="objetive-input2" class="active">Objective</label>
+                  <div class="col s4">
+                    <blockquote>
+                      If no box is checked, this will be a Contracted Spend Deal.
+                    </blockquote>
                   </div>
-                  <div class="input-field col s4">
-                    <select name="dealType2" id="dealType-dropdown2" class="browser-default">
-                      <option value="{{dealType2}}" selected>{{dealType2}}</option>
-                      <option value="CPC">CPC</option>
-                      <option value="CPM">CPM</option>
-                      <option value="CPL">CPL</option>
-                      <option value="Conversions">Conversions</option>
-                      <option value="Link Clicks">Link Clicks</option>
-                      <option value="App Engagement">App Engagement</option>
-                      <option value="Post Engagement">Post Engagement</option>
-                      <option value="App Installs">App Installs</option>
-                      <option value="Page Likes">Page Likes</option>
-                      <option value="Reach">Reach</option>
-                      <option value="Event Attendance">Event Attendance</option>
-                      <option value="Offer Claims">Offer Claims</option>
-                      <option value="Video Views">Video Views</option>
-                      <option value="Leads">Leads</option>
-                      <option value="FACTOR">FACTOR</option>
-                    </select>
-                    <label class="active">Deal Type</label>
-                  </div>
-                  <div class=" input-field col s2">
-                      <input type="checkbox" id="cost_plus2" name="costplus2" checked="{{isChecked2}}">
-                      <label for="cost_plus2">Cost Plus?</label>
-                  </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="cost-plus-percent2" name="costPlus2" value="{{costPlusPercent2}}">
-                    <label for="cost-plus-percent2" class="active">Cost Plus Percent</label>
-                  </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="start-date2" name="startDate2" value="{{startDate2}}">
-                    <label for="start-date2" class="active">Start Date</label>
-                  </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="end-date2" name="endDate2" value="{{endDate2}}">
-                    <label for="end-date2" class="active">End Date</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="price-input2" name="price2" value="{{price2}}">
-                    <label for="price-input2" class="active">Price</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="budget-input2" name="budget2" value="{{budget2}}">
-                    <label for="budget-input2" class="active">Budget (no commas in input, ex: 1500.00)</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="quantity-input2" name="quantity2" value={{quantity2}}>
-                    <label for="quantity-input2" class="active">Quantity</label>
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="collapsible-header">
-                Line Item #3
-              </div>
-              <div class="collapsible-body">
-                <div class="row">
-                  <div class="input-field col s6">
-                    <select name="platform3" id="" class="browser-default">
-                      <option value="{{platform3}}" selected>{{platform3}}</option>
-                      <option value="Facebook">Facebook</option>
-                      <option value="Twitter">Twitter</option>
-                      <option value="Google">Google</option>
-                      <option value="Pinterest">Pinterest</option>
-                      <option value="Instagram">Instagram</option>
-                      <option value="Tumblr">Tumblr</option>
-                      <option value="Youtube">YouTube</option>
-                    </select>
-                    <label class="active">Platform</label>
-                  </div>
-                  <div class="input-field col s6">
-                    <select name="objective3" id="objective-input3" class="browser-default">
-                      <option value="{{objective3}}" selected>{{objective3}}</option>
-                      <option value="Conversions">Conversions</option>
-                      <option value="Link Clicks">Link Clicks</option>
-                      <option value="App Engagement">App Engagement</option>
-                      <option value="Post Engagement">Post Engagement</option>
-                      <option value="App Installs">App Installs</option>
-                      <option value="Page Likes">Page Likes</option>
-                      <option value="Reach">Reach</option>
-                      <option value="Event Attendance">Event Attendance</option>
-                      <option value="Offer Claims">Offer Claims</option>
-                      <option value="Video Views">Video Views</option>
-                      <option value="Leads">Leads</option>
-                      <option value="FACTOR">FACTOR</option>
-                    </select>
-                    <label for="objetive-input3" class="active">Objective</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <select name="dealType3" id="dealType-dropdown3" class="browser-default">
-                      <option value="{{dealType3}}" selected>{{dealType3}}</option>
-                      <option value="CPC">CPC</option>
-                      <option value="CPM">CPM</option>
-                      <option value="CPL">CPL</option>
-                      <option value="Conversions">Conversions</option>
-                      <option value="Link Clicks">Link Clicks</option>
-                      <option value="App Engagement">App Engagement</option>
-                      <option value="Post Engagement">Post Engagement</option>
-                      <option value="App Installs">App Installs</option>
-                      <option value="Page Likes">Page Likes</option>
-                      <option value="Reach">Reach</option>
-                      <option value="Event Attendance">Event Attendance</option>
-                      <option value="Offer Claims">Offer Claims</option>
-                      <option value="Video Views">Video Views</option>
-                      <option value="Leads">Leads</option>
-                      <option value="FACTOR">FACTOR</option>
-                    </select>
-                    <label class="active">Deal Type</label>
-                  </div>
-                  <div class=" input-field col s2">
-                      <input type="checkbox" id="cost_plus3" name="costplus3" checked="{{isChecked3}}">
-                      <label for="cost_plus3">Cost Plus?</label>
-                  </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="cost-plus-percent3" name="costPlus3" value="{{costPlusPercent3}}">
-                    <label for="cost-plus-percent3" class="active">Cost Plus Percent</label>
-                  </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="start-date3" name="startDate3" value="{{startDate3}}">
-                    <label for="start-date3" class="active">Start Date</label>
-                  </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="end-date3" name="endDate3" value="{{endDate3}}">
-                    <label for="end-date3" class="active">End Date</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="price-input3" name="price3" value="{{price3}}">
-                    <label for="price-input3" class="active">Price</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="budget-input3" name="budget3" value="{{budget3}}">
-                    <label for="budget-input3" class="active">Budget (no commas in input, ex: 1500.00)</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="quantity-input3" name="quantity3" value={{quantity3}}>
-                    <label for="quantity-input3" class="active">Quantity</label>
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="collapsible-header">
-                Line Item #4
-              </div>
-              <div class="collapsible-body">
-                <div class="row">
-                  <div class="input-field col s6">
-                    <select name="platform4" id="" class="browser-default">
-                      <option value="{{platform4}}" selected>{{platform4}}</option>
-                      <option value="Facebook">Facebook</option>
-                      <option value="Twitter">Twitter</option>
-                      <option value="Google">Google</option>
-                      <option value="Pinterest">Pinterest</option>
-                      <option value="Instagram">Instagram</option>
-                      <option value="Tumblr">Tumblr</option>
-                      <option value="Youtube">YouTube</option>
-                    </select>
-                    <label class="active">Platform</label>
-                  </div>
-                  <div class="input-field col s6">
-                    <select name="objective4" id="objective-input4" class="browser-default">
-                      <option value="{{objective4}}" selected>{{objective4}}</option>
-                      <option value="Conversions">Conversions</option>
-                      <option value="Link Clicks">Link Clicks</option>
-                      <option value="App Engagement">App Engagement</option>
-                      <option value="Post Engagement">Post Engagement</option>
-                      <option value="App Installs">App Installs</option>
-                      <option value="Page Likes">Page Likes</option>
-                      <option value="Reach">Reach</option>
-                      <option value="Event Attendance">Event Attendance</option>
-                      <option value="Offer Claims">Offer Claims</option>
-                      <option value="Video Views">Video Views</option>
-                      <option value="Leads">Leads</option>
-                      <option value="FACTOR">FACTOR</option>
-                    </select>
-                    <label for="objetive-input4" class="active">Objective</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <select name="dealType4" id="dealType-dropdown4" class="browser-default">
-                      <option value="{{dealType4}}" selected>{{dealType4}}</option>
-                      <option value="CPC">CPC</option>
-                      <option value="CPM">CPM</option>
-                      <option value="CPL">CPL</option>
-                      <option value="Conversions">Conversions</option>
-                      <option value="Link Clicks">Link Clicks</option>
-                      <option value="App Engagement">App Engagement</option>
-                      <option value="Post Engagement">Post Engagement</option>
-                      <option value="App Installs">App Installs</option>
-                      <option value="Page Likes">Page Likes</option>
-                      <option value="Reach">Reach</option>
-                      <option value="Event Attendance">Event Attendance</option>
-                      <option value="Offer Claims">Offer Claims</option>
-                      <option value="Video Views">Video Views</option>
-                      <option value="Leads">Leads</option>
-                      <option value="FACTOR">FACTOR</option>
-                    </select>
-                    <label class="active">Deal Type</label>
-                  </div>
-                  <div class=" input-field col s2">
-                      <input type="checkbox" id="cost_plus4" name="costplus4" checked="{{isChecked4}}">
-                      <label for="cost_plus4">Cost Plus?</label>
-                  </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="cost-plus-percent4" name="costPlus4" value="{{costPlusPercent4}}">
-                    <label for="cost-plus-percent4" class="active">Cost Plus Percent</label>
-                  </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="start-date4" name="startDate4" value="{{startDate4}}">
-                    <label for="start-date4" class="active">Start Date</label>
-                  </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="end-date4" name="endDate4" value="{{endDate4}}">
-                    <label for="end-date4" class="active">End Date</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="price-input4" name="price4" value="{{price4}}">
-                    <label for="price-input4" class="active">Price</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="budget-input4" name="budget4" value="{{budget4}}">
-                    <label for="budget-input4" class="active">Budget (no commas in input, ex: 1500.00)</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="quantity-input4" name="quantity4" value={{quantity4}}>
-                    <label for="quantity-input4" class="active">Quantity</label>
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="collapsible-header">
-                Line Item #5
-              </div>
-              <div class="collapsible-body">
-                <div class="row">
-                  <div class="input-field col s6">
-                    <select name="platform5" id="" class="browser-default">
-                      <option value="{{platform5}}" selected>{{platform5}}</option>
-                      <option value="Facebook">Facebook</option>
-                      <option value="Twitter">Twitter</option>
-                      <option value="Google">Google</option>
-                      <option value="Pinterest">Pinterest</option>
-                      <option value="Instagram">Instagram</option>
-                      <option value="Tumblr">Tumblr</option>
-                      <option value="Youtube">YouTube</option>
-                    </select>
-                    <label class="active">Platform</label>
-                  </div>
-                  <div class="input-field col s6">
-                    <select name="objective5" id="objective-input5" class="browser-default">
-                      <option value="{{objective5}}" selected>{{objective5}}</option>
-                      <option value="Conversions">Conversions</option>
-                      <option value="Link Clicks">Link Clicks</option>
-                      <option value="App Engagement">App Engagement</option>
-                      <option value="Post Engagement">Post Engagement</option>
-                      <option value="App Installs">App Installs</option>
-                      <option value="Page Likes">Page Likes</option>
-                      <option value="Reach">Reach</option>
-                      <option value="Event Attendance">Event Attendance</option>
-                      <option value="Offer Claims">Offer Claims</option>
-                      <option value="Video Views">Video Views</option>
-                      <option value="Leads">Leads</option>
-                      <option value="FACTOR">FACTOR</option>
-                    </select>
-                    <label for="objetive-input5" class="active">Objective</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <select name="dealType5" id="dealType-dropdown5" class="browser-default">
-                      <option value="{{dealType5}}" selected>{{dealType5}}</option>
-                      <option value="CPC">CPC</option>
-                      <option value="CPM">CPM</option>
-                      <option value="CPL">CPL</option>
-                      <option value="Conversions">Conversions</option>
-                      <option value="Link Clicks">Link Clicks</option>
-                      <option value="App Engagement">App Engagement</option>
-                      <option value="Post Engagement">Post Engagement</option>
-                      <option value="App Installs">App Installs</option>
-                      <option value="Page Likes">Page Likes</option>
-                      <option value="Reach">Reach</option>
-                      <option value="Event Attendance">Event Attendance</option>
-                      <option value="Offer Claims">Offer Claims</option>
-                      <option value="Video Views">Video Views</option>
-                      <option value="Leads">Leads</option>
-                      <option value="FACTOR">FACTOR</option>
-                    </select>
-                    <label class="active">Deal Type</label>
-                  </div>
-                  <div class=" input-field col s2">
-                      <input type="checkbox" id="cost_plus5" name="costplus5" checked="{{isChecked5}}">
-                      <label for="cost_plus5">Cost Plus?</label>
-                  </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="cost-plus-percent5" name="costPlus5" value="{{costPlusPercent5}}">
-                    <label for="cost-plus-percent5" class="active">Cost Plus Percent</label>
-                  </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="start-date5" name="startDate5" value="{{startDate5}}">
-                    <label for="start-date5" class="active">Start Date</label>
-                  </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="end-date5" name="endDate5" value="{{endDate5}}">
-                    <label for="end-date5" class="active">End Date</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="price-input5" name="price5" value="{{price5}}">
-                    <label for="price-input5" class="active">Price</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="budget-input5" name="budget5" value="{{budget5}}">
-                    <label for="budget-input5" class="active">Budget (no commas in input, ex: 1500.00)</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="quantity-input5" name="quantity5" value={{quantity5}}>
-                    <label for="quantity-input5" class="active">Quantity</label>
-                  </div>
-                </div>
-              </div>
-            </li>
 
-            <li>
-              <div class="collapsible-header">
-                Line Item #6
-              </div>
-              <div class="collapsible-body">
-                <div class="row">
-                  <div class="input-field col s6">
-                    <select name="platform6" id="" class="browser-default">
-                      <option value="{{platform6}}" selected>{{platform6}}</option>
-                      <option value="Facebook">Facebook</option>
-                      <option value="Twitter">Twitter</option>
-                      <option value="Google">Google</option>
-                      <option value="Pinterest">Pinterest</option>
-                      <option value="Instagram">Instagram</option>
-                      <option value="Tumblr">Tumblr</option>
-                      <option value="Youtube">YouTube</option>
-                    </select>
-                    <label class="active">Platform</label>
-                  </div>
-                  <div class="input-field col s6">
-                    <select name="objective6" id="objective-input6" class="browser-default">
-                      <option value="{{objective6}}" selected>{{objective6}}</option>
-                      <option value="Conversions">Conversions</option>
-                      <option value="Link Clicks">Link Clicks</option>
-                      <option value="App Engagement">App Engagement</option>
-                      <option value="Post Engagement">Post Engagement</option>
-                      <option value="App Installs">App Installs</option>
-                      <option value="Page Likes">Page Likes</option>
-                      <option value="Reach">Reach</option>
-                      <option value="Event Attendance">Event Attendance</option>
-                      <option value="Offer Claims">Offer Claims</option>
-                      <option value="Video Views">Video Views</option>
-                      <option value="Leads">Leads</option>
-                      <option value="FACTOR">FACTOR</option>
-                    </select>
-                    <label for="objetive-input6" class="active">Objective</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <select name="dealType6" id="dealType-dropdown6" class="browser-default">
-                      <option value="{{dealType6}}" selected>{{dealType6}}</option>
-                      <option value="CPC">CPC</option>
-                      <option value="CPM">CPM</option>
-                      <option value="CPL">CPL</option>
-                      <option value="Conversions">Conversions</option>
-                      <option value="Link Clicks">Link Clicks</option>
-                      <option value="App Engagement">App Engagement</option>
-                      <option value="Post Engagement">Post Engagement</option>
-                      <option value="App Installs">App Installs</option>
-                      <option value="Page Likes">Page Likes</option>
-                      <option value="Reach">Reach</option>
-                      <option value="Event Attendance">Event Attendance</option>
-                      <option value="Offer Claims">Offer Claims</option>
-                      <option value="Video Views">Video Views</option>
-                      <option value="Leads">Leads</option>
-                      <option value="FACTOR">FACTOR</option>
-                    </select>
-                    <label class="active">Deal Type</label>
-                  </div>
-                  <div class=" input-field col s2">
-                      <input type="checkbox" id="cost_plus6" name="costplus6" checked="{{isChecked6}}">
-                      <label for="cost_plus6">Cost Plus?</label>
+                  <div class="input-field col s2">
+                    <input type="text" id="price-input{{addOne @index}}" name="price{{addOne @index}}" value="{{price}}">
+                    <label for="price-input{{addOne @index}}" class="active">Per Unit Price</label>
                   </div>
                   <div class="input-field col s2">
-                    <input type="text" id="cost-plus-percent6" name="costPlus6" value="{{costPlusPercent6}}">
-                    <label for="cost-plus-percent6" class="active">Cost Plus Percent</label>
-                  </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="start-date6" name="startDate6" value="{{startDate6}}">
-                    <label for="start-date6" class="active">Start Date</label>
-                  </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="end-date6" name="endDate6" value="{{endDate6}}">
-                    <label for="end-date6" class="active">End Date</label>
+                    <input type="text" id="quantity-input{{addOne @index}}" name="quantity{{addOne @index}}" value="{{quantity}}">
+                    <label for="quantity-input{{addOne @index}}" class="active">Quantity</label>
                   </div>
                   <div class="input-field col s4">
-                    <input type="text" id="price-input6" name="price6" value="{{price6}}">
-                    <label for="price-input6" class="active">Price</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="budget-input6" name="budget6" value="{{budget6}}">
-                    <label for="budget-input6" class="active">Budget (no commas in input, ex: 1600.00)</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="quantity-input6" name="quantity6" value={{quantity6}}>
-                    <label for="quantity-input6" class="active">Quantity</label>
+                    <input type="text" id="budget-input{{addOne @index}}" name="budget{{addOne @index}}" value="{{budget}}">
+                    <label for="budget-input{{addOne @index}}" class="active">Budget (no commas, ex: 1000.00)</label>
                   </div>
                 </div>
               </div>
             </li>
-
-            <li>
-              <div class="collapsible-header">
-                Line Item #7
-              </div>
-              <div class="collapsible-body">
-                <div class="row">
-                  <div class="input-field col s6">
-                    <select name="platform7" id="" class="browser-default">
-                      <option value="{{platform7}}" selected>{{platform7}}</option>
-                      <option value="Facebook">Facebook</option>
-                      <option value="Twitter">Twitter</option>
-                      <option value="Google">Google</option>
-                      <option value="Pinterest">Pinterest</option>
-                      <option value="Instagram">Instagram</option>
-                      <option value="Tumblr">Tumblr</option>
-                      <option value="Youtube">YouTube</option>
-                    </select>
-                    <label class="active">Platform</label>
-                  </div>
-                  <div class="input-field col s6">
-                    <select name="objective7" id="objective-input7" class="browser-default">
-                      <option value="{{objective7}}" selected>{{objective7}}</option>
-                      <option value="Conversions">Conversions</option>
-                      <option value="Link Clicks">Link Clicks</option>
-                      <option value="App Engagement">App Engagement</option>
-                      <option value="Post Engagement">Post Engagement</option>
-                      <option value="App Installs">App Installs</option>
-                      <option value="Page Likes">Page Likes</option>
-                      <option value="Reach">Reach</option>
-                      <option value="Event Attendance">Event Attendance</option>
-                      <option value="Offer Claims">Offer Claims</option>
-                      <option value="Video Views">Video Views</option>
-                      <option value="Leads">Leads</option>
-                      <option value="FACTOR">FACTOR</option>
-                    </select>
-                    <label for="objetive-input7" class="active">Objective</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <select name="dealType7" id="dealType-dropdown7" class="browser-default">
-                      <option value="{{dealType7}}" selected>{{dealType7}}</option>
-                      <option value="CPC">CPC</option>
-                      <option value="CPM">CPM</option>
-                      <option value="CPL">CPL</option>
-                      <option value="Conversions">Conversions</option>
-                      <option value="Link Clicks">Link Clicks</option>
-                      <option value="App Engagement">App Engagement</option>
-                      <option value="Post Engagement">Post Engagement</option>
-                      <option value="App Installs">App Installs</option>
-                      <option value="Page Likes">Page Likes</option>
-                      <option value="Reach">Reach</option>
-                      <option value="Event Attendance">Event Attendance</option>
-                      <option value="Offer Claims">Offer Claims</option>
-                      <option value="Video Views">Video Views</option>
-                      <option value="Leads">Leads</option>
-                      <option value="FACTOR">FACTOR</option>
-                    </select>
-                    <label class="active">Deal Type</label>
-                  </div>
-                  <div class=" input-field col s2">
-                      <input type="checkbox" id="cost_plus7" name="costplus7" checked="{{isChecked7}}">
-                      <label for="cost_plus7">Cost Plus?</label>
-                  </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="cost-plus-percent7" name="costPlus7" value="{{costPlusPercent7}}">
-                    <label for="cost-plus-percent7" class="active">Cost Plus Percent</label>
-                  </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="start-date7" name="startDate7" value="{{startDate7}}">
-                    <label for="start-date7" class="active">Start Date</label>
-                  </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="end-date7" name="endDate7" value="{{endDate7}}">
-                    <label for="end-date7" class="active">End Date</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="price-input7" name="price7" value="{{price7}}">
-                    <label for="price-input7" class="active">Price</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="budget-input7" name="budget7" value="{{budget7}}">
-                    <label for="budget-input7" class="active">Budget (no commas in input, ex: 1700.00)</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="quantity-input7" name="quantity7" value={{quantity7}}>
-                    <label for="quantity-input7" class="active">Quantity</label>
-                  </div>
-                </div>
-              </div>
-            </li>
-
-            <li>
-              <div class="collapsible-header">
-                Line Item #8
-              </div>
-              <div class="collapsible-body">
-                <div class="row">
-                  <div class="input-field col s6">
-                    <select name="platform8" id="" class="browser-default">
-                      <option value="{{platform8}}" selected>{{platform8}}</option>
-                      <option value="Facebook">Facebook</option>
-                      <option value="Twitter">Twitter</option>
-                      <option value="Google">Google</option>
-                      <option value="Pinterest">Pinterest</option>
-                      <option value="Instagram">Instagram</option>
-                      <option value="Tumblr">Tumblr</option>
-                      <option value="Youtube">YouTube</option>
-                    </select>
-                    <label class="active">Platform</label>
-                  </div>
-                  <div class="input-field col s6">
-                    <select name="objective8" id="objective-input8" class="browser-default">
-                      <option value="{{objective8}}" selected>{{objective8}}</option>
-                      <option value="Conversions">Conversions</option>
-                      <option value="Link Clicks">Link Clicks</option>
-                      <option value="App Engagement">App Engagement</option>
-                      <option value="Post Engagement">Post Engagement</option>
-                      <option value="App Installs">App Installs</option>
-                      <option value="Page Likes">Page Likes</option>
-                      <option value="Reach">Reach</option>
-                      <option value="Event Attendance">Event Attendance</option>
-                      <option value="Offer Claims">Offer Claims</option>
-                      <option value="Video Views">Video Views</option>
-                      <option value="Leads">Leads</option>
-                      <option value="FACTOR">FACTOR</option>
-                    </select>
-                    <label for="objetive-input8" class="active">Objective</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <select name="dealType8" id="dealType-dropdown8" class="browser-default">
-                      <option value="{{dealType8}}" selected>{{dealType8}}</option>
-                      <option value="CPC">CPC</option>
-                      <option value="CPM">CPM</option>
-                      <option value="CPL">CPL</option>
-                      <option value="Conversions">Conversions</option>
-                      <option value="Link Clicks">Link Clicks</option>
-                      <option value="App Engagement">App Engagement</option>
-                      <option value="Post Engagement">Post Engagement</option>
-                      <option value="App Installs">App Installs</option>
-                      <option value="Page Likes">Page Likes</option>
-                      <option value="Reach">Reach</option>
-                      <option value="Event Attendance">Event Attendance</option>
-                      <option value="Offer Claims">Offer Claims</option>
-                      <option value="Video Views">Video Views</option>
-                      <option value="Leads">Leads</option>
-                      <option value="FACTOR">FACTOR</option>
-                    </select>
-                    <label class="active">Deal Type</label>
-                  </div>
-                  <div class=" input-field col s2">
-                      <input type="checkbox" id="cost_plus8" name="costplus8" checked="{{isChecked8}}">
-                      <label for="cost_plus8">Cost Plus?</label>
-                  </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="cost-plus-percent8" name="costPlus8" value="{{costPlusPercent8}}">
-                    <label for="cost-plus-percent8" class="active">Cost Plus Percent</label>
-                  </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="start-date8" name="startDate8" value="{{startDate8}}">
-                    <label for="start-date8" class="active">Start Date</label>
-                  </div>
-                  <div class="input-field col s2">
-                    <input type="text" id="end-date8" name="endDate8" value="{{endDate8}}">
-                    <label for="end-date8" class="active">End Date</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="price-input8" name="price8" value="{{price8}}">
-                    <label for="price-input8" class="active">Price</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="budget-input8" name="budget8" value="{{budget8}}">
-                    <label for="budget-input8" class="active">Budget (no commas in input, ex: 1800.00)</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input type="text" id="quantity-input8" name="quantity8" value={{quantity8}}>
-                    <label for="quantity-input8" class="active">Quantity</label>
-                  </div>
-                </div>
-              </div>
-            </li>
-
           </ul>
-          <h2>Notes</h2>
-          <div class="row">
-            <div class="input-field col s12">
-              <textarea name="notes" class="materialize-textarea" id="textarea1" placeholder="write down any notes for this initiative" value="{{notes}}"></textarea>
-              <label for="textarea1"></label>
+        {{/each}}
+      <h2>Notes</h2>
+        <div class="row">
+          <div class="input-field col s12">
+            <textarea name="notes" class="materialize-textarea" id="textarea1" placeholder="write down any notes for this initiative" value="{{notes}}"></textarea>
+            <label for="textarea1"></label>
+          </div>
+        </div>
+        <h2>Campaigns Within This Initiative</h2>
+        <div class="row">
+          <div class="col s4">
+            <div class="collection">
+              {{#each getCampaigns.names}}
+                <li class="collection-item">{{this}}</li>
+              {{/each}}
             </div>
           </div>
-          <h2>Campaigns Within This Initiative</h2>
-          <div class="row">
-            <div class="col s4">
-              <div class="collection">
-                {{#each getCampaigns.names}}
-                  <li class="collection-item">{{this}}</li>
-                {{/each}}
-              </div>
-            </div>
-          </div>
-          <a href="/admin/initiatives/{{_id}}/edit/campaigns">Edit Campaigns Associated with this Initiative</a>
-          <br /><br />
-          <button class="btn waves-effect waves-light" type="submit" name="action">Update Initiative</button>
-        {{/with}}
-      </form>
+        </div>
+        <a href="/admin/initiatives/{{_id}}/edit/campaigns">Edit Campaigns Associated with this Initiative</a>
+        <br /><br />
+        <button class="btn waves-effect waves-light" type="submit" name="action">Update Initiative</button>
+      {{/with}}
+    </form>
   </div>
 </template>

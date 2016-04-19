@@ -7,13 +7,13 @@ Meteor.methods({
     let lastThreeMonths = false;
     const now = moment();
     // if now is after startDate AND now isBefore endDate active = true
-    if (now.isAfter(moment(data.startDate, moment.ISO_8601)) && now.isBefore(moment(data.endDate, moment.ISO_8601))) {
+    if (now.isAfter(moment(data.lineItems[0].startDate, moment.ISO_8601)) && now.isBefore(moment(data.lineItems[0].endDate, moment.ISO_8601))) {
       active = true;
     }
-    if (now.diff(moment(data.endDate, moment.ISO_8601), "days") <= 31) {
+    if (now.diff(moment(data.lineItems[0].endDate, moment.ISO_8601), "days") <= 31) {
       recentlyEnded = true;
     }
-    if (now.diff(moment(data.endDate, moment.ISO_8601), "days") <= 90) {
+    if (now.diff(moment(data.lineItems[0].endDate, moment.ISO_8601), "days") <= 90) {
       lastThreeMonths = true;
     }
 
