@@ -7,151 +7,32 @@ Meteor.methods({
     let lastThreeMonths = false;
     const now = moment();
     // if now is after startDate AND now isBefore endDate active = true
-    if (now.isAfter(moment(data.startDate, "MM-DD-YYYY")) && now.isBefore(moment(data.endDate, "MM-DD-YYYY"))) {
+    if (now.isAfter(moment(data.startDate, moment.ISO_8601)) && now.isBefore(moment(data.endDate, moment.ISO_8601))) {
       active = true;
     }
-
-    if (now.diff(moment(data.endDate, "MM-DD-YYYY"), "days") <= 31) {
+    if (now.diff(moment(data.endDate, moment.ISO_8601), "days") <= 31) {
       recentlyEnded = true;
     }
-
-    if (now.diff(moment(data.endDate, "MM-DD-YYYY"), "days") <= 90) {
+    if (now.diff(moment(data.endDate, moment.ISO_8601), "days") <= 90) {
       lastThreeMonths = true;
     }
 
     Initiatives.insert({
-      inserted_date: moment().format("MM-DD-YYYY hh:mm a"),
+      inserted_date: moment().toISOString(),
       name: data.name,
       search_text: data.search_text,
       brand: data.brand,
       agency: data.agency,
       notes: data.notes,
-      platform: data.platform,
-      objective: data.objective,
-      dealType: data.dealType,
-      budget: data.budget,
-      startDate: moment(data.startDate, "MM-DD-YYYY").toISOString(),
-      endDate: moment(data.endDate, "MM-DD-YYYY").toISOString(),
-      quantity: data.quantity,
-      price: data.price,
-      costPlus: data.cost_plus,
-      costPlusPercent: data.costPlusPercent,
-      percentTotal: data.percent_total,
-      percentTotalPercent: data.percentTotalPercent,
-      isClient: data.is_client,
-      isClientPercent: data.isClientPercent,
-
-      platform2: data.platform2,
-      objective2: data.objective2,
-      dealType2: data.dealType2,
-      budget2: data.budget2,
-      startDate2: moment(data.startDate2, "MM-DD-YYYY").toISOString(),
-      endDate2: moment(data.endDate2, "MM-DD-YYYY").toISOString(),
-      quantity2: data.quantity2,
-      price2: data.price2,
-      costPlus2: data.cost_plus2,
-      costPlusPercent2: data.costPlusPercent2,
-      percentTotal2: data.percent_total2,
-      percentTotalPercent2: data.percentTotalPercent2,
-      isClient2: data.is_client2,
-      isClientPercent2: data.isClientPercent2,
-
-      platform3: data.platform3,
-      objective3: data.objective3,
-      dealType3: data.dealType3,
-      budget3: data.budget3,
-      startDate3: moment(data.startDate3, "MM-DD-YYYY").toISOString(),
-      endDate3: data.endDate3,
-      quantity3: data.quantity3,
-      price3: data.price3,
-      costPlus3: data.cost_plus3,
-      costPlusPercent3: data.costPlusPercent3,
-      percentTotal3: data.percent_total3,
-      percentTotalPercent3: data.percentTotalPercent3,
-      isClient3: data.is_client3,
-      isClientPercent3: data.isClientPercent3,
-
-      platform4: data.platform4,
-      objective4: data.objective4,
-      dealType4: data.dealType4,
-      budget4: data.budget4,
-      startDate4: moment(data.startDate4, "MM-DD-YYYY").toISOString(),
-      endDate4: data.endDate4,
-      quantity4: data.quantity4,
-      price4: data.price4,
-      costPlus4: data.cost_plus4,
-      costPlusPercent4: data.costPlusPercent4,
-      percentTotal4: data.percent_total4,
-      percentTotalPercent4: data.percentTotalPercent4,
-      isClient4: data.is_client4,
-      isClientPercent4: data.isClientPercent4,
-
-      platform5: data.platform5,
-      objective5: data.objective5,
-      dealType5: data.dealType5,
-      budget5: data.budget5,
-      startDate5: moment(data.startDate5, "MM-DD-YYYY").toISOString(),
-      endDate5: data.endDate5,
-      quantity5: data.quantity5,
-      price5: data.price5,
-      costPlus5: data.cost_plus5,
-      costPlusPercent5: data.costPlusPercent5,
-      percentTotal5: data.percent_total5,
-      percentTotalPercent5: data.percentTotalPercent5,
-      isClient5: data.is_client5,
-      isClientPercent5: data.isClientPercent5,
-
-      platform6: data.platform6,
-      objective6: data.objective6,
-      dealType6: data.dealType6,
-      budget6: data.budget6,
-      startDate6: data.startDate6,
-      endDate6: data.endDate6,
-      quantity6: data.quantity6,
-      price6: data.price6,
-      costPlus6: data.cost_plus6,
-      costPlusPercent6: data.costPlusPercent6,
-      percentTotal6: data.percent_total6,
-      percentTotalPercent6: data.percentTotalPercent6,
-      isClient6: data.is_client6,
-      isClientPercent6: data.isClientPercent6,
-
-      platform7: data.platform7,
-      objective7: data.objective7,
-      dealType7: data.dealType7,
-      budget7: data.budget7,
-      startDate7: data.startDate7,
-      endDate7: data.endDate7,
-      quantity7: data.quantity7,
-      price7: data.price7,
-      costPlus7: data.cost_plus7,
-      costPlusPercent7: data.costPlusPercent7,
-      percentTotal7: data.percent_total7,
-      percentTotalPercent7: data.percentTotalPercent7,
-      isClient7: data.is_client7,
-      isClientPercent7: data.isClientPercent7,
-
-      platform8: data.platform8,
-      objective8: data.objective8,
-      dealType8: data.dealType8,
-      budget8: data.budget8,
-      startDate8: data.startDate8,
-      endDate8: data.endDate8,
-      quantity8: data.quantity8,
-      price8: data.price8,
-      costPlus8: data.cost_plus8,
-      costPlusPercent8: data.costPlusPercent8,
-      percentTotal8: data.percent_total8,
-      percentTotalPercent8: data.percentTotalPercent8,
-      isClient8: data.is_client8,
-      isClientPercent8: data.isClientPercent8,
-
+      tags: data.tags,
+      lineItems: data.lineItems,
       campaign_ids: campArray,
       campaign_names: campNameArray,
       active: active,
       recentlyEnded: recentlyEnded,
       lastThreeMonths: lastThreeMonths
     });
+
     return "success";
   },
   'removeInitiatives': function () {

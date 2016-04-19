@@ -207,8 +207,8 @@ Template.initiativesHome.helpers({
     ).fetch();
 
     inits.forEach(el => {
-      el.startDate = moment(el.startDate).format("MM-DD-YYYY hh:mm a");
-      el.endDate = moment(el.endDate).format("MM-DD-YYYY hh:mm a");
+      el.startDate = moment(el.startDate, moment.ISO_8601).format("MM-DD-YYYY hh:mm a");
+      el.endDate = moment(el.endDate, moment.ISO_8601).format("MM-DD-YYYY hh:mm a");
     });
 
     return inits;
