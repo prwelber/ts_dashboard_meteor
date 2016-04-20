@@ -26,6 +26,10 @@ Template.initiativeHomepage.onRendered(function () {
     in_duration: 400,
     out_duration: 300
   });
+   $(document).ready(function(){
+    $('ul.tabs').tabs();
+  });
+
 
   const initiative = Initiatives.findOne({_id: FlowRouter.current().params._id})
 
@@ -49,24 +53,36 @@ Template.initiativeHomepage.helpers({
     })
     return camps;
   },
+  'isTabDisabled': (num) => {
+    const init = Template.instance().templateDict.get('initiative');
+    // substract 1 because line item number does not perfectly map
+    // to array indexes
+    if (! init.lineItems[num - 1].dealType) {
+      return "disabled";
+    }
+  },
+  'addOne': function (num) {
+    return num + 1;
+  },
   'formatDate': (date) => {
     return moment(date, moment.ISO_8601).format("MM-DD-YYYY hh:mm a");
+  },
+  'formatMoney': (num) => {
+    return mastFunc.money(num);
+  },
+  'formatPercent': (num) => {
+    return numeral(num).format("0.000%")
   },
   'initiative': function () {
     const initiative = Template.instance().templateDict.get('initiative');
     initiative.budget = mastFunc.money(initiative.budget);
     initiative.quantity = numeral(initiative.quantity).format("0,0");
     initiative.price = mastFunc.money(initiative.price);
-
-    // for (let key in initiative) {
-    //   if (/Date/.test(key) === true) {
-    //     if (initiative[key] !== null) {
-    //       initiative[key] = moment(initiative[key], moment.ISO_8601).format("MM-DD-YYYY");
-    //     }
-    //   }
-    // }
-
     return initiative;
+  },
+  'grabLineItem': (num) => {
+    const init = Template.instance().templateDict.get('initiative');
+    return init.lineItems[num];
   },
   'initiativeStats': function () {
     const init = Template.instance().templateDict.get('initiative');
@@ -83,7 +99,64 @@ Template.initiativeHomepage.helpers({
 
     return init.aggregateData;
   },
-  'objectiveAggregates': function () {
+  'netCostPlusStats': (lineItemNumber) => {
+    const init = Template.instance().templateDict.get('initiative');
+    let arrToReturn = [];
+
+    const getLength = function getLength(initiative) {
+      let counter = 0
+      for (let i = 0; i <= initiative.lineItems.length - 1; i++) {
+        if (initiative.lineItems[i].dealType) {
+          counter++;
+        }
+      }
+      console.log('counter', counter);
+      return counter;
+    }
+
+    const len = getLength(init);
+
+    for (let i = 0; i <= len - 1; i++) {
+      let objToReturn = {};
+      let objectiveAg;
+      const objective = init.lineItems[i].objective.split(' ').join('_').toUpperCase();
+      // get the aggregate data according to line item objective aggregate
+      for (let key in init) {
+        if (key === objective) {
+          objectiveAg = init[key];
+        }
+      }
+      if (init.lineItems[i].cost_plus === true) {
+        let costPlus = parseInt(init.lineItems[i].costPlusPercent);
+
+        costPlus = costPlus.toString().split('');
+        costPlus.unshift(".");
+        costPlus = 1 + parseFloat(costPlus.join(''));
+
+        console.log("costPlus = ", costPlus);
+        console.log("objective stats", objectiveAg[0]);
+
+        objToReturn['netBudget'] = parseFloat(init.lineItems[i].budget) / costPlus;
+        objToReturn['netSpend'] = parseFloat(objectiveAg[0].spend) / costPlus;
+        objToReturn['spendPercent'] = ((objToReturn.netBudget - objToReturn.netSpend) / objToReturn.netBudget);
+        objToReturn['netCPM'] = objToReturn.netSpend / objectiveAg[0].impressions;
+        objToReturn['netCPC'] = objToReturn.netSpend / objectiveAg[0].clicks;
+
+
+        if (objectiveAg[0].likes === null || objectiveAg[0].likes === '' || objectiveAg[0].likes === 0) {
+          objToReturn['netCPL'] = 0;
+        } else {
+          objToReturn['netCPL'] = objToReturn.netSpend / objectiveAg[0].likes;
+        }
+      }
+
+      arrToReturn.push(objToReturn);
+    }
+    console.log(arrToReturn);
+    return arrToReturn;
+
+  },
+  'objectiveAggregates': () => {
     const init = Template.instance().templateDict.get('initiative');
     // TODO RIGHT HERE
     const camps = Template.instance().templateDict.get('campaigns');
@@ -160,10 +233,10 @@ Template.initiativeHomepage.helpers({
 
       call('aggregateForChart', initiative)
       .then(function (res) {
-        console.log("result from promise", res)
+        // console.log("result from promise", res)
         Session.set('res', res);
         totes = res[0][type]
-        console.log('totes', totes);
+        // console.log('totes', totes);
       }).catch(function (err) {
         console.log('uh no error', err)
       });
@@ -181,7 +254,7 @@ Template.initiativeHomepage.helpers({
           dr          = moment.range(start, end),
           arrayOfDays = dr.toArray('days');
 
-      console.log(start);
+      // console.log(start);
 
       if (arrayOfDays) {
         arrayOfDays.forEach(el => {
@@ -189,8 +262,8 @@ Template.initiativeHomepage.helpers({
         });
       }
 
-      console.log(arrayOfDays);
-      console.log(labels);
+      // console.log(arrayOfDays);
+      // console.log(labels);
 
       return {
         chart: {

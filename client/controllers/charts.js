@@ -35,7 +35,7 @@ Template.charts.helpers({
     const initiative = Template.instance().templateDict.get('initiative');
     // for getting evenly distrubuted output
     const labels        = [], // this will be the date range,
-        days            = moment(initiative.endDate, moment.ISO_8601).diff(moment(initiative.startDate, moment.ISO_8601), 'days'),
+        days            = moment(initiative.lineItems[0].endDate, moment.ISO_8601).diff(moment(initiative.lineItems[0].startDate, moment.ISO_8601), 'days'),
         avg             = parseFloat(numeral(initiative.lineItems[0].quantity / days).format("0.00")),
         spendAvg        = parseFloat(numeral(initiative.lineItems[0].budget / days).format("0.00")),
         avgData         = [],
@@ -71,25 +71,23 @@ Template.charts.helpers({
 
     call('aggregateForChart', initiative)
     .then(function (res) {
-      console.log("result from promise", res)
+      // console.log("result from promise", res)
       Session.set('res', res);
       totes = res[0][type]
     }).catch(function (err) {
       console.log('uh no error', err)
     });
 
-    Meteor.setTimeout(function () {
       Session.get('res').forEach(el => {
         totes += el[type];
         spendTotal += el.spend;
         actionToChart.push(totes);
         spendChart.push(spendTotal);
       });
-    }, 100)
 
     // for getting x axis labels
     var start       = moment(Session.get('res')[0]['date'], "MM-DD"),
-        end         = new Date(initiative.endDate),
+        end         = new Date(initiative.lineItems[0].endDate),
         dr          = moment.range(start, end),
         arrayOfDays = dr.toArray('days');
 
@@ -97,8 +95,8 @@ Template.charts.helpers({
       labels.push(moment(el).format("MM-DD"))
     });
 
-    console.log(actionToChart);
-    console.log(spendChart);
+    // console.log(actionToChart);
+    // console.log(spendChart);
 
     return {
 
@@ -171,11 +169,11 @@ Template.charts.helpers({
 
     //for setting dealType
     let type;
-    if (initiative.dealType === "CPM") {
+    if (initiative.lineItems[0].dealType === "CPM") {
       type = "impressions";
-    } else if (initiative.dealType === "CPC") {
+    } else if (initiative.lineItems[0].dealType === "CPC") {
       type = "clicks";
-    } else if (initiative.dealType === "CPL") {
+    } else if (initiative.lineItems[0].dealType === "CPL") {
       type = "like";
     }
 
@@ -192,7 +190,7 @@ Template.charts.helpers({
     // for getting x axis labels
     let labels      = [],
         start       = moment(Session.get('res')[0]['date'], "MM-DD"),
-        end         = new Date(initiative.endDate);
+        end         = new Date(initiative.lineItems[0].endDate);
         dr          = moment.range(start, end),
         arrayOfDays = dr.toArray('days');
 
@@ -269,7 +267,7 @@ Template.charts.helpers({
     // for getting x axis labels
     let labels = [];
     var start  = moment(Session.get('res')[0]['date'], "MM-DD");
-    var end    = new Date(initiative.endDate);
+    var end    = new Date(initiative.lineItems[0].endDate);
     var dr     = moment.range(start, end);
     var arrayOfDays = dr.toArray('days');
 
@@ -286,17 +284,17 @@ Template.charts.helpers({
     let costPerArray = [];
 
        Session.get('res').forEach(el => {
-        if (initiative.dealType === "CPM") {
+        if (initiative.lineItems[0].dealType === "CPM") {
           actionArray.push(el.impressions);
           costPerArray.push(el.cpm);
           type = "impressions";
           costType = "CPM";
-        } else if (initiative.dealType === "CPC") {
+        } else if (initiative.lineItems[0].dealType === "CPC") {
           actionArray.push(el.clicks);
           costPerArray.push(el.cpc);
           type = "clicks";
           costType = "CPC";
-        } else if (initiative.dealType === "CPL") {
+        } else if (initiative.lineItems[0].dealType === "CPL") {
           actionArray.push(el.like);
           costPerArray.push(el.cost_per_like);
           type = "like";
@@ -475,7 +473,7 @@ Template.charts.helpers({
   'ageGenderChart': function () {
     const initiative = Template.instance().templateDict.get('initiative');
     var call = Promise.promisify(Meteor.call);
-    const dealType = initiative.dealType;
+    const dealType = initiative.lineItems[0].dealType;
 
     call('ageGenderChart', initiative)
     .then(function (ageGenderData) {
@@ -489,11 +487,11 @@ Template.charts.helpers({
 
     let action;
 
-    if (initiative.dealType === "CPC") {
+    if (initiative.lineItems[0].dealType === "CPC") {
       action = "clicks"
-    } else if (initiative.dealType === "CPM") {
+    } else if (initiative.lineItems[0].dealType === "CPM") {
       action = "impressions"
-    } else if (initiative.dealType === "CPL") {
+    } else if (initiative.lineItems[0].dealType === "CPL") {
       action = "likes"
     }
 
