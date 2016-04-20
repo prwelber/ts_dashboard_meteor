@@ -9,7 +9,7 @@ SyncedCron.config({
 SyncedCron.add({
   name: "Clean null values from Insights",
   schedule: function (parser) {
-    return parser.text('every 59 mins');
+    return parser.text('every 5 mins');
   },
   job: function (time) {
 

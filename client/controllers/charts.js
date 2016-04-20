@@ -228,9 +228,11 @@ Template.charts.helpers({
           text: type
         },
         plotLines: [{
-          value: 0,
-          width: 1,
-          color: '#808080'
+          value: parseFloat(initiative.lineItems[0].price),
+          width: 3,
+          color: '#ff0000',
+          zIndex: 10,
+          label:{text:'Price'}
         }]
       },
 

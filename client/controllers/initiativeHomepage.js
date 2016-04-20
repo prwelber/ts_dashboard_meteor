@@ -71,7 +71,7 @@ Template.initiativeHomepage.helpers({
     return mastFunc.money(num);
   },
   'formatPercent': (num) => {
-    return numeral(num).format("0.000%")
+    return numeral(num).format("00.000") + "%"
   },
   'initiative': function () {
     const initiative = Template.instance().templateDict.get('initiative');
@@ -103,6 +103,13 @@ Template.initiativeHomepage.helpers({
     const init = Template.instance().templateDict.get('initiative');
     let arrToReturn = [];
 
+    const stringToCostPlusPercentage = function stringToCostPlusPercentage (num) {
+        num = num.toString().split('');
+        num.unshift(".");
+        num = 1 + parseFloat(num.join(''));
+        return num;
+    }
+
     const getLength = function getLength(initiative) {
       let counter = 0
       for (let i = 0; i <= initiative.lineItems.length - 1; i++) {
@@ -110,7 +117,6 @@ Template.initiativeHomepage.helpers({
           counter++;
         }
       }
-      console.log('counter', counter);
       return counter;
     }
 
@@ -128,17 +134,11 @@ Template.initiativeHomepage.helpers({
       }
       if (init.lineItems[i].cost_plus === true) {
         let costPlus = parseInt(init.lineItems[i].costPlusPercent);
-
-        costPlus = costPlus.toString().split('');
-        costPlus.unshift(".");
-        costPlus = 1 + parseFloat(costPlus.join(''));
-
-        console.log("costPlus = ", costPlus);
-        console.log("objective stats", objectiveAg[0]);
+        costPlus = stringToCostPlusPercentage(costPlus);
 
         objToReturn['netBudget'] = parseFloat(init.lineItems[i].budget) / costPlus;
         objToReturn['netSpend'] = parseFloat(objectiveAg[0].spend) / costPlus;
-        objToReturn['spendPercent'] = ((objToReturn.netBudget - objToReturn.netSpend) / objToReturn.netBudget);
+        objToReturn['spendPercent'] = ((100 * objToReturn.netSpend) / objToReturn.netBudget);
         objToReturn['netCPM'] = objToReturn.netSpend / objectiveAg[0].impressions;
         objToReturn['netCPC'] = objToReturn.netSpend / objectiveAg[0].clicks;
 
@@ -148,11 +148,29 @@ Template.initiativeHomepage.helpers({
         } else {
           objToReturn['netCPL'] = objToReturn.netSpend / objectiveAg[0].likes;
         }
+      } else if (init.lineItems[i].percent_total === true) {
+        let percentTotal = parseInt(init.lineItems[i].percentTotalPercent) / 100;
+
+        const budget = parseFloat(init.lineItems[i].budget);
+        const spend = parseFloat(objectiveAg[0].spend)
+        const abjAg = objectiveAg[0];
+
+        objToReturn['netBudget'] = (budget - (budget * percentTotal));
+        objToReturn['netSpend'] =  (spend - (spend * percentTotal));
+        objToReturn['spendPercent'] = ((100 * objToReturn.netSpend) / objToReturn.netBudget);
+        objToReturn['netCPM'] = objToReturn.netSpend / objectiveAg[0].impressions;
+        objToReturn['netCPC'] = objToReturn.netSpend / objectiveAg[0].clicks;
+
+        if (objectiveAg[0].likes === null || objectiveAg[0].likes === '' || objectiveAg[0].likes === 0) {
+          objToReturn['netCPL'] = 0;
+        } else {
+          objToReturn['netCPL'] = objToReturn.netSpend / objectiveAg[0].likes;
+        }
+
       }
 
       arrToReturn.push(objToReturn);
     }
-    console.log(arrToReturn);
     return arrToReturn;
 
   },
@@ -188,13 +206,10 @@ Template.initiativeHomepage.helpers({
 
     });
 
-    // console.log("returnArray:", returnArray);
-
     return returnArray;
   },
   'modalDeliveryChart': function () {
     const initiative = Template.instance().templateDict.get('initiative');
-    // console.log('initiative for chart:', initiative);
     const labels     = [], // this will be the date range
           timeFormat = "MM-DD-YYYY",
           days       = moment(initiative.lineItems[0].endDate).diff(moment(initiative.lineItems[0].startDate), 'days'),
@@ -205,7 +220,6 @@ Template.initiativeHomepage.helpers({
 
     let total           = 0,
         idealSpendTotal = 0;
-    // console.log('avg', avg);
     for (let i = 0; i < days; i++) {
         total = total + avg;
         idealSpendTotal = idealSpendTotal + spendAvg;
@@ -233,20 +247,22 @@ Template.initiativeHomepage.helpers({
 
       call('aggregateForChart', initiative)
       .then(function (res) {
-        // console.log("result from promise", res)
         Session.set('res', res);
         totes = res[0][type]
-        // console.log('totes', totes);
       }).catch(function (err) {
         console.log('uh no error', err)
       });
 
-      Session.get('res').forEach(el => {
-        totes += el[type];
-        spendTotal += el.spend;
-        actionToChart.push(totes);
-        spendChart.push(spendTotal);
-      });
+      try {
+        Session.get('res').forEach(el => {
+          totes += el[type];
+          spendTotal += el.spend;
+          actionToChart.push(totes);
+          spendChart.push(spendTotal);
+        });
+      } catch(e) {
+        console.log("Error running forEach", e.message);
+      }
 
       // for getting x axis labels
       let start       = moment(Session.get('res')[0]['date'], "MM-DD"),
@@ -254,16 +270,11 @@ Template.initiativeHomepage.helpers({
           dr          = moment.range(start, end),
           arrayOfDays = dr.toArray('days');
 
-      // console.log(start);
-
       if (arrayOfDays) {
         arrayOfDays.forEach(el => {
           labels.push(moment(el).format("MM-DD"))
         });
       }
-
-      // console.log(arrayOfDays);
-      // console.log(labels);
 
       return {
         chart: {
@@ -271,7 +282,7 @@ Template.initiativeHomepage.helpers({
         },
         // TODO FIX THIS
         title: {
-          text: "Some Text Here"
+          text: "Delivery"
         },
 
         subtitle: {
@@ -308,10 +319,14 @@ Template.initiativeHomepage.helpers({
         },
 
         legend: {
-          layout: 'vertical',
-          align: 'right',
-          verticalAlign: 'middle',
-          borderWidth: 0
+          borderWidth: 0,
+          layout: 'horizontal',
+          backgroundColor: '#FFFFFF',
+          align: 'left',
+          verticalAlign: 'bottom',
+          floating: true,
+          x: 0,
+          y: -50
         },
 
         series: [{
@@ -328,6 +343,107 @@ Template.initiativeHomepage.helpers({
           data: idealSpend
         }]
       }
+  },
+  'costPerChart': () => {
+    const initiative = Template.instance().templateDict.get('initiative');
+
+    //for setting dealType
+    let type;
+    let actionType;
+    if (initiative.lineItems[0].dealType === "CPM") {
+      type = "impressions";
+      actionType = "cpm";
+    } else if (initiative.lineItems[0].dealType === "CPC") {
+      type = "clicks";
+      actionType = "cpc";
+    } else if (initiative.lineItems[0].dealType === "CPL") {
+      type = "like";
+      actionType = "cpl";
+    }
+
+    let chart = [];
+
+    Session.get('res').forEach(el => {
+      chart.push(el[actionType]);
+    });
+
+    // for getting x axis labels
+    let labels      = [],
+        start       = moment(Session.get('res')[0]['date'], "MM-DD"),
+        end         = moment(initiative.lineItems[0].endDate, moment.ISO_8601),
+        dr          = moment.range(start, end),
+        arrayOfDays = dr.toArray('days');
+
+    console.log(start);
+    console.log(end);
+    console.log('dr', dr);
+    console.log('arr of days', arrayOfDays);
+
+    arrayOfDays.forEach(el => {
+      labels.push(moment(el).format("MM-DD"))
+    });
+    console.log('labels', labels);
+    console.log('chartData', chart);
+
+    // build chart
+    return {
+
+      chart: {
+        zoomType: 'x'
+      },
+
+      title: {
+        text: "Cost per Type for Initiative"
+      },
+
+      subtitle: {
+        text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+      },
+
+      tooltip: {
+        valueSuffix: '',
+        shared: true,
+        crosshairs: true
+      },
+      xAxis: {
+        categories: labels
+      },
+
+      yAxis: {
+        title: {
+          text: actionType
+        },
+        plotLines: [{
+          value: parseFloat(initiative.lineItems[0].price),
+          width: 3,
+          color: '#ff0000',
+          zIndex: 10,
+          label:{text:'Price'}
+        }]
+      },
+
+      plotOptions: { // removes the markers along the plot lines
+        series: {
+          marker: {
+            enabled: false
+          }
+        }
+      },
+
+      legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'bottom',
+        floating: true,
+        x: 0,
+        y: -50
+      },
+
+      series: [{
+        name: actionType,
+        data: chart
+      }]
+    } // end of chart return
   }
 });
 

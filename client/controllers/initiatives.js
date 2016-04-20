@@ -235,6 +235,13 @@ Template.initiativesHome.helpers({
   },
   'formatDate': (date) => {
     return moment(date, moment.ISO_8601).format("MM-DD-YYYY hh:mm a");
+  },
+  'assignAgency': () => {
+    console.log('this', this);
+    return this.agency;
+  },
+  'assignBrand': () => {
+    return this.brand;
   }
 });
 

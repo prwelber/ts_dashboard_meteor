@@ -90,7 +90,6 @@ Meteor.methods({
     return data.name;
   },
   'getAggregate': function (name) {
-    console.log('getAggregate running')
 
     // This function aggregates campaignInsight data for an initiative
     let pipeline = [
@@ -123,7 +122,6 @@ Meteor.methods({
           aggregateData: result[0]
       }
     });
-    // console.log("result of getAggregate", result)
     return result[0];
   },
   'aggregateObjective': function (name) {
@@ -146,7 +144,6 @@ Meteor.methods({
     })
     // const objectiveArr = [initiative.objective, initiative.objective2, initiative.objective3, initiative.objective4, initiative.objective5, initiative.objective6, initiative.objective7, initiative.objective8];
     let cleanedArr = _.without(objectiveArr, null, ''); // removes any null values
-    console.log(cleanedArr);
     let objective; // to be reassigned and used in the pipeline
 
     const makePipeline = function makePipeline (name, objective) {
@@ -170,10 +167,7 @@ Meteor.methods({
 
     for (let i = 0; i < cleanedArr.length; i++) {
       cleanedArr[i] = cleanedArr[i].toUpperCase().split(' ').join('_');
-      // console.log("cleanedArr[i]", cleanedArr[i]);
       let result = CampaignInsights.aggregate(makePipeline(name, cleanedArr[i]));
-      // console.log("result", result);
-      // console.log("result[0]", result[0]);
       try {
         result[0]['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
         result[0]['cpc'] = result[0].spend / result[0].clicks;
@@ -184,11 +178,9 @@ Meteor.methods({
       }
         objectiveAggregateArray.push(result);
     }
-    // console.log('objectiveAggregateArray:', objectiveAggregateArray);
     let setObject = {};
     for (let i = 0; i < objectiveAggregateArray.length; i++) {
       setObject = {[objectiveAggregateArray[i][0]['_id']]: objectiveAggregateArray[i]};
-      // console.log("setObject:", setObject);
       // inserting objectiveAggregate data into the intiative
       Initiatives.update(
         {name: name},
@@ -207,8 +199,6 @@ Meteor.methods({
     let avgClicks = parseInt(init.aggregateData[0].clicks) / parseInt(timeDiff);
     let avgCPC = parseInt(init.aggregateData[0].cpc) / parseInt(timeDiff);
     let avgCPM = parseInt(init.aggregateData[0].cpm) / parseInt(timeDiff);
-    // console.log("avg clicks", avgClicks); // 2.14621409921671
-    // console.log('total clicks', init.aggregateData[0].clicks)
     /*
     This function will be called with the avgStat, which is calculated above
     the days, which will be passed in from client
@@ -223,7 +213,6 @@ Meteor.methods({
       let projection;
       // cost per times days it's been running (timeDiff) + single cost per divided (timeDiff plus days)
     }
-    // console.log("projection", projectionFunc(avgCPM, days, init.aggregateData[0].cpm));
     return projectionFunc(days);
 
   },

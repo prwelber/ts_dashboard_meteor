@@ -141,7 +141,7 @@ Template.campaignDashboard.helpers({
 
       now.isAfter(ended) ? '' : timeDiff = now.diff(started, 'days');
 
-      console.log(numeral(initiative.aggregateData.clicks / timeDiff).format("0,0"))
+      // console.log(numeral(initiative.aggregateData.clicks / timeDiff).format("0,0"))
 
       return {
         avgClicks: numeral(initiative.aggregateData.clicks / timeDiff).format("0,0"),

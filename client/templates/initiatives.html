@@ -91,10 +91,19 @@
           <li class="collection-item">
             <a href="/initiatives/{{_id}}/homepage"><span class="title" style="font-size: 20px;">{{name}}</span></a>
             <div class="row" style="margin-bottom: 5px;">
-              <div class="col s8">
+              <div class="col s12">
                 <p>{{formatDate lineItems.[0].startDate}} -- {{formatDate lineItems.[0].endDate}}</p>
               </div>
-              <div class="col s4">
+              <div class="col s3">
+                <p>Owner: Kathia</p>
+              </div>
+              <div class="col s3">
+                <p>Agency: {{agency}}</p>
+              </div>
+              <div class="col s3">
+                <p>Brand: {{brand}}</p>
+              </div>
+              <div class="col s3">
                 <p class="right-align {{isActiveClass}}">{{isActiveInitiative}}</p>
               </div>
               <div class="col s5">

@@ -79,7 +79,8 @@ Meteor.methods({
         data['cpc'] = data.spend / data.clicks;
         data['date_start'] = moment(data.date_start).format("MM-DD-YYYY hh:mm a");
         data['date_stop'] = moment(data.date_stop).format("MM-DD-YYYY hh:mm a");
-
+        data['campaign_name']
+        console.log('data from campaign insight', data);
         masterArray.push(data);
 
     } catch(e) {

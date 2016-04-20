@@ -1,6 +1,6 @@
 Meteor.methods({
   'aggregateForChart': function (initiative) {
-    console.log('aggregateForChart running');
+    // console.log('aggregateForChart running');
     let arr = [];
     /*
     below we are querying the daily breakdown collection for all the
@@ -50,14 +50,12 @@ Meteor.methods({
     let timeForm = "MM-DD-YYYY"
     let total = 0;
     try {
-
-      arr.forEach((el, index) => {
-          var diff = moment(arr[index].data.date_start, timeForm).diff(moment(arr[index + 1].data.date_start, timeForm), 'days');
-
-          if (diff < -1) {
-            total += Math.abs(diff) - 1;
-          }
-      });
+      for (let i = 0; i < arr.length; i++) {
+        var diff = moment(arr[i].data.date_start, timeForm).diff(moment(arr[i + 1].data.date_start, timeForm), 'days');
+        if (diff < -1) {
+          total += Math.abs(diff) - 1;
+        }
+      }
     } catch(e) {
         console.log("Error Message:", e.message);
     }
@@ -82,7 +80,7 @@ Meteor.methods({
 
           for (var j = 1; j < Math.abs(diff); j++) {
 
-            console.log("generated nums:", moment(arr[i].data.date_start, timeForm).add(j, 'd').format(timeForm));
+            // console.log("generated nums:", moment(arr[i].data.date_start, timeForm).add(j, 'd').format(timeForm));
 
             arr.splice(i + j, 0, {
               data: {
@@ -108,7 +106,7 @@ Meteor.methods({
       }
 
     } catch(e) {
-      console.log(e);
+      console.log("Error while accounting for gaps:", e);
     }
 
 
@@ -213,12 +211,10 @@ Meteor.methods({
         el.cost_per_like = 0;
       }
     });
-    // console.log("otherArray at the end", otherArray);
     return otherArray;
 
   },
   'hourlyChart': function (initiative) {
-    console.log('pieChart running');
     let campaignIds = initiative.campaign_ids // array of campaign ids
 
     let twentyFourHourArray = [];
@@ -262,7 +258,7 @@ Meteor.methods({
           twentyFourHourArray.push(result);
           time = time.add(1, 'hour');
         } catch(e) {
-          console.log(e);
+          console.log("Error in hourly chart", e);
           continue;
         }
 
@@ -272,7 +268,6 @@ Meteor.methods({
 
   },
   'ageGenderChart': function (initiative) {
-    console.log('ageGender running')
     const campaignIds = initiative.campaign_ids // array of campaign ids
     const ageGenderArray = [];
     let breakdown;
