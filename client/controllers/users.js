@@ -63,13 +63,6 @@ Template.editUser.events({
       initiatives: initArray
     };
 
-    // let selected = template.findAll("input[type=checkbox]:checked");
-    // let inits = _.map(selected, function(item) {
-    //     return item.value;
-    // });
-    // user['initiativePermissions'] = inits;
-
-
     console.log(user);
     const _id = FlowRouter.current().params._id;
     Meteor.call('updateUser', _id, user, function (err, res) {

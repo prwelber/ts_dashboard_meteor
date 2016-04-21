@@ -244,6 +244,9 @@ Template.initiativesHome.helpers({
   },
   'assignBrand': () => {
     return this.brand;
+  },
+  userInfo: () => {
+    return Meteor.user();
   }
 });
 
