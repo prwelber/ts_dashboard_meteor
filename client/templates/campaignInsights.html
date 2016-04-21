@@ -1,6 +1,6 @@
 <template name="campaignInsights">
-  {{!-- <div class="container"> --}}
-      {{#each fetchInsights}}
+  {{#if isReady "campaignInsightList"}}
+    {{#each fetchInsights}}
       <div class="row">
         <div class="col s12">
           <h2>
@@ -138,9 +138,10 @@
               </tbody>
             </table>
           {{/if}}
-
         </div>
       </div> {{!-- end of row --}}
-      {{/each}}
-  {{!-- </div> --}}
+    {{/each}}
+  {{else}}
+    <p>Loading....</p>
+  {{/if}}
 </template>

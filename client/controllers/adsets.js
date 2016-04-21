@@ -1,3 +1,5 @@
+var Promise = require('bluebird');
+
 Tracker.autorun(function () {
   if (FlowRouter.subsReady('AdSetsList')) {
     console.log('AdSetsList subs ready!');
@@ -5,14 +7,32 @@ Tracker.autorun(function () {
 });
 
 Template.adsets.helpers({
+  isReady: function (sub) {
+    const campaignNumber = FlowRouter.current().params.campaign_id;
+
+    if (FlowRouter.subsReady(sub) && AdSets.find({'data.campaign_id': campaignNumber}).count() === 0) {
+
+      var target = document.getElementById("spinner-div");
+      let spun = Blaze.render(Template.spin, target);
+
+      var call = Promise.promisify(Meteor.call);
+      call('getAdSets', campaignNumber)
+      .then(function (result) {
+        console.log("result from promise", result)
+        Blaze.remove(spun);
+      }).catch(function (err) {
+        console.log('uh no error', err)
+      });
+    } else {
+      return true;
+    }
+  },
   'getAdSets': function () {
-    console.log('checking for adSets');
-    let campaignNumber = FlowRouter.current().params.campaign_id;
-    let adSet = AdSets.findOne({'data.campaign_id': campaignNumber});
-    if (adSet) {
-      let adSets = AdSets.find({'data.campaign_id': campaignNumber}).fetch();
-      // formatting
-      adSets.forEach(el => {
+    const campaignNumber = FlowRouter.current().params.campaign_id;
+
+    if (AdSets.find({'data.campaign_id': campaignNumber}).count() >= 1) {
+      let adsets = AdSets.find({'data.campaign_id': campaignNumber}).fetch();
+      adsets.forEach(el => {
         console.log('formatting loop starting')
         for (let key in el.data) {
           if (key.startsWith("cost")) {       // format cost related data
@@ -25,18 +45,7 @@ Template.adsets.helpers({
         el.data.start_time = moment(el.data.start_time).format("MM-DD-YYYY hh:mm a");
         el.data.end_time = moment(el.data.end_time).format("MM-DD-YYYY hh:mm a");
       });
-      return adSets;
-    } else {
-      var target = document.getElementById("spinner-div");
-      let spun = Blaze.render(Template.spin, target);
-      console.log('gotta get adSets for this one', campaignNumber);
-      Meteor.call('getAdSets', campaignNumber, function (error, result) {
-          if (error) {
-            console.log(error);
-          } else {
-            Blaze.remove(spun);
-          }
-      });
+      return adsets;
     }
   },
   'getCampaignNumber': function () {

@@ -1,15 +1,14 @@
 <template name="adsets">
-  <div class="ten wide column">
+  <div class="col s10">
     <h2 class="center-align">AdSet Insights and Targeting</h2>
     <div class="divider"></div>
   </div>
+  {{#if isReady "AdSetsList"}}
     {{#each getAdSets}}
-    <div class="twelve wide column">
+    <div class="col s12">
       <h3>{{data.name}}</h3>
       <p>AdSet runtime: {{data.start_time}} -- {{data.end_time}}</p>
       <p>Optimization Goal: {{data.optimization_goal}}</p>
-
-
 
       <ul class="collection with-header">
         <li class="collection-header"><h3>Targeting</h3></li>
@@ -109,4 +108,7 @@
     {{else}}
       <p>No AdSets</p>
     {{/each}}
+  {{else}}
+    <p>Loading...</p>
+  {{/if}}
 </template>

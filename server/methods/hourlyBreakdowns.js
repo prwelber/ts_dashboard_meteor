@@ -6,7 +6,7 @@ Meteor.methods({
 });
 
 Meteor.methods({
-    'getHourlyBreakdown': function (accountNumber, campaignName, end_date) {
+    'getHourlyBreakdown': function (accountNumber, end_date) {
         let hourlyArray = [];
         let masterArray = [];
         let hourlyBreakdown;
@@ -84,7 +84,10 @@ Meteor.methods({
 });
 
 
-
+Meteor.publish("hourlyBreakdownsList", function (params) {
+    console.log('params for publish:', params);
+    return HourlyBreakdowns.find({'data.campaign_id': params});
+});
 
 
 

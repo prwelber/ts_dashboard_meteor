@@ -1,3 +1,4 @@
+var Promise = require('bluebird');
 
 Tracker.autorun(function () {
     if (FlowRouter.subsReady('hourlyBreakdownsList')) {
@@ -5,36 +6,43 @@ Tracker.autorun(function () {
     }
 });
 
+Template.hourlyBreakdowns.onCreated(function () {
+  this.templateDict = new ReactiveDict();
+  const camp = CampaignInsights.findOne({'data.campaign_id': FlowRouter.current().params.campaign_id});
+  this.templateDict.set('campData', camp.data);
+});
+
 Template.hourlyBreakdowns.helpers({
+    isReady: function (sub) {
+
+      const campaignNumber = FlowRouter.current().params.campaign_id;
+
+      if (FlowRouter.subsReady(sub) && HourlyBreakdowns.find({'data.campaign_id': campaignNumber}).count() === 0) {
+
+        var target = document.getElementById("spinner-div");
+        let spun = Blaze.render(Template.spin, target);
+
+        var call = Promise.promisify(Meteor.call);
+        call('getHourlyBreakdown', campaignNumber)
+        .then(function (result) {
+          console.log("result from promise", result)
+          Blaze.remove(spun);
+        }).catch(function (err) {
+          console.log('uh no error', err)
+        });
+      } else {
+        return true;
+      }
+    },
     'getHourlyBreakdown': function () {
-        console.log('checking for hourly breakdown');
-        let campaignNumber = FlowRouter.current().params.campaign_id;
-        let hourlyBreakdown = HourlyBreakdowns.findOne({'data.campaign_id': campaignNumber});
-        if (hourlyBreakdown) {
-            // console.log(hourlyBreakdown.data.inserted > hourlyBreakdown.data.date_stop);
-            // if (moment(hourlyBreakdown.data.inserted, "MM-DD-YYYY hh:mm a").isAfter(moment(hourlyBreakdown.data.date_stop, "MM-DD-YYYY hh:mm a"))) {
-            //     mastFunc.addToBox("This hourlyBreakdown has been updated after it ended, no need to refresh.");
-            // } else {
-            //     mastFunc.addToBox("last refresh: "+hourlyBreakdown.data.inserted+", refreshing will give you live stats");
-            // }
-            // initiative = NewInitiativeList.findOne({name: name});
-            return HourlyBreakdowns.find({'data.campaign_id': campaignNumber}, {sort: {'data.hourly_stats_aggregated_by_audience_time_zone': 1}});
-            //return array so that #each works in template
-        } else {
-            var target = document.getElementById("spinner-div");
-            let spun = Blaze.render(Template.spin, target);
-            console.log('gotta get the hourly breakdown for this one', campaignNumber);
-            Meteor.call('getHourlyBreakdown', campaignNumber, Session.get("campaign_name"), Session.get("end_date"), function (err, result) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    Blaze.remove(spun);
-                }
-            });
-        }
+      const campaignNumber = FlowRouter.current().params.campaign_id;
+
+      if (HourlyBreakdowns.find({'data.campaign_id': campaignNumber}).count() > 1) {
+        return HourlyBreakdowns.find({'data.campaign_id': campaignNumber}, {sort: {'data.hourly_stats_aggregated_by_audience_time_zone': 1}});
+      }
     },
     'campaignInfo': function () {
-        return CampaignInsights.findOne({'data.campaign_id': FlowRouter.current().params.campaign_id}).data;
+        return Template.instance().templateDict.get('campData');
     }
 });
 

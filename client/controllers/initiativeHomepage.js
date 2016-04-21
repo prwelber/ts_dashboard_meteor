@@ -208,7 +208,7 @@ Template.initiativeHomepage.helpers({
 
     return returnArray;
   },
-  'modalDeliveryChart': function () {
+  'modalDeliveryChart': () => {
     const initiative = Template.instance().templateDict.get('initiative');
     const labels     = [], // this will be the date range
           timeFormat = "MM-DD-YYYY",
@@ -265,16 +265,21 @@ Template.initiativeHomepage.helpers({
       }
 
       // for getting x axis labels
-      let start       = moment(Session.get('res')[0]['date'], "MM-DD"),
+      try {
+        let start       = moment(Session.get('res')[0]['date'], "MM-DD"),
           end         = new Date(initiative.lineItems[0].endDate),
           dr          = moment.range(start, end),
           arrayOfDays = dr.toArray('days');
 
-      if (arrayOfDays) {
-        arrayOfDays.forEach(el => {
-          labels.push(moment(el).format("MM-DD"))
-        });
+        if (arrayOfDays) {
+          arrayOfDays.forEach(el => {
+            labels.push(moment(el).format("MM-DD"))
+          });
+        }
+      } catch(e) {
+        console.log("Error creating x axis labels:", e);
       }
+
 
       return {
         chart: {
@@ -374,16 +379,9 @@ Template.initiativeHomepage.helpers({
         dr          = moment.range(start, end),
         arrayOfDays = dr.toArray('days');
 
-    console.log(start);
-    console.log(end);
-    console.log('dr', dr);
-    console.log('arr of days', arrayOfDays);
-
     arrayOfDays.forEach(el => {
       labels.push(moment(el).format("MM-DD"))
     });
-    console.log('labels', labels);
-    console.log('chartData', chart);
 
     // build chart
     return {

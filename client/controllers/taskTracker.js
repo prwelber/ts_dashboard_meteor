@@ -5,6 +5,13 @@ Tracker.autorun(func => {
 });
 
 Template.taskTracker.helpers({
+  isReady: function (sub) {
+    if (sub) {
+      return FlowRouter.subsReady(sub)
+    } else {
+      return FlowRouter.subsReady();
+    }
+  },
   "targetingChecked": function () {
     let camp = CampaignBasics.findOne({campaign_id: FlowRouter.current().params.campaign_id});
     return camp.approved_targeting === true ? "checked" : "";

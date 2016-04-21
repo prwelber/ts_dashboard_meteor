@@ -1,4 +1,4 @@
-// Meteor.subscribe('AdsList');
+const Promise = require('bluebird');
 
 Tracker.autorun(function () {
     if (FlowRouter.subsReady('AdsList')) {
@@ -7,21 +7,32 @@ Tracker.autorun(function () {
 });
 
 Template.ads.helpers({
-  'getAds': function () {
-    let campaignNumber = FlowRouter.current().params.campaign_id;
-    let ad = Ads.findOne({'data.campaign_id': campaignNumber});
-    if (!ad) {
-      console.log('need to fetch ads');
+  isReady: (sub) => {
+    const campaignNumber = FlowRouter.current().params.campaign_id;
+
+    if (FlowRouter.subsReady(sub) && Ads.find({'data.campaign_id': campaignNumber}).count() === 0) {
+
       var target = document.getElementById("spinner-div");
       let spun = Blaze.render(Template.spin, target);
-      Meteor.call('getAds', campaignNumber, function (error, result) {
-        if (result) {
-          Blaze.remove(spun);
-        }
+
+      var call = Promise.promisify(Meteor.call);
+      call('getAds', campaignNumber)
+      .then(function (result) {
+        console.log("result from promise", result)
+        Blaze.remove(spun);
+      }).catch(function (err) {
+        console.log('uh no error', err)
       });
     } else {
-      console.log("you should be seeing ads");
-      ads = Ads.find({'data.campaign_id': campaignNumber}).fetch();
+      return true;
+    }
+  },
+  'getAds': function () {
+    const campaignNumber = FlowRouter.current().params.campaign_id;
+
+    if (Ads.find({'data.campaign_id': campaignNumber}).count() >= 1) {
+      let ads = Ads.find({'data.campaign_id': campaignNumber}).fetch();
+
       try {
         // TODO control flow to handle single ad, set of ads, carousel
         // maybe do by length or mongo Array or by property / key name
@@ -50,9 +61,9 @@ Template.ads.helpers({
           });
         }
       } catch (e) {
-        console.log(e)
+        console.log("Error in ads controller", e);
       } finally {
-        return ads
+        return ads;
       }
     }
   },

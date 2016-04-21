@@ -8,6 +8,10 @@ mastFunc.money = function makeMoney(num) {
   return accounting.formatMoney(num, "$", 2);
 }
 
+mastFunc.num = function num (num) {
+  return numeral(num).format("0,0");
+}
+
 
 mastFunc.formatAll = function formatAll(dataObj) {
   dataObj.spend = mastFunc.money(dataObj.spend);
