@@ -3,6 +3,7 @@ Tracker.autorun(function () {
         // console.log('Initiatives and Insights subs ready!');
     }
 });
+import CampaignInsights from '/collections/CampaignInsights'
 
 Template.newInitiative.helpers({
     'getBrands': function () {

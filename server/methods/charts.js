@@ -1,3 +1,5 @@
+import Initiatives from '/collections/Initiatives'
+
 Meteor.methods({
   'aggregateForChart': function (initiative) {
     // console.log('aggregateForChart running');
@@ -215,7 +217,7 @@ Meteor.methods({
 
   },
   'hourlyChart': function (initiative) {
-    let campaignIds = initiative.campaign_ids // array of campaign ids
+    let campaignIds = initiative['campaign_ids'] // array of campaign ids
 
     let twentyFourHourArray = [];
     var time = moment('12:00 am', 'hh:mm a');

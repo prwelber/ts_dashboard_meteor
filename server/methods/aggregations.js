@@ -1,3 +1,5 @@
+import Initiatives from '/collections/Initiatives'
+
 Meteor.methods({
   'initiativeAggregation': function (params, afterDate, beforeDate) {
     let matchObj = {};

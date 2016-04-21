@@ -1,4 +1,4 @@
-// Meteor.subscribe('insightsBreakdownList');
+import CampaignInsights from '/collections/CampaignInsights'
 
 Tracker.autorun(function () {
     if (FlowRouter.subsReady('insightsBreakdownList')) {

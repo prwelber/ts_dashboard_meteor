@@ -1,3 +1,5 @@
+import CampaignInsights from '/collections/CampaignInsights'
+import Initiatives from '/collections/Initiatives'
 import dragula from 'dragula';
 
 Tracker.autorun(function () {

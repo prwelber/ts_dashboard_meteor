@@ -1,19 +1,21 @@
-var moment = require('moment');
-var range = require('moment-range');
-var Promise = require('bluebird');
-// import Chart from "chart.js"
+import { Meteor } from 'meteor/meteor';
+import { FlowRouter } from 'meteor/kadira:flow-router';
+import Initiatives from '/collections/Initiatives'
+import CampaignInsights from '/collections/CampaignInsights'
+
+const moment = require('moment');
+const range = require('moment-range');
+const Promise = require('bluebird');
 
 Tracker.autorun(function () {
-  if (FlowRouter.subsReady('campaignInsightList') && FlowRouter.subsReady('Initiatives')) {
-    // console.log('Insights and Initiatives subs are now ready!');
+  if (FlowRouter.subsReady('Initiatives')) {
+    console.log('Initiatives subs are now ready!');
   }
 });
 
-
 Template.charts.onCreated( function () {
   this.templateDict = new ReactiveDict();
-  // console.log(this) // this is the same as Template.instance()
-  // console.log(Template.instance())
+
   const initiative = Initiatives.findOne(
     {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
   });
@@ -31,72 +33,75 @@ Template.charts.events({
 });
 
 Template.charts.helpers({
+  isReady: (sub) => {
+    return FlowRouter.subsReady(sub);
+  },
   'deliveryChart': function () {
-    const initiative = Template.instance().templateDict.get('initiative');
-    // for getting evenly distrubuted output
-    const labels        = [], // this will be the date range,
-        days            = moment(initiative.lineItems[0].endDate, moment.ISO_8601).diff(moment(initiative.lineItems[0].startDate, moment.ISO_8601), 'days'),
-        avg             = parseFloat(numeral(initiative.lineItems[0].quantity / days).format("0.00")),
-        spendAvg        = parseFloat(numeral(initiative.lineItems[0].budget / days).format("0.00")),
+
+    let actionToChart   = [],
+        spendChart      = [],
+        spendTotal      = 0,
+        totes           = 0,
+        total           = 0,
+        idealSpendTotal = 0,
+        labels          = [],
         avgData         = [],
-        idealSpend      = [];
+        idealSpend      = [],
+        type;
 
-    let total           = 0,
-        idealSpendTotal = 0;
+    if (FlowRouter.subsReady()) {
+      const initiative = Template.instance().templateDict.get('initiative');
+      // for getting evenly distrubuted output
 
-    for (let i = 0; i < days; i++) {
-      total = total + avg;
-      idealSpendTotal = idealSpendTotal + spendAvg;
-      avgData.push(total);
-      idealSpend.push(idealSpendTotal);
-    }
+    const days = moment(initiative.lineItems[0].endDate, moment.ISO_8601).diff(moment(initiative.lineItems[0].startDate, moment.ISO_8601), 'days');
+    const avg = parseFloat(numeral(initiative.lineItems[0].quantity / days).format("0.00"));
+    const spendAvg = parseFloat(numeral(initiative.lineItems[0].budget / days).format("0.00"));
 
-    //for setting dealType
-    let type;
-    if (initiative.lineItems[0].dealType === "CPM") {
-      type = "impressions";
-    } else if (initiative.lineItems[0].dealType === "CPC") {
-      type = "clicks";
-    } else if (initiative.lineItems[0].dealType === "CPL") {
-      type = "like";
-    }
+      for (let i = 0; i < days; i++) {
+        total = total + avg;
+        idealSpendTotal = idealSpendTotal + spendAvg;
+        avgData.push(total);
+        idealSpend.push(idealSpendTotal);
+      }
 
-    let actionToChart = [],
-        spendChart    = [],
-        spendTotal    = 0,
-        totes         = 0; // Template.instance().templateDict.get('data')[0].type;
+      //for setting dealType
+      if (initiative.lineItems[0].dealType === "CPM") {
+        type = "impressions";
+      } else if (initiative.lineItems[0].dealType === "CPC") {
+        type = "clicks";
+      } else if (initiative.lineItems[0].dealType === "CPL") {
+        type = "like";
+      }
 
-    // seeing if Bluebird will work for promises and meteor.call
-    var call = Promise.promisify(Meteor.call);
+      var call = Promise.promisify(Meteor.call);
 
-    call('aggregateForChart', initiative)
-    .then(function (res) {
-      // console.log("result from promise", res)
-      Session.set('res', res);
-      totes = res[0][type]
-    }).catch(function (err) {
-      console.log('uh no error', err)
-    });
-
-      Session.get('res').forEach(el => {
-        totes += el[type];
-        spendTotal += el.spend;
-        actionToChart.push(totes);
-        spendChart.push(spendTotal);
+      call('aggregateForChart', initiative)
+      .then(function (res) {
+        Session.set('res', res);
+        totes = res[0][type]
+      }).catch(function (err) {
+        console.log('uh no error', err)
       });
 
-    // for getting x axis labels
-    var start       = moment(Session.get('res')[0]['date'], "MM-DD"),
-        end         = new Date(initiative.lineItems[0].endDate),
-        dr          = moment.range(start, end),
-        arrayOfDays = dr.toArray('days');
+        Session.get('res').forEach(el => {
+          totes += el[type];
+          spendTotal += el.spend;
+          actionToChart.push(totes);
+          spendChart.push(spendTotal);
+        });
 
-    arrayOfDays.forEach(el => {
-      labels.push(moment(el).format("MM-DD"))
-    });
+      // for getting x axis labels
+      var start       = moment(Session.get('res')[0]['date'], "MM-DD"),
+          end         = new Date(initiative.lineItems[0].endDate),
+          dr          = moment.range(start, end),
+          arrayOfDays = dr.toArray('days');
 
-    // console.log(actionToChart);
-    // console.log(spendChart);
+      arrayOfDays.forEach(el => {
+        labels.push(moment(el).format("MM-DD"))
+      });
+    }
+
+
 
     return {
 
@@ -150,16 +155,20 @@ Template.charts.helpers({
 
       series: [{
         name: 'Ideal Distribution',
-        data: avgData
+        data: avgData,
+        color: '#90caf9'
       }, {
         name: 'Real Distribution',
-        data: actionToChart
+        data: actionToChart,
+        color: '#0d47a1'
       }, {
         name: 'Spend',
-        data: spendChart
+        data: spendChart,
+        color: '#b71c1c'
       }, {
         name: 'Ideal Spend',
-        data: idealSpend
+        data: idealSpend,
+        color: '#ef9a9a'
       }]
     }
 
@@ -383,56 +392,40 @@ Template.charts.helpers({
     } // end of chart return
   },
   'hourlyChart': function () {
-    const initiative = Template.instance().templateDict.get('initiative');
-    let cpc = {
-      name: "CPC",
-      data: []
-    }
-    let cpl = {
-      name: "CPL",
-      data: []
-    }
-    let cpm = {
-      name: "CPM",
-      data: []
-    }
-    let clicks = {
-      name: "clicks",
-      data: []
-    }
-    let impressions = {
-      name: "impressions",
-      data: []
-    }
-    let likes = {
-      name: "likes",
-      data: []
-    }
-    let spend = {
-      name: "Spend",
-      data: []
-    }
-    var call = Promise.promisify(Meteor.call);
+    let cpc = { name: "CPC", data: [] }
+    let cpl = { name: "CPL", data: [] }
+    let cpm = { name: "CPM", data: [] }
+    let clicks = { name: "clicks", data: [] }
+    let impressions = { name: "impressions", data: [] }
+    let likes = { name: "likes", data: [] }
+    let spend = { name: "Spend", data: [] }
 
-    call('hourlyChart', initiative)
-    .then(function (resultData) {
-      Session.set('resultData', resultData);
-      return resultData
-    })
-    .catch(function (err) {
-      console.log('boooo error', err)
-      throw new Meteor.Error('this is a Meteor Error!!!!');
-    });
+    if (FlowRouter.subsReady()) {
+      const initiative = Template.instance().templateDict.get('initiative');
 
-    Session.get('resultData').forEach(el => {
-      cpc.data.push(el[0].cpc);
-      cpl.data.push(el[0].cpl);
-      cpm.data.push(el[0].cpm);
-      spend.data.push(el[0].spend);
-      impressions.data.push(el[0].impressions);
-      clicks.data.push(el[0].clicks);
-      likes.data.push(el[0].likes);
-    });
+      var call = Promise.promisify(Meteor.call);
+
+      call('hourlyChart', initiative)
+      .then(function (resultData) {
+        Session.set('resultData', resultData);
+        return resultData
+      })
+      .catch(function (err) {
+        console.log('boooo error', err)
+        throw new Meteor.Error('this is a Meteor Error!!!!');
+      });
+
+      Session.get('resultData').forEach(el => {
+        cpc.data.push(el[0].cpc);
+        cpl.data.push(el[0].cpl);
+        cpm.data.push(el[0].cpm);
+        spend.data.push(el[0].spend);
+        impressions.data.push(el[0].impressions);
+        clicks.data.push(el[0].clicks);
+        likes.data.push(el[0].likes);
+      });
+    }
+
 
     return {
       chart: {

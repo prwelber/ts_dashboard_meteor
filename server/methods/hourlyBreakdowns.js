@@ -85,7 +85,6 @@ Meteor.methods({
 
 
 Meteor.publish("hourlyBreakdownsList", function (params) {
-    console.log('params for publish:', params);
     return HourlyBreakdowns.find({'data.campaign_id': params});
 });
 

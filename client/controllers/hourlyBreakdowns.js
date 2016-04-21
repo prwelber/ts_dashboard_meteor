@@ -1,3 +1,4 @@
+import CampaignInsights from '/collections/CampaignInsights'
 var Promise = require('bluebird');
 
 Tracker.autorun(function () {
@@ -8,8 +9,8 @@ Tracker.autorun(function () {
 
 Template.hourlyBreakdowns.onCreated(function () {
   this.templateDict = new ReactiveDict();
-  const camp = CampaignInsights.findOne({'data.campaign_id': FlowRouter.current().params.campaign_id});
-  this.templateDict.set('campData', camp.data);
+  const camp = CampaignInsights.findOne({'data.campaign_id': FlowRouter.getParam('campaign_id')});
+  this.templateDict.set('campData', camp);
 });
 
 Template.hourlyBreakdowns.helpers({
@@ -42,7 +43,10 @@ Template.hourlyBreakdowns.helpers({
       }
     },
     'campaignInfo': function () {
-        return Template.instance().templateDict.get('campData');
+      const data = Template.instance().templateDict.get('campData');
+      if (data && data.data) {
+        return data.data;
+      }
     }
 });
 

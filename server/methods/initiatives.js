@@ -1,3 +1,6 @@
+import CampaignInsights from '/collections/CampaignInsights'
+import Initiatives from '/collections/Initiatives'
+
 Meteor.methods({
   'insertNewInitiative': function (data) {
     const campArray = [];

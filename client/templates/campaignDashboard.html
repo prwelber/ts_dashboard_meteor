@@ -27,25 +27,27 @@
       </ul>
     </div>
   </nav>
-  <div class="row dashboard-initiative-header">
-    <h2>Initiative & Line Items</h2>
-    <div class="col s3">
-      <p class="center-align border-bottom">Name</p>
-      <h4 class="center-align no-top-margin">{{getInitiative.name}}</h4>
+  {{#if isReady "Initiatives" "campaignInsightList"}}
+    <div class="row dashboard-initiative-header">
+      <h2>Initiative & Line Items</h2>
+      <div class="col s3">
+        <p class="center-align border-bottom">Name</p>
+        <h4 class="center-align no-top-margin">{{getInitiative.name}}</h4>
+      </div>
+      <div class="col s3">
+        <p class="center-align border-bottom">Agency</p>
+        <h4 class="center-align no-top-margin">{{getInitiative.agency}}</h4>
+      </div>
+      <div class="col s3">
+      <p class="center-align border-bottom">Brand</p>
+        <h4 class="center-align no-top-margin">{{getInitiative.brand}}</h4>
+      </div>
+      <div class="col s3">
+      <p class="center-align border-bottom">Product</p>
+        <h4 class="center-align no-top-margin">{{getInitiative.product}}</h4>
+      </div>
     </div>
-    <div class="col s3">
-      <p class="center-align border-bottom">Agency</p>
-      <h4 class="center-align no-top-margin">{{getInitiative.agency}}</h4>
-    </div>
-    <div class="col s3">
-    <p class="center-align border-bottom">Brand</p>
-      <h4 class="center-align no-top-margin">{{getInitiative.brand}}</h4>
-    </div>
-    <div class="col s3">
-    <p class="center-align border-bottom">Product</p>
-      <h4 class="center-align no-top-margin">{{getInitiative.product}}</h4>
-    </div>
-  </div>
+
     <table class="centered">
       {{#each getInitiative.lineItems}}
         <thead>
@@ -121,7 +123,6 @@
         {{/with}}
       </div>
     </div>
-
     <div class="row">
       <h3 class="center-align">Initiative Projection</h3>
       <div class="col s3 offset-s1">
@@ -147,6 +148,9 @@
         {{/with}}
       </div>
     </div>
+    {{else}}
+      <p>Loading...</p>
+    {{/if}}
 
 
     {{> Template.dynamic template=tasks}}

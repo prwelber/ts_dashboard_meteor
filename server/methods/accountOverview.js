@@ -65,6 +65,6 @@ Meteor.methods({
 });
 
 // need a meteor.publish here
-Meteor.publish('campaignBasicsList', function () {
-    return CampaignBasics.find({}, {sort: {sort_time_start: -1}})
+Meteor.publish('campaignBasicsList', function (opts) {
+    return CampaignBasics.find({campaign_id: opts}, {sort: {sort_time_start: -1}})
 });

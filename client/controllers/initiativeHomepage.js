@@ -1,3 +1,6 @@
+import CampaignInsights from '/collections/CampaignInsights'
+import Initiatives from '/collections/Initiatives'
+
 var moment = require('moment');
 var range = require('moment-range');
 var Promise = require('bluebird');
@@ -336,16 +339,20 @@ Template.initiativeHomepage.helpers({
 
         series: [{
           name: 'Ideal Distribution',
-          data: avgData
+          data: avgData,
+          color: '#90caf9'
         }, {
           name: 'Real Distribution',
-          data: actionToChart
+          data: actionToChart,
+          color: '#0d47a1'
         }, {
           name: 'Spend',
-          data: spendChart
+          data: spendChart,
+          color: '#b71c1c'
         }, {
           name: 'Ideal Spend',
-          data: idealSpend
+          data: idealSpend,
+          color: '#ef9a9a'
         }]
       }
   },

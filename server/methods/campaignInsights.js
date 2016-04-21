@@ -1,3 +1,6 @@
+import CampaignInsights from '/collections/CampaignInsights'
+import Initiatives from '/collections/Initiatives'
+
 Meteor.startup(function () {
   CampaignInsights._ensureIndex({campUniqueId: 1});
 });
@@ -162,6 +165,11 @@ Meteor.methods({
 });
 
 
-Meteor.publish('campaignInsightList', function () {
-    return CampaignInsights.find({}); //publish all insights
+Meteor.publish('campaignInsightList', function (opts) {
+    console.log("opts in insight publish", opts);
+    if (! opts) {
+      return CampaignInsights.find({}); //publish all insights
+    } else {
+      return CampaignInsights.find({'data.campaign_id': opts});
+    }
 });

@@ -1,5 +1,7 @@
-const later = require('later');
+import CampaignInsights from '/collections/CampaignInsights'
+import Initiatives from '/collections/Initiatives'
 import { Meteor } from 'meteor/meteor'
+const later = require('later');
 
 
 SyncedCron.config({
