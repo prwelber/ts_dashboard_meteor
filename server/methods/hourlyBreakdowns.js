@@ -1,3 +1,5 @@
+import HourlyBreakdowns from '/collections/HourlyBreakdowns'
+
 Meteor.methods({
     'removeHourly': function () {
         console.log('removing hourly breakdowns collection')

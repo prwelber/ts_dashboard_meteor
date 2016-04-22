@@ -1,4 +1,7 @@
 import CampaignInsights from '/collections/CampaignInsights'
+import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
+
+import { Meteor } from 'meteor/meteor'
 
 Tracker.autorun(function () {
     if (FlowRouter.subsReady('insightsBreakdownByDaysList')) {

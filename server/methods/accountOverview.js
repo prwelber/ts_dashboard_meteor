@@ -1,4 +1,4 @@
-
+import CampaignBasics from '/collections/CampaignBasics'
 // this is so that I can clean out the collection from the browser console
 // just call Meteor.call('removeCampaignBasics')
 // remove all can only be done from server

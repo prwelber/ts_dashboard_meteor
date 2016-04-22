@@ -1,4 +1,4 @@
-
+import CampaignBasics from '/collections/CampaignBasics'
 
 Tracker.autorun(function () {
     if (FlowRouter.subsReady('campaignBasicsList')) {

@@ -1,3 +1,5 @@
+import CampaignBasics from '/collections/CampaignBasics'
+
 Meteor.methods({
   "updateTargeting": function (campId, status) {
     CampaignBasics.update(

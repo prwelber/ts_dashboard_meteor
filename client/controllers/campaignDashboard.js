@@ -189,27 +189,6 @@ Template.campaignDashboard.helpers({
       likes: likes
     }
   },
-  'overviewActive': function () {
-    return Session.get("route") === "overview" ? "active" : '';
-  },
-  'targetingActive': function () {
-    return Session.get("route") === "targeting" ? "active": '';
-  },
-  'creativeActive': function () {
-    return Session.get("route") === "creative" ? "active" : '';
-  },
-  'breakdownsActive': function () {
-    return Session.get("route") === "breakdowns" ? "active" : '';
-  },
-  'daybreakdownsActive': function () {
-    return Session.get("route") === "daybreakdowns" ? "active" : '';
-  },
-  'hourlybreakdownsActive': function () {
-    return Session.get("route") === "hourlyBreakdowns" ? "active" : '';
-  },
-  'chartsActive': function () {
-    return Session.get("route") === "charts" ? "active" : '';
-  },
   'formatDate': (date) => {
     return moment(date, moment.ISO_8601).format("MM-DD-YYYY hh:mm a");
   }

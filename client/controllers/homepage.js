@@ -90,6 +90,9 @@ Template.index.helpers({
     if (sesh === "overview" || sesh === "charts" || sesh === "breakdowns" || sesh === "daybreakdowns" || sesh === "hourlyBreakdowns" || sesh === "targeting" || sesh === "creative") {
       return true;
     }
+  },
+  'active': function (route) {
+    return Session.get("route") === route ? "active" : '';
   }
 });
 

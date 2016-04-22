@@ -1,8 +1,12 @@
-Tracker.autorun(func => {
-  if (FlowRouter.subsReady('campaignBasicsList')) {
-    console.log('campaignBasics subs ready!');
-  }
-});
+import { Meteor } from 'meteor/meteor'
+import { FlowRouter } from 'meteor/kadira:flow-router'
+
+import CampaignBasics from '/collections/CampaignBasics'
+
+// Tracker.autorun(func => {
+//   if (FlowRouter.subsReady('campaignBasicsList')) {
+//   }
+// });
 
 Template.taskTracker.helpers({
   isReady: function (sub) {

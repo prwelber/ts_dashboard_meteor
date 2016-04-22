@@ -2,8 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import CampaignInsights from '/collections/CampaignInsights'
 import Initiatives from '/collections/Initiatives'
-
-const Promise = require('bluebird');
+import Promise from 'bluebird'
 
 
 Tracker.autorun(function () {

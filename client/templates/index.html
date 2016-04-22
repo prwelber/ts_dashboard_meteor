@@ -19,13 +19,13 @@
                 <li><a id="view-initiative-stats-modal" class="modal-trigger" href="#modal1">Initiative Stats</a></li>
               {{/if}}
               {{#if overviewRoute "overview"}}
-                <li class="{{overviewActive}}"><a href="/accounts/{{getCampaignNumber}}/overview">Overview</a></li>
-                <li class="{{targetingActive}}"><a href="/accounts/{{getCampaignNumber}}/targeting">Targeting</a></li>
-                <li class="{{creativeActive}}"><a href="/accounts/{{getCampaignNumber}}/creative">Creative</a></li>
-                <li class="{{breakdownsActive}}"><a href="/accounts/{{getCampaignNumber}}/breakdowns">Age & Gender</a></li>
-                <li class="{{daybreakdownsActive}}"><a href="/accounts/{{getCampaignNumber}}/daybreakdowns">Daily</a></li>
-                <li class="{{hourlybreakdownsActive}}"><a href="/accounts/{{getCampaignNumber}}/hourlybreakdowns">Hourly</a></li>
-                <li class="{{chartsActive}}"><a class="tooltipped" data-position="bottom" data-tooltip="View Charts" href="/accounts/{{getCampaignNumber}}/charts"><i class="material-icons">trending_up</i> </a></li>
+                <li class="{{active "overview"}}"><a href="/accounts/{{getCampaignNumber}}/overview">Overview</a></li>
+                <li class="{{active "targeting"}}"><a href="/accounts/{{getCampaignNumber}}/targeting">Targeting</a></li>
+                <li class="{{active "creative"}}"><a href="/accounts/{{getCampaignNumber}}/creative">Creative</a></li>
+                <li class="{{active "breakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/breakdowns">Age & Gender</a></li>
+                <li class="{{active "daybreakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/daybreakdowns">Daily</a></li>
+                <li class="{{active "hourlyBreakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/hourlybreakdowns">Hourly</a></li>
+                <li class="{{active "charts"}}"><a class="tooltipped" data-position="bottom" data-tooltip="View Charts" href="/accounts/{{getCampaignNumber}}/charts"><i class="material-icons">trending_up</i> </a></li>
               {{/if}}
             </ul>
             <ul class="side-nav" id="mobile-demo">
@@ -41,17 +41,6 @@
             </ul>
           </div>
         </nav>
-
-
-
-
-
-
-
-
-
-
-
 
           <div id="spinner-div">
           </div>

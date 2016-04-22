@@ -1,1 +1,3 @@
-InsightsBreakdowns = new Mongo.Collection('insightsBreakdownList')
+const InsightsBreakdowns = new Mongo.Collection('insightsBreakdownList')
+
+export default InsightsBreakdowns

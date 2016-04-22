@@ -1,3 +1,5 @@
+import InsightsBreakdowns from '/collections/InsightsBreakdowns'
+
 Meteor.methods({
     'removeBreakdowns': function () {
         console.log('removing InsightsBreakdown collection')
@@ -84,6 +86,10 @@ Meteor.methods({
     }
 });
 
-Meteor.publish('insightsBreakdownList', function () {
-    return InsightsBreakdowns.find({}); //publish all breakdowns
+Meteor.publish('insightsBreakdownList', function (opts) {
+    if (! opts) {
+      return InsightsBreakdowns.find({}); //publish all breakdowns
+    } else {
+      return InsightsBreakdowns.find({'data.campaign_id': opts});
+    }
 });

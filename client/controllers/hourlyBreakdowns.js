@@ -1,4 +1,5 @@
 import CampaignInsights from '/collections/CampaignInsights'
+import HourlyBreakdowns from '/collections/HourlyBreakdowns'
 var Promise = require('bluebird');
 
 Tracker.autorun(function () {

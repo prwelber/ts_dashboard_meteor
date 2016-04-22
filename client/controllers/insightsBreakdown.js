@@ -1,4 +1,9 @@
+import { Meteor } from 'meteor/meteor'
+import { FlowRouter } from 'meteor/kadira:flow-router'
+import Promise from 'bluebird'
+
 import CampaignInsights from '/collections/CampaignInsights'
+import InsightsBreakdowns from '/collections/InsightsBreakdowns'
 
 Tracker.autorun(function () {
     if (FlowRouter.subsReady('insightsBreakdownList')) {
@@ -7,34 +12,34 @@ Tracker.autorun(function () {
 });
 
 Template.insightsBreakdown.helpers({
-    'getBreakdown': function () {
-        console.log('checking for breakdown');
-        let campaignNumber = FlowRouter.current().params.campaign_id;
+    isReady: (sub) => {
+        const campaignNumber = FlowRouter.getParam("campaign_id");
 
-        let breakdown = InsightsBreakdowns.findOne({'data.campaign_id': campaignNumber});
-        console.log('breakdown', breakdown)
-        if (breakdown) {
-            // if (moment(breakdown.data.inserted, "MM-DD-YYYY hh:mm a").isAfter(moment(breakdown.data.date_stop, "MM-DD-YYYY hh:mm a"))) {
-            //     mastFunc.addToBox("This InsightBreakdown has been updated after it ended, no need to refresh.");
-            // } else {
-            //     mastFunc.addToBox("last refresh: "+breakdown.data.inserted+", refreshing will give you live stats");
-            // }
-            console.log('you should be seeing breakdown');
-            // initiative = NewInitiativeList.findOne({name: name});
-            return InsightsBreakdowns.find({'data.campaign_id': campaignNumber}, {sort: {'data.age': 1}});
-            //return array so that #each works in template
-        } else {
+        if (FlowRouter.subsReady(sub) && InsightsBreakdowns.find({'data.campaign_id': campaignNumber}).count() === 0) {
+
             var target = document.getElementById("spinner-div");
             let spun = Blaze.render(Template.spin, target);
-            console.log('gotta get the breakdown for this one', campaignNumber);
-            Meteor.call('getBreakdown', campaignNumber, Session.get("campaign_name"), Session.get("end_date"), function (err, result) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    Blaze.remove(spun);
-                }
 
-            });
+            var call = Promise.promisify(Meteor.call);
+              call('getBreakdown', campaignNumber)
+              .then(function (result) {
+                console.log("result from promise", result)
+                Blaze.remove(spun);
+              }).catch(function (err) {
+                console.log('uh no error', err)
+              });
+        } else {
+            console.log('returning true in isReady')
+          return true;
+        }
+    },
+    'getBreakdown': function () {
+        console.log('getBreakdown running');
+        const campaignNumber = FlowRouter.getParam("campaign_id")
+        let breakdown = InsightsBreakdowns.findOne({'data.campaign_id': campaignNumber});
+
+        if (breakdown) {
+            return InsightsBreakdowns.find({'data.campaign_id': campaignNumber}, {sort: {'data.age': 1}});
         }
     },
     'campaignInfo': function () {

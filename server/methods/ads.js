@@ -216,6 +216,10 @@ Meteor.methods({
     }
 });
 
-Meteor.publish('AdsList', function () {
-    return Ads.find( {} );
+Meteor.publish('AdsList', function (opts) {
+    if (! opts) {
+      return Ads.find({}); //publish all ads
+    } else {
+      return Ads.find({'data.campaign_id': opts});
+    }
 })

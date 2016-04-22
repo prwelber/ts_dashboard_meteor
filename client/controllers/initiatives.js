@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor'
-
+import { FlowRouter } from 'meteor/kadira:flow-router'
 import CampaignInsights from '/collections/CampaignInsights'
 import Initiatives from '/collections/Initiatives'
 import dragula from 'dragula';

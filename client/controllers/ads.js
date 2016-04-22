@@ -1,3 +1,4 @@
+import CampaignInsights from '/collections/CampaignInsights'
 import Initiatives from '/collections/Initiatives'
 import Ads from '/collections/Ads'
 

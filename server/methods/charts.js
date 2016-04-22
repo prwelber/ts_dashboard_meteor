@@ -1,4 +1,7 @@
 import Initiatives from '/collections/Initiatives'
+import CampaignInsights from '/collections/CampaignInsights'
+import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
+import InsightsBreakdowns from '/collections/InsightsBreakdowns'
 
 Meteor.methods({
   'aggregateForChart': function (initiative) {
