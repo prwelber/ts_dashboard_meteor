@@ -1,3 +1,6 @@
+import Initiatives from '/collections/Initiatives'
+import Ads from '/collections/Ads'
+
 const Promise = require('bluebird');
 
 Tracker.autorun(function () {

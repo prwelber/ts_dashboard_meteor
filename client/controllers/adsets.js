@@ -1,3 +1,7 @@
+import CampaignInsights from '/collections/CampaignInsights'
+import Initiatives from '/collections/Initiatives'
+import AdSets from '/collections/AdSets'
+
 var Promise = require('bluebird');
 
 Tracker.autorun(function () {

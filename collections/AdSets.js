@@ -1,1 +1,3 @@
-AdSets = new Mongo.Collection('AdSetsList')
+const AdSets = new Mongo.Collection('AdSetsList')
+
+export default AdSets

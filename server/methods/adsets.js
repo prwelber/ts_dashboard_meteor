@@ -1,3 +1,5 @@
+import AdSets from '/collections/AdSets'
+
 Meteor.methods({
   'removeAdSets': function () {
     console.log('removing AdSet collection')

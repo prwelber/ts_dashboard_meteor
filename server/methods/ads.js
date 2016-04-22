@@ -1,3 +1,5 @@
+import Ads from '/collections/Ads'
+
 Meteor.methods({
   'removeAds': function () {
       console.log('removing Ads collection');

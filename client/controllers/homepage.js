@@ -53,7 +53,11 @@ Template.accounts.helpers({
 });
 
 Template.index.events({
-
+  "click .userLogout": (event, template) => {
+    Meteor.logout( () => {
+      console.log('user logged out');
+    });
+  }
 });
 
 Template.index.onRendered(function () {
@@ -68,6 +72,24 @@ Template.index.helpers({
   },
   'getCampaignNumber': function () {
     return FlowRouter.current().params.campaign_id;
+  },
+  loggedInUser: () => {
+    if (! Meteor.user()) {
+      return false;
+    } else {
+      return true;
+    }
+  },
+  whatRoute: (route) => {
+    if (Session.get("route") === route) {
+      return true;
+    }
+  },
+  overviewRoute: (route) => {
+    const sesh = Session.get("route")
+    if (sesh === "overview" || sesh === "charts" || sesh === "breakdowns" || sesh === "daybreakdowns" || sesh === "hourlyBreakdowns" || sesh === "targeting" || sesh === "creative") {
+      return true;
+    }
   }
 });
 

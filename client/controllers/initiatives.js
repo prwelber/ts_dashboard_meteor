@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor'
+
 import CampaignInsights from '/collections/CampaignInsights'
 import Initiatives from '/collections/Initiatives'
 import dragula from 'dragula';
@@ -251,5 +253,9 @@ Template.initiativesHome.helpers({
 });
 
 Template.initiativesHome.events({
-
+ "click .userLogout": (event, template) => {
+    Meteor.logout( () => {
+      console.log('user logged out');
+    });
+ }
 });
