@@ -2,10 +2,10 @@ import Initiatives from '/collections/Initiatives'
 import CampaignInsights from '/collections/CampaignInsights'
 import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
 import InsightsBreakdowns from '/collections/InsightsBreakdowns'
+import HourlyBreakdowns from '/collections/HourlyBreakdowns'
 
 Meteor.methods({
   'aggregateForChart': function (initiative) {
-    // console.log('aggregateForChart running');
     let arr = [];
     /*
     below we are querying the daily breakdown collection for all the

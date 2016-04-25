@@ -1,3 +1,6 @@
+import { Meteor } from 'meteor/meteor'
+import MasterAccounts from '/collections/MasterAccounts'
+
 
 Meteor.methods({
   'removeAccounts': function () {

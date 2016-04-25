@@ -1,3 +1,7 @@
+import { Meteor } from 'meteor/meteor'
+import { FlowRouter } from 'meteor/kadira:flow-router'
+import Initiatives from '/collections/Initiatives'
+
 Meteor.subscribe("usersList");
 
 Template.editUser.helpers({

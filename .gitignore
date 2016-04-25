@@ -1,5 +1,7 @@
 **/email.js
+**/mail.js
 **/_namespace.js
 node_modules
 packages
 settings.json
+server/sendgrid

@@ -1,6 +1,6 @@
 Meteor.subscribe('fbAccountList');
-import {person} from "./agencies"
-// console.log("this is person", person);
+import { Meteor } from 'meteor/meteor'
+import MasterAccounts from '/collections/MasterAccounts'
 
 Template.accounts.events({
   'click .refresh-accounts': function () {

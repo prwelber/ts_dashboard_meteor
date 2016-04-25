@@ -1,1 +1,3 @@
-MasterAccounts = new Mongo.Collection('accountList');
+const MasterAccounts = new Mongo.Collection('accountList');
+
+export default MasterAccounts
