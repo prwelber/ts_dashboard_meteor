@@ -141,11 +141,9 @@ Meteor.methods({
     */
 
     const initiative = Initiatives.findOne({name: name});
-
     let objectiveArr = _.map(initiative.lineItems, function (el) {
       return el.objective;
-    })
-    // const objectiveArr = [initiative.objective, initiative.objective2, initiative.objective3, initiative.objective4, initiative.objective5, initiative.objective6, initiative.objective7, initiative.objective8];
+    });
     let cleanedArr = _.without(objectiveArr, null, ''); // removes any null values
     let objective; // to be reassigned and used in the pipeline
 
@@ -167,7 +165,6 @@ Meteor.methods({
     }
 
     const objectiveAggregateArray = [];
-
     for (let i = 0; i < cleanedArr.length; i++) {
       cleanedArr[i] = cleanedArr[i].toUpperCase().split(' ').join('_');
       let result = CampaignInsights.aggregate(makePipeline(name, cleanedArr[i]));

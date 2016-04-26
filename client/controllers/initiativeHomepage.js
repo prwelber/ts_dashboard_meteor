@@ -34,13 +34,18 @@ Template.initiativeHomepage.onRendered(function () {
   });
 
 
-  const initiative = Initiatives.findOne({_id: FlowRouter.current().params._id})
+  const initiative = Initiatives.findOne({_id: FlowRouter.getParam("_id")});
 
   Meteor.call('aggregateObjective', initiative.name);
 
 });
 
 Template.initiativeHomepage.helpers({
+  isReady: (sub1, sub2) => {
+    if (FlowRouter.subsReady(sub1) && FlowRouter.subsReady(sub2)) {
+      return true;
+    }
+  },
   // need to gather all the campaigns associated with this initiative
   'getCampaigns': function () {
     const init = Template.instance().templateDict.get('initiative');
@@ -139,12 +144,13 @@ Template.initiativeHomepage.helpers({
         let costPlus = parseInt(init.lineItems[i].costPlusPercent);
         costPlus = stringToCostPlusPercentage(costPlus);
 
-        objToReturn['netBudget'] = parseFloat(init.lineItems[i].budget) / costPlus;
         objToReturn['netSpend'] = parseFloat(objectiveAg[0].spend) / costPlus;
+        objToReturn['netBudget'] = parseFloat(init.lineItems[i].budget) / costPlus;
         objToReturn['spendPercent'] = ((100 * objToReturn.netSpend) / objToReturn.netBudget);
         objToReturn['netCPM'] = objToReturn.netSpend / objectiveAg[0].impressions;
         objToReturn['netCPC'] = objToReturn.netSpend / objectiveAg[0].clicks;
 
+        // debugger
 
         if (objectiveAg[0].likes === null || objectiveAg[0].likes === '' || objectiveAg[0].likes === 0) {
           objToReturn['netCPL'] = 0;

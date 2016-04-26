@@ -1,3 +1,8 @@
+import { Meteor } from 'meteor/meteor'
+import { FlowRouter } from 'meteor/kadira:flow-router'
+import { Materialize } from 'meteor/materialize:materialize'
+import MasterAccounts from '/collections/MasterAccounts'
+
 Tracker.autorun(function () {
     if (FlowRouter.subsReady('Initiatives') && FlowRouter.subsReady('campaignInsightList')) {
         // console.log('Initiatives and Insights subs ready!');

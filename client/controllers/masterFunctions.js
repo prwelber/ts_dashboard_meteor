@@ -32,5 +32,5 @@ mastFunc.formatAll = function formatAll(dataObj) {
 }
 
 mastFunc.time = function time(timeStr) {
-  return moment(timeStr).format("MM-DD-YYYY hh:mm a");
+  return moment(timeStr, moment.ISO_8601).format("MM-DD-YYYY hh:mm a");
 }

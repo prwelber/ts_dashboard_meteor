@@ -1,43 +1,54 @@
 import CampaignInsights from '/collections/CampaignInsights'
 import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
-
+import Promise from 'bluebird'
 import { Meteor } from 'meteor/meteor'
 
 Tracker.autorun(function () {
-    if (FlowRouter.subsReady('insightsBreakdownByDaysList')) {
-        console.log('insightsBreakdownByDays subs ready!');
-    }
+  if (FlowRouter.subsReady('insightsBreakdownByDaysList')) {
+    console.log('insightsBreakdownByDays subs ready!');
+  }
 });
 
 Template.insightsBreakdownDaily.helpers({
-    'getDailyBreakdown': function () {
-        let campaignNumber = FlowRouter.current().params.campaign_id;
-        // let camp = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
-        let dailyBreakdown = InsightsBreakdownsByDays.findOne({'data.campaign_id': campaignNumber});
-        if(dailyBreakdown) {
-            // if (moment(dailyBreakdown.data.inserted, "MM-DD-YYYY hh:mm a").isAfter(moment(dailyBreakdown.data.date_stop, "MM-DD-YYYY hh:mm a"))) {
-            //     mastFunc.addToBox("This dailyBreakdown has been updated after it ended, no need to refresh.");
-            // } else {
-            //     mastFunc.addToBox("last refresh: "+dailyBreakdown.data.inserted+", refreshing will give you live stats");
-            // }
+  isReady: (sub1, sub2) => {
+    if ((FlowRouter.subsReady(sub1) && FlowRouter.subsReady(sub2)) && InsightsBreakdownsByDays.find().count() === 0)
+    {
+      var target = document.getElementById("spinner-div");
+      let spun = Blaze.render(Template.spin, target);
 
-            return InsightsBreakdownsByDays.find({'data.campaign_id': campaignNumber}, {sort: {'data.date_start': -1}});
-        } else {
-            console.log('gotta get the daily breakdown for this one', campaignNumber);
-            var target = document.getElementById("spinner-div");
-            let spun = Blaze.render(Template.spin, target);
-            Meteor.call('getDailyBreakdown', campaignNumber, Session.get("campaign_name"), Session.get("end_date"), function (err, result) {
-                if (err) {
-                    console.log(err);
-                } else if (result) {
-                    Blaze.remove(spun);
-                }
-            });
-        }
-    },
-    'campaignInfo': function () {
-        return CampaignInsights.findOne({'data.campaign_id': FlowRouter.current().params.campaign_id}).data;
+      var call = Promise.promisify(Meteor.call);
+        call('getDailyBreakdown', campaignNumber)
+        .then(function (result) {
+          console.log("result from promise", result)
+          Blaze.remove(spun);
+        }).catch(function (err) {
+          console.log('uh no error', err)
+        });
+    } else {
+      return true;
     }
+  },
+  'getDailyBreakdown': function () {
+      let campaignNumber = FlowRouter.getParam('campaign_id');
+      let dailyBreakdown = InsightsBreakdownsByDays.findOne({'data.campaign_id': campaignNumber});
+      if(dailyBreakdown) {
+        return InsightsBreakdownsByDays.find({'data.campaign_id': campaignNumber}, {sort: {'data.date_start': -1}});
+      } else {
+          console.log('gotta get the daily breakdown for this one', campaignNumber);
+          var target = document.getElementById("spinner-div");
+          let spun = Blaze.render(Template.spin, target);
+          Meteor.call('getDailyBreakdown', campaignNumber, Session.get("campaign_name"), Session.get("end_date"), function (err, result) {
+            if (err) {
+              console.log(err);
+            } else if (result) {
+              Blaze.remove(spun);
+            }
+          });
+      }
+  },
+  'campaignInfo': function () {
+      return CampaignInsights.findOne({'data.campaign_id': FlowRouter.current().params.campaign_id}).data;
+  }
 });
 
 Template.insightsBreakdownDaily.onDestroyed(func => {

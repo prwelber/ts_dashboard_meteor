@@ -213,77 +213,73 @@ include charting for each lineItem and definitely aggregations --}}
     {{/each}}
   </div>
 
-
-
-<div class="container">
-  <div class="row">
-    {{!-- <h2 class="center-align">{{initiative.name}}</h2> --}}
-    <div class="row dashboard-initiative-header">
-      <div class="col s3">
-        <p class="center-align border-bottom">Name</p>
-        <h4 class="center-align no-top-margin">{{initiative.name}}</h4>
+{{#if isReady "Initiatives" "campaignInsightList"}}
+  <div class="container">
+    <div class="row">
+      {{!-- <h2 class="center-align">{{initiative.name}}</h2> --}}
+      <div class="row dashboard-initiative-header">
+        <div class="col s3">
+          <p class="center-align border-bottom">Name</p>
+          <h4 class="center-align no-top-margin">{{initiative.name}}</h4>
+        </div>
+        <div class="col s3">
+          <p class="center-align border-bottom">Agency</p>
+          <h4 class="center-align no-top-margin">{{initiative.agency}}</h4>
+        </div>
+        <div class="col s3">
+        <p class="center-align border-bottom">Brand</p>
+          <h4 class="center-align no-top-margin">{{initiative.brand}}</h4>
+        </div>
+        <div class="col s3">
+        <p class="center-align border-bottom">Product</p>
+          <h4 class="center-align no-top-margin">{{initiative.product}}</h4>
+        </div>
       </div>
-      <div class="col s3">
-        <p class="center-align border-bottom">Agency</p>
-        <h4 class="center-align no-top-margin">{{initiative.agency}}</h4>
+      <h5 class="center-align">Line Items</h5>
+      <table class="centered">
+        {{#each initiative.lineItems}}
+        <thead>
+          <tr>
+            {{#if objective}} <th>Objective</th> {{/if}}
+            {{#if platform}} <th>Platform</th> {{/if}}
+            {{#if dealType}} <th>Deal Type</th> {{/if}}
+            {{#if quantity}} <th>Quantity</th> {{/if}}
+            {{#if price}} <th>Price</th> {{/if}}
+            {{#if budget}} <th>Budget</th> {{/if}}
+            {{#if startDate}} <th>Start Date</th> {{/if}}
+            {{#if endDate}} <th>End Date</th> {{/if}}
+            {{#if costPlusPercent}} <th>Cost Plus</th> {{/if}}
+            {{#if percentTotalPercent}} <th>Percent Total</th> {{/if}}
+            {{#if isClientPercent}} <th>Client</th> {{/if}}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {{#if objective}}<td>{{objective}}</td>{{/if}}
+            {{#if platform}}<td>{{platform}}</td>{{/if}}
+            {{#if dealType}}<td>{{dealType}}</td>{{/if}}
+            {{#if quantity}}<td>{{quantity}}</td>{{/if}}
+            {{#if price}}<td>{{price}}</td>{{/if}}
+            {{#if budget}}<td>{{budget}}</td>{{/if}}
+            {{#if startDate}}<td>{{formatDate startDate}}</td>{{/if}}
+            {{#if endDate}}<td>{{formatDate endDate}}</td>{{/if}}
+            {{#if costPlusPercent}}<td>{{costPlusPercent}}%</td>{{/if}}
+            {{#if percentTotalPercent}}<td>{{percentTotalPercent}}%</td>{{/if}}
+            {{#if isClientPercent}}<td>{{isClientPercent}}%</td>{{/if}}
+          </tr>
+        </tbody>
+        {{/each}}
+      </table>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        {{> highchartsHelper chartId="modalDeliveryChart" chartWidth="100%" chartHeight="70%" chartObject=modalDeliveryChart}}
       </div>
-      <div class="col s3">
-      <p class="center-align border-bottom">Brand</p>
-        <h4 class="center-align no-top-margin">{{initiative.brand}}</h4>
-      </div>
-      <div class="col s3">
-      <p class="center-align border-bottom">Product</p>
-        <h4 class="center-align no-top-margin">{{initiative.product}}</h4>
+      <div class="col s6">
+        {{> highchartsHelper chartId="costPerChart" chartWidth="100%" chartHeight="70%" chartObject=costPerChart}}
       </div>
     </div>
-    <h5 class="center-align">Line Items</h5>
-    <table class="centered">
-      {{#each initiative.lineItems}}
-      <thead>
-        <tr>
-          {{#if objective}} <th>Objective</th> {{/if}}
-          {{#if platform}} <th>Platform</th> {{/if}}
-          {{#if dealType}} <th>Deal Type</th> {{/if}}
-          {{#if quantity}} <th>Quantity</th> {{/if}}
-          {{#if price}} <th>Price</th> {{/if}}
-          {{#if budget}} <th>Budget</th> {{/if}}
-          {{#if startDate}} <th>Start Date</th> {{/if}}
-          {{#if endDate}} <th>End Date</th> {{/if}}
-          {{#if costPlusPercent}} <th>Cost Plus</th> {{/if}}
-          {{#if percentTotalPercent}} <th>Percent Total</th> {{/if}}
-          {{#if isClientPercent}} <th>Client</th> {{/if}}
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          {{#if objective}}<td>{{objective}}</td>{{/if}}
-          {{#if platform}}<td>{{platform}}</td>{{/if}}
-          {{#if dealType}}<td>{{dealType}}</td>{{/if}}
-          {{#if quantity}}<td>{{quantity}}</td>{{/if}}
-          {{#if price}}<td>{{price}}</td>{{/if}}
-          {{#if budget}}<td>{{budget}}</td>{{/if}}
-          {{#if startDate}}<td>{{formatDate startDate}}</td>{{/if}}
-          {{#if endDate}}<td>{{formatDate endDate}}</td>{{/if}}
-          {{#if costPlusPercent}}<td>{{costPlusPercent}}%</td>{{/if}}
-          {{#if percentTotalPercent}}<td>{{percentTotalPercent}}%</td>{{/if}}
-          {{#if isClientPercent}}<td>{{isClientPercent}}%</td>{{/if}}
-        </tr>
-      </tbody>
-      {{/each}}
-    </table>
   </div>
-  <div class="row">
-    <div class="col s6">
-      {{> highchartsHelper chartId="modalDeliveryChart" chartWidth="100%" chartHeight="70%" chartObject=modalDeliveryChart}}
-    </div>
-    <div class="col s6">
-      {{> highchartsHelper chartId="costPerChart" chartWidth="100%" chartHeight="70%" chartObject=costPerChart}}
-    </div>
-  </div>
-</div>
-
-
-
 
 {{!-------- This is where campaigns within an initiative will go ---------}}
 
@@ -302,5 +298,11 @@ include charting for each lineItem and definitely aggregations --}}
       {{/each}}
     </div>
   </div>
+
+{{else}}
+  <p>
+    Loading....
+  </p>
+{{/if}}
 
 </template>

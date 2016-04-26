@@ -29,7 +29,6 @@ Template.insightsBreakdown.helpers({
                 console.log('uh no error', err)
               });
         } else {
-            console.log('returning true in isReady')
           return true;
         }
     },

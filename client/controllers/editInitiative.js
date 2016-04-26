@@ -1,3 +1,12 @@
+import { Meteor } from 'meteor/meteor'
+import { FlowRouter} from 'meteor/kadira:flow-router'
+import { Moment } from 'meteor/momentjs:moment'
+import { Materialize } from 'meteor/materialize:materialize'
+import MasterAccounts from '/collections/MasterAccounts'
+import Initiatives from '/collections/Initiatives'
+
+
+
 Template.editInitiative.onRendered(function () {
   $('.collapsible').collapsible({
     accordion: false

@@ -1,25 +1,31 @@
 <template name="insightsBreakdownDaily">
-        <div class="six wide column">
-            <h2>Day by Day Insights Breakdown</h2>
-            <h3>Campaign: {{campaignInfo.campaign_name}}</h3>
-        </div>
-        {{#each getDailyBreakdown}}
-            <div class="ten wide column">
-                <h3>{{data.date_start}}</h3>
-                <p>Spend: {{data.spend}}</p>
-                <p>Impressions: {{data.impressions}} | CPM: {{data.cpm}}</p>
-                <p>Clicks: {{data.clicks}} | CPC: {{data.cpc}}</p>
-                <p>Likes: {{data.like}} | CPL: {{data.cost_per_like}}</p>
-                <p>Reach: {{data.reach}}</p>
-                <p>CTR: {{data.ctr}}</p>
-                <p>CPP: {{data.cpp}}</p>
-                <p>Total Actions: {{data.total_actions}}</p>
-                <p>Comment: {{data.comment}} | Cost per: {{data.cost_per_comment}}</p>
-                <p>Photo View: {{data.photo_view}} | Cost per: {{ data.cost_per_photo_view}}</p>
-                <p>Post: {{data.post}} | Cost per: {{data.cost_per_post}}</p>
-                <p>Post Like: {{data.post_like}} | Cost per: {{ data.cost_per_post_like}}</p>
-                <p>Page Engagement: {{data.page_engagement}} | Cost per: {{data.cost_per_page_engagement}}</p>
-                <p>Post Engagement: {{data.post_engagement}} | Cost per: {{data.cost_per_post_engagement}}</p>
-            </div>
-        {{/each}}
+  <div class="six wide column">
+      <h2>Day by Day Insights Breakdown</h2>
+      <h3>Campaign: {{campaignInfo.campaign_name}}</h3>
+  </div>
+  {{#if isReady "Initiatives" "insightsBreakdownByDaysList"}}
+    {{#each getDailyBreakdown}}
+      <div class="ten wide column">
+        <h3>{{data.date_start}}</h3>
+        <p>Spend: {{data.spend}}</p>
+        <p>Impressions: {{data.impressions}} | CPM: {{data.cpm}}</p>
+        <p>Clicks: {{data.clicks}} | CPC: {{data.cpc}}</p>
+        <p>Likes: {{data.like}} | CPL: {{data.cost_per_like}}</p>
+        <p>Reach: {{data.reach}}</p>
+        <p>CTR: {{data.ctr}}</p>
+        <p>CPP: {{data.cpp}}</p>
+        <p>Total Actions: {{data.total_actions}}</p>
+        <p>Comment: {{data.comment}} | Cost per: {{data.cost_per_comment}}</p>
+        <p>Photo View: {{data.photo_view}} | Cost per: {{ data.cost_per_photo_view}}</p>
+        <p>Post: {{data.post}} | Cost per: {{data.cost_per_post}}</p>
+        <p>Post Like: {{data.post_like}} | Cost per: {{ data.cost_per_post_like}}</p>
+        <p>Page Engagement: {{data.page_engagement}} | Cost per: {{data.cost_per_page_engagement}}</p>
+        <p>Post Engagement: {{data.post_engagement}} | Cost per: {{data.cost_per_post_engagement}}</p>
+      </div>
+    {{/each}}
+  {{else}}
+    <p>
+      Loading....
+    </p>
+  {{/if}}
 </template>
