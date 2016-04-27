@@ -67,9 +67,9 @@ Meteor.methods({
 // need a meteor.publish here
 Meteor.publish('campaignBasicsList', function (opts) {
   if (! opts) {
-    return CampaignBasics.find({})
+    return CampaignBasics.find({});
   } else {
-    return CampaignBasics.find({account_id: opts}, {sort: {sort_time_start: -1}})
+    return CampaignBasics.find({campaign_id: opts}, {sort: {sort_time_start: -1}})
   }
 
 });

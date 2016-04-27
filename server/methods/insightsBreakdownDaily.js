@@ -101,6 +101,10 @@ Meteor.methods({
   }
 });
 
-Meteor.publish('insightsBreakdownByDaysList', function () {
-    return InsightsBreakdownsByDays.find({}) //publish all daily breakdowns
+Meteor.publish('insightsBreakdownByDaysList', function (opts) {
+    if (! opts) {
+        return InsightsBreakdownsByDays.find({});
+    } else {
+        return InsightsBreakdownsByDays.find({'data.campaign_id': opts});
+    }
 });
