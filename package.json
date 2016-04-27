@@ -13,7 +13,8 @@
     "moment-range": "^2.2.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "DEPLOY_HOSTNAME=galaxy.meteor.com meteor deploy app.targetedsocial.com --settings settings.json" 
   },
   "repository": {
     "type": "git",

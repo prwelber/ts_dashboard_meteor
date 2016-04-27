@@ -1,5 +1,5 @@
-Meteor.subscribe('fbAccountList');
 import { Meteor } from 'meteor/meteor'
+Meteor.subscribe('fbAccountList');
 import MasterAccounts from '/collections/MasterAccounts'
 
 Template.accounts.events({
@@ -62,6 +62,7 @@ Template.index.events({
 
 Template.index.onRendered(function () {
   $('.tooltipped').tooltip({delay: 10});
+  $(".button-collapse").sideNav();
 });
 
 Template.index.helpers({

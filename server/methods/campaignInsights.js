@@ -19,7 +19,6 @@ Meteor.methods({
 
 Meteor.methods({
   'getInsights': function (accountNumber, end_date) {
-    console.log('getInsights running');
     let insightsArray = [];
     let masterArray = [];
     let insights;
@@ -83,7 +82,6 @@ Meteor.methods({
         data['date_start'] = moment(data.date_start).format("MM-DD-YYYY hh:mm a");
         data['date_stop'] = moment(data.date_stop).format("MM-DD-YYYY hh:mm a");
         data['campaign_name']
-        console.log('data from campaign insight', data);
         masterArray.push(data);
 
     } catch(e) {
@@ -134,7 +132,6 @@ Meteor.methods({
     }
   },
   'refreshInsight': function (campaign_id, campaign_name, initiativeName) {
-    console.log('refreshInsight running');
     Initiatives.update(
       {name: initiativeName},
       {$pull: {
@@ -166,7 +163,6 @@ Meteor.methods({
 
 
 Meteor.publish('campaignInsightList', function (opts) {
-    console.log("opts in insight publish", opts);
     if (! opts) {
       return CampaignInsights.find({}); //publish all insights
     } else {

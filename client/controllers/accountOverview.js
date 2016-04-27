@@ -1,4 +1,5 @@
 import CampaignBasics from '/collections/CampaignBasics'
+import MasterAccounts from '/collections/MasterAccounts'
 
 Tracker.autorun(function () {
     if (FlowRouter.subsReady('campaignBasicsList')) {
