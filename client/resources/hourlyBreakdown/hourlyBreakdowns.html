@@ -1,0 +1,43 @@
+<template name="hourlyBreakdowns">
+
+    <h2>Hourly Stats Aggregated by Audience Time Zone Breakdown</h2>
+    <a href="/accounts/{{campaignInfo.campaign_id}}/insights">Back to Campaign Insights</a>
+    <h3>Campaign: {{campaignInfo.campaign_name}}</h3>
+    <h5>Campaign Objective: {{campaignInfo.objective}}</h5>
+    <br /><br />
+    {{#if isReady "hourlyBreakdownsList"}}
+        {{#each getHourlyBreakdown}}
+            <h3>Hour: {{data.hourly_stats_aggregated_by_audience_time_zone}}</h3>
+            <p>CPM: {{data.cpm}}</p>
+            <p>CPP: {{data.cpp}}</p>
+            <p>CTR: {{data.ctr}}%</p>
+            {{#if data.reach}}<p>Reach: {{data.reach}}</p>{{/if}}
+            <p>Impressions: {{data.impressions}}</p>
+            <p>Spend: {{data.spend}}</p>
+            {{#if data.cost_per_page_engagement}}<p>CP Page Engagement: {{data.cost_per_page_engagement}}</p>{{/if}}
+            {{#if data.cost_per_post_engagement}}<p>CP Post Engagement: {{data.cost_per_post_engagement}}</p>{{/if}}
+            {{#if data.clicks}} <p>Clicks: {{data.clicks}} | Cost per: {{data.cpc}}</p> {{/if}}
+            {{#if data.comment}}<p>Comments: {{data.comment}} | Cost per: {{ data.cost_per_comment}}</p>{{/if}}
+            {{#if data.like}}<p>Likes: {{data.like}} | Cost per: {{data.cost_per_like}}</p>{{/if}}
+            {{#if data.link_click}}<p>Link Click: {{data.link_click}} | Cost per: {{ data.cost_per_link_click}}</p>{{/if}}
+            {{#if data.website_clicks}}<p>Website Clicks: {{data.website_clicks}}</p>{{/if}}
+            {{#if data.photo_view}}<p>Photo View: {{data.photo_view}} | Cost per: {{ data.cost_per_photo_view}}</p>{{/if}}
+            {{#if data.post}}<p>Post: {{data.post}} | Cost per: {{ data.cost_per_post}}</p>{{/if}}
+            {{#if data.post_like}}<p>Post Likes: {{data.post_like}} | Cost per: {{ data.cost_per_post_like}}</p>{{/if}}
+            {{#if data.unlike}}<p>Unlikes: {{data.unlike}}</p>{{/if}}
+            {{#if data.video_play}}<p>Video Play: {{data.video_play}}</p>{{/if}}
+            {{#if data.video_view}}<p>Video View: {{data.video_view}}</p>{{/if}}
+            {{#if data.offsite_conversion}} <p>Offsite Conversion: {{data.offsite_conversion}}</p>{{/if}}
+            {{#if data.offsite_conversion_registration}} <p>Offsite Conversion Registration: {{data.offsite_conversion_registration}}</p>{{/if}}
+            {{#if data.offsite_conversion_fb_pixel_purchase}} <p>Offsite Conversion FB Pixel Purchase: {{data.offsite_conversion_fb_pixel_purchase}}</p>{{/if}}
+            {{#if data.cost_per_unlike}}<p>CP Unlike: {{data.cost_per_unlike}}</p>{{/if}}
+            {{#if data.cost_per_video_play}}<p>CP Video Play: {{data.cost_per_video_play}}</p>{{/if}}
+            {{#if data.cost_per_video_view}}<p>CP Video View: {{data.cost_per_video_view}}</p>{{/if}}
+            {{#if data.cost_per_offsite_conversion_fb_pixel_purchase}} <p>CP Offsite Conversion FB Pixel Purchase: {{data.cost_per_offsite_conversion_fb_pixel_purchase}}</p>{{/if}}
+            {{#if data.cost_per_offsite_conversion}} <p>CP Offsite Conversion: {{data.cost_per_offsite_conversion}}</p>{{/if}}
+            {{#if data.cost_per_offsite_conversion_registration}} <p>CP Offsite Conversion Registration: {{data.cost_per_offsite_conversion_registration}}</p>{{/if}}
+        {{/each}}
+    {{else}}
+        <p>Loading...</p>
+    {{/if}}
+</template>

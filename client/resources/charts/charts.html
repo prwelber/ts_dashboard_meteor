@@ -1,0 +1,33 @@
+<template name="charts">
+  <h2 class="center-align">Data Visualization</h2>
+  <div class="row">
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s3"> <a href="#delivery">Delivery</a> </li>
+        <li class="tab col s3"> <a href="#costPer">Cost Per</a> </li>
+        <li class="tab col s3"> <a href="#dualAxes">Cost Per + Actions</a> </li>
+        <li class="tab col s3"> <a href="#hourly">Hourly</a> </li>
+        <li class="tab col s3"> <a href="#ageGender">Age & Gender</a> </li>
+      </ul>
+    </div>
+    {{#if isReady "Initiatives"}}
+      <div id="delivery" class="col s12">
+        {{> highchartsHelper chartId="test" chartWidth="100%" chartHeight="100%" chartObject=deliveryChart}}
+      </div>
+      <div id="costPer" class="col s12">
+        {{> highchartsHelper chartId="costPerChart" chartWidth="100%" chartHeight="100%" chartObject=costPerChart}}
+      </div>
+      <div id="dualAxes" class="col s12">
+        {{> highchartsHelper chartId="dualAxes" chartWidth="100%" chartHeight="100%" chartObject=dualAxes}}
+      </div>
+      <div id="hourly" class="col s12">
+        {{> highchartsHelper chartId="hourlyChart" chartWidth="100%" chartHeight="100%" chartObject=hourlyChart}}
+      </div>
+      <div id="ageGender" class="col s12">
+        {{> highchartsHelper chartId="ageGenderChart" chartWidth="100%" chartHeight="100%" chartObject=ageGenderChart}}
+      </div>
+    {{else}}
+      <p>Loading Data...</p>
+    {{/if}}
+  </div>
+</template>

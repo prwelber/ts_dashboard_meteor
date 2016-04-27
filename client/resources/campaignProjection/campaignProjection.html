@@ -1,0 +1,68 @@
+<template name="projections">
+  {{#if isReady "Initiatives"}}
+    <div class="row">
+      <h3 class="center-align">Projections</h3>
+      <div class="input-field col s6">
+        <select class="browser-default" id="projection-select">
+          <option value="Lifetime" selected>Lifetime</option>
+          <option value="1">Yesterday</option>
+          <option value="3">Last 3 Days</option>
+          <option value="7">Last 7 Days</option>
+          <option value="14">Last 14 Days</option>
+          <option value="30">Last 30 Days</option>
+        </select>
+        <label class="active">Use Values From</label>
+      </div>
+      <div class="col s6">
+        <p class="projection-buttons" style="margin-top: 2%;"><button id="project-up" class="waves-effect waves-light btn">+</button> Days: {{getSessionDay}} <button id="project-down" class="waves-effect waves-light btn">-</button> </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s3">
+        <table>
+          <tr>
+            <th>Daily Clicks</th>
+            <td>{{averages.avgClicks}}</td>
+          </tr>
+          <tr>
+            <th>Daily Impressions</th>
+            <td>{{averages.avgImpressions}}</td>
+          </tr>
+          <tr>
+            <th>Daily Likes</th>
+            <td>{{averages.avgLikes}}</td>
+          </tr>
+          <tr>
+            <th>Daily Spend</th>
+            <td>{{averages.avgSpend}}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="col s3">
+        {{#with dataProjection}}
+          <table>
+            <tr>
+              <th>Projected Clicks</th>
+              <td>{{clicks}}</td>
+            </tr>
+            <tr>
+              <th>Projected Impressions</th>
+              <td>{{impressions}}</td>
+            </tr>
+            <tr>
+              <th>Projected Likes</th>
+              <td>{{likes}}</td>
+            </tr>
+            <tr>
+              <th>Projected Spend</th>
+              <td>TODO</td>
+            </tr>
+          </table>
+        {{/with}}
+      </div>
+    </div>
+
+  {{else}}
+    <p>Loading..</p>
+  {{/if}}
+</template>
