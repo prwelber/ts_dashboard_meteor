@@ -15,7 +15,7 @@ Template.insightsBreakdownDaily.helpers({
     {
       var target = document.getElementById("spinner-div");
       let spun = Blaze.render(Template.spin, target);
-
+      const campaignNumber = FlowRouter.getParam('campaign_id');
       var call = Promise.promisify(Meteor.call);
         call('getDailyBreakdown', campaignNumber)
         .then(function (result) {
@@ -29,7 +29,7 @@ Template.insightsBreakdownDaily.helpers({
     }
   },
   'getDailyBreakdown': function () {
-      let campaignNumber = FlowRouter.getParam('campaign_id');
+      const campaignNumber = FlowRouter.getParam('campaign_id');
       let dailyBreakdown = InsightsBreakdownsByDays.findOne({'data.campaign_id': campaignNumber});
       if(dailyBreakdown) {
         return InsightsBreakdownsByDays.find({'data.campaign_id': campaignNumber}, {sort: {'data.date_start': -1}});

@@ -46,6 +46,11 @@ Template.initiativeHomepage.helpers({
       return true;
     }
   },
+  // chartReady: () => {
+  //   if (Session.get('res')[0]['date']) {
+  //     return true;
+  //   }
+  // },
   // need to gather all the campaigns associated with this initiative
   'getCampaigns': function () {
     const init = Template.instance().templateDict.get('initiative');
@@ -385,6 +390,7 @@ Template.initiativeHomepage.helpers({
       chart.push(el[actionType]);
     });
 
+
     // for getting x axis labels
     let labels      = [],
         start       = moment(Session.get('res')[0]['date'], "MM-DD"),
@@ -395,6 +401,8 @@ Template.initiativeHomepage.helpers({
     arrayOfDays.forEach(el => {
       labels.push(moment(el).format("MM-DD"))
     });
+
+
 
     // build chart
     return {

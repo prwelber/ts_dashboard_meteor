@@ -272,12 +272,16 @@ include charting for each lineItem and definitely aggregations --}}
       </table>
     </div>
     <div class="row">
-      <div class="col s6">
-        {{> highchartsHelper chartId="modalDeliveryChart" chartWidth="100%" chartHeight="70%" chartObject=modalDeliveryChart}}
-      </div>
-      <div class="col s6">
-        {{> highchartsHelper chartId="costPerChart" chartWidth="100%" chartHeight="70%" chartObject=costPerChart}}
-      </div>
+      {{!-- {{#if chartReady}} --}}
+        <div class="col s6">
+          {{> highchartsHelper chartId="modalDeliveryChart" chartWidth="100%" chartHeight="70%" chartObject=modalDeliveryChart}}
+        </div>
+        <div class="col s6">
+          {{> highchartsHelper chartId="costPerChart" chartWidth="100%" chartHeight="70%" chartObject=costPerChart}}
+        </div>
+      {{!-- {{else}}
+        <p>Charts Loading...</p>
+      {{/if}} --}}
     </div>
   </div>
 

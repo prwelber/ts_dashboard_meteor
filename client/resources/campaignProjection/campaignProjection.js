@@ -3,6 +3,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router'
 import Initiatives from '/collections/Initiatives'
 import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
 import Promise from 'bluebird'
+import mastFunc from '../masterFunctions'
 
 Template.projections.onCreated( function () {
   this.templateDict = new ReactiveDict();
@@ -24,11 +25,16 @@ Template.projections.events({
     Session.set("dayNumber", Session.get("dayNumber") - 1);
   },
   'change #projection-select': function(event, template) {
-    console.log(event.target.value);
+    const initiative = Template.instance().templateDict.get('initiative')
+    Meteor.call('projectionStats', event.target.value, initiative.name);
 
-
-
-
+    var call = Promise.promisify(Meteor.call);
+    call('projectionStats', event.target.value, initiative.name)
+    .then(function (result) {
+      Session.set('projection', result);
+    }).catch(function (err) {
+      console.log("Error with projection", err);
+    });
 
 
   }
@@ -41,53 +47,35 @@ Template.projections.helpers({
     };
   },
   'averages': function () {
-    const initiative = Template.instance().templateDict.get('initiative');
-    const ended = moment(initiative.lineItems[0].endDate, moment.ISO_8601);
-    const started = moment(initiative.lineItems[0].startDate, moment.ISO_8601);
-    const now = moment(new Date);
-    let timeDiff = ended.diff(started, 'days');
-
-    now.isAfter(ended) ? '' : timeDiff = now.diff(started, 'days');
-    console.log(timeDiff)
-    console.log(numeral(initiative.aggregateData.clicks / timeDiff).format("0,0"))
-    console.log(initiative.aggregateData.spend / timeDiff)
-
-    return {
-      avgClicks: numeral(initiative.aggregateData.clicks / timeDiff).format("0,0"),
-      avgImpressions: numeral(initiative.aggregateData.impressions / timeDiff).format("0,0"),
-      avgLikes: numeral(initiative.aggregateData.likes / timeDiff).format("0,0"),
-      avgSpend: numeral(initiative.aggregateData.spend / timeDiff).format("$0,0.00")
+    const data = Session.get('projection');
+    if (data && data.impressions) {
+      return {
+        avgClicks: mastFunc.num(data.clicks),
+        avgImpressions: mastFunc.num(data.impressions),
+        avgLikes: mastFunc.num(data.like),
+        avgSpend: mastFunc.money(data.spend),
+        avgActions: mastFunc.num(data.total_actions)
+      }
     }
   },
   'dataProjection': function () {
     // TODO create a master function to handle this???
     const initiative = Template.instance().templateDict.get('initiative');
 
-    const agData = initiative.aggregateData // for brevity
-    const sesh = Session.get('dayNumber') // for brevity
+    const agData = initiative.aggregateData; // for brevity
+    const sesh = Session.get('dayNumber'); // for brevity
+    const projection = Session.get('projection');
 
-    const ended = moment(initiative.endDate, moment.ISO_8601);
-    const started = moment(initiative.startDate, moment.ISO_8601);
-    const now = moment(new Date);
-    // ternary to figure out time difference
-    let timeDiff = now.isAfter(ended) ?
-      ended.diff(started, 'days') :
-      now.diff(started, 'days');
-
-    let projections = function projections(action, session, timeDiff) {
-      let avg = action / timeDiff
-      let result =  action + (session * avg);
-      return numeral(result).format("0,0");
-    }
-
-    const clicks = projections(agData.clicks, sesh, timeDiff);
-    const impressions = projections(agData.impressions, sesh, timeDiff);
-    const likes = projections(agData.likes, sesh, timeDiff);
+    const spend = agData.spend + (projection.spend * sesh);
+    const likes = agData.likes + (projection.like * sesh);
+    const clicks = agData.clicks + (projection.clicks * sesh);
+    const impressions = agData.impressions + (projection.impressions * sesh)
 
     return {
-      clicks: clicks,
-      impressions: impressions,
-      likes: likes
+      clicks: mastFunc.num(clicks),
+      impressions: mastFunc.num(impressions),
+      likes: mastFunc.num(likes),
+      spend: mastFunc.money(spend)
     }
   },
   'getSessionDay': function () {

@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor'
 import { HTTP } from 'meteor/http'
 import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
+import Initiatives from '/collections/Initiatives'
+import CampaignInsights from '/collections/CampaignInsights'
 
 Meteor.methods({
   'removeDaily': function () {
@@ -35,53 +37,80 @@ Meteor.methods({
         // console.log(dailyBreakdownArray)
 
         dailyBreakdownArray.forEach(el => {
-            let data = {};
-            for (let key in el) {
-                if (key == "actions") {
-                    el[key].forEach(el => {
-                        // this check looks for a period in the key name and
-                        // replaces it with an underscore if found
-                        // this check is used two more times below
-                        if (/\W/g.test(el.action_type)) {
-                            // console.log("before key", el.action_type)
-                            el.action_type = el.action_type.replace(/\W/g, "_");
-                            // console.log("after key", el.action_type)
-                            data[el.action_type] = el.value;
-                        }
-                        data[el.action_type] = el.value;
-                    });
-                } else if (key == "cost_per_action_type") {
-                     el[key].forEach(el => {
-                        if (/\W/g.test(el.action_type)) {
-                            el.action_type = el.action_type.replace(/\W/g, "_");
-                            data["cost_per_"+el.action_type] = accounting.formatMoney(el.value, "$", 2);
-                        } else {
-                            data["cost_per_"+el.action_type] = accounting.formatMoney(el.value, "$", 2);
-                        }
-                    });
-                } else {
-                    // this check looks for a period in the key name and
-                    // replaces it with an underscore
-                    if (/\W/g.test(key)) {
-                        key = key.replace(/\W/g, "_");
-                        data[key] = el[key];
-                    } else {
-                        data[key] = el[key]
-                    }
+          let data = {};
+          for (let key in el) {
+            if (key == "actions") {
+              el[key].forEach(el => {
+                // this check looks for a period in the key name and
+                // replaces it with an underscore if found
+                // this check is used two more times below
+                if (/\W/g.test(el.action_type)) {
+                  // console.log("before key", el.action_type)
+                  el.action_type = el.action_type.replace(/\W/g, "_");
+                  // console.log("after key", el.action_type)
+                  data[el.action_type] = el.value;
                 }
+                data[el.action_type] = el.value;
+              });
+            } else if (key == "cost_per_action_type") {
+              el[key].forEach(el => {
+                if (/\W/g.test(el.action_type)) {
+                  el.action_type = el.action_type.replace(/\W/g, "_");
+                  data["cost_per_"+el.action_type] = accounting.formatMoney(el.value, "$", 2);
+                } else {
+                  data["cost_per_"+el.action_type] = accounting.formatMoney(el.value, "$", 2);
+                }
+              });
+            } else {
+              // this check looks for a period in the key name and
+              // replaces it with an underscore
+              if (/\W/g.test(key)) {
+                key = key.replace(/\W/g, "_");
+                data[key] = el[key];
+              } else {
+                data[key] = el[key]
+              }
             }
-            data['cpm'] = accounting.formatMoney(data.cpm, "$", 2);
-            data['cpp'] = accounting.formatMoney(data.cpp, "$", 2);
-            data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
-            data['campaign_name'] = data.campaign_name;
-            data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
-            data['cpc'] = accounting.formatMoney((data.spend / data.clicks), "$", 2);
-            data['spend'] = accounting.formatMoney(data.spend, "$", 2);
-            data['date_start'] = moment(data['date_start']).format("MM-DD-YYYY");
-            masterArray.push(data);
+          }
+          data['cpm'] = accounting.formatMoney(data.cpm, "$", 2);
+          data['cpp'] = accounting.formatMoney(data.cpp, "$", 2);
+          data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
+          data['campaign_name'] = data.campaign_name;
+          data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
+          data['cpc'] = accounting.formatMoney((data.spend / data.clicks), "$", 2);
+          data['spend'] = accounting.formatMoney(data.spend, "$", 2);
+          data['date_start'] = moment(data['date_start']).format("MM-DD-YYYY");
+          masterArray.push(data);
+
+
+          // Where we search initiatives looking for the one that matches
+          try {
+            Initiatives._ensureIndex({
+              "search_text": "text"
+            });
+            // add check for when campaign_name is null
+            if (data && data.campaign_name) {
+              console.log('pairing initiative and daily inight breakdown');
+              let inits = Initiatives.find(
+                {$text: { $search: data.campaign_name}},
+                {
+                  fields: { // giving each document a text score
+                    score: {$meta: "textScore"}
+                  },
+                  sort: { // sorting by highest text score
+                    score: {$meta: "textScore"}
+                  }
+                }
+              ).fetch();
+              inits = inits[0];  // set "inits" equal to initiative with highest textScore
+              data['initiative'] = inits.name; //assign initiative name to data object
+            }
+          } catch(e) {
+            console.log("Error assigning Initiative to Daily Breakdown", e);
+          }
+          // end of initiative matching
         });
         // console.log(masterArray);
-
 
     } catch(e) {
         console.log("Error pulling daily insights breakdown:", e)
@@ -102,9 +131,12 @@ Meteor.methods({
 });
 
 Meteor.publish('insightsBreakdownByDaysList', function (opts) {
-    if (! opts) {
-        return InsightsBreakdownsByDays.find({});
-    } else {
-        return InsightsBreakdownsByDays.find({'data.campaign_id': opts});
+  if (opts) {
+    const insight = CampaignInsights.findOne({'data.campaign_id': opts});
+    if (insight && insight.data.initiative) {
+      return InsightsBreakdownsByDays.find({'data.initiative': insight.data.initiative});
     }
+  } else {
+    return InsightsBreakdownsByDays.find({});
+  }
 });
