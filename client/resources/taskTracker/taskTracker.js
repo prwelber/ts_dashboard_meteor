@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor'
 import { FlowRouter } from 'meteor/kadira:flow-router'
-
 import CampaignBasics from '/collections/CampaignBasics'
 
 // Tracker.autorun(func => {
@@ -17,20 +16,28 @@ Template.taskTracker.helpers({
     }
   },
   "targetingChecked": function () {
-    let camp = CampaignBasics.findOne({campaign_id: FlowRouter.current().params.campaign_id});
-    return camp.approved_targeting === true ? "checked" : "";
+    if (FlowRouter.subsReady()) {
+      let camp = CampaignBasics.findOne({campaign_id: FlowRouter.current().params.campaign_id});
+      return camp.approved_targeting === true ? "checked" : "";
+    }
   },
   "creativeChecked": function () {
-    let camp = CampaignBasics.findOne({campaign_id: FlowRouter.current().params.campaign_id});
-    return camp.received_creative === true ? "checked" : "";
+    if (FlowRouter.subsReady()) {
+      let camp = CampaignBasics.findOne({campaign_id: FlowRouter.current().params.campaign_id});
+      return camp.received_creative === true ? "checked" : "";
+    }
   },
   "trackingChecked": function () {
-    let camp = CampaignBasics.findOne({campaign_id: FlowRouter.current().params.campaign_id});
-    return camp.received_tracking === true ? "checked" : "";
+    if (FlowRouter.subsReady()) {
+      let camp = CampaignBasics.findOne({campaign_id: FlowRouter.current().params.campaign_id});
+      return camp.received_tracking === true ? "checked" : "";
+    }
   },
   "signedIoChecked": function () {
-    let camp = CampaignBasics.findOne({campaign_id: FlowRouter.current().params.campaign_id});
-    return camp.signed_IO === true ? "checked" : "";
+    if (FlowRouter.subsReady()) {
+      let camp = CampaignBasics.findOne({campaign_id: FlowRouter.current().params.campaign_id});
+      return camp.signed_IO === true ? "checked" : "";
+    }
   }
 });
 

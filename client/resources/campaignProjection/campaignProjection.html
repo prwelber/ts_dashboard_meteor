@@ -38,28 +38,48 @@
           </tr>
         </table>
       </div>
+      {{#with dataProjection}}
       <div class="col s3">
-        {{#with dataProjection}}
-          <table>
-            <tr>
-              <th>Projected Clicks</th>
-              <td>{{clicks}}</td>
-            </tr>
-            <tr>
-              <th>Projected Impressions</th>
-              <td>{{impressions}}</td>
-            </tr>
-            <tr>
-              <th>Projected Likes</th>
-              <td>{{likes}}</td>
-            </tr>
-            <tr>
-              <th>Projected Spend</th>
-              <td>{{spend}}</td>
-            </tr>
-          </table>
-        {{/with}}
+        <table>
+          <tr>
+            <th>Projected Clicks</th>
+            <td>{{clicks}}</td>
+          </tr>
+          <tr>
+            <th>Projected Impressions</th>
+            <td>{{impressions}}</td>
+          </tr>
+          <tr>
+            <th>Projected Likes</th>
+            <td>{{likes}}</td>
+          </tr>
+          <tr>
+            <th>Projected Spend</th>
+            <td>{{spend}}</td>
+          </tr>
+        </table>
       </div>
+      <div class="col s3">
+        <table>
+          <tr>
+            <th>Projected CPC</th>
+            <td>{{cpc}}</td>
+          </tr>
+          <tr>
+            <th>Projected CPM</th>
+            <td>{{cpm}}</td>
+          </tr>
+          <tr>
+            <th>Projected CPL</th>
+            <td>{{cpl}}</td>
+          </tr>
+          <tr>
+            <th>Projected Spend %</th>
+            <td>{{spendPercent}}</td>
+          </tr>
+        </table>
+      </div>
+      {{/with}}
     </div>
 
   {{else}}

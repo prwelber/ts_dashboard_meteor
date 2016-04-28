@@ -415,15 +415,19 @@ Template.charts.helpers({
         throw new Meteor.Error('this is a Meteor Error!!!!');
       });
 
-      Session.get('resultData').forEach(el => {
-        cpc.data.push(el[0].cpc);
-        cpl.data.push(el[0].cpl);
-        cpm.data.push(el[0].cpm);
-        spend.data.push(el[0].spend);
-        impressions.data.push(el[0].impressions);
-        clicks.data.push(el[0].clicks);
-        likes.data.push(el[0].likes);
-      });
+      const RESULT_DATA = Session.get('resultData');
+
+      if (RESULT_DATA) {
+        RESULT_DATA.forEach(el => {
+          cpc.data.push(el[0].cpc);
+          cpl.data.push(el[0].cpl);
+          cpm.data.push(el[0].cpm);
+          spend.data.push(el[0].spend);
+          impressions.data.push(el[0].impressions);
+          clicks.data.push(el[0].clicks);
+          likes.data.push(el[0].likes);
+        });
+      }
     }
 
 

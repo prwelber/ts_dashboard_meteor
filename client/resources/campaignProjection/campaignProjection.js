@@ -65,17 +65,37 @@ Template.projections.helpers({
     const agData = initiative.aggregateData; // for brevity
     const sesh = Session.get('dayNumber'); // for brevity
     const projection = Session.get('projection');
+    let spend,
+        likes,
+        clicks,
+        impressions,
+        cpm,
+        cpc,
+        cpl,
+        spendPercent;
 
-    const spend = agData.spend + (projection.spend * sesh);
-    const likes = agData.likes + (projection.like * sesh);
-    const clicks = agData.clicks + (projection.clicks * sesh);
-    const impressions = agData.impressions + (projection.impressions * sesh)
+    if (projection && projection.spend) {
+      let totalSpend = agData.spend + (projection.spend * sesh);
+      spend = agData.spend + (projection.spend * sesh);
+      likes = agData.likes + (projection.like * sesh);
+      clicks = agData.clicks + (projection.clicks * sesh);
+      impressions = agData.impressions + (projection.impressions * sesh);
+      cpm = totalSpend / ((agData.impressions + (projection.impressions * sesh)) / 1000);
+      cpc = totalSpend / (agData.clicks + projection.clicks * sesh);
+      cpl = totalSpend / (agData.likes + projection.like * sesh);
+      cpl === Infinity ? cpl = 0 : '';
+      spendPercent = totalSpend / initiative.lineItems[0].budget;
+    }
 
     return {
       clicks: mastFunc.num(clicks),
       impressions: mastFunc.num(impressions),
       likes: mastFunc.num(likes),
-      spend: mastFunc.money(spend)
+      spend: mastFunc.money(spend),
+      cpc: mastFunc.money(cpc),
+      cpm: mastFunc.money(cpm),
+      cpl: mastFunc.money(cpl),
+      spendPercent: numeral(spendPercent).format("0.00%")
     }
   },
   'getSessionDay': function () {

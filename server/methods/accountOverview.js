@@ -68,8 +68,10 @@ Meteor.methods({
 Meteor.publish('campaignBasicsList', function (opts) {
   if (! opts) {
     return CampaignBasics.find({});
-  } else {
-    return CampaignBasics.find({campaign_id: opts}, {sort: {sort_time_start: -1}})
+  } else if (opts.toString().length < 15) {
+    return CampaignBasics.find({campaign_id: opts}, {sort: {sort_time_start: -1}});
+  } else if (opts.toString().length === 15) {
+    return CampaignBasics.find({account_id: opts}, {sort: {sort_time_start: -1}});
   }
 
 });

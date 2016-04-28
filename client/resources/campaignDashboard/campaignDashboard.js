@@ -96,8 +96,6 @@ Template.campaignDashboard.helpers({
   },
   'getAggregate': function () {
     const init = Template.instance().templateDict.get('initiative');
-    console.log('init in getAggregate', init);
-
     var call = Promise.promisify(Meteor.call);
     call('getAggregate', init.name).then(function (result) {
       // console.log('result from getAggregate', result);
