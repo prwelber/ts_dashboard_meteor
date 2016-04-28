@@ -34,35 +34,29 @@ Meteor.methods({
 
       let finalObj = {};
 
-      // const finalArr = [];
       var impressions = targetDates.reduce(function(a,b) {
         return {impressions: a.impressions + b.impressions}
       });
-      // finalArr.push({impressions: impressions.impressions / targetDates.length});
       finalObj['impressions'] = impressions.impressions / targetDates.length
 
       var spend = targetDates.reduce(function(a,b) {
         return {spend: a.spend + b.spend}
       });
-      // finalArr.push({spend: spend.spend / targetDates.length});
       finalObj['spend'] = spend.spend / targetDates.length
 
       var total_actions = targetDates.reduce(function(a,b) {
         return {total_actions: a.total_actions + b.total_actions}
       });
-      // finalArr.push({total_actions: total_actions.total_actions / targetDates.length});
       finalObj['total_actions'] = total_actions.total_actions / targetDates.length
 
       var like = targetDates.reduce(function(a,b) {
         return {like: a.like + b.like}
       });
-      // finalArr.push({like: like.like / targetDates.length});
       finalObj['like'] = like.like / targetDates.length
 
       var clicks = targetDates.reduce(function(a,b) {
         return {clicks: a.clicks + b.clicks}
       });
-      // finalArr.push({clicks: clicks.clicks / targetDates.length});
       finalObj['clicks'] = clicks.clicks / targetDates.length
 
       return finalObj;
