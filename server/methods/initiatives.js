@@ -1,5 +1,6 @@
 import CampaignInsights from '/collections/CampaignInsights'
 import Initiatives from '/collections/Initiatives'
+import { check } from 'meteor/check'
 
 Meteor.methods({
   'insertNewInitiative': function (data) {
@@ -49,7 +50,7 @@ Meteor.methods({
     return "initiative deleted";
   },
   'updateInitiative': function (data) {
-    console.log('updating initiative');
+    check(data.name, String);
     let active = false;
     let recentlyEnded = false;
     let lastThreeMonths = false;

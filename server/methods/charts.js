@@ -59,7 +59,10 @@ Meteor.methods({
     const timeForm = "MM-DD-YYYY"
     let total = 0;
     try {
-      for (let i = 0; i < arr.length; i++) {
+      for (let i = 0; i < arr.length - 1; i++) {
+        // changing the above line to arr.length - 1 gets rid of an error
+        // but it also cuts off the last day
+        // will come back to this
         var diff = moment(arr[i].data.date_start, timeForm).diff(moment(arr[i + 1].data.date_start, timeForm), 'days');
         if (diff < -1) {
           total += Math.abs(diff) - 1;
@@ -81,39 +84,45 @@ Meteor.methods({
     all campaigns ran on consecutive days, when sometimes this is not
     the case.
     */
+    const LOOP_TOTAL = arr.length + total
     try {
-      for (var i = 0; i < arr.length + total; i++) {
-        var diff = moment(arr[i].data.date_start, timeForm).diff(moment(arr[i + 1].data.date_start, timeForm), 'days');
+      for (let i = 0; i < LOOP_TOTAL; i++) {
 
-        if (diff < -1) {
+        if (i === LOOP_TOTAL - 1) {
+          null
+        } else {
 
-          for (var j = 1; j < Math.abs(diff); j++) {
+          var diff = moment(arr[i].data.date_start, timeForm).diff(moment(arr[i + 1].data.date_start, timeForm), 'days');
 
-            // console.log("generated nums:", moment(arr[i].data.date_start, timeForm).add(j, 'd').format(timeForm));
+          if (diff < -1) {
 
-            arr.splice(i + j, 0, {
-              data: {
-                date_start: moment(arr[i].data.date_start, timeForm).add(j, 'd').format(timeForm),
-                impressions: null,
-                clicks: null,
-                like: null,
-                spend: null,
-                cost_per_like: null,
-                cost_per_page_engagement: null,
-                cost_per_post_engagement: null,
-                cost_per_video_view: null,
-                cpm: null,
-                cpc: null,
-                reach: null,
-                total_actions: null,
-                video_view: null,
-                post_engagement: null
-              }
-            })
+            for (var j = 1; j < Math.abs(diff); j++) {
+
+              // console.log("generated nums:", moment(arr[i].data.date_start, timeForm).add(j, 'd').format(timeForm));
+
+              arr.splice(i + j, 0, {
+                data: {
+                  date_start: moment(arr[i].data.date_start, timeForm).add(j, 'd').format(timeForm),
+                  impressions: null,
+                  clicks: null,
+                  like: null,
+                  spend: null,
+                  cost_per_like: null,
+                  cost_per_page_engagement: null,
+                  cost_per_post_engagement: null,
+                  cost_per_video_view: null,
+                  cpm: null,
+                  cpc: null,
+                  reach: null,
+                  total_actions: null,
+                  video_view: null,
+                  post_engagement: null
+                }
+              })
+            }
           }
         }
       }
-
     } catch(e) {
       console.log("Error while accounting for gaps:", e);
     }
@@ -124,6 +133,12 @@ Meteor.methods({
 
     arr.forEach(el => {
       el.data.date_start = moment(el.data.date_start, "MM-DD-YYYY").format("MM-DD");
+    });
+
+    //make labels here...
+    const LABEL_ARRAY = [];
+    arr.forEach(el => {
+      LABEL_ARRAY.push(el.data.date_start);
     });
 
     // needed to account for likes being undefined so we can add to zero
@@ -221,19 +236,19 @@ Meteor.methods({
       }
     });
 
-    const labelArray = [];
+    // const labelArray = [];
     const start = moment(otherArray[0].date, "MM-DD");
     const end = moment(initiative.lineItems[0].endDate, moment.ISO_8601);
     const dr = moment.range(start, end);
     const arrayOfDays = dr.toArray('days');
 
-    arrayOfDays.forEach(el => {
-      labelArray.push(moment(el).format("MM-DD"))
-    });
+    // arrayOfDays.forEach(el => {
+    //   labelArray.push(moment(el).format("MM-DD"))
+    // });
 
     return {
       dataArray: otherArray,
-      labelArray: labelArray
+      labelArray: LABEL_ARRAY
     }
   },
   'hourlyChart': function (initiative) {

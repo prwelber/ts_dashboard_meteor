@@ -28,12 +28,10 @@ email
 ejson
 percolate:synced-cron
 sacha:spin
-aldeed:collection2
 lepozepo:accounting
 msavin:mongol
 standard-minifier-css
 standard-minifier-js
-d3js:d3
 meteorhacks:aggregate
 semantic:ui
 flemay:less-autoprefixer

@@ -83,7 +83,10 @@ Template.charts.helpers({
         console.log('uh no error', err)
       });
 
-        Session.get('res').forEach(el => {
+      const SESSION_RESULT = Session.get('res');
+
+      if (SESSION_RESULT && SESSION_RESULT[0])
+        SESSION_RESULT.forEach(el => {
           totes += el[type];
           spendTotal += el.spend;
           actionToChart.push(totes);
@@ -190,11 +193,15 @@ Template.charts.helpers({
         cpcChart = [],
         cplChart = [];
 
-    Session.get('res').forEach(el => {
-      cpmChart.push(el.cpm);
-      cpcChart.push(el.cpc);
-      cplChart.push(el.cost_per_like);
-    });
+    const SESSION_RESULT = Session.get('res');
+
+    if (SESSION_RESULT && SESSION_RESULT[0]) {
+      SESSION_RESULT.forEach(el => {
+        cpmChart.push(el.cpm);
+        cpcChart.push(el.cpc);
+        cplChart.push(el.cost_per_like);
+      });
+    }
 
     // for getting x axis labels
     let labels      = [],
