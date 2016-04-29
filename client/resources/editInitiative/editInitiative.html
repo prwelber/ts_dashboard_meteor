@@ -23,7 +23,19 @@
           </div>
         </div>
         <div class="row">
-          <div class="input-field col s4">
+          <div class="input-field col s3">
+            <select name="owner" id="owner-select" class="browser-default">
+              <option value="" disabled selected>Choose Owner</option>
+              <option value="Corey">Corey</option>
+              <option value="Kathia">Kathia</option>
+              <option value="Veronika">Veronika</option>
+              <option value="Phil">Phil</option>
+              <option value="Sheri">Sheri</option>
+              <option value="Plato">Plato</option>
+            </select>
+            <label class="active">Owner</label>
+          </div>
+          <div class="input-field col s3">
             <select name="brand" id="brand-select" class="browser-default">
               <option value="{{brand}}" selected>{{brand}}</option>
               {{#each getBrands}}
@@ -32,7 +44,7 @@
             </select>
             <label class="active">Brand</label>
           </div>
-          <div class="input-field col s4">
+          <div class="input-field col s3">
             <select name="agency" id="agency-select" class="browser-default">
               <option value="{{agency}}" selected>{{agency}}</option>
               <option value="Constellation">Constellation</option>
@@ -40,7 +52,7 @@
             </select>
             <label class="active">Agency</label>
           </div>
-          <div class="input-field col s4">
+          <div class="input-field col s3">
             <select name="product" id="product-select" class="browser-default">
               <option value="{{product}}" selected>{{product}}</option>
               <option value="Wine">Wine</option>

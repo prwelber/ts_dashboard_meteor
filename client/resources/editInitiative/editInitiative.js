@@ -74,6 +74,7 @@ Template.editInitiative.events({
         finalObj['agency']    = event.target.agency.value;
         finalObj['notes']     = event.target.notes.value;
         finalObj['product']   = event.target.product.value;
+        finalObj['owner']     = event.target.owner.value;
         finalObj['tags']      = [];
 
         for (let i = 1; i <= 8; i++) {

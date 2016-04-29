@@ -1,7 +1,10 @@
-const later = require('later');
 import { Meteor } from 'meteor/meteor'
+import { SyncedCron } from 'meteor/percolate:synced-cron';
+import { Moment } from 'meteor/momentjs:moment'
 import CampaignInsights from '/collections/CampaignInsights'
+import Initiatives from '/collections/Initiatives'
 import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
+const later = require('later');
 
 SyncedCron.config({
   collectionName: 'cronCollection'
@@ -11,7 +14,7 @@ SyncedCron.add({
   name: "Daily Insights Background Getter",
 
   schedule: function (parser) {
-    return parser.text('at 10:23am');
+    return parser.text('at 12:17pm');
   },
 
   job: function (time) {
@@ -114,50 +117,77 @@ SyncedCron.add({
           dailyBreakdownArray = _.flatten(dailyBreakdownArray);
 
           dailyBreakdownArray.forEach(el => {
-              let data = {};
-              for (let key in el) {
-                  if (key == "actions") {
-                      el[key].forEach(el => {
-                          // this check looks for a period in the key name and
-                          // replaces it with an underscore if found
-                          // this check is used two more times below
-                          if (/\W/g.test(el.action_type)) {
-                              // console.log("before key", el.action_type)
-                              el.action_type = el.action_type.replace(/\W/g, "_");
-                              // console.log("after key", el.action_type)
-                              data[el.action_type] = el.value;
-                          }
-                          data[el.action_type] = el.value;
-                      });
-                  } else if (key == "cost_per_action_type") {
-                       el[key].forEach(el => {
-                          if (/\W/g.test(el.action_type)) {
-                              el.action_type = el.action_type.replace(/\W/g, "_");
-                              data["cost_per_"+el.action_type] = accounting.formatMoney(el.value, "$", 2);
-                          } else {
-                              data["cost_per_"+el.action_type] = accounting.formatMoney(el.value, "$", 2);
-                          }
-                      });
-                  } else {
-                      // this check looks for a period in the key name and
-                      // replaces it with an underscore
-                      if (/\W/g.test(key)) {
-                          key = key.replace(/\W/g, "_");
-                          data[key] = el[key];
-                      } else {
-                          data[key] = el[key]
-                      }
+            let data = {};
+            for (let key in el) {
+              if (key == "actions") {
+                el[key].forEach(el => {
+                  // this check looks for a period in the key name and
+                  // replaces it with an underscore if found
+                  // this check is used two more times below
+                  if (/\W/g.test(el.action_type)) {
+                    // console.log("before key", el.action_type)
+                    el.action_type = el.action_type.replace(/\W/g, "_");
+                    // console.log("after key", el.action_type)
+                    data[el.action_type] = el.value;
                   }
+                  data[el.action_type] = el.value;
+                });
+              } else if (key == "cost_per_action_type") {
+                 el[key].forEach(el => {
+                  if (/\W/g.test(el.action_type)) {
+                    el.action_type = el.action_type.replace(/\W/g, "_");
+                    data["cost_per_"+el.action_type] = accounting.formatMoney(el.value, "$", 2);
+                  } else {
+                    data["cost_per_"+el.action_type] = accounting.formatMoney(el.value, "$", 2);
+                  }
+                });
+              } else {
+                // this check looks for a period in the key name and
+                // replaces it with an underscore
+                if (/\W/g.test(key)) {
+                  key = key.replace(/\W/g, "_");
+                  data[key] = el[key];
+                } else {
+                  data[key] = el[key]
+                }
               }
-              data['cpm'] = mastFunc.makeMoney(data.cpm);
-              data['cpp'] = mastFunc.makeMoney(data.cpp);
-              data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
-              data['campaign_name'] = data.campaign_name;
-              data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
-              data['cpc'] = mastFunc.makeMoney((data.spend / data.clicks));
-              data['spend'] = mastFunc.makeMoney(data.spend);
-              data['date_start'] = moment(data['date_start']).format("MM-DD-YYYY");
-              masterArray.push(data);
+            }
+            data['cpm'] = mastFunc.makeMoney(data.cpm);
+            data['cpp'] = mastFunc.makeMoney(data.cpp);
+            data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
+            data['campaign_name'] = data.campaign_name;
+            data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
+            data['cpc'] = mastFunc.makeMoney((data.spend / data.clicks));
+            data['spend'] = mastFunc.makeMoney(data.spend);
+            data['date_start'] = moment(data['date_start']).format("MM-DD-YYYY");
+            masterArray.push(data);
+
+
+            // Where we search initiatives looking for the one that matches
+            try {
+              Initiatives._ensureIndex({
+                "search_text": "text"
+              });
+              // add check for when campaign_name is null
+              if (data && data.campaign_name) {
+                console.log('pairing initiative and daily inight breakdown');
+                let inits = Initiatives.find(
+                  {$text: { $search: data.campaign_name}},
+                  {
+                    fields: { // giving each document a text score
+                      score: {$meta: "textScore"}
+                    },
+                    sort: { // sorting by highest text score
+                      score: {$meta: "textScore"}
+                    }
+                  }
+                ).fetch();
+                inits = inits[0];  // set "inits" equal to initiative with highest textScore
+                data['initiative'] = inits.name; //assign initiative name to data object
+              }
+            } catch(e) {
+              console.log("Error assigning Initiative to Daily Breakdown", e);
+            } // end of initiative matching
           }); // end of dailyBreakdownArray.forEach
 
 
@@ -173,7 +203,7 @@ SyncedCron.add({
           }
           counter++;
         } // end of else block in if (counter >= idArray.length)
-      }, 4000); // end of Meteor.setInterval
+      }, 3500); // end of Meteor.setInterval
     } // end if if(idArray)
   } // end of job
 });

@@ -249,6 +249,9 @@ Template.initiativesHome.helpers({
   },
   userInfo: () => {
     return Meteor.user();
+  },
+  getOwner: () => {
+    return this.owner;
   }
 });
 

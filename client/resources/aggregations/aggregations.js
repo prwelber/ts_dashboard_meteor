@@ -1,3 +1,7 @@
+import { Meteor } from 'meteor/meteor'
+import MasterAccounts from '/collections/MasterAccounts'
+
+
 Template.aggregations.onRendered(function () {
   $('.datepicker').pickadate({
     selectMonths: true,

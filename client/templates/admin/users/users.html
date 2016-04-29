@@ -64,16 +64,6 @@
 
 
 <template name="createUser">
-  <nav>
-    <div class="nav-wrapper blue-grey darken-2">
-      <a href="#" class="brand-logo right">Dashboard</a>
-      <ul id="nav-mobile" class="left hide-on-med-and-down">
-        <li><a href="/">Home</a></li>
-        <li><a href="/admin">Admin</a></li>
-      </ul>
-    </div>
-  </nav>
-  <br>
   <div class="row">
     <h2 class="center-align">Create New User</h2>
     <form id="create-user-form" class="col s12">
@@ -151,7 +141,7 @@
         <h4>{{firstName}} {{lastName}}</h4>
         <p>{{email}}</p>
         <p>Admin: {{admin}}</p>
-        <p>{{company}}</p>
+        <p>Agency: {{agency}}</p>
         <p><a href="/admin/users/{{_id}}/edit">Edit This User</a></p>
         <p>
             <a href="#" class="delete-user">Delete User</a>

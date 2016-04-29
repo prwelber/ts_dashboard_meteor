@@ -4,6 +4,10 @@ import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
 import InsightsBreakdowns from '/collections/InsightsBreakdowns'
 import HourlyBreakdowns from '/collections/HourlyBreakdowns'
 
+const moment = require('moment');
+const range = require('moment-range');
+
+
 Meteor.methods({
   'aggregateForChart': function (initiative) {
     let arr = [];
@@ -52,7 +56,7 @@ Meteor.methods({
     to determine how many times to iterate (we need to iterate over all
     the existing dates plus the ones that have not been created yet)
     */
-    let timeForm = "MM-DD-YYYY"
+    const timeForm = "MM-DD-YYYY"
     let total = 0;
     try {
       for (let i = 0; i < arr.length; i++) {
@@ -216,8 +220,21 @@ Meteor.methods({
         el.cost_per_like = 0;
       }
     });
-    return otherArray;
 
+    const labelArray = [];
+    const start = moment(otherArray[0].date, "MM-DD");
+    const end = moment(initiative.lineItems[0].endDate, moment.ISO_8601);
+    const dr = moment.range(start, end);
+    const arrayOfDays = dr.toArray('days');
+
+    arrayOfDays.forEach(el => {
+      labelArray.push(moment(el).format("MM-DD"))
+    });
+
+    return {
+      dataArray: otherArray,
+      labelArray: labelArray
+    }
   },
   'hourlyChart': function (initiative) {
     let campaignIds = initiative['campaign_ids'] // array of campaign ids

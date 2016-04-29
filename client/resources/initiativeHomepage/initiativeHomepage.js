@@ -261,7 +261,9 @@ Template.initiativeHomepage.helpers({
 
       call('aggregateForChart', initiative)
       .then(function (res) {
-        Session.set('res', res);
+        Session.set('res', res.dataArray);
+        Session.set('labelArray', res.labelArray);
+        console.log(res.labelArray);
         totes = res[0][type]
       }).catch(function (err) {
         console.log('uh no error', err)
@@ -281,9 +283,9 @@ Template.initiativeHomepage.helpers({
       // for getting x axis labels
       try {
         let start       = moment(Session.get('res')[0]['date'], "MM-DD"),
-          end         = new Date(initiative.lineItems[0].endDate),
-          dr          = moment.range(start, end),
-          arrayOfDays = dr.toArray('days');
+            end         = new Date(initiative.lineItems[0].endDate),
+            dr          = moment.range(start, end),
+            arrayOfDays = dr.toArray('days');
 
         if (arrayOfDays) {
           arrayOfDays.forEach(el => {
@@ -315,7 +317,7 @@ Template.initiativeHomepage.helpers({
         },
         xAxis: {
           // type: 'datetime',
-          categories: labels
+          categories: Session.get('labelArray')
         },
 
         yAxis: {
@@ -425,7 +427,7 @@ Template.initiativeHomepage.helpers({
         crosshairs: true
       },
       xAxis: {
-        categories: labels
+        categories: Session.get('labelArray')
       },
 
       yAxis: {
