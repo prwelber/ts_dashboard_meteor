@@ -263,21 +263,24 @@ Template.initiativeHomepage.helpers({
       .then(function (res) {
         Session.set('res', res.dataArray);
         Session.set('labelArray', res.labelArray);
-        console.log(res.labelArray);
         totes = res[0][type]
       }).catch(function (err) {
-        console.log('uh no error', err)
+        console.log('Error in modalDeliveryChart Promise call:', err)
       });
 
-      try {
-        Session.get('res').forEach(el => {
-          totes += el[type];
-          spendTotal += el.spend;
-          actionToChart.push(totes);
-          spendChart.push(spendTotal);
-        });
-      } catch(e) {
-        console.log("Error running forEach", e.message);
+      const SESSION_DATA = Session.get('res');
+
+      if (SESSION_DATA) {
+        try {
+          SESSION_DATA.forEach(el => {
+            totes += el[type];
+            spendTotal += el.spend;
+            actionToChart.push(totes);
+            spendChart.push(spendTotal);
+          });
+        } catch(e) {
+          console.log("Error running forEach", e.message);
+        }
       }
 
       // for getting x axis labels
@@ -388,9 +391,13 @@ Template.initiativeHomepage.helpers({
 
     let chart = [];
 
-    Session.get('res').forEach(el => {
-      chart.push(el[actionType]);
-    });
+    const SESSION_DATA = Session.get('res');
+
+    if (SESSION_DATA) {
+      SESSION_DATA.forEach(el => {
+        chart.push(el[actionType]);
+      });
+    }
 
 
     // for getting x axis labels

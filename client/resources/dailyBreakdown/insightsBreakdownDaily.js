@@ -1,13 +1,14 @@
 import CampaignInsights from '/collections/CampaignInsights'
 import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
-import Promise from 'bluebird'
 import { Meteor } from 'meteor/meteor'
+import Promise from 'bluebird'
+import moment from 'moment'
 
-Tracker.autorun(function () {
-  if (FlowRouter.subsReady('insightsBreakdownByDaysList')) {
-    console.log('insightsBreakdownByDays subs ready!');
-  }
-});
+// Tracker.autorun(function () {
+//   if (FlowRouter.subsReady('insightsBreakdownByDaysList')) {
+//     console.log('insightsBreakdownByDays subs ready!');
+//   }
+// });
 
 Template.insightsBreakdownDaily.helpers({
   isReady: (sub1, sub2) => {
@@ -28,7 +29,7 @@ Template.insightsBreakdownDaily.helpers({
       return true;
     }
   },
-  'getDailyBreakdown': function () {
+  'getDailyBreakdown': () => {
       const campaignNumber = FlowRouter.getParam('campaign_id');
       let dailyBreakdown = InsightsBreakdownsByDays.findOne({'data.campaign_id': campaignNumber});
       if(dailyBreakdown) {
@@ -46,8 +47,11 @@ Template.insightsBreakdownDaily.helpers({
           });
       }
   },
-  'campaignInfo': function () {
+  'campaignInfo': () => {
       return CampaignInsights.findOne({'data.campaign_id': FlowRouter.current().params.campaign_id}).data;
+  },
+  'prettyDate': (date) => {
+    return moment(date, "MM-DD-YYYY").format("dddd MMMM DD YYYY");
   }
 });
 

@@ -166,59 +166,63 @@ Meteor.methods({
     start date key, then just add the required values onto the already existing
     values. The next if statement has it's own explainer below.
     */
-
-    let temp = {}
-    let obj = null;
     let otherArray = [];
+    
+    try {
+      
+      let temp = {}
+      let obj = null;
+      
+      for (var i = 0; i < arr.length; i++) {
+        obj = arr[i].data;
 
-    for (var i = 0; i < arr.length; i++) {
-      obj = arr[i].data;
+        if (! temp[obj.date_start]) {
+          temp['date'] = obj.date_start;
+          temp['impressions'] = obj.impressions;
+          temp['clicks'] = obj.clicks;
+          temp['spend'] = obj.spend;
+          temp['like'] = obj.like || 0;
+          temp['cost_per_like'] = obj.cost_per_like;
+          temp['cost_per_page_engagement'] = obj.cost_per_page_engagement;
+          temp['cost_per_post_engagement'] = obj.cost_per_post_engagement;
+          temp['cost_per_video_view'] = obj.cost_per_video_view;
+          temp['cpm'] = obj.cpm;
+          temp['cpc'] = obj.cpc;
+          temp['cost_per_like'] = obj.cost_per_like;
+          temp['reach'] = obj.reach;
+          temp['total_actions'] = obj.total_actions;
+          temp['video_view'] = obj.video_view;
+          temp['post_engagement'] = obj.post_engagement;
+        } else {
+          temp['impressions'] += obj.impressions;
+          temp['clicks'] += obj.clicks;
+          temp['spend'] += obj.spend;
+          temp['like'] += obj.like;
+          temp['reach'] += obj.reach;
+          temp['total_actions'] += obj.total_actions;
+          temp['video_view'] += obj.video_view;
+          temp['post_engagement'] += obj.post_engagement;
+          temp['cpm'] = temp.spend / (temp.impressions / 1000);
+          temp['cpc'] = temp.spend / temp.clicks;
+          temp['cost_per_like'] = temp.spend / temp.like;
+        }
+        /*
+        this next if statement says essentially: if the object start date is
+        not equal to the start date of the following object --> arr[i + 1], push the temp obj
+        into the otherArray and reset the temp object
+        */
 
-      if (! temp[obj.date_start]) {
-        temp['date'] = obj.date_start;
-        temp['impressions'] = obj.impressions;
-        temp['clicks'] = obj.clicks;
-        temp['spend'] = obj.spend;
-        temp['like'] = obj.like || 0;
-        temp['cost_per_like'] = obj.cost_per_like;
-        temp['cost_per_page_engagement'] = obj.cost_per_page_engagement;
-        temp['cost_per_post_engagement'] = obj.cost_per_post_engagement;
-        temp['cost_per_video_view'] = obj.cost_per_video_view;
-        temp['cpm'] = obj.cpm;
-        temp['cpc'] = obj.cpc;
-        temp['cost_per_like'] = obj.cost_per_like;
-        temp['reach'] = obj.reach;
-        temp['total_actions'] = obj.total_actions;
-        temp['video_view'] = obj.video_view;
-        temp['post_engagement'] = obj.post_engagement;
-      } else {
-        temp['impressions'] += obj.impressions;
-        temp['clicks'] += obj.clicks;
-        temp['spend'] += obj.spend;
-        temp['like'] += obj.like;
-        temp['reach'] += obj.reach;
-        temp['total_actions'] += obj.total_actions;
-        temp['video_view'] += obj.video_view;
-        temp['post_engagement'] += obj.post_engagement;
-        temp['cpm'] = temp.spend / (temp.impressions / 1000);
-        temp['cpc'] = temp.spend / temp.clicks;
-        temp['cost_per_like'] = temp.spend / temp.like;
+        /*
+        at the end, arr[i+1] will be undefined, so needed to account for that scenario
+        */
+        if (arr[i+1] === undefined || arr[i].data.date_start !== arr[i+1].data.date_start) {
+          otherArray.push(temp);
+          temp = {};
+        }
       }
-      /*
-      this next if statement says essentially: if the object start date is
-      not equal to the start date of the following object --> arr[i + 1], push the temp obj
-      into the otherArray and reset the temp object
-      */
-
-      /*
-      at the end, arr[i+1] will be undefined, so needed to account for that scenario
-      */
-      if (arr[i+1] === undefined || arr[i].data.date_start !== arr[i+1].data.date_start) {
-        otherArray.push(temp);
-        temp = {};
-      }
-
-    }
+    } catch(e) {
+      console.log("Error in charts.js, aggregateForChart function:", e);
+    } 
 
     // make sure all values are null so the charts reflect that
     otherArray.forEach(el => {

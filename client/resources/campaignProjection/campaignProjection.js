@@ -82,9 +82,11 @@ Template.projections.helpers({
       impressions = agData.impressions + (projection.impressions * sesh);
       cpm = totalSpend / ((agData.impressions + (projection.impressions * sesh)) / 1000);
       cpc = totalSpend / (agData.clicks + projection.clicks * sesh);
-      cpl = totalSpend / (agData.likes + projection.like * sesh);
+      cpl = mastFunc.money(totalSpend / (agData.likes + projection.like * sesh));
       cpl === Infinity ? cpl = 0 : '';
-      spendPercent = totalSpend / initiative.lineItems[0].budget;
+      if (totalSpend) {
+        spendPercent = numeral(totalSpend / initiative.lineItems[0].budget).format("0.00%")
+      } else { spendPercent = 0 }
     }
 
     return {
@@ -94,8 +96,8 @@ Template.projections.helpers({
       spend: mastFunc.money(spend),
       cpc: mastFunc.money(cpc),
       cpm: mastFunc.money(cpm),
-      cpl: mastFunc.money(cpl),
-      spendPercent: numeral(spendPercent).format("0.00%")
+      cpl: cpl,
+      spendPercent: spendPercent
     }
   },
   'getSessionDay': function () {
