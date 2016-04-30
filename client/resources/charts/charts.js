@@ -53,9 +53,9 @@ Template.charts.helpers({
       const initiative = Template.instance().templateDict.get('initiative');
       // for getting evenly distrubuted output
 
-    const days = moment(initiative.lineItems[0].endDate, moment.ISO_8601).diff(moment(initiative.lineItems[0].startDate, moment.ISO_8601), 'days');
-    const avg = parseFloat(numeral(initiative.lineItems[0].quantity / days).format("0.00"));
-    const spendAvg = parseFloat(numeral(initiative.lineItems[0].budget / days).format("0.00"));
+      const days = moment(initiative.lineItems[0].endDate, moment.ISO_8601).diff(moment(initiative.lineItems[0].startDate, moment.ISO_8601), 'days');
+      const avg = parseFloat(numeral(initiative.lineItems[0].quantity / days).format("0.00"));
+      const spendAvg = parseFloat(numeral(initiative.lineItems[0].budget / days).format("0.00"));
 
       for (let i = 0; i < days; i++) {
         total = total + avg;
@@ -85,24 +85,25 @@ Template.charts.helpers({
 
       const SESSION_RESULT = Session.get('res');
 
-      if (SESSION_RESULT && SESSION_RESULT[0])
-        SESSION_RESULT.forEach(el => {
+      let start;
+      if (SESSION_RESULT && SESSION_RESULT.dataArray) {
+        SESSION_RESULT.dataArray.forEach(el => {
           totes += el[type];
           spendTotal += el.spend;
           actionToChart.push(totes);
           spendChart.push(spendTotal);
         });
+        start = moment(SESSION_RESULT.labelArray[0]['date'], "MM-DD")
+      }
 
       // for getting x axis labels
-      var start       = moment(Session.get('res')[0]['date'], "MM-DD"),
-          end         = new Date(initiative.lineItems[0].endDate),
+      var end         = new Date(initiative.lineItems[0].endDate),
           dr          = moment.range(start, end),
           arrayOfDays = dr.toArray('days');
 
       arrayOfDays.forEach(el => {
         labels.push(moment(el).format("MM-DD"))
       });
-    }
 
 
 
@@ -174,7 +175,7 @@ Template.charts.helpers({
         color: '#ef9a9a'
       }]
     }
-
+  }
   },
   'costPerChart': function () {
     const initiative = Template.instance().templateDict.get('initiative');
@@ -194,24 +195,25 @@ Template.charts.helpers({
         cplChart = [];
 
     const SESSION_RESULT = Session.get('res');
+    let start;
 
-    if (SESSION_RESULT && SESSION_RESULT[0]) {
-      SESSION_RESULT.forEach(el => {
+    if (SESSION_RESULT && SESSION_RESULT.dataArray[0].date) {
+      SESSION_RESULT.dataArray.forEach(el => {
         cpmChart.push(el.cpm);
         cpcChart.push(el.cpc);
         cplChart.push(el.cost_per_like);
       });
+      start = moment(SESSION_RESULT.dataArray[0].date, "MM-DD");
     }
-
+    // debugger
     // for getting x axis labels
     let labels      = [],
-        start       = moment(Session.get('res')[0]['date'], "MM-DD"),
         end         = new Date(initiative.lineItems[0].endDate);
         dr          = moment.range(start, end),
         arrayOfDays = dr.toArray('days');
 
     arrayOfDays.forEach(el => {
-      labels.push(moment(el).format("MM-DD"))
+      labels.push(moment(el).format("MM-DD"));
     });
 
     // build chart
@@ -281,10 +283,15 @@ Template.charts.helpers({
   },
   'dualAxes': function () {
     const initiative = Template.instance().templateDict.get('initiative');
-
+    const SESSION_DATA = Session.get('res');
     // for getting x axis labels
+
+    let start;
+    if (SESSION_DATA && SESSION_DATA.labelArray) {
+      start = moment(SESSION_DATA.labelArray[0], "MM-DD");
+    }
+
     let labels = [];
-    var start  = moment(Session.get('res')[0]['date'], "MM-DD");
     var end    = new Date(initiative.lineItems[0].endDate);
     var dr     = moment.range(start, end);
     var arrayOfDays = dr.toArray('days');
@@ -301,7 +308,7 @@ Template.charts.helpers({
     let actionArray = [];
     let costPerArray = [];
 
-       Session.get('res').forEach(el => {
+       SESSION_DATA.dataArray.forEach(el => {
         if (initiative.lineItems[0].dealType === "CPM") {
           actionArray.push(el.impressions);
           costPerArray.push(el.cpm);

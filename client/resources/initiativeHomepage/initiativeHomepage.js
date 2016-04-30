@@ -261,14 +261,14 @@ Template.initiativeHomepage.helpers({
 
       call('aggregateForChart', initiative)
       .then(function (res) {
-        Session.set('res', res.dataArray);
+        Session.set('initChartData', res.dataArray);
         Session.set('labelArray', res.labelArray);
         totes = res[0][type]
       }).catch(function (err) {
         console.log('Error in modalDeliveryChart Promise call:', err)
       });
 
-      const SESSION_DATA = Session.get('res');
+      const SESSION_DATA = Session.get('initChartData');
 
       if (SESSION_DATA) {
         try {
@@ -285,7 +285,7 @@ Template.initiativeHomepage.helpers({
 
       // for getting x axis labels
       try {
-        let start       = moment(Session.get('res')[0]['date'], "MM-DD"),
+        let start       = moment(Session.get('initChartData')[0]['date'], "MM-DD"),
             end         = new Date(initiative.lineItems[0].endDate),
             dr          = moment.range(start, end),
             arrayOfDays = dr.toArray('days');
@@ -389,20 +389,21 @@ Template.initiativeHomepage.helpers({
       actionType = "cpl";
     }
 
-    let chart = [];
+    let chart = [],
+        start;
 
-    const SESSION_DATA = Session.get('res');
+    const SESSION_DATA = Session.get('initChartData');
 
     if (SESSION_DATA) {
       SESSION_DATA.forEach(el => {
         chart.push(el[actionType]);
       });
+      start = moment(SESSION_DATA[0].date, "MM-DD")
     }
 
 
     // for getting x axis labels
     let labels      = [],
-        start       = moment(Session.get('res')[0]['date'], "MM-DD"),
         end         = moment(initiative.lineItems[0].endDate, moment.ISO_8601),
         dr          = moment.range(start, end),
         arrayOfDays = dr.toArray('days');

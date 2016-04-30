@@ -59,6 +59,7 @@ Meteor.methods({
                 data['hour'] = reResult[0];
                 data.hour = moment(data.hour, 'hh:mm:ss').format('hh:mm a');
                 data['impressions'] = parseInt(data.impressions);
+                data['campaign_name'] = data.campaign_name;
                 data['cpm'] = mastFunc.makeMoney(data.cp);
                 data['cpp'] = mastFunc.makeMoney(data.cp);
                 data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
@@ -89,6 +90,3 @@ Meteor.methods({
 Meteor.publish("hourlyBreakdownsList", function (params) {
     return HourlyBreakdowns.find({'data.campaign_id': params});
 });
-
-
-
