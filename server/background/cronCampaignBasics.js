@@ -8,7 +8,7 @@ const later = require('later');
 SyncedCron.add({
     name: "Background Campaign Basics Getter",
     schedule: function (parser) {
-        return parser.text('at 11:14am');
+        return parser.text('at 10:45am');
     },
 
     job: function(intendedAt) {

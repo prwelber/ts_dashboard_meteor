@@ -46,12 +46,6 @@ Template.initiativeHomepage.helpers({
       return true;
     }
   },
-  // chartReady: () => {
-  //   if (Session.get('res')[0]['date']) {
-  //     return true;
-  //   }
-  // },
-  // need to gather all the campaigns associated with this initiative
   'getCampaigns': function () {
     const init = Template.instance().templateDict.get('initiative');
     const camps = CampaignInsights.find(
@@ -149,36 +143,34 @@ Template.initiativeHomepage.helpers({
         let costPlus = parseInt(init.lineItems[i].costPlusPercent);
         costPlus = stringToCostPlusPercentage(costPlus);
 
-        objToReturn['netSpend'] = parseFloat(objectiveAg[0].spend) / costPlus;
+        objToReturn['netSpend'] = parseFloat(objectiveAg.spend) / costPlus;
         objToReturn['netBudget'] = parseFloat(init.lineItems[i].budget) / costPlus;
         objToReturn['spendPercent'] = ((100 * objToReturn.netSpend) / objToReturn.netBudget);
-        objToReturn['netCPM'] = objToReturn.netSpend / objectiveAg[0].impressions;
-        objToReturn['netCPC'] = objToReturn.netSpend / objectiveAg[0].clicks;
+        objToReturn['netCPM'] = objToReturn.netSpend / objectiveAg.impressions;
+        objToReturn['netCPC'] = objToReturn.netSpend / objectiveAg.clicks;
 
-        // debugger
-
-        if (objectiveAg[0].likes === null || objectiveAg[0].likes === '' || objectiveAg[0].likes === 0) {
+        if (objectiveAg.likes === null || objectiveAg.likes === '' || objectiveAg.likes === 0) {
           objToReturn['netCPL'] = 0;
         } else {
-          objToReturn['netCPL'] = objToReturn.netSpend / objectiveAg[0].likes;
+          objToReturn['netCPL'] = objToReturn.netSpend / objectiveAg.likes;
         }
       } else if (init.lineItems[i].percent_total === true) {
         let percentTotal = parseInt(init.lineItems[i].percentTotalPercent) / 100;
 
         const budget = parseFloat(init.lineItems[i].budget);
-        const spend = parseFloat(objectiveAg[0].spend)
-        const abjAg = objectiveAg[0];
+        const spend = parseFloat(objectiveAg.spend)
+        const abjAg = objectiveAg;
 
         objToReturn['netBudget'] = (budget - (budget * percentTotal));
         objToReturn['netSpend'] =  (spend - (spend * percentTotal));
         objToReturn['spendPercent'] = ((100 * objToReturn.netSpend) / objToReturn.netBudget);
-        objToReturn['netCPM'] = objToReturn.netSpend / objectiveAg[0].impressions;
-        objToReturn['netCPC'] = objToReturn.netSpend / objectiveAg[0].clicks;
+        objToReturn['netCPM'] = objToReturn.netSpend / objectiveAg.impressions;
+        objToReturn['netCPC'] = objToReturn.netSpend / objectiveAg.clicks;
 
-        if (objectiveAg[0].likes === null || objectiveAg[0].likes === '' || objectiveAg[0].likes === 0) {
+        if (objectiveAg.likes === null || objectiveAg.likes === '' || objectiveAg[0].likes === 0) {
           objToReturn['netCPL'] = 0;
         } else {
-          objToReturn['netCPL'] = objToReturn.netSpend / objectiveAg[0].likes;
+          objToReturn['netCPL'] = objToReturn.netSpend / objectiveAg.likes;
         }
 
       }
@@ -198,14 +190,14 @@ Template.initiativeHomepage.helpers({
 
     const returnArray = [];
 
-    init.VIDEO_VIEWS ? returnArray.push(init.VIDEO_VIEWS[0]) : '';
-    init.POST_ENGAGEMENT ? returnArray.push(init.POST_ENGAGEMENT[0]) : '';
-    init.LINK_CLICKS ? returnArray.push(init.LINK_CLICKS[0]) : '';
-    init.PAGE_LIKES ? returnArray.push(init.PAGE_LIKES[0]) : '';
-    init.REACH ? returnArray.push(init.REACH[0]) : '';
-    init.CONVERSIONS ? returnArray.push(init.CONVERSIONS[0]) : '';
-    init.APP_ENGAGEMENT ? returnArray.push(init.APP_ENGAGEMENT[0]) : '';
-    init.APP_INSTALLS ? returnArray.push(init.APP_INSTALLS[0]) : '';
+    init.VIDEO_VIEWS ? returnArray.push(init.VIDEO_VIEWS) : '';
+    init.POST_ENGAGEMENT ? returnArray.push(init.POST_ENGAGEMENT) : '';
+    init.LINK_CLICKS ? returnArray.push(init.LINK_CLICKS) : '';
+    init.PAGE_LIKES ? returnArray.push(init.PAGE_LIKES) : '';
+    init.REACH ? returnArray.push(init.REACH) : '';
+    init.CONVERSIONS ? returnArray.push(init.CONVERSIONS) : '';
+    init.APP_ENGAGEMENT ? returnArray.push(init.APP_ENGAGEMENT) : '';
+    init.APP_INSTALLS ? returnArray.push(init.APP_INSTALLS) : '';
 
     //function for formatting data with numeral
     const niceNum = function niceNum (data) {
@@ -226,7 +218,7 @@ Template.initiativeHomepage.helpers({
     const initiative = Template.instance().templateDict.get('initiative');
     const labels     = [], // this will be the date range
           timeFormat = "MM-DD-YYYY",
-          days       = moment(initiative.lineItems[0].endDate).diff(moment(initiative.lineItems[0].startDate), 'days'),
+          days       = moment(initiative.lineItems[0].endDate, moment.ISO_8601).diff(moment(initiative.lineItems[0].startDate, moment.ISO_8601), 'days'),
           avg        = parseFloat(initiative.lineItems[0].quantity / days),
           spendAvg   = parseFloat(initiative.lineItems[0].budget / days),
           avgData    = [],
@@ -234,7 +226,7 @@ Template.initiativeHomepage.helpers({
 
     let total           = 0,
         idealSpendTotal = 0;
-    for (let i = 0; i < days; i++) {
+    for (let i = 0; i < days + 1; i++) {
         total = total + avg;
         idealSpendTotal = idealSpendTotal + spendAvg;
         avgData.push(total);
@@ -263,7 +255,7 @@ Template.initiativeHomepage.helpers({
       .then(function (res) {
         Session.set('initChartData', res.dataArray);
         Session.set('labelArray', res.labelArray);
-        totes = res[0][type]
+        totes = res.dataArray[0][type]
       }).catch(function (err) {
         console.log('Error in modalDeliveryChart Promise call:', err)
       });
@@ -284,19 +276,22 @@ Template.initiativeHomepage.helpers({
       }
 
       // for getting x axis labels
-      try {
-        let start       = moment(Session.get('initChartData')[0]['date'], "MM-DD"),
-            end         = new Date(initiative.lineItems[0].endDate),
-            dr          = moment.range(start, end),
-            arrayOfDays = dr.toArray('days');
+      const LABEL_DATA = Session.get('labelArray');
+      if (LABEL_DATA) {
+        try {
+          let start       = moment(LABEL_DATA[0], "MM-DD"),
+              end         = moment(LABEL_DATA[LABEL_DATA.length - 1], "MM-DD"),
+              dr          = moment.range(start, end),
+              arrayOfDays = dr.toArray('days');
 
-        if (arrayOfDays) {
-          arrayOfDays.forEach(el => {
-            labels.push(moment(el).format("MM-DD"))
-          });
+          if (arrayOfDays) {
+            arrayOfDays.forEach(el => {
+              labels.push(moment(el).format("MM-DD"))
+            });
+          }
+        } catch(e) {
+          console.log("Error creating x axis labels:", e);
         }
-      } catch(e) {
-        console.log("Error creating x axis labels:", e);
       }
 
 

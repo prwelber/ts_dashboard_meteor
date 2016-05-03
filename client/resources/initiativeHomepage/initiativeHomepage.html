@@ -187,11 +187,6 @@ include charting for each lineItem and definitely aggregations --}}
                 <th class="insights-table-header">Net CPC</th>
                 <th class="insights-table-header">Net CPM</th>
                 <th class="insights-table-header">Net CPL</th>
-                {{!-- <th class="insights-table-header">Spend %</th>
-                <th class="insights-table-header">Impressions</th>
-                <th class="insights-table-header">CPM</th>
-                <th class="insights-table-header">Likes</th>
-                <th class="insights-table-header">Reach</th> --}}
               </tr>
             </thead>
             <tbody>
@@ -202,9 +197,6 @@ include charting for each lineItem and definitely aggregations --}}
                 <td class="insights-table-data">{{formatMoney netCPC}}</td>
                 <td class="insights-table-data">{{formatMoney netCPM}}</td>
                 <td class="insights-table-data">{{formatMoney netCPL}}</td>
-                {{!-- <td class="insights-table-data">{{cpm}}</td>
-                <td class="insights-table-data">{{likes}}</td>
-                <td class="insights-table-data">{{cpl}}</td> --}}
               </tr>
             </tbody>
           </table>
@@ -216,7 +208,6 @@ include charting for each lineItem and definitely aggregations --}}
 {{#if isReady "Initiatives" "campaignInsightList"}}
   <div class="container">
     <div class="row">
-      {{!-- <h2 class="center-align">{{initiative.name}}</h2> --}}
       <div class="row dashboard-initiative-header">
         <div class="col s3">
           <p class="center-align border-bottom">Name</p>
@@ -272,16 +263,12 @@ include charting for each lineItem and definitely aggregations --}}
       </table>
     </div>
     <div class="row">
-      {{!-- {{#if chartReady}} --}}
-        <div class="col s6">
-          {{> highchartsHelper chartId="modalDeliveryChart" chartWidth="100%" chartHeight="70%" chartObject=modalDeliveryChart}}
-        </div>
-        <div class="col s6">
-          {{> highchartsHelper chartId="costPerChart" chartWidth="100%" chartHeight="70%" chartObject=costPerChart}}
-        </div>
-      {{!-- {{else}}
-        <p>Charts Loading...</p>
-      {{/if}} --}}
+      <div class="col s6">
+        {{> highchartsHelper chartId="modalDeliveryChart" chartWidth="100%" chartHeight="70%" chartObject=modalDeliveryChart}}
+      </div>
+      <div class="col s6">
+        {{> highchartsHelper chartId="costPerChart" chartWidth="100%" chartHeight="70%" chartObject=costPerChart}}
+      </div>
     </div>
   </div>
 

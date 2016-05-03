@@ -24,11 +24,13 @@ SyncedCron.add({
   }
 });
 
+
+
 SyncedCron.add({
   name: "Campaign Insights Background Getter",
 
   schedule: function (parser) {
-    return parser.text('at 11:52 am');
+    return parser.text('at 11:56 am');
   },
 
   job: function (time) {
@@ -51,11 +53,26 @@ SyncedCron.add({
         {$in: idArray}
       }).fetch()
     console.log('length of basicsArray', campaignBasicsArray.length)
+    // gets rid of future campaigns, since pulling insights will return error
     let campIdArray = _.filter(campaignBasicsArray, function (el) {
       if (moment().isAfter(moment(el.start_time, "MM-DD-YYYY hh:mm a"))) {
         return el.campaign_id
       }
     });
+
+    console.log("campIdArray[0]", campIdArray[0]);
+
+
+    const testArray = [];
+
+    let filteredArray = _.filter(campIdArray, function (el) {
+      if (moment(el.inserted, "MM-DD-YYYY").isBefore(moment(el.stop_time, "MM-DD-YYYY"))) {
+        testArray.push(el.campaign_id);
+      }
+    });
+
+    console.log(testArray);
+
 
     // needed to use map here because filter returns the whole object
     // map allows us to have an array of only campaign_id's
@@ -66,19 +83,19 @@ SyncedCron.add({
 
     // campIdArray is an array of all the campaign ID's that are associated
     // with the accounts we originally searched for
-    console.log(campIdArray);
+    // console.log(campIdArray);
     console.log('length of campIdArray', campIdArray.length);
 
-    if (campIdArray && campaignBasicsArray) {
+    if (testArray) {
       let counter = 0;
 
       const setIntervalId = Meteor.setInterval(function () {
 
         CampaignInsights.remove({'data.campaign_id': null});
 
-        let campaignData = CampaignInsights.findOne({'data.campaign_id': campIdArray[counter]});
+        let campaignData = CampaignInsights.findOne({'data.campaign_id': testArray[counter]});
 
-        if (counter >= campIdArray.length) {
+        if (counter >= testArray.length) {
           console.log('nothing to do in cronCampaignInsights');
           counter++;
           Meteor.clearInterval(setIntervalId);
@@ -91,13 +108,13 @@ SyncedCron.add({
 
           console.log('getInsights background job running');
           console.log("counter", counter)
-          CampaignInsights.remove({'data.campaign_id': campIdArray[counter]});
+          CampaignInsights.remove({'data.campaign_id': testArray[counter]});
           let insightsArray = [];
           let masterArray = [];
           let insights;
           let data = {};
           try {
-            let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+campIdArray[counter]+'/insights?fields=account_id, campaign_name, cost_per_unique_click,cost_per_total_action,cost_per_10_sec_video_view,cpm,cpp,ctr,impressions,objective,reach,frequency,relevance_score,spend,total_actions,total_unique_actions,video_10_sec_watched_actions,video_15_sec_watched_actions,video_avg_pct_watched_actions,video_30_sec_watched_actions,video_avg_sec_watched_actions,video_p100_watched_actions,video_complete_watched_actions,video_p25_watched_actions,video_p50_watched_actions,video_p75_watched_actions,video_p95_watched_actions,unique_impressions,unique_clicks,campaign_id,adset_id,estimated_ad_recall_rate,estimated_ad_recallers,cost_per_estimated_ad_recallers,actions, website_ctr, website_clicks,cost_per_action_type&access_token='+token+'', {});
+            let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+testArray[counter]+'/insights?fields=account_id, campaign_name, cost_per_unique_click,cost_per_total_action,cost_per_10_sec_video_view,cpm,cpp,ctr,impressions,objective,reach,frequency,relevance_score,spend,total_actions,total_unique_actions,video_10_sec_watched_actions,video_15_sec_watched_actions,video_avg_pct_watched_actions,video_30_sec_watched_actions,video_avg_sec_watched_actions,video_p100_watched_actions,video_complete_watched_actions,video_p25_watched_actions,video_p50_watched_actions,video_p75_watched_actions,video_p95_watched_actions,unique_impressions,unique_clicks,campaign_id,adset_id,estimated_ad_recall_rate,estimated_ad_recallers,cost_per_estimated_ad_recallers,actions, website_ctr, website_clicks,cost_per_action_type&access_token='+token+'', {});
             insights = result;
             insightsArray.push(insights.data.data[0]);
             // at this point we just have one array with
@@ -209,7 +226,7 @@ SyncedCron.add({
           }
         counter++;
         } // end of if (counter >= arr.length)
-      }, 3000) // end of setInterval
+      }, 4000) // end of setInterval
     } // end of if
   } //end of job
 }); // end of SyncedCron.add

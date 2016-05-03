@@ -167,12 +167,12 @@ Meteor.methods({
     values. The next if statement has it's own explainer below.
     */
     let otherArray = [];
-    
+
     try {
-      
+
       let temp = {}
       let obj = null;
-      
+
       for (var i = 0; i < arr.length; i++) {
         obj = arr[i].data;
 
@@ -222,7 +222,7 @@ Meteor.methods({
       }
     } catch(e) {
       console.log("Error in charts.js, aggregateForChart function:", e);
-    } 
+    }
 
     // make sure all values are null so the charts reflect that
     otherArray.forEach(el => {

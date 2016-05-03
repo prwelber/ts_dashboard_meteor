@@ -43,6 +43,7 @@ Template.newInitiative.events({
             finalObj['agency']    = event.target.agency.value;
             finalObj['notes']     = event.target.notes.value;
             finalObj['product']   = event.target.product.value;
+            finalObj['userActive']= event.target.active.checked;
             finalObj['owner']     = event.target.owner.value;
             finalObj['tags']      = [];
 

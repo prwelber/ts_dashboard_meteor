@@ -29,6 +29,7 @@ Meteor.methods({
       brand: data.brand,
       agency: data.agency,
       product: data.product,
+      userActive: data.userActive,
       notes: data.notes,
       tags: data.tags,
       lineItems: data.lineItems,
@@ -78,6 +79,7 @@ Meteor.methods({
         notes: data.notes,
         tags: data.tags,
         product: data.product,
+        userActive: data.userActive,
         lineItems: data.lineItems,
         active: active,
         recentlyEnded: recentlyEnded,
@@ -167,7 +169,7 @@ Meteor.methods({
       ];
     }
 
-    const objectiveAggregateArray = [];
+    let objectiveAggregateArray = [];
     for (let i = 0; i < cleanedArr.length; i++) {
       cleanedArr[i] = cleanedArr[i].toUpperCase().split(' ').join('_');
       let result = CampaignInsights.aggregate(makePipeline(name, cleanedArr[i]));
@@ -182,8 +184,9 @@ Meteor.methods({
         objectiveAggregateArray.push(result);
     }
     let setObject = {};
+    objectiveAggregateArray = _.flatten(objectiveAggregateArray);
     for (let i = 0; i < objectiveAggregateArray.length; i++) {
-      setObject = {[objectiveAggregateArray[i][0]['_id']]: objectiveAggregateArray[i]};
+      setObject = {[objectiveAggregateArray[i]['_id']]: objectiveAggregateArray[i]};
       // inserting objectiveAggregate data into the intiative
       Initiatives.update(
         {name: name},

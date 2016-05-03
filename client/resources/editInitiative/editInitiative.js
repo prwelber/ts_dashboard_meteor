@@ -56,6 +56,12 @@ Template.editInitiative.helpers({
     },
     'dateFormatter': (date) => {
       return moment(date, moment.ISO_8601).format("MM-DD-YYYY hh:mm a");
+    },
+    'activeChecked': () => {
+      const init =  Initiatives.findOne({_id: FlowRouter.current().params._id});
+      if (init.userActive) {
+        return "checked";
+      }
     }
 });
 
@@ -73,6 +79,7 @@ Template.editInitiative.events({
         finalObj['brand']     = event.target.brand.value;
         finalObj['agency']    = event.target.agency.value;
         finalObj['notes']     = event.target.notes.value;
+        finalObj['userActive']= event.target.active.checked;
         finalObj['product']   = event.target.product.value;
         finalObj['owner']     = event.target.owner.value;
         finalObj['tags']      = [];
