@@ -117,13 +117,15 @@
       {{/if}}
     </div>
   </div>
-    <div class="row">
-      <div class="col s12">
-        <a href="/viewaccounts">
-          <button class="btn waves-effect waves-light" name="action">
-            View By Accounts
-          </button>
-        </a>
-      </div>
+  {{#if isInRole 'admin'}}
+  <div class="row">
+    <div class="col s12">
+      <a href="/viewaccounts">
+        <button class="btn waves-effect waves-light" name="action">
+          View By Accounts
+        </button>
+      </a>
     </div>
+  </div>
+  {{/if}}
 </template>

@@ -250,11 +250,11 @@ Meteor.publish('Initiatives', function () {
 
   try {
 
-    if (user.admin === true) {
+    if (user.admin === true || user.admin === null) {
       return Initiatives.find( {} );
     } else if (user.agency.length > 0) {
       return Initiatives.find({agency: {$in: user.agency}});
-    } else if (user.initiatives.length > 1) {
+    } else if (user.initiatives.length >= 1) {
       return Initiatives.find({name: {$in: user.initiatives}});
     }
   } catch (e) {

@@ -24,6 +24,7 @@ Meteor.methods({
           lastName: data.lastName,
           admin: data.admin,
           email: data.email,
+          username: data.username,
           agency: data.agency,
           initiatives: data.initiatives,
           updatedOn: moment().format("MM-DD-YYYY hh:mm a")
