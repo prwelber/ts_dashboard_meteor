@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor'
 import CampaignInsights from '/collections/CampaignInsights'
 import Initiatives from '/collections/Initiatives'
 import { check } from 'meteor/check'
@@ -245,5 +246,18 @@ Meteor.methods({
 });
 
 Meteor.publish('Initiatives', function () {
-  return Initiatives.find( {} );
+  var user = Meteor.users.findOne({_id: this.userId});
+
+  try {
+
+    if (user.admin === true) {
+      return Initiatives.find( {} );
+    } else if (user.agency.length > 0) {
+      return Initiatives.find({agency: {$in: user.agency}});
+    } else if (user.initiatives.length > 1) {
+      return Initiatives.find({name: {$in: user.initiatives}});
+    }
+  } catch (e) {
+    console.log('Error in Initiatives Server:', e);
+  }
 });

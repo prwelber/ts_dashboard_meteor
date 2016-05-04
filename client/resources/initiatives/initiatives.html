@@ -77,40 +77,44 @@
 <template name="initiativesHome">
   <div class="container">
     <div class="row">
-      <ul class="collection">
-        {{#each getAllInitiatives}}
-          <li class="collection-item">
-            <div class="row" style="margin-bottom: 5px;">
-              <div class="col s5">
-                <a href="/initiatives/{{_id}}/homepage"><span class="title" style="font-size: 20px;">{{name}}</span></a>
+      {{#if isReady "Initiatives"}}
+        <ul class="collection">
+          {{#each getAllInitiatives}}
+            <li class="collection-item">
+              <div class="row" style="margin-bottom: 5px;">
+                <div class="col s5">
+                  <a href="/initiatives/{{_id}}/homepage"><span class="title" style="font-size: 20px;">{{name}}</span></a>
+                </div>
+                <div class="col s2">
+                  <a href="/admin/initiatives/{{_id}}/edit" style="margin-left: 10px;">Edit</a>
+                </div>
+                <div class="col s5">
+                  <p class="right-align">{{formatDate lineItems.[0].startDate}} -- {{formatDate lineItems.[0].endDate}}</p>
+                </div>
               </div>
-              <div class="col s2">
-                <a href="/admin/initiatives/{{_id}}/edit" style="margin-left: 10px;">Edit</a>
-              </div>
-              <div class="col s5">
-                <p class="right-align">{{formatDate lineItems.[0].startDate}} -- {{formatDate lineItems.[0].endDate}}</p>
-              </div>
-            </div>
-            <div class="row" style="margin-bottom: 5px;">
-              <div class="col s12">
+              <div class="row" style="margin-bottom: 5px;">
+                <div class="col s12">
 
+                </div>
+                <div class="col s3">
+                  <p>Owner: {{owner}}</p>
+                </div>
+                <div class="col s3">
+                  <p>Agency: {{agency}}</p>
+                </div>
+                <div class="col s3">
+                  <p>Brand: {{brand}}</p>
+                </div>
+                <div class="col s3">
+                  <p class="right-align {{isActiveClass}}">{{isActiveInitiative}}</p>
+                </div>
               </div>
-              <div class="col s3">
-                <p>Owner: {{owner}}</p>
-              </div>
-              <div class="col s3">
-                <p>Agency: {{agency}}</p>
-              </div>
-              <div class="col s3">
-                <p>Brand: {{brand}}</p>
-              </div>
-              <div class="col s3">
-                <p class="right-align {{isActiveClass}}">{{isActiveInitiative}}</p>
-              </div>
-            </div>
-          </li>
-        {{/each}}
-      </ul>
+            </li>
+          {{/each}}
+        </ul>
+      {{else}}
+        <p>Loading...</p>
+      {{/if}}
     </div>
   </div>
     <div class="row">

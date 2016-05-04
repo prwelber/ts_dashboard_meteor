@@ -1,3 +1,19 @@
+import { Meteor } from 'meteor/meteor'
+import { Accounts } from 'meteor/accounts-base'
+
+const assignUserRoles = function assignUserRoles (id, stuff) {
+  console.log('id', id);
+  console.log('checking for agency user');
+  if (stuff.agency.length >= 1) {
+    // adds the array of agencies to the roles, and the group is 'agency'
+    Roles.addUsersToRoles(id, stuff.agency, 'agency');
+  }
+  console.log('checking for admin user');
+  if (stuff.admin === true) {
+    Roles.addUsersToRoles(id, 'admin', Roles.GLOBAL_GROUP)
+  }
+}
+
 Meteor.methods({
   'updateUser': function (_id, data) {
     Meteor.users.update(
@@ -14,6 +30,15 @@ Meteor.methods({
         }
       }
     ) //end of update
+    // console.log(data.agency, data.admin)
+    // console.log('id', _id);
+    // if (data.agency.length >= 1) {
+    //   Roles.addUsersToRoles(_id, ['agency']);
+    // }
+    // if (data.admin === true) {
+    //   Roles.addUsersToRoles(_id, 'admin', Roles.GLOBAL_GROUP)
+    // }
+    assignUserRoles(_id, data);
     return "success!";
   },
   'deleteUser': function (userId) {
@@ -21,7 +46,7 @@ Meteor.methods({
   }
 });
 
-Accounts.onCreateUser(function (options, user) {
+var id = Accounts.onCreateUser(function (options, user) {
   user['firstName'] = options.firstName;
   user['lastName'] = options.lastName;
   user['email'] = options.email;
@@ -34,6 +59,27 @@ Accounts.onCreateUser(function (options, user) {
 });
 
 
+
+
+Meteor.startup(function () {
+  if (Meteor.users.find({username: "targetedadmin"}).count() === 0) {
+    const user = [{firstName: "Targeted", lastName: "Admin", username: "targetedadmin", email: "", admin: true}];
+
+    _.each(user, (user) => {
+      var id;
+
+      id = Accounts.createUser({
+        email: user.email,
+        password: "targeted1",
+        username: user.username,
+        profile: {admin: user.admin, firstname: user.firstName, lastName: user.lastName}
+      });
+      if (user.admin === true) {
+        Roles.addUsersToRoles(id, 'admin', Roles.GLOBAL_GROUP);
+      }
+    });
+  }
+});
 
 
 Meteor.publish('usersList', function () {

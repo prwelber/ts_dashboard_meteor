@@ -205,6 +205,11 @@ Template.initiativesHome.onRendered(function () {
 });
 
 Template.initiativesHome.helpers({
+  isReady: (sub1) => {
+    if (FlowRouter.subsReady(sub1)) {
+      return true;
+    }
+  },
   'getAllInitiatives': function () {
     const inits = Initiatives.find({},
       {sort: {active: -1, recentlyEnded: -1, lastThreeMonths: -1}}

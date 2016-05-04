@@ -1,4 +1,5 @@
 <template name="admin">
+  {{#if isInRole 'admin' }}
   <div id="admin-home-row" class="row">
     <div class="col s6 m6 l6">
       <div class="card z-depth-3">
@@ -46,7 +47,9 @@
       </div>
     </div>
   </div>
-
+  {{else}}
+    <h2>You are not authorized.</h2>
+  {{/if}}
 
 
 </template>
