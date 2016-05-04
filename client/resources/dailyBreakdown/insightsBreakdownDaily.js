@@ -1,6 +1,7 @@
 import CampaignInsights from '/collections/CampaignInsights'
 import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
 import { Meteor } from 'meteor/meteor'
+import { FlowRouter } from 'meteor/kadira:flow-router'
 import Promise from 'bluebird'
 import moment from 'moment'
 
@@ -9,6 +10,24 @@ import moment from 'moment'
 //     console.log('insightsBreakdownByDays subs ready!');
 //   }
 // });
+
+Template.insightsBreakdownDaily.onCreated(function () {
+  this.templateDict = new ReactiveDict();
+  const campaignNum = FlowRouter.current().params.campaign_id;
+  this.templateDict.set('campNum', campaignNum);
+});
+
+
+Template.insightsBreakdownDaily.onRendered(function () {
+  $('.tooltipped').tooltip({delay: 25});
+});
+
+Template.insightsBreakdownDaily.events({
+  'click #refresh-daily': (event, template) => {
+    Meteor.call('refreshDaily', Template.instance().templateDict.get('campNum'));
+    $('.tooltipped').tooltip('remove');
+  }
+});
 
 Template.insightsBreakdownDaily.helpers({
   isReady: (sub1, sub2) => {
@@ -35,7 +54,6 @@ Template.insightsBreakdownDaily.helpers({
       if(dailyBreakdown) {
         return InsightsBreakdownsByDays.find({'data.campaign_id': campaignNumber}, {sort: {'data.date_start': -1}});
       } else {
-          console.log('gotta get the daily breakdown for this one', campaignNumber);
           var target = document.getElementById("spinner-div");
           let spun = Blaze.render(Template.spin, target);
           Meteor.call('getDailyBreakdown', campaignNumber, Session.get("campaign_name"), Session.get("end_date"), function (err, result) {

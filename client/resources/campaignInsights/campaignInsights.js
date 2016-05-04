@@ -21,14 +21,14 @@ Template.campaignInsights.onRendered(function () {
 });
 
 Template.campaignInsights.events({
-    'click #refresh-insights': function (event, template) {
-      console.log(this);
-      Meteor.call('refreshInsight', this.campaign_id, this.campaign_name, this.initiative);
-      $('.tooltipped').tooltip('remove');
-    },
-    'click .setSessionCampName': function () {
-      Session.set("campaign_name", this.campaign_name);
-    }
+  'click #refresh-insights': function (event, template) {
+    console.log(this);
+    Meteor.call('refreshInsight', this.campaign_id, this.campaign_name, this.initiative);
+    $('.tooltipped').tooltip('remove');
+  },
+  'click .setSessionCampName': function () {
+    Session.set("campaign_name", this.campaign_name);
+  }
 });
 
 Template.campaignInsights.helpers({

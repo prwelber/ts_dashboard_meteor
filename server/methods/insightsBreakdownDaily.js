@@ -127,6 +127,10 @@ Meteor.methods({
       } finally {
           return "this is a returned result";
       }
+  },
+  'refreshDaily': (campNum) => {
+    InsightsBreakdownsByDays.remove({'data.campaign_id': campNum});
+    return "success!";
   }
 });
 

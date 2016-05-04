@@ -7,6 +7,7 @@
       <div class="col s12">
         <ul class="tabs">
           <li class="tab col s2"> <a class="active" href="#initiative">Initiative</a> </li>
+          {{#if isInRole "admin"}}
           <li class="tab col s2 {{isTabDisabled 1}}"> <a href="#lineItem1">Line Item 1</a> </li>
           <li class="tab col s2 {{isTabDisabled 2}}"> <a href="#lineItem2">Line Item 2</a> </li>
           <li class="tab col s2 {{isTabDisabled 3}}"> <a href="#lineItem3">Line Item 3</a> </li>
@@ -15,6 +16,7 @@
           <li class="tab col s2 {{isTabDisabled 6}}"> <a href="#lineItem6">Line Item 6</a> </li>
           <li class="tab col s2 {{isTabDisabled 7}}"> <a href="#lineItem7">Line Item 7</a> </li>
           <li class="tab col s2 {{isTabDisabled 8}}"> <a href="#lineItem8">Line Item 8</a> </li>
+          {{/if}}
         </ul>
       </div>
     </div>
@@ -140,40 +142,41 @@
     </div>
 {{!-- TODO here --> create template for each initiative, maybe down the line
 include charting for each lineItem and definitely aggregations --}}
+  {{#if isInRole "admin"}}
     {{#each initiative.lineItems}}
       <div id="lineItem{{addOne @index}}">
         <table class="centered">
           {{#with grabLineItem @index}}
-          <thead>
-            <tr>
-              {{#if objective}} <th>Objective</th> {{/if}}
-              {{#if platform}} <th>Platform</th> {{/if}}
-              {{#if dealType}} <th>Deal Type</th> {{/if}}
-              {{#if quantity}} <th>Quantity</th> {{/if}}
-              {{#if price}} <th>Price</th> {{/if}}
-              {{#if budget}} <th>Budget</th> {{/if}}
-              {{#if startDate}} <th>Start Date</th> {{/if}}
-              {{#if endDate}} <th>End Date</th> {{/if}}
-              {{#if costPlusPercent}} <th>Cost Plus</th> {{/if}}
-              {{#if percentTotalPercent}} <th>Percent Total</th> {{/if}}
-              {{#if isClientPercent}} <th>Client</th> {{/if}}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              {{#if objective}}<td>{{objective}}</td>{{/if}}
-              {{#if platform}}<td>{{platform}}</td>{{/if}}
-              {{#if dealType}}<td>{{dealType}}</td>{{/if}}
-              {{#if quantity}}<td>{{quantity}}</td>{{/if}}
-              {{#if price}}<td>{{formatMoney price}}</td>{{/if}}
-              {{#if budget}}<td>{{formatMoney budget}}</td>{{/if}}
-              {{#if startDate}}<td>{{formatDate startDate}}</td>{{/if}}
-              {{#if endDate}}<td>{{formatDate endDate}}</td>{{/if}}
-              {{#if costPlusPercent}}<td>{{costPlusPercent}}%</td>{{/if}}
-              {{#if percentTotalPercent}}<td>{{percentTotalPercent}}%</td>{{/if}}
-              {{#if isClientPercent}}<td>{{isClientPercent}}%</td>{{/if}}
-            </tr>
-          </tbody>
+            <thead>
+              <tr>
+                {{#if objective}} <th>Objective</th> {{/if}}
+                {{#if platform}} <th>Platform</th> {{/if}}
+                {{#if dealType}} <th>Deal Type</th> {{/if}}
+                {{#if quantity}} <th>Quantity</th> {{/if}}
+                {{#if price}} <th>Price</th> {{/if}}
+                {{#if budget}} <th>Budget</th> {{/if}}
+                {{#if startDate}} <th>Start Date</th> {{/if}}
+                {{#if endDate}} <th>End Date</th> {{/if}}
+                {{#if costPlusPercent}} <th>Cost Plus</th> {{/if}}
+                {{#if percentTotalPercent}} <th>Percent Total</th> {{/if}}
+                {{#if isClientPercent}} <th>Client</th> {{/if}}
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                {{#if objective}}<td>{{objective}}</td>{{/if}}
+                {{#if platform}}<td>{{platform}}</td>{{/if}}
+                {{#if dealType}}<td>{{dealType}}</td>{{/if}}
+                {{#if quantity}}<td>{{quantity}}</td>{{/if}}
+                {{#if price}}<td>{{formatMoney price}}</td>{{/if}}
+                {{#if budget}}<td>{{formatMoney budget}}</td>{{/if}}
+                {{#if startDate}}<td>{{formatDate startDate}}</td>{{/if}}
+                {{#if endDate}}<td>{{formatDate endDate}}</td>{{/if}}
+                {{#if costPlusPercent}}<td>{{costPlusPercent}}%</td>{{/if}}
+                {{#if percentTotalPercent}}<td>{{percentTotalPercent}}%</td>{{/if}}
+                {{#if isClientPercent}}<td>{{isClientPercent}}%</td>{{/if}}
+              </tr>
+            </tbody>
           {{/with}}
         </table>
         <h5>Net Aggregate | Targeted Social Numbers</h5>
@@ -203,6 +206,7 @@ include charting for each lineItem and definitely aggregations --}}
         {{/each}}
       </div>
     {{/each}}
+  {{/if}}
   </div>
 
 {{#if isReady "Initiatives" "campaignInsightList"}}

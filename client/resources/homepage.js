@@ -93,6 +93,10 @@ Template.index.helpers({
   },
   'active': function (route) {
     return Session.get("route") === route ? "active" : '';
+  },
+  'getUser': () => {
+    const user = Meteor.user();
+    return user.firstName;
   }
 });
 
