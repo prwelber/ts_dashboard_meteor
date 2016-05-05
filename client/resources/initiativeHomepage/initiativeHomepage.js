@@ -342,10 +342,10 @@ Template.initiativeHomepage.helpers({
           layout: 'horizontal',
           backgroundColor: '#FFFFFF',
           align: 'left',
-          verticalAlign: 'bottom',
+          verticalAlign: 'top',
           floating: true,
-          x: 0,
-          y: -50
+          x: 25,
+          y: 25
         },
 
         series: [{
