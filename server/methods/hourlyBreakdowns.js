@@ -1,4 +1,5 @@
 import HourlyBreakdowns from '/collections/HourlyBreakdowns'
+import { apiVersion } from '/server/token/token'
 
 Meteor.methods({
     'removeHourly': function () {
@@ -13,7 +14,7 @@ Meteor.methods({
         let masterArray = [];
         let hourlyBreakdown;
         try {
-            let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/insights?fields=cpm,cpp,ctr,spend,account_id,campaign_id,campaign_name,date_start,date_stop,impressions,objective,reach,video_10_sec_watched_actions,video_15_sec_watched_actions,video_30_sec_watched_actions,video_avg_sec_watched_actions,video_avg_pct_watched_actions,video_complete_watched_actions,cost_per_action_type,actions&breakdowns=hourly_stats_aggregated_by_audience_time_zone&access_token='+token+'', {});
+            let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+'/insights?fields=cpm,cpp,ctr,spend,account_id,campaign_id,campaign_name,date_start,date_stop,impressions,objective,reach,video_10_sec_watched_actions,video_15_sec_watched_actions,video_30_sec_watched_actions,video_avg_sec_watched_actions,video_avg_pct_watched_actions,video_complete_watched_actions,cost_per_action_type,actions&breakdowns=hourly_stats_aggregated_by_audience_time_zone&access_token='+token+'', {});
             hourlyBreakdown = result;
             hourlyArray.push(hourlyBreakdown.data.data);
             hourlyArray = _.flatten(hourlyArray);

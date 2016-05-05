@@ -1,4 +1,5 @@
 import Ads from '/collections/Ads'
+import { apiVersion } from '/server/token/token'
 
 Meteor.methods({
   'removeAds': function () {
@@ -18,7 +19,7 @@ Meteor.methods({
     let carouselArray = [];
     let ads;
     try {
-        let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/ads?fields=adcreatives{object_story_id,image_url,object_id,body,title,template_url,name,thumbnail_url,url_tags,link_url},insights,account_id,adset_id,campaign_id,name,id&limit=75&access_token='+token+'', {});
+        let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+'/ads?fields=adcreatives{object_story_id,image_url,object_id,body,title,template_url,name,thumbnail_url,url_tags,link_url},insights,account_id,adset_id,campaign_id,name,id&limit=75&access_token='+token+'', {});
         ads = result;
         // ads variable is now an array of objects
         adsArray.push(ads.data.data);

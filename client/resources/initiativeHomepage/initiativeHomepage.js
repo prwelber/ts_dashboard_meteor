@@ -1,5 +1,6 @@
 import CampaignInsights from '/collections/CampaignInsights'
 import Initiatives from '/collections/Initiatives'
+import CampaignBasics from '/collections/CampaignBasics'
 
 var moment = require('moment');
 var range = require('moment-range');
@@ -48,16 +49,16 @@ Template.initiativeHomepage.helpers({
   },
   'getCampaigns': function () {
     const init = Template.instance().templateDict.get('initiative');
-    const camps = CampaignInsights.find(
-      {'data.initiative': init.name},
+    const camps = CampaignBasics.find(
+      {'initiative': init.name},
       {sort: {
-        'data.date_stop': -1
+        'sort_time_stop': -1
       }
     }).fetch();
 
-    camps.forEach(el => {
-      el.startDate = moment(el.startDate).format("MM-DD-YYYY");
-    })
+    // camps.forEach(el => {
+    //   el.startDate = moment(el.startDate).format("MM-DD-YYYY");
+    // })
     return camps;
   },
   'isTabDisabled': (num) => {

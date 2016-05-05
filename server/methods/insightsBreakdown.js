@@ -1,4 +1,5 @@
 import InsightsBreakdowns from '/collections/InsightsBreakdowns'
+import { apiVersion } from '/server/token/token'
 
 Meteor.methods({
     'removeBreakdowns': function () {
@@ -13,7 +14,7 @@ Meteor.methods({
         let masterArray = [];
         let breakdown;
         try {
-            let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/insights?breakdowns=age,gender&access_token='+token+'', {});
+            let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+'/insights?breakdowns=age,gender&access_token='+token+'', {});
             breakdown = result
             breakdownArray.push(breakdown.data.data);
             // flatten to get rid of nested array

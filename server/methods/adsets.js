@@ -1,4 +1,5 @@
 import AdSets from '/collections/AdSets'
+import { apiVersion } from '/server/token/token'
 
 Meteor.methods({
   'removeAdSets': function () {
@@ -13,7 +14,7 @@ Meteor.methods({
     let masterArray = [];
     let adSets;
     try {
-      let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/adsets?fields=account_id,campaign_id,start_time,end_time,id,optimization_goal,name,targetingsentencelines,created_time,product_ad_behavior,updated_time,insights,lifetime_budget&access_token='+token+'', {});
+      let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+'/adsets?fields=account_id,campaign_id,start_time,end_time,id,optimization_goal,name,targetingsentencelines,created_time,product_ad_behavior,updated_time,insights,lifetime_budget&access_token='+token+'', {});
       adSets = result;
       // adSets variable is now an array of objects
       adSetsArray.push(adSets.data.data);
