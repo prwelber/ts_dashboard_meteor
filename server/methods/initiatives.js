@@ -245,7 +245,7 @@ Meteor.methods({
   }
 });
 
-Meteor.publish('Initiatives', function () {
+Meteor.publish('Initiatives', function (opts) {
   var user = Meteor.users.findOne({_id: this.userId});
 
   try {
@@ -256,6 +256,8 @@ Meteor.publish('Initiatives', function () {
       return Initiatives.find({agency: {$in: user.agency}});
     } else if (user.initiatives.length >= 1) {
       return Initiatives.find({name: {$in: user.initiatives}});
+    } else if (opts) {
+      return Initiatives.find({_id: opts});
     }
   } catch (e) {
     console.log('Error in Initiatives Server:', e);
