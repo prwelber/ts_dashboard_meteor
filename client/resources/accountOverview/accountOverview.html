@@ -9,21 +9,20 @@
         {{#each campaign in displayCampaignBasics 1}}
             <a href="/accounts/{{campaign.campaign_id}}/overview" >
                 <h4 class="insights-link" data-campaign="{{campaign.campaign_id}}" data-stop="{{campaign.stop_time}}">
-                    {{campaign.name}}
+                    {{campaign.data.name}}
                 </h4>
             </a>
-            <p>{{campaign.start_time}} -- {{campaign.stop_time}}</p>
-            <p>Objective: {{campaign.objective}}</p>
-            <p>Created: {{campaign.created_time}}</p>
-            <p>Inserted: {{campaign.inserted}}</p>
-            {{#unless campaign.received_creative}}
+            <p>{{campaign.data.start_time}} -- {{campaign.data.stop_time}}</p>
+            <p>Objective: {{campaign.data.objective}}</p>
+            <p>Created: {{campaign.data.created_time}}</p>
+            {{#unless campaign.data.received_creative}}
                 <p>no creative received</p>
             {{else}}
-                <p>creative received: {{campaign.received_creative}}</p>
+                <p>creative received: {{campaign.data.received_creative}}</p>
             {{/unless}}
-            <p>Signed IO: {{campaign.signed_IO}}</p>
-            <p>Approved Targeting: {{campaign.approved_targeting}}</p>
-            <p>Received Tracking: {{campaign.received_tracking}}</p>
+            <p>Signed IO: {{campaign.data.signed_IO}}</p>
+            <p>Approved Targeting: {{campaign.data.approved_targeting}}</p>
+            <p>Received Tracking: {{campaign.data.received_tracking}}</p>
         {{/each}}
     <button id="more-campaigns-button">View More Campaigns</button>
     <button id="all-campaigns-button">View All Campaigns</button>

@@ -1,9 +1,7 @@
 import CampaignBasics from '/collections/CampaignBasics'
 import Initiatives from '/collections/Initiatives'
 import { apiVersion } from '/server/token/token'
-// this is so that I can clean out the collection from the browser console
-// just call Meteor.call('removeCampaignBasics')
-// remove all can only be done from server
+
 Meteor.methods({
     'removeCampaigns': function (account) {
         console.log('removing CampaignBasicsList collection for a single account')
@@ -64,39 +62,21 @@ Meteor.methods({
                     }
                 });
 
+                el['campaign_id'] = el.id;
+                delete el['id'];
+
             } catch(e) {
                 console.log("Error matching camp and init", e);
             }
         });
 
+        console.log(campaignOverviewArray[1]);
 
-        try {
-            for (let i = 0; i < campaignOverviewArray.length; i++) {
-                for (let j = 0; j < campaignOverviewArray[i].length; j++) {
-                    CampaignBasics.insert({
-                        name: campaignOverviewArray[i][j].name,
-                        created_time: moment(campaignOverviewArray[i][j].created_time).format("MM-DD-YYYY hh:mm a"),
-                        start_time: moment(campaignOverviewArray[i][j].start_time).format("MM-DD-YYYY hh:mm a"),
-                        stop_time: moment(campaignOverviewArray[i][j].stop_time).format("MM-DD-YYYY hh:mm a"),
-                        updated_time: moment(campaignOverviewArray[i][j].updated_time).format("MM-DD-YYYY hh:mm a"),
-                        objective: campaignOverviewArray[i][j].objective,
-                        campaign_id: campaignOverviewArray[i][j].id,
-                        inserted: moment().format("MM-DD-YYYY hh:mm a"),
-                        received_creative: false,
-                        signed_IO: false,
-                        approved_targeting: false,
-                        received_tracking: false,
-                        sort_time_start: campaignOverviewArray[i][j].start_time,
-                        sort_time_stop: campaignOverviewArray[i][j].stop_time,
-                        account_id: campaignOverviewArray[i][j].account_id,
-                        initiative: campaignOverviewArray[i][j].initiative
-                    });
-                }
-            }
-        } catch(e) {
-            console.log('error in the mongo insert clause:', e);
-        }
-
+        campaignOverviewArray.forEach(el => {
+            CampaignBasics.insert({
+                data: el
+            });
+        });
         return "success!";
     }
 });
@@ -104,16 +84,18 @@ Meteor.methods({
 // need a meteor.publish here
 Meteor.publish('campaignBasicsList', function (opts) {
   if (opts.page === "homepage") {
-    console.log('opts.page')
+    console.log('opts.page');
+    console.log(opts);
+    const init = Initiatives.findOne({_id: opts._id});
+    console.log(init.name);
     // lookup initiative and match campaigns to that
-  }
-
-  if (! opts) {
+    return CampaignBasics.find({"data.initiative": init.name});
+  } else if (! opts) {
     return CampaignBasics.find({});
   } else if (opts.toString().length < 15) {
-    return CampaignBasics.find({campaign_id: opts}, {sort: {sort_time_start: -1}});
+    return CampaignBasics.find({"data.campaign_id": opts}, {sort: {"data.sort_time_start": -1}});
   } else if (opts.toString().length === 15) {
-    return CampaignBasics.find({account_id: opts}, {sort: {sort_time_start: -1}});
+    return CampaignBasics.find({"data.account_id": opts}, {sort: {"data.sort_time_start": -1}});
   }
 
 });

@@ -17,41 +17,41 @@ Template.taskTracker.helpers({
   },
   "targetingChecked": function () {
     if (FlowRouter.subsReady()) {
-      let camp = CampaignBasics.findOne({campaign_id: FlowRouter.current().params.campaign_id});
-      return camp.approved_targeting === true ? "checked" : "";
+      let camp = CampaignBasics.findOne({"data.campaign_id": FlowRouter.current().params.campaign_id});
+      return camp.data.approved_targeting === true ? "checked" : "";
     }
   },
   "creativeChecked": function () {
     if (FlowRouter.subsReady()) {
-      let camp = CampaignBasics.findOne({campaign_id: FlowRouter.current().params.campaign_id});
-      return camp.received_creative === true ? "checked" : "";
+      let camp = CampaignBasics.findOne({"data.campaign_id": FlowRouter.current().params.campaign_id});
+      return camp.data.received_creative === true ? "checked" : "";
     }
   },
   "trackingChecked": function () {
     if (FlowRouter.subsReady()) {
-      let camp = CampaignBasics.findOne({campaign_id: FlowRouter.current().params.campaign_id});
-      return camp.received_tracking === true ? "checked" : "";
+      let camp = CampaignBasics.findOne({"data.campaign_id": FlowRouter.current().params.campaign_id});
+      return camp.data.received_tracking === true ? "checked" : "";
     }
   },
   "signedIoChecked": function () {
     if (FlowRouter.subsReady()) {
-      let camp = CampaignBasics.findOne({campaign_id: FlowRouter.current().params.campaign_id});
-      return camp.signed_IO === true ? "checked" : "";
+      let camp = CampaignBasics.findOne({"data.campaign_id": FlowRouter.current().params.campaign_id});
+      return camp.data.signed_IO === true ? "checked" : "";
     }
   }
 });
 
 Template.taskTracker.events({
   "click .tracker-checkbox": function (event, template) {
-    let camp = CampaignBasics.findOne({campaign_id: FlowRouter.current().params.campaign_id});
+    let camp = CampaignBasics.findOne({"data.campaign_id": FlowRouter.current().params.campaign_id});
     if (event.target.name === "approvedTargeting") {
-      Meteor.call("updateTargeting", camp.campaign_id, ! camp.approved_targeting);
+      Meteor.call("updateTargeting", camp.data.campaign_id, ! camp.data.approved_targeting);
     } else if (event.target.name === "receivedCreative") {
-      Meteor.call("updateCreative", camp.campaign_id, ! camp.received_creative);
+      Meteor.call("updateCreative", camp.data.campaign_id, ! camp.data.received_creative);
     } else if (event.target.name === "receivedTracking") {
-      Meteor.call("updateTracking", camp.campaign_id, ! camp.received_tracking);
+      Meteor.call("updateTracking", camp.data.campaign_id, ! camp.data.received_tracking);
     } else if (event.target.name === "signedIO") {
-      Meteor.call("updateSignedIO", camp.campaign_id, ! camp.signed_IO);
+      Meteor.call("updateSignedIO", camp.data.campaign_id, ! camp.data.signed_IO);
     }
   }
 });

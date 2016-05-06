@@ -5,6 +5,7 @@ import { dailyUpdate } from './initiativeUpdaterFunction'
 import CampaignInsights from '/collections/CampaignInsights'
 import Initiatives from '/collections/Initiatives'
 import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
+import { apiVersion } from '/server/token/token'
 const later = require('later');
 
 SyncedCron.config({

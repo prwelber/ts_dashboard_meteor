@@ -25,13 +25,11 @@ Template.accountOverview.helpers({
     'displayCampaignBasics': function (count) {
         accountId = FlowRouter.current().params.account_id;
         //TODO - need to write logic here to check for campaign and if not, then meteor.call to method
-        let camp = CampaignBasics.findOne({account_id: accountId});
+        let camp = CampaignBasics.findOne({"data.account_id": accountId});
         if (camp) {
-            console.log('you should be seeing campaigns');
-            let camps = CampaignBasics.find({account_id: accountId}, {sort: {sort_time_start: -1}, limit: Session.get("limit")}).fetch();
+            let camps = CampaignBasics.find({"data.account_id": accountId}, {sort: {"data.start_time": -1}, limit: Session.get("limit")}).fetch();
             return camps;
         } else {
-            console.log('gotta get campaigns for this account', accountId);
             // Meteor.addcall('getCampaigns', accountId)
         }
     },

@@ -49,16 +49,18 @@ Template.initiativeHomepage.helpers({
   },
   'getCampaigns': function () {
     const init = Template.instance().templateDict.get('initiative');
+    const timeFormat = "MM-DD-YYYY hh:mm a";
     const camps = CampaignBasics.find(
-      {'initiative': init.name},
+      {'data.initiative': init.name},
       {sort: {
-        'sort_time_stop': -1
+        'data.start_time': -1
       }
     }).fetch();
-
-    // camps.forEach(el => {
-    //   el.startDate = moment(el.startDate).format("MM-DD-YYYY");
-    // })
+    console.log(camps.length);
+    camps.forEach(el => {
+      el.data.start_time = moment(el.data.start_time).format(timeFormat);
+      el.data.stop_time = moment(el.data.stop_time).format(timeFormat);
+    })
     return camps;
   },
   'isTabDisabled': (num) => {

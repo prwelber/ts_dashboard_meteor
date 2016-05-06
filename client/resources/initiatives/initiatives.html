@@ -89,23 +89,23 @@
                   <a href="/admin/initiatives/{{_id}}/edit" style="margin-left: 10px;">Edit</a>
                 </div>
                 <div class="col s5">
-                  <p class="right-align">{{formatDate lineItems.[0].startDate}} -- {{formatDate lineItems.[0].endDate}}</p>
+                  <p class="right-align">{{formatDate lineItems.[0].startDate}} - {{formatDate lineItems.[0].endDate}}</p>
                 </div>
               </div>
               <div class="row" style="margin-bottom: 5px;">
                 <div class="col s12">
 
                 </div>
-                <div class="col s3">
-                  <p>Owner: {{owner}}</p>
+                <div class="col s8">
+                  <p>Owner: {{owner}} | Agency: {{agency}} | Brand: {{brand}}</p>
                 </div>
-                <div class="col s3">
+                {{!-- <div class="col s3">
                   <p>Agency: {{agency}}</p>
                 </div>
                 <div class="col s3">
                   <p>Brand: {{brand}}</p>
-                </div>
-                <div class="col s3">
+                </div> --}}
+                <div class="col s4">
                   <p class="right-align {{isActiveClass}}">{{isActiveInitiative}}</p>
                 </div>
               </div>
