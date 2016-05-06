@@ -1,6 +1,7 @@
 import CampaignInsights from '/collections/CampaignInsights'
 import Initiatives from '/collections/Initiatives'
 import AdSets from '/collections/AdSets'
+import mastFunc from '../masterFunctions'
 
 var Promise = require('bluebird');
 
@@ -48,7 +49,17 @@ Template.adsets.helpers({
         el.data.cpp = mastFunc.money(el.data.cpp);
         el.data.start_time = moment(el.data.start_time).format("MM-DD-YYYY hh:mm a");
         el.data.end_time = moment(el.data.end_time).format("MM-DD-YYYY hh:mm a");
+
+        if (el.data.post_like) {
+          el.data.like = el.data.post_like;
+          el.data.cpl = mastFunc.money(el.data.spend / el.data.post_like);
+        } else if (el.data.page_like) {
+          el.data.like = el.data.page_like;
+          el.data.cpl = mastFunc.money(el.data.spend / el.data.page_like);
+        }
+
       });
+
       return adsets;
     }
   },

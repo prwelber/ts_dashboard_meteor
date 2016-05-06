@@ -201,14 +201,43 @@ Template.initiativeAggregate.onDestroyed(func => {
 })
 
 Template.initiativesHome.onRendered(function () {
-
+  Meteor.typeahead.inject();
 });
+
+Template.initiativesHome.onCreated(function () {
+
+})
 
 Template.initiativesHome.helpers({
   isReady: (sub1) => {
     if (FlowRouter.subsReady(sub1)) {
       return true;
     }
+  },
+  settings: function() {
+    return {
+      position: "top",
+      limit: 5,
+      rules: [
+        {
+          token: '',
+          collection: Initiatives,
+          field: "name",
+          options: '',
+          matchAll: true,
+          // filter: { type: "autocomplete" },
+          template: Template.dataPiece
+        },
+        // {
+        //   token: '@',
+        //   collection: CampaignInsights,
+        //   field: 'data.name',
+        //   options: '',
+        //   matchAll: true,
+        //   template: Template.datapiece
+        // }
+      ]
+    };
   },
   'getAllInitiatives': function () {
     const inits = Initiatives.find({},

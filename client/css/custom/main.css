@@ -98,8 +98,6 @@ a:hover {
 }
 
 
-
-
 .dashboard-initiative-header {
   margin-top: 15px;
   margin-bottom: 15px;
@@ -119,4 +117,8 @@ a:hover {
 
 .projection-buttons {
   margin-top: 2%;
+}
+
+.typeahead-text {
+  color: #000000;
 }

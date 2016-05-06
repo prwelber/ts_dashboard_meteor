@@ -73,11 +73,17 @@
   </div>
 </template>
 
+<template name="dataPiece">
+    <a class="typeahead-text" href="/initiatives/{{_id}}/homepage">{{name}}</a>
+</template>
 
 <template name="initiativesHome">
   <div class="container">
     <div class="row">
+    <h1 class="align-center" style="margin-top: 6%; margin-bottom: 6%; font-size: 3em;">Your Initiatives</h1>
       {{#if isReady "Initiatives"}}
+      {{!-- autocomplete library https://github.com/mizzao/meteor-autocomplete --}}
+      {{> inputAutocomplete settings=settings id="initiative-typeahead" class="autocomplete" placeholder="Search For Initiative (Case Sensitive)"}}
         <ul class="collection">
           {{#each getAllInitiatives}}
             <li class="collection-item">

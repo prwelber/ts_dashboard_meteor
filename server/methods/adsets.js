@@ -13,8 +13,10 @@ Meteor.methods({
     let adSetsArray = [];
     let masterArray = [];
     let adSets;
+    const query = "?fields=account_id,campaign_id,start_time,end_time,id,optimization_goal,name,targetingsentencelines,created_time,updated_time,insights{impressions,clicks,total_actions,actions,cost_per_action_type,website_clicks,spend,newsfeed_avg_position,cost_per_10_sec_video_view,frequency,ctr,cpc,cpm,cpp}";
+
     try {
-      let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+'/adsets?fields=account_id,campaign_id,start_time,end_time,id,optimization_goal,name,targetingsentencelines,created_time,product_ad_behavior,updated_time,insights,lifetime_budget&access_token='+token+'', {});
+      let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+'/adsets'+query+'&access_token='+token+'', {});
       adSets = result;
       // adSets variable is now an array of objects
       adSetsArray.push(adSets.data.data);
@@ -80,11 +82,6 @@ Meteor.methods({
                 data['also_match'] = el.children[0];
               }
             });
-
-            // el[key].targetingsentencelines.forEach(target => {
-            //   targetingObject[target.content] = target.children[0];
-            // });
-            //   targetingArray.push(targetingObject);
           } else if (key === "insights") {
             el[key].data.forEach(el => {
               for (let k in el) {
@@ -153,16 +150,7 @@ Meteor.methods({
   }
 });
 
-Meteor.publish('AdSetsList', function () {
-  return AdSets.find( {} ) // publish all adsets
+Meteor.publish('AdSetsList', function (opts) {
+  return AdSets.find({'data.campaign_id': opts});
 });
 
-
-
-
-          // if (key === "targetingsentencelines") {
-          //   console.log
-          //
-          // } else if (key === "insights") {
-
-          // }
