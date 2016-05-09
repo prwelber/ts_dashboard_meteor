@@ -30,7 +30,6 @@ Template.campaignDashboard.events({
       reporter = Blaze.render(Template.reporter, node);
     },
     'click #refresh-insights': function (event, template) {
-      console.log(this);
       Meteor.call('refreshInsight', this.campaign_id, this.campaign_name, this.initiative);
       $("#message-box li").remove();
     },
@@ -51,7 +50,6 @@ Template.campaignDashboard.helpers({
     }
   },
   'fetchInsights': function () {
-    console.log('checking for insights');
     let campaignNumber = FlowRouter.current().params.campaign_id;
     let camp = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
     if (camp) {
@@ -61,7 +59,6 @@ Template.campaignDashboard.helpers({
     } else {
       var target = document.getElementById("spinner-div");
       let spun = Blaze.render(Template.spin, target);
-      console.log('gotta get insights for this one', campaignNumber);
       Meteor.call('getInsights', campaignNumber, Session.get("end_date"), function (err, result) {
         if (err) {
             console.log(err);

@@ -1,6 +1,8 @@
 import CampaignInsights from '/collections/CampaignInsights'
 import Initiatives from '/collections/Initiatives'
 import CampaignBasics from '/collections/CampaignBasics'
+import { Meteor } from 'meteor/meteor'
+import { FlowRouter } from 'meteor/kadira:flow-router'
 
 var moment = require('moment');
 var range = require('moment-range');
@@ -56,7 +58,6 @@ Template.initiativeHomepage.helpers({
         'data.start_time': -1
       }
     }).fetch();
-    console.log(camps.length);
     camps.forEach(el => {
       el.data.start_time = moment(el.data.start_time).format(timeFormat);
       el.data.stop_time = moment(el.data.stop_time).format(timeFormat);
@@ -471,15 +472,48 @@ Template.initiativeHomepage.helpers({
         data: chart
       }]
     } // end of chart return
+  },
+  changelog: () => {
+    let log = Initiatives.findOne({_id: FlowRouter.getParam('_id')});
+    return log.changelog;
+  },
+  changelogCampaigns: () => {
+    const init = Template.instance().templateDict.get('initiative');
+    const campaigns = CampaignBasics.find({'data.initiative': init.name}).fetch().map(el => {
+      return el.data.name
+    });
+    return campaigns
+  },
+  formatDate: (date) => {
+    return moment(date, moment.ISO_8601).format("MM-DD-YYYY");
   }
 });
 
 Template.initiativeHomepage.events({
   'click #view-initiative-stats-modal': function (event, template) {
     const initiative = Template.instance().templateDict.get('initiative');
-
-
+  },
+  'submit .changelog': (event, template) => {
+    event.preventDefault();
+    let change = {};
+    change['change'] = event.target.name.value;
+    change['date'] = moment().toISOString();
+    change['campaignTag'] = event.target.changelog_campaigns.value;
+      const _id = FlowRouter.getParam('_id');
+    Meteor.call('insertChangelog', change, _id, (err, res) => {
+      if (! err) {
+        console.log('no error');
+      }
+    });
+    event.target.name.value = "";
+  },
+  'click .delete-change': (event, template) => {
+    const initiative = Template.instance().templateDict.get('initiative');
+    console.log($(event.target).data("id"));
+    const id = $(event.target).data("id")
+    Meteor.call('deleteChange', initiative.name, id);
   }
+
 });
 
 Template.initiativeHomepage.onDestroyed(function () {

@@ -12,27 +12,23 @@ Meteor.methods({
 
 Meteor.methods({
   'getAds': function (accountNumber) {
-    console.log("getAds running");
     let adsArray = [];
     let otherArray = [];
     let masterArray = [];
     let carouselArray = [];
     let ads;
+    const query = '/ads?fields=adcreatives{object_story_id,image_url,object_id,body,title,template_url,name,thumbnail_url,url_tags,link_url},insights{clicks,actions,cost_per_action_type,total_actions,spend,objective,cpc,cpp,cpm,ctr,impressions,frequency,reach},account_id,adset_id,campaign_id,name,id&limit=75&access_token='
     try {
-        let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+'/ads?fields=adcreatives{object_story_id,image_url,object_id,body,title,template_url,name,thumbnail_url,url_tags,link_url},insights,account_id,adset_id,campaign_id,name,id&limit=75&access_token='+token+'', {});
+        let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+query+token+'', {});
         ads = result;
         // ads variable is now an array of objects
         adsArray.push(ads.data.data);
         adsArray = _.flatten(adsArray);
-        // console.log("adsArray from line 22:", adsArray);
-        // console.log("adcreatives.data", adsArray[0].adcreatives.data)
-
         adsArray.forEach(el => { // pulls in creative attachments (picture, url, message)
           let attachments = {}
 
           if (! el.adcreatives.data[0].object_story_id) { // if there is no object story id
 
-            // console.log("if no obj story id", el)
             let obj = el.adcreatives.data[0] // for readability and concision
             attachments['message'] = obj.body;
             attachments['url'] = obj.image_url;
@@ -44,7 +40,6 @@ Meteor.methods({
 
             // make 2nd api call with object_story_id to retrieve attachments
             let attachment = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+el.adcreatives.data[0].object_story_id+'?fields=child_attachments,attachments,message&access_token='+token+'', {});
-
             // determine if carousel ad
             if (attachment.data.child_attachments && attachment.data.attachments.data[0].hasOwnProperty('subattachments')) {
               attachment.data.child_attachments.forEach(element => {
@@ -63,10 +58,8 @@ Meteor.methods({
               // now make another call for individual carousel stats and we will
               // add it to the appropriate ID
               let carouselNumbers = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/insights?fields=impressions,inline_link_clicks,actions,website_ctr&action_breakdowns=["action_type","action_carousel_card_id"]&access_token='+token+'', {});
-              // console.log(carouselNumbers);
-              // console.log(carouselNumbers.data.data[0]);
-              let numbers = carouselNumbers.data.data[0];
 
+              let numbers = carouselNumbers.data.data[0];
               /*
               in the section that follows, there are two if statements that
               compare ID's in the existing carousel data with ID's in the newly
@@ -135,13 +128,12 @@ Meteor.methods({
             }
           } // end of if/else that runs if no object_story_id found
         });
-        // console.log(otherArray);
-        // console.log(otherArray)
+
         otherArray.forEach(el => {
           data = {};
           for (let key in el) {
             if (key === "insights") {
-              // console.log(el[key]);
+              console.log(el[key]);
               el[key].data.forEach(el => {
                 for (let k in el) {
                   if (k === "actions") {
@@ -179,6 +171,7 @@ Meteor.methods({
               });
             }
           }
+          console.log('data from 174', data);
           // check for carouselData with "if (el.carouselData)"
           if (el.attachments) {
             data['message'] = el.attachments.message;
@@ -189,8 +182,8 @@ Meteor.methods({
           } else if (el.carouselData) {
             data['carouselData'] = el.carouselData;
           }
-
           data['name'] = el.name;
+          data['campaign_id'] = el.campaign_id;
           data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
           data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
           data['cpc'] = data.spend / data.clicks;
@@ -203,7 +196,7 @@ Meteor.methods({
             console.log('Error pulling Ads data', e);
         }
         try {
-          // console.log("masterArray:", masterArray);
+          console.log(masterArray)
           masterArray.forEach(adDataObj => { // inserts data into Mongo
             Ads.insert({
               data: adDataObj

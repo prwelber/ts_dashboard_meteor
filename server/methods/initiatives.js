@@ -242,6 +242,23 @@ Meteor.methods({
       }
     });
     return "success!";
+  },
+  'insertChangelog': (data, _id) => {
+    // this creates a mongo unique ID string
+    data['id'] = new Meteor.Collection.ObjectID()._str;
+    console.log(data, _id);
+    Initiatives.update(
+      {_id: _id},
+      {$addToSet: {
+        changelog: data
+      }
+    });
+  },
+  'deleteChange': (name, id) => {
+    Initiatives.update(
+      {name: name},
+      {$pull: {"changelog": {id: id}}
+    });
   }
 });
 

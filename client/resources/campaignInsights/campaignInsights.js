@@ -22,7 +22,6 @@ Template.campaignInsights.onRendered(function () {
 
 Template.campaignInsights.events({
   'click #refresh-insights': function (event, template) {
-    console.log(this);
     Meteor.call('refreshInsight', this.campaign_id, this.campaign_name, this.initiative);
     $('.tooltipped').tooltip('remove');
   },
@@ -43,7 +42,6 @@ Template.campaignInsights.helpers({
       var call = Promise.promisify(Meteor.call);
       call('getInsights', campaignNumber)
       .then(function (result) {
-        console.log("result from promise", result)
         Blaze.remove(spun);
       }).catch(function (err) {
         console.log('uh no error', err)

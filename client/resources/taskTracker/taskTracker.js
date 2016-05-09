@@ -1,11 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import { FlowRouter } from 'meteor/kadira:flow-router'
+import { Moment } from 'meteor/momentjs:moment'
 import CampaignBasics from '/collections/CampaignBasics'
-
-// Tracker.autorun(func => {
-//   if (FlowRouter.subsReady('campaignBasicsList')) {
-//   }
-// });
 
 Template.taskTracker.helpers({
   isReady: function (sub) {
