@@ -133,7 +133,6 @@ Meteor.methods({
           data = {};
           for (let key in el) {
             if (key === "insights") {
-              console.log(el[key]);
               el[key].data.forEach(el => {
                 for (let k in el) {
                   if (k === "actions") {
@@ -171,7 +170,6 @@ Meteor.methods({
               });
             }
           }
-          console.log('data from 174', data);
           // check for carouselData with "if (el.carouselData)"
           if (el.attachments) {
             data['message'] = el.attachments.message;
@@ -196,7 +194,6 @@ Meteor.methods({
             console.log('Error pulling Ads data', e);
         }
         try {
-          console.log(masterArray)
           masterArray.forEach(adDataObj => { // inserts data into Mongo
             Ads.insert({
               data: adDataObj

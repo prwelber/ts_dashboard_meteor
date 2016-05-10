@@ -39,9 +39,7 @@ Meteor.methods({
                         // replaces it with an underscore if found
                         // this check is used two more times below
                         if (/\W/g.test(el.action_type)) {
-                            // console.log("before key", el.action_type)
                             el.action_type = el.action_type.replace(/\W/g, "_");
-                            // console.log("after key", el.action_type)
                             data[el.action_type] = el.value;
                         }
                         data[el.action_type] = el.value;

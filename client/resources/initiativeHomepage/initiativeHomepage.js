@@ -171,7 +171,7 @@ Template.initiativeHomepage.helpers({
         objToReturn['netCPM'] = objToReturn.netSpend / objectiveAg.impressions;
         objToReturn['netCPC'] = objToReturn.netSpend / objectiveAg.clicks;
 
-        if (objectiveAg.likes === null || objectiveAg.likes === '' || objectiveAg[0].likes === 0) {
+        if (objectiveAg.likes === null || objectiveAg.likes === '' || objectiveAg.likes === 0) {
           objToReturn['netCPL'] = 0;
         } else {
           objToReturn['netCPL'] = objToReturn.netSpend / objectiveAg.likes;
@@ -181,6 +181,7 @@ Template.initiativeHomepage.helpers({
 
       arrToReturn.push(objToReturn);
     }
+    console.log("arrToReturn", arrToReturn);
     return arrToReturn;
 
   },

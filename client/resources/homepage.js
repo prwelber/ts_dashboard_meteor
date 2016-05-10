@@ -31,8 +31,10 @@ Template.accounts.helpers({
         "name": { "$in": [
           "Ruffino",
           "Woodbridge",
-          "Robert Mondavi Winery",
-          "Kim Crawford"
+          // "Robert Mondavi Winery",
+          "Kim Crawford",
+          "Turtle Bay Resorts",
+          "Churchill Downs"
         ]}
       })
     }

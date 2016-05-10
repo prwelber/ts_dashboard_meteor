@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { SyncedCron } from 'meteor/percolate:synced-cron';
 import { Moment } from 'meteor/momentjs:moment'
+import { apiVersion } from '/server/token/token'
 import MasterAccounts from '/collections/MasterAccounts'
 import CampaignBasics from '/collections/CampaignBasics'
 const later = require('later');
@@ -56,7 +57,7 @@ SyncedCron.add({
               const campaignOverviewArray = [];
               let campaignOverview;
 
-              let result = HTTP.call('GET', 'https://graph.facebook.com/v2.5/act_'+ idArray[counter] +'/campaigns?fields=name,created_time,start_time,stop_time,objective,id,account_id&limit=50&access_token='+token+'', {});
+              let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/act_'+ idArray[counter] +'/campaigns?fields=name,created_time,start_time,stop_time,objective,id,account_id&limit=50&access_token='+token+'', {});
               campaignOverview = result;
               campaignOverviewArray.push(campaignOverview.data.data);
 

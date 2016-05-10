@@ -70,7 +70,7 @@ Meteor.methods({
             }
         });
 
-        console.log(campaignOverviewArray[1]);
+        console.log(campaignOverviewArray[0]);
 
         campaignOverviewArray.forEach(el => {
             CampaignBasics.insert({
@@ -84,10 +84,7 @@ Meteor.methods({
 // need a meteor.publish here
 Meteor.publish('campaignBasicsList', function (opts) {
   if (opts.page === "homepage") {
-    console.log('opts.page');
-    console.log(opts);
     const init = Initiatives.findOne({_id: opts._id});
-    console.log(init.name);
     // lookup initiative and match campaigns to that
     return CampaignBasics.find({"data.initiative": init.name});
   } else if (! opts) {

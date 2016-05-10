@@ -246,7 +246,6 @@ Meteor.methods({
   'insertChangelog': (data, _id) => {
     // this creates a mongo unique ID string
     data['id'] = new Meteor.Collection.ObjectID()._str;
-    console.log(data, _id);
     Initiatives.update(
       {_id: _id},
       {$addToSet: {
