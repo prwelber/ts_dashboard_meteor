@@ -27,16 +27,17 @@ Template.accounts.helpers({
   'accountList': function () {
     let userId = Meteor.userId();
     if (userId) {
-      return MasterAccounts.find({
-        "name": { "$in": [
-          "Ruffino",
-          "Woodbridge",
-          // "Robert Mondavi Winery",
-          "Kim Crawford",
-          "Turtle Bay Resorts",
-          "Churchill Downs"
-        ]}
-      })
+      // return MasterAccounts.find({
+      //   "name": { "$in": [
+      //     "Ruffino",
+      //     "Woodbridge",
+      //     // "Robert Mondavi Winery",
+      //     "Kim Crawford",
+      //     "Turtle Bay Resorts",
+      //     "Churchill Downs"
+      //   ]}
+      // });
+      return MasterAccounts.find({});
     }
   },
   'formatSpend': function (num) {
