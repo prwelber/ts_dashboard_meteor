@@ -1,31 +1,27 @@
-// import { Meteor } from 'meteor/meteor'
-// import { SyncedCron } from 'meteor/percolate:synced-cron';
-// import { Moment } from 'meteor/momentjs:moment'
-// import CampaignInsights from '/collections/CampaignInsights'
-// import Initiatives from '/collections/Initiatives'
-// import CampaignBasics from '/collections/CampaignBasics'
-// import MasterAccounts from '/collections/MasterAccounts'
-// import { apiVersion } from '/server/token/token'
-// const later = require('later');
+import { Meteor } from 'meteor/meteor'
+import { SyncedCron } from 'meteor/percolate:synced-cron';
+import { Moment } from 'meteor/momentjs:moment'
+import CampaignInsights from '/collections/CampaignInsights'
+import Initiatives from '/collections/Initiatives'
+import CampaignBasics from '/collections/CampaignBasics'
+import MasterAccounts from '/collections/MasterAccounts'
+import { apiVersion } from '/server/token/token'
+const later = require('later');
 
 
-// SyncedCron.config({
-//     collectionName: 'cronCollection'
-// });
+SyncedCron.config({
+    collectionName: 'cronCollection'
+});
 
-// SyncedCron.add({
-//   name: "Clean null values from Insights",
-//   schedule: function (parser) {
-//     return parser.text('every 30 minutes');
-//   },
-//   job: function (time) {
-
-//     CampaignInsights.remove({'data.campaign_id': null});
-//     console.log('Insight successfully removed');
-//   }
-// });
-
-
+SyncedCron.add({
+  name: "Clean null values from Insights",
+  schedule: function (parser) {
+    return parser.text('every 5 minutes');
+  },
+  job: function (time) {
+    CampaignInsights.remove({'data.campaign_id': null});
+  }
+});
 
 // SyncedCron.add({
 //   name: "Campaign Insights Background Getter",

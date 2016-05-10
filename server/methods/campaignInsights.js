@@ -80,7 +80,6 @@ Meteor.methods({
         data['cpc'] = data.spend / data.clicks;
         data['date_start'] = moment(data.date_start).format("MM-DD-YYYY hh:mm a");
         data['date_stop'] = moment(data.date_stop).format("MM-DD-YYYY hh:mm a");
-        data['campaign_name']
         masterArray.push(data);
 
     } catch(e) {
@@ -88,6 +87,12 @@ Meteor.methods({
     }
 
     // Where we search initiatives looking for the one that matches
+    console.log(data);
+
+    if (! data.campaign_name) {
+      data['campaign_name'] = "NA";
+    }
+
     try {
       Initiatives._ensureIndex({
         "search_text": "text"

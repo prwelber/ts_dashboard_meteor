@@ -12,7 +12,7 @@ Meteor.methods({
 
 Meteor.methods({
     'getCampaigns': function (accountNumber) {
-        CampaignBasics.remove({account_id: accountNumber});
+        CampaignBasics.remove({'data.account_id': accountNumber});
         let campaignOverviewArray = [];
         let campaignOverview;
         try {
@@ -66,11 +66,21 @@ Meteor.methods({
                 delete el['id'];
 
             } catch(e) {
-                console.log("Error matching camp and init", e);
+                console.log("Error matching campaignBasic and initiative", e);
+            }
+        });
+
+        campaignOverviewArray.forEach(el => {
+            if (el.id) {
+                el['campaign_id'] = el.id;
+                delete el['id'];
             }
         });
 
         console.log(campaignOverviewArray[0]);
+        console.log(campaignOverviewArray[1]);
+        console.log(campaignOverviewArray[2]);
+        console.log(campaignOverviewArray[3]);
 
         campaignOverviewArray.forEach(el => {
             CampaignBasics.insert({
@@ -91,7 +101,7 @@ Meteor.publish('campaignBasicsList', function (opts) {
     return CampaignBasics.find({});
   } else if (opts.toString().length < 15) {
     return CampaignBasics.find({"data.campaign_id": opts}, {sort: {"data.sort_time_start": -1}});
-  } else if (opts.toString().length === 15) {
+  } else if (opts.toString().length >= 15) {
     return CampaignBasics.find({"data.account_id": opts}, {sort: {"data.sort_time_start": -1}});
   }
 
