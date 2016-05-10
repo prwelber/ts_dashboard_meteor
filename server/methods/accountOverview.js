@@ -78,9 +78,6 @@ Meteor.methods({
         });
 
         console.log(campaignOverviewArray[0]);
-        console.log(campaignOverviewArray[1]);
-        console.log(campaignOverviewArray[2]);
-        console.log(campaignOverviewArray[3]);
 
         campaignOverviewArray.forEach(el => {
             CampaignBasics.insert({

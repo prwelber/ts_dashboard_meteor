@@ -3,6 +3,7 @@ import Initiatives from '/collections/Initiatives'
 import CampaignBasics from '/collections/CampaignBasics'
 import { Meteor } from 'meteor/meteor'
 import { FlowRouter } from 'meteor/kadira:flow-router'
+import { Materialize } from 'meteor/materialize:materialize'
 
 var moment = require('moment');
 var range = require('moment-range');
@@ -82,7 +83,10 @@ Template.initiativeHomepage.helpers({
     return mastFunc.money(num);
   },
   'formatPercent': (num) => {
-    return numeral(num).format("00.000") + "%"
+    return numeral(num).format("00.000") + "%";
+  },
+  formatNumber: (number) => {
+    return numeral(number).format("0,0");
   },
   'initiative': function () {
     const initiative = Template.instance().templateDict.get('initiative');
@@ -150,7 +154,7 @@ Template.initiativeHomepage.helpers({
         objToReturn['netSpend'] = parseFloat(objectiveAg.spend) / costPlus;
         objToReturn['netBudget'] = parseFloat(init.lineItems[i].budget) / costPlus;
         objToReturn['spendPercent'] = ((100 * objToReturn.netSpend) / objToReturn.netBudget);
-        objToReturn['netCPM'] = objToReturn.netSpend / objectiveAg.impressions;
+        objToReturn['netCPM'] = objToReturn.netSpend / (objectiveAg.impressions / 1000);
         objToReturn['netCPC'] = objToReturn.netSpend / objectiveAg.clicks;
 
         if (objectiveAg.likes === null || objectiveAg.likes === '' || objectiveAg.likes === 0) {
@@ -168,7 +172,7 @@ Template.initiativeHomepage.helpers({
         objToReturn['netBudget'] = (budget - (budget * percentTotal));
         objToReturn['netSpend'] =  (spend - (spend * percentTotal));
         objToReturn['spendPercent'] = ((100 * objToReturn.netSpend) / objToReturn.netBudget);
-        objToReturn['netCPM'] = objToReturn.netSpend / objectiveAg.impressions;
+        objToReturn['netCPM'] = objToReturn.netSpend / (objectiveAg.impressions / 1000);
         objToReturn['netCPC'] = objToReturn.netSpend / objectiveAg.clicks;
 
         if (objectiveAg.likes === null || objectiveAg.likes === '' || objectiveAg.likes === 0) {
@@ -181,7 +185,7 @@ Template.initiativeHomepage.helpers({
 
       arrToReturn.push(objToReturn);
     }
-    console.log("arrToReturn", arrToReturn);
+    console.log(arrToReturn)
     return arrToReturn;
 
   },
@@ -502,8 +506,8 @@ Template.initiativeHomepage.events({
     change['campaignTag'] = event.target.changelog_campaigns.value;
       const _id = FlowRouter.getParam('_id');
     Meteor.call('insertChangelog', change, _id, (err, res) => {
-      if (! err) {
-        console.log('no error');
+      if (err) {
+        Materialize.toast("There was an error.", 1500);
       }
     });
     event.target.name.value = "";

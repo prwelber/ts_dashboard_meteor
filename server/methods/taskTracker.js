@@ -1,35 +1,36 @@
-import CampaignBasics from '/collections/CampaignBasics'
+import { Meteor } from 'meteor/meteor'
+import Initiatives from '/collections/Initiatives'
 
 Meteor.methods({
-  "updateTargeting": function (campId, status) {
-    CampaignBasics.update(
-      {"data.campaign_id": campId},
+  "updateTargeting": function (_id, status) {
+    Initiatives.update(
+      {"_id": _id},
       {$set: {
-        "data.approved_targeting": status
+        "approved_targeting": status
       }
     });
   },
-  "updateCreative": function (campId, status) {
-    CampaignBasics.update(
-      {"data.campaign_id": campId},
+  "updateCreative": function (_id, status) {
+    Initiatives.update(
+      {"_id": _id},
       {$set: {
-        "data.received_creative": status
+        "received_creative": status
       }
     });
   },
-  "updateTracking": function (campId, status) {
-    CampaignBasics.update(
-      {"data.campaign_id": campId},
+  "updateTracking": function (_id, status) {
+    Initiatives.update(
+      {"_id": _id},
       {$set: {
-        "data.received_tracking": status
+        "received_tracking": status
       }
     });
   },
-  "updateSignedIO": function (campId, status) {
-    CampaignBasics.update(
-      {"data.campaign_id": campId},
+  "updateSignedIO": function (_id, status) {
+    Initiatives.update(
+      {"_id": _id},
       {$set: {
-        "data.signed_IO": status
+        "signed_IO": status
       }
     });
   }

@@ -253,9 +253,9 @@ include charting for each lineItem and definitely aggregations --}}
             {{#if objective}}<td>{{objective}}</td>{{/if}}
             {{#if platform}}<td>{{platform}}</td>{{/if}}
             {{#if dealType}}<td>{{dealType}}</td>{{/if}}
-            {{#if quantity}}<td>{{quantity}}</td>{{/if}}
-            {{#if price}}<td>{{price}}</td>{{/if}}
-            {{#if budget}}<td>{{budget}}</td>{{/if}}
+            {{#if quantity}}<td>{{formatNumber quantity}}</td>{{/if}}
+            {{#if price}}<td>{{formatMoney price}}</td>{{/if}}
+            {{#if budget}}<td>{{formatMoney budget}}</td>{{/if}}
             {{#if startDate}}<td>{{formatDate startDate}}</td>{{/if}}
             {{#if endDate}}<td>{{formatDate endDate}}</td>{{/if}}
             {{#if costPlusPercent}}<td>{{costPlusPercent}}%</td>{{/if}}
@@ -266,20 +266,9 @@ include charting for each lineItem and definitely aggregations --}}
         {{/each}}
       </table>
     </div>
-    <div class="row">
-      <div class="col s6">
-        {{> highchartsHelper chartId="modalDeliveryChart" chartWidth="100%" chartHeight="70%" chartObject=modalDeliveryChart}}
-      </div>
-      <div class="col s6">
-        {{> highchartsHelper chartId="costPerChart" chartWidth="100%" chartHeight="70%" chartObject=costPerChart}}
-      </div>
-    </div>
-  </div>
-
-
-{{!-------- This is where campaigns within an initiative will go ---------}}
-
-  <div class="container">
+    {{!-- task tracker --}}
+    {{> Template.dynamic template=tasks}}
+    <br><br>
     <div class="row">
       <h3 class="center-align">Changelog</h3>
       <form class="changelog col s12">
@@ -325,6 +314,21 @@ include charting for each lineItem and definitely aggregations --}}
         {{/each}}
       </div>
     </div>
+
+    <div class="row">
+      <div class="col s6">
+        {{> highchartsHelper chartId="modalDeliveryChart" chartWidth="100%" chartHeight="70%" chartObject=modalDeliveryChart}}
+      </div>
+      <div class="col s6">
+        {{> highchartsHelper chartId="costPerChart" chartWidth="100%" chartHeight="70%" chartObject=costPerChart}}
+      </div>
+    </div>
+  </div>
+
+
+{{!-------- This is where campaigns within an initiative will go ---------}}
+
+  <div class="container">
     <div class="row">
       {{#each getCampaigns}}
         <div class="col s12 m12 l12">
@@ -348,3 +352,4 @@ include charting for each lineItem and definitely aggregations --}}
 {{/if}}
 
 </template>
+
