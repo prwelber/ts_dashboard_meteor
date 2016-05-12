@@ -1,15 +1,15 @@
 mastFunc = {};
 
-mastFunc.addToBox = function addToBox(message) {
-  return $("#message-box").append("<li>"+message+"</li>");
-}
-
 mastFunc.money = function makeMoney(num) {
   return accounting.formatMoney(num, "$", 2);
 }
 
 mastFunc.num = function num (num) {
   return numeral(num).format("0,0");
+}
+
+mastFunc.twoDecimals = function twoDecimals (num) {
+  return numeral(num).format("0,0.00");
 }
 
 

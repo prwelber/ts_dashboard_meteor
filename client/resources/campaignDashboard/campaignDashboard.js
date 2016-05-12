@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import { FlowRouter } from 'meteor/kadira:flow-router'
+import { campaignDashboardFunctionObject } from './campaignDashboardFuncs'
+import mastFunc from '../masterFunctions'
 import CampaignInsights from '/collections/CampaignInsights'
 import Initiatives from '/collections/Initiatives'
 
@@ -50,12 +52,12 @@ Template.campaignDashboard.helpers({
     }
   },
   'fetchInsights': function () {
-    let campaignNumber = FlowRouter.current().params.campaign_id;
+    let campaignNumber = FlowRouter.getParam('campaign_id');
     let camp = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
     if (camp) {
       camp.data.cpm = mastFunc.money(camp.data.cpm);
       camp.data.cpc = mastFunc.money(camp.data.cpc);
-      return [camp.data];
+      return camp.data;
     } else {
       var target = document.getElementById("spinner-div");
       let spun = Blaze.render(Template.spin, target);
@@ -129,6 +131,21 @@ Template.campaignDashboard.helpers({
   },
   'formatDate': (date) => {
     return moment(date, moment.ISO_8601).format("MM-DD-YYYY hh:mm a");
+  },
+  netInsights: () => {
+    const camp = CampaignInsights.findOne({'data.campaign_id': FlowRouter.getParam('campaign_id')});
+    const init = Template.instance().templateDict.get('initiative');
+    const netData = campaignDashboardFunctionObject.netInsights(init, camp);
+    return {netData: netData, camp: camp.data};
+  },
+  money: (num) => {
+    return mastFunc.money(num);
+  },
+  number: (num) => {
+    return mastFunc.num(num);
+  },
+  twoDecimals: (num) => {
+    return mastFunc.twoDecimals(num);
   }
 });
 

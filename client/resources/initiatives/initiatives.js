@@ -105,7 +105,6 @@ Template.editInitiativeCampaigns.onRendered(function () {
         */
 
         if ($(source).attr('id') === "left" && $(container).attr('id') === "right") {
-          console.log('removing campaign from initiative');
           Meteor.call("removeCampaign", initiative, campName, id, function (error, result) {
             if (result) {
               Materialize.toast('Initiative Updated!', 2000);
@@ -122,7 +121,6 @@ Template.editInitiativeCampaigns.onRendered(function () {
         }
 
         if ($(source).attr('id') === "right" && $(container).attr('id') === "left") {
-          console.log('adding campaign to initiative');
           Meteor.call('addCampaign', initiative, campName, id, function (error, result) {
             if (result) {
               Materialize.toast('Campaign Added to Initiative!', 2000);
