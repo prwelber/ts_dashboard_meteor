@@ -77,6 +77,7 @@ Meteor.methods({
           data['cpp'] = accounting.formatMoney(data.cpp, "$", 2);
           data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
           data['campaign_name'] = data.campaign_name;
+          data['cpl'] = accounting.formatMoney(data.spend / data.like, "$", 2);
           data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
           data['cpc'] = accounting.formatMoney((data.spend / data.clicks), "$", 2);
           data['spend'] = accounting.formatMoney(data.spend, "$", 2);

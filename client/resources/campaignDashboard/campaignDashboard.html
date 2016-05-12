@@ -83,7 +83,7 @@
                 <td>{{money cpm}}</td>
                 <td>{{clicks}}</td>
                 <td>{{money cpc}}</td>
-                <td>{{likes}}</td>
+                <td>{{like}}</td>
                 <td>{{money cpl}}</td>
                 <td>{{number total_actions}}</td>
                 <td>{{money cost_per_total_action}}</td>
@@ -153,8 +153,8 @@
                 <td>{{money netData.netcp_impressions}}</td>
                 <td>{{camp.clicks}}</td>
                 <td>{{money netData.netcp_clicks}}</td>
-                <td>{{camp.likes}}</td>
-                <td>{{money netData.netcp_likes}}</td>
+                <td>{{camp.like}}</td>
+                <td>{{money netData.netcp_like}}</td>
                 <td>{{camp.total_actions}}</td>
                 <td>{{money netData.netcp_total_actions}}</td>
                 <td>{{number camp.reach}}</td>
@@ -171,6 +171,7 @@
   {{else}}
     <p>Loading...</p>
   {{/if}}
+  {{getAggregate}}
 
 
     {{!-- {{> Template.dynamic template=tasks}} --}}
