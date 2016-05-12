@@ -91,29 +91,29 @@
                 <div class="col s5">
                   <a href="/initiatives/{{_id}}/homepage"><span class="title" style="font-size: 20px;">{{name}}</span></a>
                 </div>
-                <div class="col s2">
+                <div class="col s1">
                   <a href="/admin/initiatives/{{_id}}/edit" style="margin-left: 10px;">Edit</a>
                 </div>
-                <div class="col s5">
+                <div class="col s6">
                   <p class="right-align">{{formatDate lineItems.[0].startDate}} - {{formatDate lineItems.[0].endDate}}</p>
                 </div>
               </div>
               <div class="row" style="margin-bottom: 5px;">
-                <div class="col s12">
-
-                </div>
-                <div class="col s8">
-                  <p>Owner: {{owner}} | Agency: {{agency}} | Brand: {{brand}}</p>
-                </div>
-                {{!-- <div class="col s3">
-                  <p>Agency: {{agency}}</p>
-                </div>
-                <div class="col s3">
-                  <p>Brand: {{brand}}</p>
-                </div> --}}
-                <div class="col s4">
-                  <p class="right-align {{isActiveClass}}">{{isActiveInitiative}}</p>
-                </div>
+                {{#if isInRole 'admin'}}
+                  <div class="col s6">
+                    <p>Owner: {{owner}} | Agency: {{agency}} | Brand: {{brand}}</p>
+                  </div>
+                  <div class="col s4">
+                    <p>Spend: {{calcSpend _id}}% | Delivery: {{calcDelivery _id}}% | Flight: {{calcFlight _id}}%</p>
+                  </div>
+                  <div class="col s2">
+                    <p class="right-align {{isActiveClass}}">{{isActiveInitiative}}</p>
+                  </div>
+                {{else}}
+                  <div class="col s12">
+                    <p class="right-align {{isActiveClass}}">{{isActiveInitiative}}</p>
+                  </div>
+                {{/if}}
               </div>
             </li>
           {{/each}}

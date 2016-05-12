@@ -2,7 +2,8 @@ import { Meteor } from 'meteor/meteor'
 import { FlowRouter } from 'meteor/kadira:flow-router'
 import CampaignInsights from '/collections/CampaignInsights'
 import Initiatives from '/collections/Initiatives'
-import dragula from 'dragula';
+import dragula from 'dragula'
+import { initiativesFunctionObject } from './initiativesFuncs'
 
 Tracker.autorun(function () {
     if (FlowRouter.subsReady('Initiatives') && FlowRouter.subsReady('campaignInsightList')) {
@@ -286,6 +287,18 @@ Template.initiativesHome.helpers({
   },
   getOwner: () => {
     return this.owner;
+  },
+  calcSpend: (_id) => {
+    const init = Initiatives.findOne({_id: _id});
+    return numeral(initiativesFunctionObject.calculateSpendPercent(init)).format("00.00");
+  },
+  calcDelivery: (_id) => {
+    const init = Initiatives.findOne({_id: _id});
+    return numeral(initiativesFunctionObject.calculateDeliveryPercent(init)).format("00.00");
+  },
+  calcFlight: (_id) => {
+    const init = Initiatives.findOne({_id: _id});
+    return numeral(initiativesFunctionObject.calculateFlightPercentage(init)).format("00.00");
   }
 });
 

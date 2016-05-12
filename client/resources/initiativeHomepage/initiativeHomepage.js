@@ -185,7 +185,6 @@ Template.initiativeHomepage.helpers({
 
       arrToReturn.push(objToReturn);
     }
-    console.log(arrToReturn)
     return arrToReturn;
 
   },
