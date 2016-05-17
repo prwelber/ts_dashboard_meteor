@@ -112,7 +112,8 @@ Meteor.methods({
         clicks: {$sum: "$data.clicks"},
         reach: {$sum: "$data.reach"},
         impressions: {$sum: "$data.impressions"},
-        likes: {$sum: "$data.like"}
+        likes: {$sum: "$data.like"},
+        videoViews: {$sum: "$data.video_view"}
         }
       }
     ];
@@ -122,6 +123,7 @@ Meteor.methods({
       result[0]['cpc'] = result[0].spend / result[0].clicks;
       result[0]['cpm'] = result[0].spend / (result[0].impressions / 1000);
       result[0]['cpl'] = result[0].spend / result[0].likes;
+      result[0]['cpvv'] = result[0].spend / result[0].videoViews;
     } catch(e) {
       console.log('Error adding date to aggregate', e);
     }
@@ -165,7 +167,8 @@ Meteor.methods({
           clicks: {$sum: "$data.clicks"},
           reach: {$sum: "$data.reach"},
           impressions: {$sum: "$data.impressions"},
-          likes: {$sum: "$data.like"}
+          likes: {$sum: "$data.like"},
+          videoViews: {$sum: "$data.video_view"}
           }
         }
       ];
@@ -180,6 +183,7 @@ Meteor.methods({
         result[0]['cpc'] = result[0].spend / result[0].clicks;
         result[0]['cpm'] = result[0].spend / (result[0].impressions / 1000);
         result[0]['cpl'] = result[0].spend / result[0].likes;
+        result[0]['cpvv'] = result[0].spend / result[0].videoViews;
       } catch(e) {
         console.log('Error adding cost per data to aggregate', e);
       }

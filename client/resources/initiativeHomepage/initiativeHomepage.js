@@ -220,9 +220,9 @@ Template.initiativeHomepage.helpers({
       el.cpm = mastFunc.money(el.cpm);
       el.spend = mastFunc.money(el.spend);
       el.impressions = niceNum(el.impressions);
-
+      el.cpvv = mastFunc.money(el.cpvv);
+      el.videoViews = niceNum(el.videoViews);
     });
-
     return returnArray;
   },
   'modalDeliveryChart': (number) => {
@@ -521,7 +521,7 @@ Template.initiativeHomepage.helpers({
         count += 1;
       }
     });
-    return initiativeHomepageFunctions.objectiveChart(init, number, count);
+    return initiativeHomepageFunctions.objectiveDeliveryChart(init, number, count);
   },
   objectiveChart1: () => {
     const number = 1;
@@ -532,7 +532,7 @@ Template.initiativeHomepage.helpers({
         count += 1;
       }
     });
-    return initiativeHomepageFunctions.objectiveChart(init, number, count);
+    return initiativeHomepageFunctions.objectiveDeliveryChart(init, number, count);
   },
   objectiveChart2: () => {
     const number = 2;
@@ -543,7 +543,7 @@ Template.initiativeHomepage.helpers({
         count += 1;
       }
     });
-    return initiativeHomepageFunctions.objectiveChart(init, number, count);
+    return initiativeHomepageFunctions.objectiveDeliveryChart(init, number, count);
   },
   objectiveChart3: () => {
     const number = 3;
@@ -554,7 +554,7 @@ Template.initiativeHomepage.helpers({
         count += 1;
       }
     });
-    return initiativeHomepageFunctions.objectiveChart(init, number, count);
+    return initiativeHomepageFunctions.objectiveDeliveryChart(init, number, count);
   },
   objectiveChart4: () => {
     const number = 4;
@@ -565,7 +565,62 @@ Template.initiativeHomepage.helpers({
         count += 1;
       }
     });
-    return initiativeHomepageFunctions.objectiveChart(init, number, count);
+    return initiativeHomepageFunctions.objectiveDeliveryChart(init, number, count);
+  },
+  objectiveCostPerChart0: () => {
+    const number = 0;
+    const init = Template.instance().templateDict.get('initiative');
+    let count = 0;
+    init.lineItems.forEach(el => {
+      if (el.budget !== "") {
+        count += 1;
+      }
+    });
+    return initiativeHomepageFunctions.objectiveCostPerChart(init, number, count);
+  },
+  objectiveCostPerChart1: () => {
+    const number = 1;
+    const init = Template.instance().templateDict.get('initiative');
+    let count = 0;
+    init.lineItems.forEach(el => {
+      if (el.budget !== "") {
+        count += 1;
+      }
+    });
+    return initiativeHomepageFunctions.objectiveCostPerChart(init, number, count);
+  },
+  objectiveCostPerChart2: () => {
+    const number = 2;
+    const init = Template.instance().templateDict.get('initiative');
+    let count = 0;
+    init.lineItems.forEach(el => {
+      if (el.budget !== "") {
+        count += 1;
+      }
+    });
+    return initiativeHomepageFunctions.objectiveCostPerChart(init, number, count);
+  },
+  objectiveCostPerChart3: () => {
+    const number = 3;
+    const init = Template.instance().templateDict.get('initiative');
+    let count = 0;
+    init.lineItems.forEach(el => {
+      if (el.budget !== "") {
+        count += 1;
+      }
+    });
+    return initiativeHomepageFunctions.objectiveCostPerChart(init, number, count);
+  },
+  objectiveCostPerChart4: () => {
+    const number = 4;
+    const init = Template.instance().templateDict.get('initiative');
+    let count = 0;
+    init.lineItems.forEach(el => {
+      if (el.budget !== "") {
+        count += 1;
+      }
+    });
+    return initiativeHomepageFunctions.objectiveCostPerChart(init, number, count);
   }
 });
 

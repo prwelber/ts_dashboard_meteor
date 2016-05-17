@@ -155,6 +155,38 @@
               </tr>
             </tbody>
             {{/if}}
+            {{#if offsite_conversion}}
+            <thead>
+              <tr>
+                <th>Offsite Conversions</th>
+                <th>Cost Per Offsite Conv</th>
+                <th>FB Pixel Complete Registration</th>
+                <th>Cost Per FB Pixel Compl Registr</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{number offsite_conversion}}</td>
+                <td>{{cost_per_offsite_conversion}}</td>
+                <td>{{number offsite_conversion_fb_pixel_complete_registration}}</td>
+                <td>{{cost_per_offsite_conversion_fb_pixel_complete_registration}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+            {{/if}}
           </table>
         {{/with}}
       </div>

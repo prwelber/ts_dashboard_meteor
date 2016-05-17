@@ -137,11 +137,11 @@ Meteor.methods({
 });
 
 Meteor.publish('insightsBreakdownByDaysList', function (opts) {
-  if (opts.length <= 15) {
-    const insight = CampaignInsights.findOne({'data.campaign_id': opts});
-    if (insight && insight.data.initiative) {
-      return InsightsBreakdownsByDays.find({'data.initiative': insight.data.initiative});
-    }
+  if (opts.toString().length <= 15) {
+    // const insight = CampaignInsights.findOne({'data.campaign_id': opts});
+    // if (insight && insight.data.initiative) {
+      return InsightsBreakdownsByDays.find({'data.campaign_id': opts});
+    // }
   } else if (opts.length >= 16) {
       const initiative = Initiatives.findOne({_id: opts});
       if (initiative && initiative.name) {
