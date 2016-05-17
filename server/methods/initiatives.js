@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import CampaignInsights from '/collections/CampaignInsights'
 import Initiatives from '/collections/Initiatives'
+import CampaignBasics from '/collections/CampaignBasics'
 import { check } from 'meteor/check'
 
 Meteor.methods({
@@ -229,6 +230,12 @@ Meteor.methods({
       {$pull: {
         campaign_names: campName,
         campaign_ids: id
+      }
+    });
+    CampaignBasics.update(
+      {'data.name': campName},
+      {$set: {
+        'data.initiative': null
       }
     });
     return "success!";

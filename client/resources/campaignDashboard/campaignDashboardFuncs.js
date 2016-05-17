@@ -12,6 +12,7 @@ export const campaignDashboardFunctionObject = {
     let costPlusPercent;
     let percentTotalPercent;
     let spend;
+    // figure out deal type
     if (init.lineItems[0].costPlusPercent) {
       deal = "costPlus";
       percent = init.lineItems[0].costPlusPercent;
@@ -25,14 +26,14 @@ export const campaignDashboardFunctionObject = {
     }
 
     // arr with values to recalculate
-    const recalc = ["clicks", "total_actions", "page_engagement", "post_engagement", "video_views"];
+    const recalc = ["clicks", "total_actions", "page_engagement", "post_engagement", "video_view", "video_play"];
 
     if (camp.data.like) {
       recalc.push("like")
     } else if (camp.data.post_like) {
       recalc.push("post_like")
     }
-
+    // loop over recalc array and calculate new values according to deal type
     for (let i = 0; i <= recalc.length - 1; i++) {
       var newKey = "netcp_" + recalc[i];
       var newValue = spend / camp.data[recalc[i]];

@@ -144,6 +144,7 @@
 include charting for each lineItem and definitely aggregations --}}
   {{#if isInRole "admin"}}
     {{#each initiative.lineItems}}
+      {{!-- starts with Line Item 1 --}}
       <div id="lineItem{{addOne @index}}">
         <table class="centered">
           {{#with grabLineItem @index}}
@@ -180,7 +181,8 @@ include charting for each lineItem and definitely aggregations --}}
           {{/with}}
         </table>
         <h5>Net Aggregate | Targeted Social Numbers</h5>
-        {{#each netCostPlusStats addOne @index}}
+        {{!-- {{#with netCostPlusStats @index}} --}}
+        {{#with calcNet @index}}
           <table class="centered">
             <thead>
               <tr>
@@ -194,16 +196,16 @@ include charting for each lineItem and definitely aggregations --}}
             </thead>
             <tbody>
               <tr>
-                <td class="insights-table-data">{{formatMoney netBudget}}</td>
-                <td class="insights-table-data">{{formatMoney netSpend}}</td>
-                <td class="insights-table-data">{{formatPercent spendPercent}}</td>
-                <td class="insights-table-data">{{formatMoney netCPC}}</td>
-                <td class="insights-table-data">{{formatMoney netCPM}}</td>
-                <td class="insights-table-data">{{formatMoney netCPL}}</td>
+                <td class="insights-table-data">{{formatMoney net_budget}}</td>
+                <td class="insights-table-data">{{formatMoney net_spend}}</td>
+                <td class="insights-table-data">{{formatPercent net_spendPercent}}</td>
+                <td class="insights-table-data">{{formatMoney net_cpc}}</td>
+                <td class="insights-table-data">{{formatMoney net_cpm}}</td>
+                <td class="insights-table-data">{{formatMoney net_cpl}}</td>
               </tr>
             </tbody>
           </table>
-        {{/each}}
+        {{/with}}
       </div>
     {{/each}}
   {{/if}}
@@ -315,9 +317,17 @@ include charting for each lineItem and definitely aggregations --}}
       </div>
     </div>
 
+    {{#each initiative.lineItems}}
+    <div class="row">
+      <div class="col s12">
+        {{> highchartsHelper chartId="objectiveChart" chartWidth="100%" chartHeight="75%" chartObject=lineItemDelivery number=(lineItemDelivery @index)}}
+      </div>
+    </div>
+    {{/each}}
+
     <div class="row">
       <div class="col s6">
-        {{> highchartsHelper chartId="modalDeliveryChart" chartWidth="100%" chartHeight="70%" chartObject=modalDeliveryChart}}
+        {{> highchartsHelper chartId="modalChart" chartWidth="100%" chartHeight="70%" chartObject=modalDeliveryChart}}
       </div>
       <div class="col s6">
         {{> highchartsHelper chartId="costPerChart" chartWidth="100%" chartHeight="70%" chartObject=costPerChart}}

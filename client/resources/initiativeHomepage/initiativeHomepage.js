@@ -4,6 +4,7 @@ import CampaignBasics from '/collections/CampaignBasics'
 import { Meteor } from 'meteor/meteor'
 import { FlowRouter } from 'meteor/kadira:flow-router'
 import { Materialize } from 'meteor/materialize:materialize'
+import { initiativeHomepageFunctions } from './initiativeHomepageFuncs'
 
 var moment = require('moment');
 var range = require('moment-range');
@@ -90,9 +91,6 @@ Template.initiativeHomepage.helpers({
   },
   'initiative': function () {
     const initiative = Template.instance().templateDict.get('initiative');
-    initiative.budget = mastFunc.money(initiative.budget);
-    initiative.quantity = numeral(initiative.quantity).format("0,0");
-    initiative.price = mastFunc.money(initiative.price);
     return initiative;
   },
   'grabLineItem': (num) => {
@@ -150,7 +148,6 @@ Template.initiativeHomepage.helpers({
       if (init.lineItems[i].cost_plus === true) {
         let costPlus = parseInt(init.lineItems[i].costPlusPercent);
         costPlus = stringToCostPlusPercentage(costPlus);
-
         objToReturn['netSpend'] = parseFloat(objectiveAg.spend) / costPlus;
         objToReturn['netBudget'] = parseFloat(init.lineItems[i].budget) / costPlus;
         objToReturn['spendPercent'] = ((100 * objToReturn.netSpend) / objToReturn.netBudget);
@@ -185,7 +182,12 @@ Template.initiativeHomepage.helpers({
 
       arrToReturn.push(objToReturn);
     }
-    return arrToReturn;
+    if (lineItemNumber) {
+      // return [arrToReturn[lineItemNumber]];
+      return arrToReturn[lineItemNumber];
+    } else {
+      return arrToReturn;
+    }
 
   },
   'objectiveAggregates': () => {
@@ -222,7 +224,7 @@ Template.initiativeHomepage.helpers({
 
     return returnArray;
   },
-  'modalDeliveryChart': () => {
+  'modalDeliveryChart': (number) => {
     const initiative = Template.instance().templateDict.get('initiative');
     const labels     = [], // this will be the date range
           timeFormat = "MM-DD-YYYY",
@@ -241,139 +243,139 @@ Template.initiativeHomepage.helpers({
         idealSpend.push(idealSpendTotal);
       }
 
-      //for setting dealType
-      let type;
-      if (initiative.lineItems[0].dealType === "CPM") {
-        type = "impressions";
-      } else if (initiative.lineItems[0].dealType === "CPC") {
-        type = "clicks";
-      } else if (initiative.lineItems[0].dealType === "CPL") {
-        type = "like";
+    //for setting dealType
+    let type;
+    if (initiative.lineItems[0].dealType === "CPM") {
+      type = "impressions";
+    } else if (initiative.lineItems[0].dealType === "CPC") {
+      type = "clicks";
+    } else if (initiative.lineItems[0].dealType === "CPL") {
+      type = "like";
+    }
+
+    let actionToChart = [],
+        spendChart    = [],
+        spendTotal    = 0,
+        totes         = 0; // Template.instance().templateDict.get('data')[0].type;
+
+    // seeing if Bluebird will work for promises and meteor.call
+    var call = Promise.promisify(Meteor.call);
+
+    call('aggregateForChart', initiative)
+    .then(function (res) {
+      Session.set('initChartData', res.dataArray);
+      Session.set('labelArray', res.labelArray);
+      totes = res.dataArray[0][type]
+    }).catch(function (err) {
+      console.log('Error in modalDeliveryChart Promise call:', err)
+    });
+
+    const SESSION_DATA = Session.get('initChartData');
+
+    if (SESSION_DATA) {
+      try {
+        SESSION_DATA.forEach(el => {
+          totes += el[type];
+          spendTotal += el.spend;
+          actionToChart.push(totes);
+          spendChart.push(spendTotal);
+        });
+      } catch(e) {
+        console.log("Error running forEach", e.message);
       }
+    }
 
-      let actionToChart = [],
-          spendChart    = [],
-          spendTotal    = 0,
-          totes         = 0; // Template.instance().templateDict.get('data')[0].type;
+    // for getting x axis labels
+    const LABEL_DATA = Session.get('labelArray');
+    if (LABEL_DATA) {
+      try {
+        let start       = moment(LABEL_DATA[0], "MM-DD"),
+            end         = moment(LABEL_DATA[LABEL_DATA.length - 1], "MM-DD"),
+            dr          = moment.range(start, end),
+            arrayOfDays = dr.toArray('days');
 
-      // seeing if Bluebird will work for promises and meteor.call
-      var call = Promise.promisify(Meteor.call);
-
-      call('aggregateForChart', initiative)
-      .then(function (res) {
-        Session.set('initChartData', res.dataArray);
-        Session.set('labelArray', res.labelArray);
-        totes = res.dataArray[0][type]
-      }).catch(function (err) {
-        console.log('Error in modalDeliveryChart Promise call:', err)
-      });
-
-      const SESSION_DATA = Session.get('initChartData');
-
-      if (SESSION_DATA) {
-        try {
-          SESSION_DATA.forEach(el => {
-            totes += el[type];
-            spendTotal += el.spend;
-            actionToChart.push(totes);
-            spendChart.push(spendTotal);
+        if (arrayOfDays) {
+          arrayOfDays.forEach(el => {
+            labels.push(moment(el).format("MM-DD"))
           });
-        } catch(e) {
-          console.log("Error running forEach", e.message);
         }
+      } catch(e) {
+        console.log("Error creating x axis labels:", e);
       }
-
-      // for getting x axis labels
-      const LABEL_DATA = Session.get('labelArray');
-      if (LABEL_DATA) {
-        try {
-          let start       = moment(LABEL_DATA[0], "MM-DD"),
-              end         = moment(LABEL_DATA[LABEL_DATA.length - 1], "MM-DD"),
-              dr          = moment.range(start, end),
-              arrayOfDays = dr.toArray('days');
-
-          if (arrayOfDays) {
-            arrayOfDays.forEach(el => {
-              labels.push(moment(el).format("MM-DD"))
-            });
-          }
-        } catch(e) {
-          console.log("Error creating x axis labels:", e);
-        }
-      }
+    }
 
 
-      return {
-        chart: {
-          zoomType: 'x'
-        },
-        // TODO FIX THIS
+    return {
+      chart: {
+        zoomType: 'x'
+      },
+      // TODO FIX THIS
+      title: {
+        text: "Delivery"
+      },
+
+      subtitle: {
+        text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+      },
+
+      tooltip: {
+        valueSuffix: " " + type,
+        shared: true,
+        crosshairs: true
+      },
+      xAxis: {
+        // type: 'datetime',
+        categories: Session.get('labelArray')
+      },
+
+      yAxis: {
         title: {
-          text: "Delivery"
+          text: type
         },
-
-        subtitle: {
-          text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
-        },
-
-        tooltip: {
-          valueSuffix: " " + type,
-          shared: true,
-          crosshairs: true
-        },
-        xAxis: {
-          // type: 'datetime',
-          categories: Session.get('labelArray')
-        },
-
-        yAxis: {
-          title: {
-            text: type
-          },
-          plotLines: [{
-            value: 0,
-            width: 1,
-            color: '#808080'
-          }]
-        },
-
-        plotOptions: { // removes the markers along the plot lines
-          series: {
-            marker: {
-              enabled: false
-            }
-          }
-        },
-
-        legend: {
-          borderWidth: 0,
-          layout: 'horizontal',
-          backgroundColor: '#FFFFFF',
-          align: 'left',
-          verticalAlign: 'top',
-          floating: true,
-          x: 25,
-          y: 25
-        },
-
-        series: [{
-          name: 'Ideal Distribution',
-          data: avgData,
-          color: '#90caf9'
-        }, {
-          name: 'Real Distribution',
-          data: actionToChart,
-          color: '#0d47a1'
-        }, {
-          name: 'Spend',
-          data: spendChart,
-          color: '#b71c1c'
-        }, {
-          name: 'Ideal Spend',
-          data: idealSpend,
-          color: '#ef9a9a'
+        plotLines: [{
+          value: 0,
+          width: 1,
+          color: '#808080'
         }]
-      }
+      },
+
+      plotOptions: { // removes the markers along the plot lines
+        series: {
+          marker: {
+            enabled: false
+          }
+        }
+      },
+
+      legend: {
+        borderWidth: 0,
+        layout: 'horizontal',
+        backgroundColor: '#FFFFFF',
+        align: 'left',
+        verticalAlign: 'top',
+        floating: true,
+        x: 25,
+        y: 25
+      },
+
+      series: [{
+        name: 'Ideal Distribution',
+        data: avgData,
+        color: '#90caf9'
+      }, {
+        name: 'Real Distribution',
+        data: actionToChart,
+        color: '#0d47a1'
+      }, {
+        name: 'Spend',
+        data: spendChart,
+        color: '#b71c1c'
+      }, {
+        name: 'Ideal Spend',
+        data: idealSpend,
+        color: '#ef9a9a'
+      }]
+    }
   },
   'costPerChart': () => {
     const initiative = Template.instance().templateDict.get('initiative');
@@ -490,8 +492,17 @@ Template.initiativeHomepage.helpers({
   },
   formatDate: (date) => {
     return moment(date, moment.ISO_8601).format("MM-DD-YYYY");
+  },
+  calcNet: (num) => {
+    const init = Template.instance().templateDict.get('initiative');
+    return initiativeHomepageFunctions.calcNet(num, init);
+  },
+  lineItemDelivery: (number) => {
+    const init = Template.instance().templateDict.get('initiative');
+    return initiativeHomepageFunctions.objectiveChart(init, number);
   }
 });
+
 
 Template.initiativeHomepage.events({
   'click #view-initiative-stats-modal': function (event, template) {
@@ -513,7 +524,6 @@ Template.initiativeHomepage.events({
   },
   'click .delete-change': (event, template) => {
     const initiative = Template.instance().templateDict.get('initiative');
-    console.log($(event.target).data("id"));
     const id = $(event.target).data("id")
     Meteor.call('deleteChange', initiative.name, id);
   }

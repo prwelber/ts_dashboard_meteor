@@ -85,7 +85,7 @@ Template.editInitiativeCampaigns.onRendered(function () {
         const campName = $(el).text().trim()
         const campaign = CampaignInsights.findOne({'data.campaign_name': campName});
         let id;
-        if (campaign && campaign.data.campaign_id) {
+        if (campaign) {
           id = campaign.data.campaign_id;
           console.log('id reassigned!');
         } else {
