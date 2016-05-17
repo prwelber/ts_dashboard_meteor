@@ -1,6 +1,7 @@
 import CampaignInsights from '/collections/CampaignInsights'
 import Initiatives from '/collections/Initiatives'
 import CampaignBasics from '/collections/CampaignBasics'
+import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
 import { Meteor } from 'meteor/meteor'
 import { FlowRouter } from 'meteor/kadira:flow-router'
 import { Materialize } from 'meteor/materialize:materialize'
@@ -46,8 +47,8 @@ Template.initiativeHomepage.onRendered(function () {
 });
 
 Template.initiativeHomepage.helpers({
-  isReady: (sub1, sub2) => {
-    if (FlowRouter.subsReady(sub1) && FlowRouter.subsReady(sub2)) {
+  isReady: (sub1, sub2, sub3) => {
+    if (FlowRouter.subsReady(sub1) && FlowRouter.subsReady(sub2) && FlowRouter.subsReady(sub3)) {
       return true;
     }
   },
@@ -499,7 +500,72 @@ Template.initiativeHomepage.helpers({
   },
   lineItemDelivery: (number) => {
     const init = Template.instance().templateDict.get('initiative');
-    return initiativeHomepageFunctions.objectiveChart(init, number);
+    let count = 0;
+    init.lineItems.forEach(el => {
+      if (el.budget !== "") {
+        count += 1;
+      }
+    });
+    const graph = initiativeHomepageFunctions.objectiveChart(init, number, count);
+    console.log('graph', graph);
+    if (typeof graph === "object" && graph !== undefined) {
+      return initiativeHomepageFunctions.objectiveChart(init, number, count);
+    } else { return "not available" };
+  },
+  objectiveChart0: () => {
+    const number = 0;
+    const init = Template.instance().templateDict.get('initiative');
+    let count = 0;
+    init.lineItems.forEach(el => {
+      if (el.budget !== "") {
+        count += 1;
+      }
+    });
+    return initiativeHomepageFunctions.objectiveChart(init, number, count);
+  },
+  objectiveChart1: () => {
+    const number = 1;
+    const init = Template.instance().templateDict.get('initiative');
+    let count = 0;
+    init.lineItems.forEach(el => {
+      if (el.budget !== "") {
+        count += 1;
+      }
+    });
+    return initiativeHomepageFunctions.objectiveChart(init, number, count);
+  },
+  objectiveChart2: () => {
+    const number = 2;
+    const init = Template.instance().templateDict.get('initiative');
+    let count = 0;
+    init.lineItems.forEach(el => {
+      if (el.budget !== "") {
+        count += 1;
+      }
+    });
+    return initiativeHomepageFunctions.objectiveChart(init, number, count);
+  },
+  objectiveChart3: () => {
+    const number = 3;
+    const init = Template.instance().templateDict.get('initiative');
+    let count = 0;
+    init.lineItems.forEach(el => {
+      if (el.budget !== "") {
+        count += 1;
+      }
+    });
+    return initiativeHomepageFunctions.objectiveChart(init, number, count);
+  },
+  objectiveChart4: () => {
+    const number = 4;
+    const init = Template.instance().templateDict.get('initiative');
+    let count = 0;
+    init.lineItems.forEach(el => {
+      if (el.budget !== "") {
+        count += 1;
+      }
+    });
+    return initiativeHomepageFunctions.objectiveChart(init, number, count);
   }
 });
 

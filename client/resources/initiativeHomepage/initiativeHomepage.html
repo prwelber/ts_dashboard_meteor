@@ -211,7 +211,7 @@ include charting for each lineItem and definitely aggregations --}}
   {{/if}}
   </div>
 
-{{#if isReady "Initiatives" "campaignInsightList"}}
+{{#if isReady "Initiatives" "campaignInsightList" "insightsBreakdownByDaysList"}}
   <div class="container">
     <div class="row">
       <div class="row dashboard-initiative-header">
@@ -317,18 +317,48 @@ include charting for each lineItem and definitely aggregations --}}
       </div>
     </div>
 
-    {{#each initiative.lineItems}}
+{{!--     {{#each initiative.lineItems}}
     <div class="row">
       <div class="col s12">
-        {{> highchartsHelper chartId="objectiveChart" chartWidth="100%" chartHeight="75%" chartObject=lineItemDelivery number=(lineItemDelivery @index)}}
+        {{> highchartsHelper chartId="lineItemDelivery" chartWidth="100%" chartHeight="75%" chartObject=lineItemDelivery number=(lineItemDelivery @index)}}
       </div>
     </div>
-    {{/each}}
+    {{/each}} --}}
+    <div class="row">
+      {{#if initiative.lineItems.[0].budget}}
+        <div class="col s6">
+          {{> highchartsHelper chartId="objectiveChart0" chartWidth="100%" chartHeight="70%" chartObject=objectiveChart0}}
+        </div>
+        <div class="col s6">
+          {{> highchartsHelper chartId="objectiveChart0" chartWidth="100%" chartHeight="70%" chartObject=objectiveChart0}}
+        </div>
+      {{/if}}
+      {{#if initiative.lineItems.[1].budget}}
+        <div class="col s6">
+          {{> highchartsHelper chartId="objectiveChart1" chartWidth="100%" chartHeight="70%" chartObject=objectiveChart1}}
+        </div>
+      {{/if}}
+      {{#if initiative.lineItems.[2].budget}}
+        <div class="col s6">
+          {{> highchartsHelper chartId="objectiveChart2" chartWidth="100%" chartHeight="70%" chartObject=objectiveChart2}}
+        </div>
+      {{/if}}
+      {{#if initiative.lineItems.[3].budget}}
+        <div class="col s6">
+          {{> highchartsHelper chartId="objectiveChart3" chartWidth="100%" chartHeight="70%" chartObject=objectiveChart3}}
+        </div>
+      {{/if}}
+      {{#if initiative.lineItems.[4].budget}}
+        <div class="col s6">
+          {{> highchartsHelper chartId="objectiveChart4" chartWidth="100%" chartHeight="70%" chartObject=objectiveChart4}}
+        </div>
+      {{/if}}
+    </div>
 
     <div class="row">
-      <div class="col s6">
+      {{!-- <div class="col s6">
         {{> highchartsHelper chartId="modalChart" chartWidth="100%" chartHeight="70%" chartObject=modalDeliveryChart}}
-      </div>
+      </div> --}}
       <div class="col s6">
         {{> highchartsHelper chartId="costPerChart" chartWidth="100%" chartHeight="70%" chartObject=costPerChart}}
       </div>

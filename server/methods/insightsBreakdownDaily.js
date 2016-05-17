@@ -137,11 +137,16 @@ Meteor.methods({
 });
 
 Meteor.publish('insightsBreakdownByDaysList', function (opts) {
-  if (opts) {
+  if (opts.length <= 15) {
     const insight = CampaignInsights.findOne({'data.campaign_id': opts});
     if (insight && insight.data.initiative) {
       return InsightsBreakdownsByDays.find({'data.initiative': insight.data.initiative});
     }
+  } else if (opts.length >= 16) {
+      const initiative = Initiatives.findOne({_id: opts});
+      if (initiative && initiative.name) {
+        return InsightsBreakdownsByDays.find({'data.initiative': initiative.name});
+      }
   } else {
     return InsightsBreakdownsByDays.find({});
   }
