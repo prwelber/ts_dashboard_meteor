@@ -297,6 +297,14 @@ Template.initiativesHome.helpers({
   calcFlight: (_id) => {
     const init = Initiatives.findOne({_id: _id});
     return numeral(initiativesFunctionObject.calculateFlightPercentage(init)).format("00.00");
+  },
+  activeUpdates: (_id) => {
+    const init = Initiatives.findOne({_id: _id});
+    if (init.userActive) {
+      return "True";
+    } else {
+      return "False";
+    }
   }
 });
 

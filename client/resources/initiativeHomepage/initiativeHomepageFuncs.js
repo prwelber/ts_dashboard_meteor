@@ -196,7 +196,7 @@ export const initiativeHomepageFunctions = {
       } else if (init.lineItems[index].dealType === "CPC") {
         type = "cpc";
       } else if (init.lineItems[index].dealType === "CPL") {
-        type = "cpl";
+        type = "cost_per_like";
       } else if (init.lineItems[index].dealType === "CPVV") {
         type = "cost_per_video_view";
       }

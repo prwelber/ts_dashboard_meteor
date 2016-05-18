@@ -94,7 +94,10 @@
                 <div class="col s1">
                   <a href="/admin/initiatives/{{_id}}/edit" style="margin-left: 10px;">Edit</a>
                 </div>
-                <div class="col s6">
+                <div class="col s2">
+                  Updating: {{activeUpdates _id}}
+                </div>
+                <div class="col s4">
                   <p class="right-align">{{formatDate lineItems.[0].startDate}} - {{formatDate lineItems.[0].endDate}}</p>
                 </div>
               </div>
