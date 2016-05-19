@@ -88,16 +88,23 @@
           {{#each getAllInitiatives}}
             <li class="collection-item">
               <div class="row" style="margin-bottom: 5px;">
-                <div class="col s5">
+                <div class="col s6">
                   <a href="/initiatives/{{_id}}/homepage"><span class="title" style="font-size: 20px;">{{name}}</span></a>
-                </div>
-                <div class="col s1">
                   <a href="/admin/initiatives/{{_id}}/edit" style="margin-left: 10px;">Edit</a>
                 </div>
-                <div class="col s2">
-                  Updating: {{activeUpdates _id}}
+                {{!-- <div class="col s3"> --}}
+                {{!-- updating: {{activeUpdates _id}} --}}
+                <div class="switch col s3">
+                  Updating:
+                  <label>
+                    Off
+                    <input type="checkbox" {{activeUpdates _id}} data-id="{{_id}}">
+                    <span class="lever"></span>
+                    On
+                  </label>
                 </div>
-                <div class="col s4">
+                {{!-- </div> --}}
+                <div class="col s3">
                   <p class="right-align">{{formatDate lineItems.[0].startDate}} - {{formatDate lineItems.[0].endDate}}</p>
                 </div>
               </div>

@@ -269,6 +269,13 @@ Meteor.methods({
       {name: name},
       {$pull: {"changelog": {id: id}}
     });
+  },
+  changeActiveStatus: (_id, checked) => {
+    Initiatives.update(
+      {_id: _id},
+      {$set: {userActive: checked}
+    });
+    return "success!";
   }
 });
 

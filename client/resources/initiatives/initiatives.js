@@ -301,9 +301,9 @@ Template.initiativesHome.helpers({
   activeUpdates: (_id) => {
     const init = Initiatives.findOne({_id: _id});
     if (init.userActive) {
-      return "True";
+      return "checked";
     } else {
-      return "False";
+      return "";
     }
   }
 });
@@ -313,5 +313,13 @@ Template.initiativesHome.events({
     Meteor.logout( () => {
       console.log('user logged out');
     });
+ },
+ "click .switch": (event, instance) => {
+  let _id, checked;
+  if (event.target.dataset.id) { _id = event.target.dataset.id };
+  checked = event.target.checked;
+  if (_id && (checked === true || checked === false)) {
+    Meteor.call('changeActiveStatus', _id, checked);
+  }
  }
 });
