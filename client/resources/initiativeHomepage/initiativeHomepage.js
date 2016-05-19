@@ -193,12 +193,6 @@ Template.initiativeHomepage.helpers({
   },
   'objectiveAggregates': () => {
     const init = Template.instance().templateDict.get('initiative');
-    // TODO RIGHT HERE
-    const camps = Template.instance().templateDict.get('campaigns');
-    // console.log("campaigns", camps);
-    // console.log('initiative', init);
-    // const campaigns = CampaignInsights.find({""})
-
     const returnArray = [];
 
     init.VIDEO_VIEWS ? returnArray.push(init.VIDEO_VIEWS) : '';

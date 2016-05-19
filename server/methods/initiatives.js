@@ -100,7 +100,6 @@ Meteor.methods({
     return data.name;
   },
   'getAggregate': function (name) {
-
     // This function aggregates campaignInsight data for an initiative
     let pipeline = [
       {$match:

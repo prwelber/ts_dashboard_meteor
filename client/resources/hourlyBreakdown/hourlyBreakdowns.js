@@ -1,5 +1,7 @@
-import CampaignInsights from '/collections/CampaignInsights'
-import HourlyBreakdowns from '/collections/HourlyBreakdowns'
+import CampaignInsights from '/collections/CampaignInsights';
+import HourlyBreakdowns from '/collections/HourlyBreakdowns';
+import { hourlyBreakdownsFunction } from './hourlyBreakdownsFunc';
+import { Meteor } from 'meteor/meteor'
 var Promise = require('bluebird');
 
 Tracker.autorun(function () {
@@ -48,6 +50,10 @@ Template.hourlyBreakdowns.helpers({
       if (data && data.data) {
         return data.data;
       }
+    },
+    hourlyPieChart: () => {
+      const campaign = Template.instance().templateDict.get('camptData');
+      return hourlyBreakdownsFunction.pieChart(campaign.data.campaign_id);
     }
 });
 

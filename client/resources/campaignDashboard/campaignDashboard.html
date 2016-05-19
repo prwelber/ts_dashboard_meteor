@@ -2,7 +2,7 @@
 
   {{#if isReady "Initiatives" "campaignInsightList"}}
     <div class="row dashboard-initiative-header">
-      <h2>Initiative & Line Items</h2>
+      <a href="/initiatives/{{getInitiative._id}}/homepage"><h2>Initiative & Line Items</h2></a>
       <div class="col s3">
         <p class="center-align border-bottom">Name</p>
         <h4 class="center-align no-top-margin">{{getInitiative.name}}</h4>

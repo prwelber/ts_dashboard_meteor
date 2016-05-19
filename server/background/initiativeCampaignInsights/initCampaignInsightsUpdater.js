@@ -22,12 +22,12 @@ SyncedCron.add({
 
     const active = _.filter(inits, (el) => {
       if (el.userActive) {
-        return el
+        return el;
       }
     });
 
     let onlyIds = _.map(active, (el) => {
-      return el.campaign_ids
+      return el.campaign_ids;
     });
 
     // now i'm sitting with all the campaign ID's of the active initiatives

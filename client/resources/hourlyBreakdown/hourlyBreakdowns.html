@@ -5,6 +5,8 @@
     <h3>Campaign: {{campaignInfo.campaign_name}}</h3>
     <h5>Campaign Objective: {{campaignInfo.objective}}</h5>
     <br /><br />
+    <h3>Pie Chart</h3>
+    {{!-- {{> highchartsHelper chartId="hourlyPieChart" chartWidth="100%" chartHeight="70%" chartObject=hourlyPieChart}} --}}
     {{#if isReady "hourlyBreakdownsList"}}
         {{#each getHourlyBreakdown}}
             <h3>Hour: {{data.hourly_stats_aggregated_by_audience_time_zone}}</h3>

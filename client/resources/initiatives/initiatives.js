@@ -252,26 +252,26 @@ Template.initiativesHome.helpers({
   },
   'isActiveInitiative': function () {
     const now = moment()
-    if (this.active === true) {
+    if (moment(this.lineItems[0].endDate, moment.ISO_8601).isAfter(now)) {
       return "Active"
-    } else if (now.diff(moment(this.endDate, moment.ISO_8601), "days") <= 30) {
-      return "Ended within the last 30 days"
+    } else if (now.diff(moment(this.lineItems[0].endDate, moment.ISO_8601), "days") <= 45) {
+      return "Ended Recently"
     } else {
       return "Not Active"
     }
   },
   'isActiveClass': function () {
     const now = moment()
-    if (this.active === true) {
+    if (moment(this.lineItems[0].endDate, moment.ISO_8601).isAfter(now)) {
       return "green-text"
-    } else if (now.diff(moment(this.endDate, moment.ISO_8601), "days") <= 30) {
+    } else if (now.diff(moment(this.lineItems[0].endDate, moment.ISO_8601), "days") <= 45) {
       return "orange-text"
     } else {
       return "red-text"
     }
   },
   'formatDate': (date) => {
-    return moment(date, moment.ISO_8601).format("MM-DD-YYYY hh:mm a");
+    return moment(date, moment.ISO_8601).format("MM-DD-YYYY");
   },
   'assignAgency': () => {
     console.log('this', this);

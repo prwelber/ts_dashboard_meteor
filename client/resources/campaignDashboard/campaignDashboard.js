@@ -127,13 +127,6 @@ Template.campaignDashboard.helpers({
 
     // formats numbers
     agData = mastFunc.formatAll(agData);
-
-    // return {
-    //   initiative: agData,
-    //   ends: moment(ends).format("MM-DD-YYYY hh:mm a"),
-    //   timeLeft: timeLeft,
-    //   spendPercent: spendPercent
-    // };
   },
   'makeProjections': function () {
     const initiative = Template.instance().templateDict.get('initiative');
