@@ -76,7 +76,7 @@ export const initiativeHomepageFunctions = {
               // once I have the campaign, pull all the daily insights for that
               insights = InsightsBreakdownsByDays.find({'data.campaign_name': camp.data.campaign_name}).fetch();
             } else {
-            console.log('');
+              null;
             }
           }
         });
@@ -210,7 +210,7 @@ export const initiativeHomepageFunctions = {
               // once I have the campaign, pull all the daily insights for that
               insights = InsightsBreakdownsByDays.find({'data.campaign_name': camp.data.campaign_name}).fetch();
             } else {
-            console.log('');
+              null;
             }
           }
         });

@@ -92,17 +92,20 @@
                   <a href="/initiatives/{{_id}}/homepage"><span class="title" style="font-size: 20px;">{{name}}</span></a>
                   <a href="/admin/initiatives/{{_id}}/edit" style="margin-left: 10px;">Edit</a>
                 </div>
-                {{!-- <div class="col s3"> --}}
-                {{!-- updating: {{activeUpdates _id}} --}}
-                <div class="switch col s3">
-                  <label>
-                    Not Updating
-                    <input type="checkbox" {{activeUpdates _id}} data-id="{{_id}}">
-                    <span class="lever"></span>
-                    Updating
-                  </label>
-                </div>
-                {{!-- </div> --}}
+                {{#if isInRole 'admin'}}
+                  <div class="switch col s3">
+                    <label>
+                      Not Updating
+                      <input type="checkbox" {{activeUpdates _id}} data-id="{{_id}}">
+                      <span class="lever"></span>
+                      Updating
+                    </label>
+                  </div>
+                {{else}}
+                  <div class="col s3">
+                    <p>Placeholder</p>
+                  </div>
+                {{/if}}
                 <div class="col s3">
                   <p class="right-align">{{formatDate lineItems.[0].startDate}} - {{formatDate lineItems.[0].endDate}}</p>
                 </div>
