@@ -13,7 +13,7 @@ SyncedCron.add({
   name: "Initiative Aggregator",
 
   schedule: (parser) => {
-    return parser.text('at 1:20pm');
+    return parser.text('at 8:00am');
   },
 
   job: (time) => {
@@ -46,7 +46,7 @@ SyncedCron.add({
 SyncedCron.add({
   name: "Objective Aggregator",
   schedule: (parser) => {
-    return parser.text('at 1:58pm');
+    return parser.text('at 10:38am');
   },
   job: () => {
     const inits = Initiatives.find().fetch();

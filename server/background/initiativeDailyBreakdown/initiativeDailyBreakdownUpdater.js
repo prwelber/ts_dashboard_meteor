@@ -16,7 +16,7 @@ SyncedCron.add({
   name: "Initiative Updater",
 
   schedule: (parser) => {
-    return parser.text('at 3:23pm');
+    return parser.text('at 7:20am');
   },
 
   job: (time) => {
