@@ -1,11 +1,12 @@
-import { Meteor } from 'meteor/meteor'
-import { FlowRouter } from 'meteor/kadira:flow-router'
-import { campaignDashboardFunctionObject } from './campaignDashboardFuncs'
-import mastFunc from '../masterFunctions'
-import CampaignInsights from '/collections/CampaignInsights'
-import Initiatives from '/collections/Initiatives'
-
-var Promise = require('bluebird');
+import { Meteor } from 'meteor/meteor';
+import { FlowRouter } from 'meteor/kadira:flow-router';
+import { campaignDashboardFunctionObject } from './campaignDashboardFuncs';
+import moment from 'moment-timezone';
+import mastFunc from '../masterFunctions';
+import CampaignInsights from '/collections/CampaignInsights';
+import Initiatives from '/collections/Initiatives';
+import Promise from 'bluebird';
+// var Promise = require('bluebird');
 
 Tracker.autorun(function () {
   if (FlowRouter.subsReady('campaignInsightList') && FlowRouter.subsReady('Initiatives')) {
@@ -150,6 +151,9 @@ Template.campaignDashboard.helpers({
   },
   twoDecimals: (num) => {
     return mastFunc.twoDecimals(num);
+  },
+  timezone: (time) => {
+    return moment(time, "MM-DD-YYYY hh:mm a").tz("America/New_York").format("MM-DD-YYYY hh:mm a z");
   }
 });
 

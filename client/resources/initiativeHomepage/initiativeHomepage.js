@@ -501,11 +501,11 @@ Template.initiativeHomepage.helpers({
       }
     });
     const graph = initiativeHomepageFunctions.objectiveChart(init, number, count);
-    console.log('graph', graph);
     if (typeof graph === "object" && graph !== undefined) {
       return initiativeHomepageFunctions.objectiveChart(init, number, count);
     } else { return "not available" };
   },
+  // add check to objectiveChart0 and costPerChart0 for duplicated objectives
   objectiveChart0: () => {
     const number = 0;
     const init = Template.instance().templateDict.get('initiative');
@@ -515,7 +515,12 @@ Template.initiativeHomepage.helpers({
         count += 1;
       }
     });
-    return initiativeHomepageFunctions.objectiveDeliveryChart(init, number, count);
+    if (init.dupObjectives) {
+      return initiativeHomepageFunctions.dupObjectivesDeliveryChart(init, number, count);
+    } else {
+      return initiativeHomepageFunctions.objectiveDeliveryChart(init, number, count);
+    }
+
   },
   objectiveChart1: () => {
     const number = 1;
@@ -561,6 +566,7 @@ Template.initiativeHomepage.helpers({
     });
     return initiativeHomepageFunctions.objectiveDeliveryChart(init, number, count);
   },
+  // add check for duplicate objectives
   objectiveCostPerChart0: () => {
     const number = 0;
     const init = Template.instance().templateDict.get('initiative');
@@ -570,7 +576,12 @@ Template.initiativeHomepage.helpers({
         count += 1;
       }
     });
-    return initiativeHomepageFunctions.objectiveCostPerChart(init, number, count);
+
+    if (init.dupObjectives) {
+      return initiativeHomepageFunctions.dupObjectivesCostPerChart(init,number, count);
+    } else {
+      return initiativeHomepageFunctions.objectiveCostPerChart(init, number, count);
+    }
   },
   objectiveCostPerChart1: () => {
     const number = 1;

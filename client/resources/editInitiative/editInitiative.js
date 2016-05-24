@@ -62,6 +62,12 @@ Template.editInitiative.helpers({
       if (init.userActive) {
         return "checked";
       }
+    },
+    dupObjectivesChecked: () => {
+      const init =  Initiatives.findOne({_id: FlowRouter.current().params._id});
+      if (init.dupObjectives) {
+        return "checked";
+      }
     }
 });
 
@@ -80,6 +86,7 @@ Template.editInitiative.events({
         finalObj['agency']    = event.target.agency.value;
         finalObj['notes']     = event.target.notes.value;
         finalObj['userActive']= event.target.active.checked;
+        finalObj['dupObjectives'] = event.target.dupObjectives.checked;
         finalObj['product']   = event.target.product.value;
         finalObj['owner']     = event.target.owner.value;
         finalObj['tags']      = [];

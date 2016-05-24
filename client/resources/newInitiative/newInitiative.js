@@ -44,6 +44,7 @@ Template.newInitiative.events({
             finalObj['notes']     = event.target.notes.value;
             finalObj['product']   = event.target.product.value;
             finalObj['userActive']= event.target.active.checked;
+            finalObj['dupObjectives'] = event.target.dupObjectives.checked;
             finalObj['owner']     = event.target.owner.value;
             finalObj['tags']      = [];
 

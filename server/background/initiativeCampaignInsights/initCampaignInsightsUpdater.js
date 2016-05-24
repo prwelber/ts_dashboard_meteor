@@ -34,8 +34,6 @@ SyncedCron.add({
 
     let flat = _.flatten(onlyIds);
 
-    console.log(flat);
-
     insightUpdate(flat);
 
   }

@@ -18,7 +18,7 @@ Meteor.methods({
     let masterArray = [];
     let breakdown;
     try {
-        let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+'/insights?fields=date_start,date_stop,campaign_id,campaign_name,total_actions,impressions,spend,reach,ctr,cpm,cpp,actions,cost_per_action_type&time_increment=1&access_token='+token+'', {});
+        let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+'/insights?fields=date_start,date_stop,campaign_id,campaign_name,objective,total_actions,impressions,spend,reach,ctr,cpm,cpp,actions,cost_per_action_type&time_increment=1&access_token='+token+'', {});
         breakdown = result;
         //breakdown is an array of objects
         dailyBreakdownArray.push(breakdown.data.data);
@@ -81,7 +81,7 @@ Meteor.methods({
           data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
           data['cpc'] = accounting.formatMoney((data.spend / data.clicks), "$", 2);
           data['spend'] = accounting.formatMoney(data.spend, "$", 2);
-          data['date_start'] = moment(data['date_start']).format("MM-DD-YYYY");
+          data['date_start'] = moment(data['date_start'], "YYYY-MM-DD").toISOString();
           masterArray.push(data);
 
 
@@ -92,7 +92,6 @@ Meteor.methods({
             });
             // add check for when campaign_name is null
             if (data && data.campaign_name) {
-              console.log('pairing initiative and daily inight breakdown');
               let inits = Initiatives.find(
                 {$text: { $search: data.campaign_name}},
                 {

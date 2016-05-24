@@ -14,6 +14,11 @@
             <p>Check when creating a new Initiative</p>
             <input type="checkbox" id="active" name="active" checked="{{activeChecked}}">
             <label for="active">Active Initiative</label>
+            <div class="input-field col s12">
+              <p style="margin-bottom: 0px; margin-top: 10px;">If Initiative will have campaigns with duplicate objectives, check the box and make that campaign the first Line Item</p>
+              <input type="checkbox" id="dupObjectives" name="dupObjectives" checked="{{dupObjectivesChecked}}">
+              <label for="dupObjectives">Duplicate Objectives</label>
+            </div>
           </div>
           <div class="input-field col s6">
             <input type="text" id="search-text" name="search_text" value={{search_text}}>
@@ -49,15 +54,23 @@
           </div>
           <div class="input-field col s3">
             <select name="agency" id="agency-select" class="browser-default">
-              <option value="{{agency}}" selected>{{agency}}</option>
+              <option value="" disabled selected>Choose Agency</option>
+              <option value="Citizens">Citizens</option>
               <option value="Constellation">Constellation</option>
-              <option value="Horizon">Horizon</option>
-              <option value="Hitachi">Hitachi</option>
-              <option value="High Wide & Handsome">High Wide & Handsome</option>
-              <option value="Icon">Icon</option>
-              <option value="Rachel Piper">Rachel Piper</option>
               <option value="Cornerstone">Cornerstone</option>
+              <option value="CUE">CUE</option>
               <option value="Farm Rich">Farm Rich</option>
+              <option value="Hadeler Krueger">Hadeler Krueger</option>
+              <option value="High Wide & Handsome">High Wide & Handsome</option>
+              <option value="Hitachi">Hitachi</option>
+              <option value="Horizon">Horizon</option>
+              <option value="Icon">Icon</option>
+              <option value="Mundy">Mundy</option>
+              <option value="Power Creative">Power Creative</option>
+              <option value="Rachael Piper">Rachel Piper</option>
+              <option value="SapientNitro">SapientNitro</option>
+              <option value="True Media">True Media</option>
+              <option value="Uniworld">Uniworld</option>
             </select>
             <label class="active">Agency</label>
           </div>

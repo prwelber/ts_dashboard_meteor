@@ -16,7 +16,7 @@ SyncedCron.add({
   name: "Initiative Updater",
 
   schedule: (parser) => {
-    return parser.text('at 7:20am');
+    return parser.text('at 7:30am');
   },
 
   job: (time) => {
@@ -34,8 +34,6 @@ SyncedCron.add({
     // now i'm sitting with all the campaign ID's of the active initiatives
 
     let flat = _.flatten(onlyIds);
-
-    console.log(flat)
 
     dailyUpdate(flat);
 

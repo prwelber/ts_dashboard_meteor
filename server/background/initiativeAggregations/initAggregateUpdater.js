@@ -33,7 +33,6 @@ SyncedCron.add({
         if (counter >= activeInitiatives.length) {
           Meteor.clearInterval(setIntervalId);
         } else {
-          console.log('running aggregator on', activeInitiatives[counter])
           Meteor.call('getAggregate', activeInitiatives[counter]);
           counter++;
           // aggregator(name);
@@ -65,7 +64,6 @@ SyncedCron.add({
         if (counter >= activeInitiatives.length) {
           Meteor.clearInterval(setIntervalId);
         } else {
-          console.log('running objective aggregator on', activeInitiatives[counter])
           Meteor.call('aggregateObjective', activeInitiatives[counter]);
           counter++;
         }

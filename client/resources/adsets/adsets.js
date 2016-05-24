@@ -5,11 +5,10 @@ import mastFunc from '../masterFunctions'
 
 var Promise = require('bluebird');
 
-Tracker.autorun(function () {
-  if (FlowRouter.subsReady('AdSetsList')) {
-    console.log('AdSetsList subs ready!');
-  }
-});
+// Tracker.autorun(function () {
+//   if (FlowRouter.subsReady('AdSetsList')) {
+//   }
+// });
 
 Template.adsets.helpers({
   isReady: function (sub) {
@@ -23,7 +22,6 @@ Template.adsets.helpers({
       var call = Promise.promisify(Meteor.call);
       call('getAdSets', campaignNumber)
       .then(function (result) {
-        console.log("result from promise", result)
         Blaze.remove(spun);
       }).catch(function (err) {
         console.log('uh no error', err)
@@ -38,7 +36,6 @@ Template.adsets.helpers({
     if (AdSets.find({'data.campaign_id': campaignNumber}).count() >= 1) {
       let adsets = AdSets.find({'data.campaign_id': campaignNumber}).fetch();
       adsets.forEach(el => {
-        console.log('formatting loop starting')
         for (let key in el.data) {
           if (key.startsWith("cost")) {       // format cost related data
             el.data[key] = mastFunc.money(el.data[key]);

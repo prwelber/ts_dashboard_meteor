@@ -10,7 +10,7 @@ SyncedCron.config({
 SyncedCron.add({
   name: "Refresh All Accounts",
   schedule: (parser) => {
-    return parser.text('at 8:00pm');
+    return parser.text('at 10:00pm');
   },
   job: () => {
     Meteor.call('refreshAccountList');

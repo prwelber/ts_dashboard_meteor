@@ -87,8 +87,6 @@ Meteor.methods({
     }
 
     // Where we search initiatives looking for the one that matches
-    console.log(data);
-
     if (! data.campaign_name) {
       data['campaign_name'] = "NA";
     }

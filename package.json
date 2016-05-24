@@ -10,11 +10,12 @@
     "later": "^1.2.0",
     "materialize-css": "^0.97.5",
     "moment": "^2.12.0",
-    "moment-range": "^2.2.0"
+    "moment-range": "^2.2.0",
+    "moment-timezone": "^0.5.4"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "DEPLOY_HOSTNAME=galaxy.meteor.com meteor deploy app.targetedsocial.com --settings settings.json" 
+    "deploy": "DEPLOY_HOSTNAME=galaxy.meteor.com meteor deploy app.targetedsocial.com --settings settings.json"
   },
   "repository": {
     "type": "git",
