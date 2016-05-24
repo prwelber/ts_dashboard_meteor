@@ -1,8 +1,9 @@
-import { Meteor } from 'meteor/meteor'
-import CampaignInsights from '/collections/CampaignInsights'
-import Initiatives from '/collections/Initiatives'
-import CampaignBasics from '/collections/CampaignBasics'
-import { check } from 'meteor/check'
+import { Meteor } from 'meteor/meteor';
+import { check } from 'meteor/check';
+import { email } from '../sendgrid/email';
+import CampaignInsights from '/collections/CampaignInsights';
+import Initiatives from '/collections/Initiatives';
+import CampaignBasics from '/collections/CampaignBasics';
 
 Meteor.methods({
   'insertNewInitiative': function (data) {
@@ -41,6 +42,14 @@ Meteor.methods({
       recentlyEnded: recentlyEnded,
       lastThreeMonths: lastThreeMonths
     });
+
+    const startDate = moment(data.lineItems[0].startDate, moment.ISO_8601).format("MM-DD-YYYY");
+    const endDate = moment(data.lineItems[0].endDate, moment.ISO_8601).format("MM-DD-YYYY")
+
+    const emailHTML = "<p>Name: "+data.name+"</p><p>Owner: "+data.owner+"</p><p>Brand: "+data.brand+"</p><p>Agency: "+data.agency+"</p><p>Dates: "+startDate+" - "+endDate+"</p>";
+    const toList = ["prwelber@gmail.com"]
+
+    email.sendEmail(toList, data.name +" Initiative Created", emailHTML);
 
     return "success";
   },

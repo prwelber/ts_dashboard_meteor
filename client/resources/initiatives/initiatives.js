@@ -3,7 +3,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router'
 import CampaignInsights from '/collections/CampaignInsights'
 import Initiatives from '/collections/Initiatives'
 import dragula from 'dragula'
-import { initiativesFunctionObject } from './initiativesFuncs'
+import { initiativesFunctionObject } from '/both/utilityFunctions/calculateInitiativePercentages'
 
 Tracker.autorun(function () {
     if (FlowRouter.subsReady('Initiatives') && FlowRouter.subsReady('campaignInsightList')) {

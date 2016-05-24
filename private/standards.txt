@@ -1,3 +1,0 @@
-Date Standard through Moment.js:
-"MM-DD-YYYY hh:mm a"
-
