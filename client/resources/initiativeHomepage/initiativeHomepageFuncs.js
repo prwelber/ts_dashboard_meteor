@@ -4,6 +4,19 @@ import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
 import range from 'moment-range';
 import moment from 'moment';
 
+const deliveryTypeChecker = function deliveryTypeChecker (init, index) {
+  if (init.lineItems[index].dealType === "CPM") {
+    return "impressions";
+  } else if (init.lineItems[index].dealType === "CPC") {
+    return "clicks";
+  } else if (init.lineItems[index].dealType === "CPL") {
+    return "like";
+  } else if (init.lineItems[index].dealType === "CPVV") {
+    return "video_view"
+  }
+}
+
+
 export const initiativeHomepageFunctions = {
   calcNet: (num, init) => {
     if (! init.lineItems[num].budget) {
@@ -58,16 +71,8 @@ export const initiativeHomepageFunctions = {
       const objective = init.lineItems[index]['objective'].split(' ').join('_').toUpperCase();
       const daysDiff = moment(init.lineItems[index]['endDate'], moment.ISO_8601).diff(moment(init.lineItems[index]['startDate'], moment.ISO_8601), 'days');
       let insights;
-      let type;
-      if (init.lineItems[index].dealType === "CPM") {
-        type = "impressions";
-      } else if (init.lineItems[index].dealType === "CPC") {
-        type = "clicks";
-      } else if (init.lineItems[index].dealType === "CPL") {
-        type = "like";
-      } else if (init.lineItems[index].dealType === "CPVV") {
-        type = "video_view"
-      }
+      const type = deliveryTypeChecker(init, index);
+
       if (objective) {
         // loop over the campaign names in the initiative
         init.campaign_names.forEach(el => {
@@ -90,7 +95,7 @@ export const initiativeHomepageFunctions = {
         let spendCount = 0;
         let typeCount = parseFloat(insights[0].data[type]);
         insights.forEach(el => {
-          xAxisArray.push(el.data.date_start.substring(0,5));
+          xAxisArray.push(moment(el.data.date_start, moment.ISO_8601).format("MM-DD"));
           typeArray.push(typeCount);
           typeCount += parseFloat(el.data[type]);
           spendArray.push(spendCount);
@@ -221,7 +226,7 @@ export const initiativeHomepageFunctions = {
         const xAxisArray = [];
         const typeArray = [];
         insights.forEach(el => {
-          xAxisArray.push(el.data.date_start.substring(0,5));
+          xAxisArray.push(moment(el.data.date_start, moment.ISO_8601).format("MM-DD"));
           typeArray.push(accounting.unformat(el.data[type]));
         });
 
@@ -293,89 +298,73 @@ export const initiativeHomepageFunctions = {
     const objective = init.lineItems[index]['objective'].split(' ').join('_').toUpperCase();
     const daysDiff = moment(init.lineItems[index]['endDate'], moment.ISO_8601).diff(moment(init.lineItems[index]['startDate'], moment.ISO_8601), 'days');
 
-    let type;
-    if (init.lineItems[index].dealType === "CPM") {
-      type = "impressions";
-    } else if (init.lineItems[index].dealType === "CPC") {
-      type = "clicks";
-    } else if (init.lineItems[index].dealType === "CPL") {
-      type = "like";
-    } else if (init.lineItems[index].dealType === "CPVV") {
-      type = "video_view"
-    }
+    const type = deliveryTypeChecker(init, index);
 
     // grab all daily insights under the initiative
     // filter out the ones without the objective for the line item
     // add up the data for each day from the ones that are left
     let insights;
-    let allDays = InsightsBreakdownsByDays.find({'data.initiative': init.name}).fetch();
+    let allDays = InsightsBreakdownsByDays.find({'data.initiative': init.name}, {sort: {'data.date_start': 1}}).fetch();
     // format date and remove any dailyInsights with a different objective
+    // console.log('allDays', allDays)
     if (allDays) {
-      allDays.forEach((el) => {
-        el.data.date_start = moment(el.data.date_start, "MM-DD-YYYY").toISOString();
-      });
       insights = _.filter(allDays, function(el) {
         return el.data.objective === objective;
       });
-
     }
-    console.log('insights before sort', insights[0], insights[1], insights[2], insights[3]);
-    // this reads: if object doesn't have a key equal to the date_start,
-    // create that key in the object and add the type as the value
-    // then if it does exist, add that value to the existing key
-
-    //sort insights
-    for(let i = 0; i < insights.length - 1; i++) {
-      for(let j = 0; j < insights.length - 1; j++) {
-        if (insights[j].data.date_start > insights[j + 1].data.date_start) {
-          let temp = insights[j].data.date_start;
-          insights[j].data.date_start = insights[j + 1].data.date_start;
-          insights[j + 1].data.date_start = temp;
-        }
-      }
-    }
-
-    console.log('insights after bubble sort', insights[0], insights[1], insights[2], insights[3]);
-
-
 
     let obj = {};
+    var typeMap = new Map();
+    var spendMap = new Map();
+    /*
+      here we are looping over all days insights and if the date doesn't exist
+      we add it to a Map as a key and add the value as the value
+      in the else block, we set the value or spend, add it to the existing value
+      or spend of the existing key/value pair, and then set the new value in the Map
+    */
     insights.forEach((el) => {
       if (! obj[el.data.date_start]) {
         obj[el.data.date_start] = el.data[type];
+        typeMap.set(el.data.date_start, el.data[type]);
+        spendMap.set(el.data.date_start, accounting.unformat(el.data.spend));
       } else {
         obj[el.data.date_start] += el.data[type];
+        let value = typeMap.get(el.data.date_start);
+        value += el.data[type];
+        typeMap.set(el.data.date_start, value);
+        let spend = spendMap.get(el.data.date_start);
+        spend += accounting.unformat(el.data.spend);
+        spendMap.set(el.data.date_start, spend);
       }
     });
+    // console.log('arrayOfObjs', arrayOfObjs);
+    // console.log("obj", obj);
+    // console.log('typeMap', typeMap);
+    // console.log('spendMap', spendMap);
 
-    console.log("obj", obj);
-    // ----------- functionality for X Axis ----------------- //
-    const start = moment(insights[0]['data']['date_start'], moment.ISO_8601);
-    const end = moment(insights[insights.length - 1]['data']['date_start'], moment.ISO_8601);
-    const range = moment.range(start, end);
-    const xAxisRange = range.toArray('days');
-    xAxisArray = xAxisRange.map((el) => {
-      return moment(el).format("MM-DD");
-    });
-    console.log('xAxisArray', xAxisArray); // xAxis functionality is good
-    // ----------- end X Axis functions ----------------------- //
+    let values = typeMap.values();
+    let typeCount = values.next().value;
+    const typeArray = [];
 
-    const typeArray = Object.keys(obj).map(key => obj[key]);
-    console.log('typeArray', typeArray);
+    for (let [key, value] of typeMap) {
+      // console.log(value);
+      typeArray.push(typeCount);
+      typeCount += value;
+    }
+    // console.log('typeArray', typeArray);
 
-    // make array of x axis dates, delivery numbers and spending
-    // const typeArray = [];
     const spendArray = [];
+    let spendValues = spendMap.values();
+    // let spendCount = spendValues.next().value;
     let spendCount = 0;
-    let typeCount = parseFloat(insights[0].data[type]);
-    insights.forEach(el => {
-      // typeArray.push(typeCount);
-      typeCount += parseFloat(el.data[type]);
+    for (let [key, value] of spendMap) {
       spendArray.push(spendCount);
-      spendCount += accounting.unformat(el.data.spend);
-    });
+      spendCount += accounting.unformat(value);
+    }
+    // console.log('spendArray', spendArray);
 
-    // make ideal spend and delivery
+
+    // ----------- make ideal spend and delivery ------------ //
     const avg = parseFloat(init.lineItems[index].quantity) / daysDiff;
     const spendAvg = parseFloat(init.lineItems[index].budget) / daysDiff;
     const avgDeliveryArray = [];
@@ -389,6 +378,17 @@ export const initiativeHomepageFunctions = {
       avgDeliveryArray.push(total);
       avgSpendArray.push(idealSpendTotal);
     }
+    // ----------- end of ideal spend and delivery ---------- //
+
+    // ----------- functionality for X Axis ----------------- //
+    const start = moment(insights[0]['data']['date_start'], moment.ISO_8601);
+    const end = moment(insights[insights.length - 1]['data']['date_start'], moment.ISO_8601);
+    const range = moment.range(start, end);
+    const xAxisRange = range.toArray('days');
+    xAxisArray = xAxisRange.map((el) => {
+      return moment(el).format("MM-DD");
+    });
+    // ----------- end X Axis functions ----------------------- //
 
     return {
       chart: {
@@ -480,22 +480,53 @@ export const initiativeHomepageFunctions = {
       type = "cost_per_video_view";
     }
 
-    let allDays = InsightsBreakdownsByDays.find({'data.initiative': init.name}).fetch();
+    let allDays = InsightsBreakdownsByDays.find({'data.initiative': init.name}, {sort: {'data.date_start': 1}}).fetch();
+    // format date and remove any dailyInsights with a different objective
 
     if (allDays) {
       insights = _.filter(allDays, function(el) {
         return el.data.objective === objective;
       });
-      console.log(insights);
     }
 
-    // make array of x axis dates
-    const xAxisArray = [];
-    const typeArray = [];
-    insights.forEach(el => {
-      xAxisArray.push(el.data.date_start.substring(0,5));
-      typeArray.push(accounting.unformat(el.data[type]));
+    // ----------- functionality for X Axis ----------------- //
+    const start = moment(insights[0]['data']['date_start'], moment.ISO_8601);
+    const end = moment(insights[insights.length - 1]['data']['date_start'], moment.ISO_8601);
+    const range = moment.range(start, end);
+    const xAxisRange = range.toArray('days');
+    xAxisArray = xAxisRange.map((el) => {
+      return moment(el).format("MM-DD");
     });
+    // ----------- end X Axis functions ----------------------- //
+
+
+    var costPerMap = new Map();
+    let obj = {};
+
+    insights.forEach((el) => {
+      if (! obj[el.data.date_start]) {
+        obj[el.data.date_start] = 1
+        costPerMap.set(el.data.date_start, accounting.unformat(el.data[type]));
+      } else if (obj[el.data.date_start]) {
+        obj[el.data.date_start] += 1;
+        let costPer = costPerMap.get(el.data.date_start);
+        costPer += accounting.unformat(el.data[type]);
+        costPerMap.set(el.data.date_start, costPer);
+      }
+    });
+
+    /*
+      iterate over the Map, declare newVal
+      set newVal = to Map value / by obj holding how many instances of the day
+      push newVal into typeArray to be used by highchart
+    */
+    const typeArray = [];
+    for (let [key, value] of costPerMap) {
+      let newVal;
+      newVal = value / obj[key];
+      typeArray.push(parseFloat(newVal.toFixed(2)));
+    }
+
 
     return {
       chart: {

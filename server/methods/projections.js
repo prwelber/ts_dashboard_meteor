@@ -8,7 +8,7 @@ Meteor.methods({
     let cleanedArr = [];
     days.forEach(el => {
       el.data.spend = accounting.unformat(el.data.spend);
-      el.data.date_start = moment(el.data.date_start, "MM-DD-YYYY").toISOString();
+      // el.data.date_start = moment(el.data.date_start, "MM-DD-YYYY").toISOString();
       el.data.impressions = parseInt(el.data.impressions); // string to integer
       !el.data.like ? el.data.like = 0 : '';
       let obj = {};
