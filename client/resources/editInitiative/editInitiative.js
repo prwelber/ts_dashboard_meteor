@@ -55,7 +55,12 @@ Template.editInitiative.helpers({
       return num + 1;
     },
     'dateFormatter': (date) => {
-      return moment(date, moment.ISO_8601).format("MM-DD-YYYY hh:mm a");
+      if (date === null || date === "") {
+        return "";
+      } else {
+        return moment(date, moment.ISO_8601).format("MM-DD-YYYY hh:mm a");
+      }
+
     },
     'activeChecked': () => {
       const init =  Initiatives.findOne({_id: FlowRouter.current().params._id});

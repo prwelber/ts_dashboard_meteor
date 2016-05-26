@@ -288,7 +288,7 @@ Template.initiativesHome.helpers({
   },
   calcSpend: (_id) => {
     const init = Initiatives.findOne({_id: _id});
-    return numeral(initiativesFunctionObject.calculateSpendPercent(init)).format("00.00");
+    return numeral(init.netNumbers.spendPercent).format("00.00");
   },
   calcDelivery: (_id) => {
     const init = Initiatives.findOne({_id: _id});

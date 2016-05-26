@@ -46,7 +46,7 @@ export const initiativeHomepageFunctions = {
       } else if (init.lineItems[num].percent_total) {
         deal = "percentTotal";
         percent = init.lineItems[num].percentTotalPercent;
-        percentTotalPercent = parseInt(init.lineItems[num].percentTotalPercent) / 100;
+        percentTotalPercent = parseFloat(init.lineItems[num].percentTotalPercent) / 100;
         spend = init[objective]['spend'] * percentTotalPercent;
         budget = init.lineItems[num].budget * percentTotalPercent;
       }
@@ -305,13 +305,16 @@ export const initiativeHomepageFunctions = {
     // add up the data for each day from the ones that are left
     let insights;
     let allDays = InsightsBreakdownsByDays.find({'data.initiative': init.name}, {sort: {'data.date_start': 1}}).fetch();
-    // format date and remove any dailyInsights with a different objective
-    // console.log('allDays', allDays)
-    if (allDays) {
-      insights = _.filter(allDays, function(el) {
-        return el.data.objective === objective;
-      });
-    }
+    // remove any dailyInsights with a different objective
+    console.log(objective);
+    console.log(allDays.length)
+    allDays.forEach((day, index) => {
+      console.log(day.data.objective)
+      if (day.data.objective !== objective) {
+        allDays.splice(index, 1);
+      }
+    });
+    console.log(allDays.length)
 
     let obj = {};
     var typeMap = new Map();
@@ -322,7 +325,7 @@ export const initiativeHomepageFunctions = {
       in the else block, we set the value or spend, add it to the existing value
       or spend of the existing key/value pair, and then set the new value in the Map
     */
-    insights.forEach((el) => {
+    allDays.forEach((el) => {
       if (! obj[el.data.date_start]) {
         obj[el.data.date_start] = el.data[type];
         typeMap.set(el.data.date_start, el.data[type]);
@@ -337,21 +340,15 @@ export const initiativeHomepageFunctions = {
         spendMap.set(el.data.date_start, spend);
       }
     });
-    // console.log('arrayOfObjs', arrayOfObjs);
-    // console.log("obj", obj);
-    // console.log('typeMap', typeMap);
-    // console.log('spendMap', spendMap);
 
     let values = typeMap.values();
     let typeCount = values.next().value;
     const typeArray = [];
 
     for (let [key, value] of typeMap) {
-      // console.log(value);
       typeArray.push(typeCount);
       typeCount += value;
     }
-    // console.log('typeArray', typeArray);
 
     const spendArray = [];
     let spendValues = spendMap.values();
@@ -381,8 +378,8 @@ export const initiativeHomepageFunctions = {
     // ----------- end of ideal spend and delivery ---------- //
 
     // ----------- functionality for X Axis ----------------- //
-    const start = moment(insights[0]['data']['date_start'], moment.ISO_8601);
-    const end = moment(insights[insights.length - 1]['data']['date_start'], moment.ISO_8601);
+    const start = moment(allDays[0]['data']['date_start'], moment.ISO_8601);
+    const end = moment(allDays[allDays.length - 1]['data']['date_start'], moment.ISO_8601);
     const range = moment.range(start, end);
     const xAxisRange = range.toArray('days');
     xAxisArray = xAxisRange.map((el) => {
@@ -468,7 +465,6 @@ export const initiativeHomepageFunctions = {
     const daysDiff = moment(init.lineItems[index]['endDate'], moment.ISO_8601).diff(moment(init.lineItems[index]['startDate'], moment.ISO_8601), 'days');
 
     const price = parseFloat(init.lineItems[index]['price']);
-    let insights;
     let type;
     if (init.lineItems[index].dealType === "CPM") {
       type = "cpm";
@@ -480,23 +476,24 @@ export const initiativeHomepageFunctions = {
       type = "cost_per_video_view";
     }
 
-    let allDays = InsightsBreakdownsByDays.find({'data.initiative': init.name}, {sort: {'data.date_start': 1}}).fetch();
+    let insights = InsightsBreakdownsByDays.find({'data.initiative': init.name}, {sort: {'data.date_start': 1}}).fetch();
     // format date and remove any dailyInsights with a different objective
 
-    if (allDays) {
-      insights = _.filter(allDays, function(el) {
-        return el.data.objective === objective;
-      });
-    }
-
-    // ----------- functionality for X Axis ----------------- //
-    const start = moment(insights[0]['data']['date_start'], moment.ISO_8601);
-    const end = moment(insights[insights.length - 1]['data']['date_start'], moment.ISO_8601);
-    const range = moment.range(start, end);
-    const xAxisRange = range.toArray('days');
-    xAxisArray = xAxisRange.map((el) => {
-      return moment(el).format("MM-DD");
+    insights.forEach((insight, index) => {
+      if (insight.data.objective !== objective) {
+        insights.splice(index, 1);
+      }
     });
+    // ----------- functionality for X Axis ----------------- //
+    // if (insights && insights[0].data.date_start) {
+      const start = moment(insights[0]['data']['date_start'], moment.ISO_8601);
+      const end = moment(insights[insights.length - 1]['data']['date_start'], moment.ISO_8601);
+      const range = moment.range(start, end);
+      const xAxisRange = range.toArray('days');
+      xAxisArray = xAxisRange.map((el) => {
+        return moment(el).format("MM-DD");
+      });
+    // }
     // ----------- end X Axis functions ----------------------- //
 
 

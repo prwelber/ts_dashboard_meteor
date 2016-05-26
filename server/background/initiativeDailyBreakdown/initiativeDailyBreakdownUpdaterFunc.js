@@ -49,8 +49,14 @@ export function dailyUpdate(array) {
         let dailyBreakdownArray = [];
         const masterArray = [];
         let breakdown;
+        let result;
+        try {
+          result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+array[counter]+'/insights?fields=date_start,date_stop,campaign_id,campaign_name,total_actions,impressions,spend,reach,ctr,cpm,cpp,actions,cost_per_action_type&time_increment=1&access_token='+token+'', {});
+        } catch(e) {
+          console.log("error with HTTP call:", e);
+          Meteor.clearInterval(setIntervalId);
+        }
 
-        let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+array[counter]+'/insights?fields=date_start,date_stop,campaign_id,campaign_name,total_actions,impressions,spend,reach,ctr,cpm,cpp,actions,cost_per_action_type&time_increment=1&access_token='+token+'', {});
         breakdown = result;
         //breakdown is an array of objects
         dailyBreakdownArray.push(breakdown.data.data);
@@ -109,7 +115,7 @@ export function dailyUpdate(array) {
           data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
           data['cpc'] = mastFunc.makeMoney((data.spend / data.clicks));
           data['spend'] = mastFunc.makeMoney(data.spend);
-          data['date_start'] = moment(data['date_start']).format("MM-DD-YYYY");
+          data['date_start'] = moment(data['date_start'], "YYYY-MM-DD").toISOString();
           masterArray.push(data);
 
 

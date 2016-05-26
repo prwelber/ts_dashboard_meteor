@@ -16,19 +16,20 @@ SyncedCron.add({
   name: "Initiative Updater",
 
   schedule: (parser) => {
-    return parser.text('at 7:30am');
+    // return parser.text('at 7:30am');
+    return parser.text('at 3:50pm');
   },
 
   job: (time) => {
-    const inits = Initiatives.find({}).fetch();
+    const inits = Initiatives.find({userActive: true}).fetch();
 
-    const active = _.filter(inits, (el) => {
-      if (el.userActive) {
-        return el
-      }
-    });
+    // const active = _.filter(inits, (el) => {
+    //   if (el.userActive) {
+    //     return el
+    //   }
+    // });
 
-    let onlyIds = _.map(active, (el) => {
+    let onlyIds = _.map(inits, (el) => {
       return el.campaign_ids
     });
     // now i'm sitting with all the campaign ID's of the active initiatives

@@ -1,19 +1,8 @@
+import { dealTypeFuncs } from '/both/utilityFunctions/dealTypeFunctions';
+
 export const initiativesFunctionObject = {
   calculateSpendPercent: (initiative) => {
-    let totalBudget = 0;
-    initiative.lineItems.forEach(el => {
-      if (el.budget === "") {
-        el.budget = 0;
-      } else if (typeof el.budget === "string") {
-        el.budget = parseFloat(el.budget);
-      }
-      totalBudget = totalBudget + el.budget;
-    });
-    if (! initiative.aggregateData) {
-      return "N/A";
-    } else {
-      return (100 * initiative['aggregateData']['spend']) / totalBudget;
-    }
+
   },
   calculateDeliveryPercent: (initiative) => {
     let type;

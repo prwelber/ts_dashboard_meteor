@@ -101,7 +101,16 @@ Template.initiativeHomepage.helpers({
   'initiativeStats': function () {
     const init = Template.instance().templateDict.get('initiative');
     let agData = init.aggregateData;
-    const spendPercent = numeral((agData.spend / parseFloat(init.lineItems[0].budget))).format("0.00%");
+
+    // get all budgets
+    let totalBudget = 0;
+    init.lineItems.forEach((el) => {
+      if (el.budget !== "" && parseFloat(el.budget) > 0) {
+        totalBudget = totalBudget + parseFloat(el.budget);
+      }
+    });
+
+    const spendPercent = numeral((agData.spend / totalBudget)).format("0.00%");
 
     //function for formatting data with numeral
     const niceNum = function niceNum (data) {
