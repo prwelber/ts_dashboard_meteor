@@ -19,7 +19,7 @@ SyncedCron.add({
 
   schedule: (parser) => {
     // return parser.text('at 9:45am');
-    return parser.text('at 4:12pm');
+    return parser.text('at 6:06pm');
   },
 
   job: () => {
@@ -29,32 +29,34 @@ SyncedCron.add({
 
       init.lineItems.forEach((item) => {
 
-        const objective = item.objective.split(' ').join('_').toUpperCase();
-        const price = parseFloat(item.price);
-        const dealType = item.dealType.toLowerCase();
-        let costPlusPercentage;
-        const costPer = init["netNumbers"]["net_"+dealType];
-        const eightyPercent = price * .8;
+        if (item.budget || item.budget !== "") {
 
-        // do if cost plus and if not cost plus
-        if (item.cost_plus) {
-          let percentage = stringToCostPlusPercentage(item.costPlusPercent);
-          let ceilingNum = price / percentage
+          const objective = item.objective.split(' ').join('_').toUpperCase();
+          const price = parseFloat(item.price);
+          const dealType = item.dealType.toLowerCase();
+          let costPlusPercentage;
+          const costPer = init[objective]['net']["net_"+dealType];
+          const eightyPercent = price * .8;
 
-          if (costPer >= ceilingNum) {
-            const subject = "Initiative Cost Per Action Warning";
-            const htmlString = "<p>In the initiative: " +init.name+ ", the " +dealType+ " is near or has exceeded the estimated IO price of " +price+ ". It is currently " +accounting.formatMoney(costPer)+"</p>";
-            email.sendEmail("prwelber@gmail.com", subject, htmlString);
+          // do if cost plus and if not cost plus
+          if (item.cost_plus) {
+            let percentage = stringToCostPlusPercentage(item.costPlusPercent);
+            let ceilingNum = price / percentage
+
+            if (costPer >= ceilingNum) {
+              const subject = "Initiative Cost Per Action Warning";
+              const htmlString = "<p>In the initiative: " +init.name+ ", the " +dealType+ " is near or has exceeded the estimated IO price of " +price+ ". It is currently " +accounting.formatMoney(costPer)+"</p>";
+              email.sendEmail("prwelber@gmail.com", subject, htmlString);
+            }
           }
-        }
 
+          if (item.percent_total) {
+            if (costPer >= eightyPercent) {
+              const subject = "Initiative Cost Per Action Warning";
+              const htmlString = "<p>In the initiative: " +init.name+ ", the " +dealType+ " is at or above 80% of the IO price of "+price+". It is currently " +accounting.formatMoney(costPer)+"</p>";
 
-        if (item.percent_total) {
-          if (costPer >= eightyPercent) {
-            const subject = "Initiative Cost Per Action Warning";
-            const htmlString = "<p>In the initiative: " +init.name+ ", the " +dealType+ " is at or above 80% of the IO price of "+price+". It is currently " +accounting.formatMoney(costPer)+"</p>";
-
-            email.sendEmail("prwelber@gmail.com", subject, htmlString);
+              email.sendEmail("prwelber@gmail.com", subject, htmlString);
+            }
           }
         }
       });

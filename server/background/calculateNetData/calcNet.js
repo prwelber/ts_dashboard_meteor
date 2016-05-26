@@ -18,8 +18,8 @@ SyncedCron.add({
   name: "Calculate Net Numbers",
 
   schedule: (parser) => {
-    return parser.text('at 4:51pm')
-    // return parser.text('every 30 minutes');
+    // return parser.text('at 6:02pm')
+    return parser.text('every 30 minutes');
   },
 
   job: () => {
@@ -60,7 +60,7 @@ SyncedCron.add({
           netNumbs['net_cpm'] = netNumbs.spend / (init[objective]['impressions'] / 1000);
           netNumbs['net_cpvv'] = netNumbs.spend / init[objective]['videoViews'];
           const dataToSet = {};
-          dataToSet[objective+"_net"] = netNumbs;
+          dataToSet[objective+".net"] = netNumbs;
           Initiatives.update(
             {name: init.name},
             {$set: dataToSet}
@@ -86,11 +86,7 @@ SyncedCron.add({
             {$set: dataToSet}
           );
         }
-
-
       }); // end of init.lineItems.forEach((item))
-
     }); // end of inits.forEach((init))
-
   } // end of job
 });
