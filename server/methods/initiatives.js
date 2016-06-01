@@ -286,6 +286,13 @@ Meteor.methods({
       {$set: {userActive: checked}
     });
     return "success!";
+  },
+  toggleDailyCheck: (_id, checked) => {
+    Initiatives.update(
+      {_id: _id},
+      {$set: {dailyCheck: checked}
+    });
+    return "success";
   }
 });
 

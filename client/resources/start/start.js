@@ -1,22 +1,37 @@
-import { Meteor } from 'meteor/meteor'
-import { FlowRouter } from 'meteor/kadira:flow-router'
-import CampaignInsights from '/collections/CampaignInsights'
-import Initiatives from '/collections/Initiatives'
-import dragula from 'dragula'
-import { initiativesFunctionObject } from '/both/utilityFunctions/calculateInitiativePercentages'
+import { Meteor } from 'meteor/meteor';
+import { FlowRouter } from 'meteor/kadira:flow-router';
+import CampaignInsights from '/collections/CampaignInsights';
+import Initiatives from '/collections/Initiatives';
+import MasterAccounts from '/collections/MasterAccounts';
+import dragula from 'dragula';
+import { initiativesFunctionObject } from '/both/utilityFunctions/calculateInitiativePercentages';
+import { Session } from 'meteor/session';
+import { Tracker } from 'meteor/tracker';
+
+
+Tracker.autorun(function () {
+  // if (Session.get("agencySelect")) {
+  //   console.log('session agencySelect');
+  //   Session.set("brandSelect", null);
+  // }
+  // if (Session.get("brandSelect")) {
+  //   console.log('session brandSelect')
+  //   Session.set("agencySelect", null);
+  // }
+});
 
 
 Template.initiativesHome.onRendered(function () {
   Meteor.typeahead.inject();
-
+  $('.tooltipped').tooltip({ delay: 50 });
 });
 
 Template.initiativesHome.onCreated(function () {
   if (!Session.get("initiativeSelect")) {
-    Session.set("initiativeSelect", "Active");
+    Session.set("initiativeSelect", null);
   }
   if (!Session.get("ownerSelect")) {
-    Session.set("ownerSelect", "All");
+    Session.set("ownerSelect", null);
   }
 })
 
@@ -53,7 +68,9 @@ Template.initiativesHome.helpers({
   },
   'getAllInitiatives': () => {
     const sesh = Session.get('initiativeSelect');
-    const ownerSesh = Session.get('ownerSelect');
+    const owner = Session.get('ownerSelect');
+    const brand = Session.get('brandSelect');
+    const agency = Session.get('agencySelect');
     const n = moment().toISOString();
     let inits;
 
@@ -67,10 +84,38 @@ Template.initiativesHome.helpers({
       is set to "All"
     */
 
+    if (sesh === null && owner === null) {
+      inits = Initiatives.find({userActive: true},
+        {sort:
+          {"lineItems.0.endDate": -1}
+        },
+        {limit: 100}
+      ).fetch();
+    }
+
+    if (brand) {
+      inits = Initiatives.find({brand: brand},
+        {sort:
+          {"lineItems.0.endDate": -1}
+        },
+        {limit: 100}
+      ).fetch();
+
+    }
+
+    if (agency) {
+      inits = Initiatives.find({agency: agency},
+        {sort:
+          {"lineItems.0.endDate": -1}
+        },
+        {limit: 100}
+      ).fetch();
+    }
+
 
     if (sesh === 'Active') {
-      if (ownerSesh !== "All") {
-        inits = Initiatives.find({userActive: true, owner: ownerSesh},
+      if (owner !== null) {
+        inits = Initiatives.find({userActive: true, owner: owner},
           {sort: {"lineItems.0.endDate": -1}}).fetch();
       } else {
         inits = Initiatives.find({userActive: true},
@@ -79,9 +124,9 @@ Template.initiativesHome.helpers({
 
     } else if (sesh === 'Ending Soon') {
       const d = moment().add(30, 'd').toISOString();
-      if (ownerSesh !== "All") {
+      if (owner !== null) {
         inits = Initiatives.find({
-          "lineItems.0.endDate": {$lte: d, $gte: n}, owner: ownerSesh
+          "lineItems.0.endDate": {$lte: d, $gte: n}, owner: owner
         },{sort: {"lineItems.0.endDate": -1}}).fetch();
       } else {
         inits = Initiatives.find({
@@ -90,9 +135,9 @@ Template.initiativesHome.helpers({
       }
     } else if (sesh === 'Recently Ended') {
       const d = moment().subtract(30, 'd').toISOString();
-      if (ownerSesh !== "All") {
+      if (owner !== null) {
         inits = Initiatives.find({
-          "lineItems.0.endDate": {$gte: d, $lte: n}, owner: ownerSesh
+          "lineItems.0.endDate": {$gte: d, $lte: n}, owner: owner
         }, {sort: {"lineItems.0.endDate": -1}}).fetch();
       } else {
         inits = Initiatives.find({
@@ -100,9 +145,9 @@ Template.initiativesHome.helpers({
         }, {sort: {"lineItems.0.endDate": -1}}).fetch();
       }
     } else if (sesh === 'Pending') {
-      if (ownerSesh !== "All") {
+      if (owner !== null) {
         inits = Initiatives.find({
-          "lineItems.0.startDate": {$gte: n}, owner: ownerSesh
+          "lineItems.0.startDate": {$gte: n}, owner: owner
         }, {sort: {"lineItems.0.startDate": 1}}).fetch();
       } else {
         inits = Initiatives.find({
@@ -110,8 +155,8 @@ Template.initiativesHome.helpers({
         }, {sort: {"lineItems.0.startDate": 1}}).fetch();
       }
     } else if (sesh === 'All') {
-      if (ownerSesh !== "All") {
-        inits = Initiatives.find({owner: ownerSesh},
+      if (owner !== null) {
+        inits = Initiatives.find({owner: owner},
           {sort:
             {"lineItems.0.endDate": -1}
           },
@@ -188,17 +233,26 @@ Template.initiativesHome.helpers({
     const init = Initiatives.findOne({_id: _id});
     return numeral(initiativesFunctionObject.calculateDeliveryPercent(init, index)).format("00.00");
   },
-  calcFlight: (_id) => {
+  calcFlight: (_id, index) => {
     const init = Initiatives.findOne({_id: _id});
-    return numeral(initiativesFunctionObject.calculateFlightPercentage(init)).format("00.00");
+    return numeral(initiativesFunctionObject.calculateFlightPercentage(init, index)).format("00.00");
   },
   activeUpdates: (_id) => {
     const init = Initiatives.findOne({_id: _id});
-    if (init.userActive) {
+    if (init.userActive === true) {
       return "checked";
     } else {
       return "";
     }
+  },
+  dailyCheck: (_id) => {
+    const init = Initiatives.findOne({_id: _id});
+    if (init.dailyCheck) {
+      return "checked";
+    }
+  },
+  getBrands: () => {
+    return MasterAccounts.find({});
   }
 });
 
@@ -217,10 +271,49 @@ Template.initiativesHome.events({
     }
   },
   "change #initiativeSelect": (event, instance) => {
+    Session.set("agencySelect", null);
+    Session.set("brandSelect", null);
     Session.set('initiativeSelect', event.target.value);
   },
   "change #ownerSelect": (event, instance) => {
-    console.log(event.target.value)
-    Session.set('ownerSelect', event.target.value);
+    Session.set("agencySelect", null);
+    Session.set("brandSelect", null);
+    if (event.target.value === "null") {
+      Session.set('ownerSelect', null)
+    } else {
+      Session.set('ownerSelect', event.target.value);
+    }
+  },
+  "click .double-check": (event, instance) => {
+    let id = event.target.id.toString().split("double")[1];
+    if (event.target.checked === false) {
+      const checked = false;
+      Meteor.call('toggleDailyCheck', id, checked);
+    } else if (event.target.checked === true) {
+      const checked = true;
+      Meteor.call('toggleDailyCheck', id, checked);
+    } else {
+      alert("there is a problem with this feature");
+    }
+  },
+  "change #agencySelect": (event, instance) => {
+    Session.set("brandSelect", null);
+    Session.set("ownerSelect", null);
+    Session.set("initiativeSelect", null);
+    Session.set('agencySelect', event.target.value);
+  },
+  "change #brandSelect": (event, instance) => {
+    Session.set("agencySelect", null);
+    Session.set("ownerSelect", null);
+    Session.set("initiativeSelect", null);
+    Session.set('brandSelect', event.target.value);
   }
 });
+
+Template.initiativesHome.onDestroyed(() => {
+  Session.set("ownerSelect", null);
+  Session.set("initiativeSelect", null);
+  Session.set("agencySelect", null);
+  Session.set("brandSelect", null);
+  $('.tooltipped').tooltip('remove');
+})

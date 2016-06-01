@@ -37,12 +37,17 @@ export const initiativesFunctionObject = {
       return (100 * initiative.aggregateData[type]) / totalQuantity;
     }
   },
-  calculateFlightPercentage: (initiative) => {
-    const start = moment(initiative.lineItems[0].startDate, moment.ISO_8601);
-    const end = moment(initiative.lineItems[0].endDate, moment.ISO_8601);
+  calculateFlightPercentage: (initiative, index) => {
+    const start = moment(initiative.lineItems[index].startDate, moment.ISO_8601);
+    const end = moment(initiative.lineItems[index].endDate, moment.ISO_8601);
     const initLength = end.diff(start, 'days');
     const todayDiff = moment().diff(start, 'days');
-    return ((100 * todayDiff) / initLength);
+    const flightPercent = (100 * todayDiff) / initLength;
+    if (flightPercent < 0) {
+      return 0;
+    } else {
+      return flightPercent;
+    }
   },
   calcNet: (num, init) => {
     if (! init.lineItems[num].budget) {

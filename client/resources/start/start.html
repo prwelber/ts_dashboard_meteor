@@ -7,8 +7,8 @@
     <div class="row">
       <h1 class="align-center" style="margin-top: 6%; margin-bottom: 6%; font-size: 3em;">Initiatives</h1>
         <div class="col s3">
-          <label>Initiative Selection</label>
-          <select id="initiativeSelect" class="browser-default">
+          <label>Initiatives by Status (default is Active)</label>
+          <select id="initiativeSelect" class="browser-default tooltipped" data-position="top" data-delay="50" data-tooltip="Can be combined with Owner">
             <option value="" disabled selected>Choose your Initiatives</option>
             <option value="Active">Active</option>
             <option value="Ending Soon">Ending Soon</option>
@@ -18,10 +18,10 @@
           </select>
         </div>
         <div class="col s3">
-          <label>Initiative by Owner</label>
-          <select id="ownerSelect" class="browser-default">
+          <label>Initiatives by Owner</label>
+          <select id="ownerSelect" class="browser-default tooltipped" data-position="top" data-delay="50" data-tooltip="Can be combined with Status">
             <option value="" disabled selected>Choose Owner</option>
-            <option value="All">All</option>
+            <option value="null">All</option>
             <option value="Corey">Corey</option>
             <option value="Kathia">Kathia</option>
             <option value="Veronika">Veronika</option>
@@ -31,7 +31,38 @@
             <option value="Plato">Plato</option>
           </select>
         </div>
-        <div class="col s6" style="margin-top: 1em;">
+        <div class="col s3">
+          <label>Initiatives by Agency</label>
+          <select id="agencySelect" class="browser-default">
+            <option value="" disabled selected>Choose Agency</option>
+            <option value="Citizens">Citizens</option>
+            <option value="Constellation">Constellation</option>
+            <option value="Cornerstone">Cornerstone</option>
+            <option value="CUE">CUE</option>
+            <option value="Farm Rich">Farm Rich</option>
+            <option value="Hadeler Krueger">Hadeler Krueger</option>
+            <option value="High Wide & Handsome">High Wide & Handsome</option>
+            <option value="Hitachi">Hitachi</option>
+            <option value="Horizon">Horizon</option>
+            <option value="Icon">Icon</option>
+            <option value="Mundy">Mundy</option>
+            <option value="Power Creative">Power Creative</option>
+            <option value="Rachael Piper">Rachel Piper</option>
+            <option value="SapientNitro">SapientNitro</option>
+            <option value="True Media">True Media</option>
+            <option value="Uniworld">Uniworld</option>
+          </select>
+        </div>
+        <div class="col s3">
+          <label>Initiatives by Brand</label>
+          <select id="brandSelect" class="browser-default">
+            <option value="" disabled selected>Choose Brand</option>
+            {{#each getBrands}}
+              <option value="{{name}}">{{name}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="col s12" style="margin-top: 1em;">
           {{> inputAutocomplete settings=settings id="initiative-typeahead" class="autocomplete" placeholder="Search For Initiative (Case Sensitive)"}}
         </div>
       </div>
@@ -43,8 +74,12 @@
             <li class="collection-item">
               <div class="row" style="margin-bottom: 5px;">
                 <div class="col s6">
-                  <a href="/initiatives/{{_id}}/homepage"><span class="title" style="font-size: 20px;">{{name}}</span></a>
-                  <a href="/admin/initiatives/{{_id}}/edit" style="margin-left: 10px;">Edit</a>
+                  <a href="/initiatives/{{_id}}/homepage">
+                    <span class="title" style="font-size: 20px;">{{name}}</span>
+                  </a>
+                  <a href="/admin/initiatives/{{_id}}/edit" style="margin-left: 10px;">
+                    <i class="tiny material-icons">mode_edit</i>
+                  </a>
                 </div>
                 {{#if isInRole 'admin'}}
                   <div class="switch col s3">
@@ -66,16 +101,24 @@
               </div>
               <div class="row" style="margin-bottom: 5px;">
                 {{#if isInRole 'admin'}}
-                  <div class="col s10">
-                    <p>Owner: {{owner}} | Agency: {{agency}} | Brand: {{brand}}</p>
+                  <div class="col s6">
+                    <p>
+                      <em>Owner: {{owner}} | Agency: {{agency}} | Brand: {{brand}}</em>
+                    </p>
                   </div>
-                  <div class="col s2">
+                  <div class="col s3">
+                    <p>
+                      <input type="checkbox" id="double{{_id}}" class="filled-in double-check" checked="{{dailyCheck _id}}"/>
+                      <label for="double{{_id}}">Daily Check</label>
+                    </p>
+                  </div>
+                  <div class="col s3">
                     <p class="right-align {{isActiveClass}}">{{isActiveInitiative}}</p>
                   </div>
                   <div class="col s12">
                     {{#each item in lineItems}}
                       {{#if item.budget}}
-                        <span>Objective: {{item.objective}} | Spend: {{calcSpend item.objective _id}}% | Delivery: {{calcDelivery _id @index}}% | Flight: {{calcFlight _id}}% <br> </span>
+                        <span>Objective: {{item.objective}} | Spend: {{calcSpend item.objective _id}}% | Delivery: {{calcDelivery _id @index}}% | Flight: {{calcFlight _id @index}}% <br> </span>
                       {{/if}}
                     {{/each}}
                   </div>

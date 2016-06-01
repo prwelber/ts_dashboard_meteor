@@ -23,7 +23,7 @@ Template.editInitiative.helpers({
       return init;
     },
     'getBrands': function () {
-      return MasterAccounts.find()
+      return MasterAccounts.find();
     },
     'getCampaigns': function () {
       const init =  Initiatives.findOne({_id: FlowRouter.current().params._id});
