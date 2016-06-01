@@ -1,0 +1,107 @@
+<template name="dataPiece">
+    <a class="typeahead-text" href="/initiatives/{{_id}}/homepage">{{name}}</a>
+</template>
+
+<template name="initiativesHome">
+  <div class="container">
+    <div class="row">
+      <h1 class="align-center" style="margin-top: 6%; margin-bottom: 6%; font-size: 3em;">Initiatives</h1>
+        <div class="col s3">
+          <label>Initiative Selection</label>
+          <select id="initiativeSelect" class="browser-default">
+            <option value="" disabled selected>Choose your Initiatives</option>
+            <option value="Active">Active</option>
+            <option value="Ending Soon">Ending Soon</option>
+            <option value="Recently Ended">Recently Ended</option>
+            <option value="Pending">Pending</option>
+            <option value="All">All</option>
+          </select>
+        </div>
+        <div class="col s3">
+          <label>Initiative by Owner</label>
+          <select id="ownerSelect" class="browser-default">
+            <option value="" disabled selected>Choose Owner</option>
+            <option value="All">All</option>
+            <option value="Corey">Corey</option>
+            <option value="Kathia">Kathia</option>
+            <option value="Veronika">Veronika</option>
+            <option value="Sheri">Sheri</option>
+            <option value="Ashwin">Ashwin</option>
+            <option value="Phil">Phil</option>
+            <option value="Plato">Plato</option>
+          </select>
+        </div>
+        <div class="col s6" style="margin-top: 1em;">
+          {{> inputAutocomplete settings=settings id="initiative-typeahead" class="autocomplete" placeholder="Search For Initiative (Case Sensitive)"}}
+        </div>
+      </div>
+      <div class="row">
+      {{#if isReady "Initiatives"}}
+      {{!-- autocomplete library https://github.com/mizzao/meteor-autocomplete --}}
+        <ul class="collection">
+          {{#each getAllInitiatives}}
+            <li class="collection-item">
+              <div class="row" style="margin-bottom: 5px;">
+                <div class="col s6">
+                  <a href="/initiatives/{{_id}}/homepage"><span class="title" style="font-size: 20px;">{{name}}</span></a>
+                  <a href="/admin/initiatives/{{_id}}/edit" style="margin-left: 10px;">Edit</a>
+                </div>
+                {{#if isInRole 'admin'}}
+                  <div class="switch col s3">
+                    <label>
+                      Not Updating
+                      <input type="checkbox" {{activeUpdates _id}} data-id="{{_id}}">
+                      <span class="lever"></span>
+                      Updating
+                    </label>
+                  </div>
+                {{else}}
+                  <div class="col s3">
+                    <p>Placeholder</p>
+                  </div>
+                {{/if}}
+                <div class="col s3">
+                  <p class="right-align">{{formatDate lineItems.[0].startDate}} - {{formatDate lineItems.[0].endDate}}</p>
+                </div>
+              </div>
+              <div class="row" style="margin-bottom: 5px;">
+                {{#if isInRole 'admin'}}
+                  <div class="col s10">
+                    <p>Owner: {{owner}} | Agency: {{agency}} | Brand: {{brand}}</p>
+                  </div>
+                  <div class="col s2">
+                    <p class="right-align {{isActiveClass}}">{{isActiveInitiative}}</p>
+                  </div>
+                  <div class="col s12">
+                    {{#each item in lineItems}}
+                      {{#if item.budget}}
+                        <span>Objective: {{item.objective}} | Spend: {{calcSpend item.objective _id}}% | Delivery: {{calcDelivery _id @index}}% | Flight: {{calcFlight _id}}% <br> </span>
+                      {{/if}}
+                    {{/each}}
+                  </div>
+                {{else}}
+                  <div class="col s12">
+                    <p class="right-align {{isActiveClass}}">{{isActiveInitiative}}</p>
+                  </div>
+                {{/if}}
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+      {{else}}
+        <p>Loading...</p>
+      {{/if}}
+    </div>
+  </div>
+  {{#if isInRole 'admin'}}
+  <div class="row">
+    <div class="col s12">
+      <a href="/viewaccounts">
+        <button class="btn waves-effect waves-light" name="action">
+          View By Accounts
+        </button>
+      </a>
+    </div>
+  </div>
+  {{/if}}
+</template>

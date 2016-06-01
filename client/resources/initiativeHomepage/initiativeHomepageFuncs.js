@@ -306,15 +306,12 @@ export const initiativeHomepageFunctions = {
     let insights;
     let allDays = InsightsBreakdownsByDays.find({'data.initiative': init.name}, {sort: {'data.date_start': 1}}).fetch();
     // remove any dailyInsights with a different objective
-    console.log(objective);
-    console.log(allDays.length)
     allDays.forEach((day, index) => {
-      console.log(day.data.objective)
       if (day.data.objective !== objective) {
         allDays.splice(index, 1);
       }
     });
-    console.log(allDays.length)
+
 
     let obj = {};
     var typeMap = new Map();
@@ -358,8 +355,6 @@ export const initiativeHomepageFunctions = {
       spendArray.push(spendCount);
       spendCount += accounting.unformat(value);
     }
-    // console.log('spendArray', spendArray);
-
 
     // ----------- make ideal spend and delivery ------------ //
     const avg = parseFloat(init.lineItems[index].quantity) / daysDiff;

@@ -35,14 +35,14 @@ Template.initiativeHomepage.onRendered(function () {
     in_duration: 400,
     out_duration: 300
   });
-   $(document).ready(function(){
+  $(document).ready(function(){
     $('ul.tabs').tabs();
   });
 
 
   const initiative = Initiatives.findOne({_id: FlowRouter.getParam("_id")});
 
-  Meteor.call('aggregateObjective', initiative.name);
+  // Meteor.call('aggregateObjective', initiative.name);
 
 });
 

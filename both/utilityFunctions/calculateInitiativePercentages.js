@@ -8,25 +8,29 @@ export const initiativesFunctionObject = {
     const netStats = initiativesFunctionObject.calcNet(0, initiative);
     return netStats.net_spendPercent;
   },
-  calculateDeliveryPercent: (initiative) => {
+  calculateDeliveryPercent: (initiative, index) => {
     let type;
-    if (initiative.lineItems[0].dealType === "CPC") {
+    if (initiative.lineItems[index].dealType === "CPC") {
       type = "clicks";
-    } else if (initiative.lineItems[0].dealType === "CPL") {
+    } else if (initiative.lineItems[index].dealType === "CPL") {
       type = "likes";
-    } else if (initiative.lineItems[0].dealType === "CPM") {
+    } else if (initiative.lineItems[index].dealType === "CPM") {
       type = "impressions";
+    } else if (initiative.lineItems[index].dealType === "CPVV") {
+      type = "videoViews";
     }
-    let totalQuantity = 0;
-    // get total quantity contracted
-    initiative.lineItems.forEach(el => {
-      if (el.quantity === "" || el.quantity === null) {
-        el.quantity = 0;
-      } else if (typeof el.quantity === "string") {
-        el.quantity = parseFloat(el.quantity);
-      }
-      totalQuantity = totalQuantity + el.quantity;
-    });
+
+    let totalQuantity = parseFloat(initiative.lineItems[index]['quantity']);
+
+    // initiative.lineItems.forEach(el => {
+    //   if (el.quantity === "" || el.quantity === null) {
+    //     el.quantity = 0;
+    //   } else if (typeof el.quantity === "string") {
+    //     el.quantity = parseFloat(el.quantity);
+    //   }
+    //   totalQuantity = totalQuantity + el.quantity;
+    // });
+
     if (! initiative.aggregateData) {
       return "N/A";
     } else {
