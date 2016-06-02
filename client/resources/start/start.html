@@ -9,7 +9,7 @@
         <div class="col s3">
           <label>Initiatives by Status (default is Active)</label>
           <select id="initiativeSelect" class="browser-default tooltipped" data-position="top" data-delay="50" data-tooltip="Can be combined with Owner">
-            <option value="" disabled selected>Choose your Initiatives</option>
+            <option value="" disabled selected>Choose Status</option>
             <option value="Active">Active</option>
             <option value="Ending Soon">Ending Soon</option>
             <option value="Recently Ended">Recently Ended</option>
@@ -57,8 +57,8 @@
           <label>Initiatives by Brand</label>
           <select id="brandSelect" class="browser-default">
             <option value="" disabled selected>Choose Brand</option>
-            {{#each getBrands}}
-              <option value="{{name}}">{{name}}</option>
+            {{#each brand in getBrands}}
+              <option value="{{brand.name}}">{{brand.name}}</option>
             {{/each}}
           </select>
         </div>

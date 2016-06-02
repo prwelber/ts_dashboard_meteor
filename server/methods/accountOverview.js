@@ -94,6 +94,8 @@ Meteor.publish('campaignBasicsList', function (opts) {
     const init = Initiatives.findOne({_id: opts._id});
     // lookup initiative and match campaigns to that
     return CampaignBasics.find({"data.initiative": init.name});
+  } else if (opts.page === "edit") {
+    return CampaignBasics.find();
   } else if (! opts) {
     return CampaignBasics.find({});
   } else if (opts.toString().length < 15) {

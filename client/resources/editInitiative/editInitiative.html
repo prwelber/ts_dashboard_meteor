@@ -217,16 +217,27 @@
             <label for="textarea1"></label>
           </div>
         </div>
-        <h2>Campaigns Within This Initiative</h2>
-        <div class="row">
-          <div class="col s4">
-            <div class="collection">
-              {{#each getCampaigns.names}}
-                <li class="collection-item">{{this}}</li>
-              {{/each}}
+        {{#if isReady "campaignBasicsList"}}
+          <h2>Campaigns Within This Initiative</h2>
+          <div class="row">
+            <div class="col s6">
+              <ul class="collection">
+                {{#each getCampaigns.names}}
+                <li class="collection-item">
+                  <div>{{this}}
+                    <a href="#!" class="secondary-content deleteCampaign">
+                      <i class="material-icons" data-name="{{this}}">delete</i>
+                    </a>
+                  </div>
+                </li>
+                {{/each}}
+              </ul>
             </div>
           </div>
-        </div>
+        {{else}}
+          <p>Loading...</p>
+        {{/if}}
+
         <a href="/admin/initiatives/{{_id}}/edit/campaigns">Edit Campaigns Associated with this Initiative</a>
         <br /><br />
         <button class="btn waves-effect waves-light" type="submit" name="action">Update Initiative</button>

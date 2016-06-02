@@ -239,6 +239,7 @@ Meteor.methods({
 
   },
   'removeCampaign': (initiative, campName, id) => {
+    console.log('removeCampaign running on server')
     Initiatives.update(
       {_id: initiative._id},
       {$pull: {
@@ -247,6 +248,12 @@ Meteor.methods({
       }
     });
     CampaignBasics.update(
+      {'data.name': campName},
+      {$set: {
+        'data.initiative': null
+      }
+    });
+    CampaignInsights.update(
       {'data.name': campName},
       {$set: {
         'data.initiative': null

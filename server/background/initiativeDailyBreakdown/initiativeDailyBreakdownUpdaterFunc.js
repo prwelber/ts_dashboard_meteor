@@ -31,7 +31,7 @@ export function dailyUpdate(array) {
         counter++;
         Meteor.clearInterval(setIntervalId);
       } else if ((dayBreakdown && dayBreakdown.data.inserted) && (moment(dayBreakdown.data.inserted, "MM-DD-YYYY hh:mm a").isAfter(moment(campaign.data.stop_time, moment.ISO_8601)))) {
-        console.log('no need to update old data')
+        console.log('old data')
         console.log('counter', counter);
         counter++;
 
