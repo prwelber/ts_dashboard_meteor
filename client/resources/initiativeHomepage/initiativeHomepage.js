@@ -308,7 +308,6 @@ Template.initiativeHomepage.helpers({
       }
     }
 
-
     return {
       chart: {
         zoomType: 'x'
@@ -635,8 +634,14 @@ Template.initiativeHomepage.helpers({
       }
     });
     return initiativeHomepageFunctions.objectiveCostPerChart(init, number, count);
+  },
+  aggregateChart: () => {
+    const init = Template.instance().templateDict.get('initiative');
+    return initiativeHomepageFunctions.makeAggregateChart(init);
   }
 });
+
+
 
 
 Template.initiativeHomepage.events({
@@ -661,10 +666,25 @@ Template.initiativeHomepage.events({
     const initiative = Template.instance().templateDict.get('initiative');
     const id = $(event.target).data("id")
     Meteor.call('deleteChange', initiative.name, id);
+  },
+  'submit #campaignAggregateForm': (event, instance) => {
+    event.preventDefault();
+    console.log(event.target.aggregate);
+    var thing = event.target.aggregate
+    console.log(thing)
+    console.log(thing[0])
+    console.log(thing[1])
+    console.log(thing[0].checked)
+    console.log(thing[1].checked)
+    console.log(typeof thing)
   }
 
 });
 
+
+
+
 Template.initiativeHomepage.onDestroyed(function () {
   $('#modal1').closeModal();
+  $('#modal2').closeModal();
 });

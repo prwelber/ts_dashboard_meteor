@@ -13,17 +13,13 @@ SyncedCron.add({
   name: "Initiative Aggregator",
 
   schedule: (parser) => {
-    return parser.text('at 8:00am');
+    return parser.text('every 30 minutes');
   },
 
   job: (time) => {
-    const inits = Initiatives.find().fetch();
-    const active = _.filter(inits, (el) => {
-      if (el.userActive) {
-        return el;
-      }
-    });
-    let names = _.map(active, (el) => {
+    const inits = Initiatives.find({userActive: true}).fetch();
+
+    let names = _.map(inits, (el) => {
       return el.name;
     });
     let activeInitiatives = _.flatten(names);
@@ -45,16 +41,12 @@ SyncedCron.add({
 SyncedCron.add({
   name: "Objective Aggregator",
   schedule: (parser) => {
-    return parser.text('at 10:38am');
+    return parser.text('every 30 minutes');
   },
   job: () => {
-    const inits = Initiatives.find().fetch();
-    const active = _.filter(inits, (el) => {
-      if (el.userActive) {
-        return el;
-      }
-    });
-    let names = _.map(active, (el) => {
+    const inits = Initiatives.find({userActive: true}).fetch();
+
+    let names = _.map(inits, (el) => {
       return el.name;
     });
     let activeInitiatives = _.flatten(names);

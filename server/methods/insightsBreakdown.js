@@ -14,7 +14,7 @@ Meteor.methods({
         let masterArray = [];
         let breakdown;
         try {
-            let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+'/insights?breakdowns=age,gender&access_token='+token+'', {});
+            let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+'/insights?breakdowns=age,gender&date_preset=lifetime&access_token='+token+'', {});
             breakdown = result
             breakdownArray.push(breakdown.data.data);
             // flatten to get rid of nested array
