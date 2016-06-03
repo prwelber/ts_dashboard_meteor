@@ -82,8 +82,10 @@ Template.editInitiativeCampaigns.onRendered(function () {
       // dragula throws off data on events, in this case were using the element
       // container and source on the 'drop' event
       function (el, container, source) {
-        const campName = $(el).text().trim()
+        const campName = $(el).text().trim();
+        console.log('campName', campName)
         const campaign = CampaignInsights.findOne({'data.campaign_name': campName});
+        console.log('campaign', campaign)
         let id;
         if (campaign) {
           id = campaign.data.campaign_id;

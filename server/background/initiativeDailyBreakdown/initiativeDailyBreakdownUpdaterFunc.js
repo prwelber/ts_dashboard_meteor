@@ -38,8 +38,6 @@ export function dailyUpdate(array) {
       } else {
 
         console.log('getDailyBreakdown background job running');
-        console.log('counter', counter);
-        console.log('campaign_id', array[counter]);
         // remove any old versions
         InsightsBreakdownsByDays.remove({'data.campaign_id': array[counter]});
 
@@ -51,10 +49,12 @@ export function dailyUpdate(array) {
         let breakdown;
         let result;
         try {
+          console.log('making http request')
           result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+array[counter]+'/insights?fields=date_start,date_stop,campaign_id,campaign_name,total_actions,impressions,spend,reach,ctr,cpm,cpp,actions,cost_per_action_type&time_increment=1&access_token='+token+'', {});
         } catch(e) {
           console.log("error with HTTP call:", e);
           Meteor.clearInterval(setIntervalId);
+          SyncedCron.stop();
         }
 
         breakdown = result;
@@ -62,11 +62,13 @@ export function dailyUpdate(array) {
         dailyBreakdownArray.push(breakdown.data.data);
         while (true) {
             try {
+                console.log('making http request')
                 breakdown = HTTP.call('GET', breakdown.data.paging['next'], {});
                 dailyBreakdownArray.push(breakdown.data.data);
             } catch(e) {
                 console.log('no more pages or error in while true loop', e);
                 break;
+
             }
         }
           // flattens the array so I can loop over the whole thing at once
@@ -126,7 +128,6 @@ export function dailyUpdate(array) {
             });
             // add check for when campaign_name is null
             if (data && data.campaign_name) {
-              console.log('pairing initiative and daily inight breakdown');
               let inits = Initiatives.find(
                 {$text: { $search: data.campaign_name}},
                 {
@@ -159,6 +160,6 @@ export function dailyUpdate(array) {
         }
         counter++;
       } // end of else block in if (counter >= array.length)
-    }, 3500); // end of Meteor.setInterval
+    }, 4000); // end of Meteor.setInterval
   } // end if if(array)
 }

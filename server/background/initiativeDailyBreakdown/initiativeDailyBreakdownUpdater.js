@@ -13,11 +13,11 @@ SyncedCron.config({
 });
 
 SyncedCron.add({
-  name: "Initiative Updater",
+  name: "Daily Breakdown Updater",
 
   schedule: (parser) => {
     // return parser.text('at 7:30am');
-    return parser.text('at 3:50pm');
+    return parser.text('every 55 seconds');
   },
 
   job: (time) => {
