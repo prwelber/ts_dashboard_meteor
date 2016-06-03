@@ -26,6 +26,9 @@ Template.initiativeHomepage.onCreated(function () {
 
   const campaigns = CampaignInsights.find({'data.initiative': initiative.name}).fetch();
   this.templateDict.set('campaigns', campaigns);
+
+  this.templateDictionary = new ReactiveDict();
+  this.templateDictionary.set('chartData', false);
 });
 
 Template.initiativeHomepage.onRendered(function () {
@@ -635,12 +638,30 @@ Template.initiativeHomepage.helpers({
     });
     return initiativeHomepageFunctions.objectiveCostPerChart(init, number, count);
   },
-  aggregateChart: () => {
+  aggregateDeliveryChart: () => {
     const init = Template.instance().templateDict.get('initiative');
-    return initiativeHomepageFunctions.makeAggregateChart(init);
+    const chartData = Template.instance().templateDictionary.get('chartData');
+    if (!chartData) {
+      return "";
+    } else if (chartData) {
+      return chartData.deliveryObject;
+    }
+  },
+  aggregateCostPerChart: () => {
+    const init = Template.instance().templateDict.get('initiative');
+    const chartData = Template.instance().templateDictionary.get('chartData');
+    if (!chartData) {
+      return "";
+    } else if (chartData) {
+      return chartData.costPerObject;
+    }
   }
+
 });
 
+
+
+// -------------------------------- EVENTS -------------------------------- //
 
 
 
@@ -667,16 +688,31 @@ Template.initiativeHomepage.events({
     const id = $(event.target).data("id")
     Meteor.call('deleteChange', initiative.name, id);
   },
-  'submit #campaignAggregateForm': (event, instance) => {
+  'submit #campaignAggregateForm': (event, template) => {
     event.preventDefault();
-    console.log(event.target.aggregate);
-    var thing = event.target.aggregate
-    console.log(thing)
-    console.log(thing[0])
-    console.log(thing[1])
-    console.log(thing[0].checked)
-    console.log(thing[1].checked)
-    console.log(typeof thing)
+    const checkedInputs = event.target.aggregate
+    const idArray = [];
+
+    if (checkedInputs.length >= 2) {
+      for (let input of checkedInputs) {
+        if (input.checked) {
+          idArray.push(input.id)
+        }
+      }
+    } else {
+      idArray.push(checkedInputs.id);
+    }
+
+    const initiative = Template.instance().templateDict.get('initiative');
+    var meteorCall = Promise.promisify(Meteor.call);
+
+    meteorCall('campaignAggregatorChart', idArray, initiative)
+    .then(function (returnedData) {
+      template.templateDictionary.set('chartData', returnedData);
+      console.log('from templatedictionary', template.templateDictionary.get('chartData'))
+    }).catch(function (err) {
+      console.log('Error in campaignAggregatorChart promise:', err)
+    });
   }
 
 });

@@ -217,14 +217,14 @@ include charting for each lineItem and definitely aggregations --}}
   {{/if}}
   </div>
 
-  {{!------------- End of modal1 Initiative Stats -------------}}
+  {{!--------------------- End of modal1 Initiative Stats ---------------------}}
 
 
 
 
-  {{!---------- Beginning of modal2 aggregate stats -----------}}
+  {{!------------------ Beginning of modal2 aggregate stats -------------------}}
 
-  <div id="modal2" class="modal" style="width: 75%;">
+  <div id="modal2" class="modal" style="width: 95%;">
     <div class="modal-content">
       <div class="row">
         <div class="col s12">
@@ -273,7 +273,14 @@ include charting for each lineItem and definitely aggregations --}}
             {{/each}}
             <input type="submit" value="Aggregate Chosen Campaigns" class="btn waves-effect waves-light">
           </form>
-          {{!-- {{> highchartsHelper chartId="aggregateChart" chartWidth="100%" chartHeight="70%" chartObject=aggregateChart}} --}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          {{> highchartsHelper chartId="aggregateDeliveryChart" chartWidth="100%" chartHeight="100%" chartObject=aggregateDeliveryChart}}
+        </div>
+        <div class="col s12">
+          {{> highchartsHelper chartId="aggregateCostPerChart" chartWidth="100%" chartHeight="100%" chartObject=aggregateCostPerChart}}
         </div>
       </div>
     </div>

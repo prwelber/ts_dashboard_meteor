@@ -13,7 +13,8 @@ SyncedCron.add({
   name: "Initiative Aggregator",
 
   schedule: (parser) => {
-    return parser.text('every 30 minutes');
+    // return parser.text('at 12:54pm');
+    return parser.text('every 15 minutes');
   },
 
   job: (time) => {

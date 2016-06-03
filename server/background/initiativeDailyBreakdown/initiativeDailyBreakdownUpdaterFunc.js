@@ -30,11 +30,6 @@ export function dailyUpdate(array) {
         console.log('clearInterval');
         counter++;
         Meteor.clearInterval(setIntervalId);
-      } else if ((dayBreakdown && dayBreakdown.data.inserted) && (moment(dayBreakdown.data.inserted, "MM-DD-YYYY hh:mm a").isAfter(moment(campaign.data.stop_time, moment.ISO_8601)))) {
-        console.log('old data')
-        console.log('counter', counter);
-        counter++;
-
       } else {
 
         console.log('getDailyBreakdown background job running');
@@ -50,9 +45,9 @@ export function dailyUpdate(array) {
         let result;
         try {
           console.log('making http request')
-          result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+array[counter]+'/insights?fields=date_start,date_stop,campaign_id,campaign_name,total_actions,impressions,spend,reach,ctr,cpm,cpp,actions,cost_per_action_type&time_increment=1&access_token='+token+'', {});
+          result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+array[counter]+'/insights?fields=date_start,date_stop,campaign_id,campaign_name,total_actions,impressions,spend,reach,ctr,cpm,cpp,actions,cost_per_action_type&time_increment=1&date_preset=lifetime&access_token='+token+'', {});
         } catch(e) {
-          console.log("error with HTTP call:", e);
+          console.log("error with HTTP call - clearInterval and stop cron job:", e);
           Meteor.clearInterval(setIntervalId);
           SyncedCron.stop();
         }
@@ -160,6 +155,6 @@ export function dailyUpdate(array) {
         }
         counter++;
       } // end of else block in if (counter >= array.length)
-    }, 4000); // end of Meteor.setInterval
+    }, 5000); // end of Meteor.setInterval
   } // end if if(array)
 }

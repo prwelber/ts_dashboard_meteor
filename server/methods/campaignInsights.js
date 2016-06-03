@@ -169,6 +169,7 @@ Meteor.publish('campaignInsightList', function (opts) {
       return CampaignInsights.find({}); //publish all insights
     } else if (/[a-z0-9]{16,18}/i.test(opts) === true) {
       const init = Initiatives.findOne({_id: opts});
+      console.log('init.name from publish func for insights', init.name)
       return CampaignInsights.find({'data.initiative': init.name});
     } else {
       return CampaignInsights.find({'data.campaign_id': opts});

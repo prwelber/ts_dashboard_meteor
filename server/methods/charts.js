@@ -417,139 +417,270 @@ Meteor.methods({
     return {male: finalMale, female: finalFemale};
 
   },
-  aggregateChart: (initiative) => {
+  campaignAggregatorChart: (idArray, initiative) => {
 
-    var arr = [];
+    console.log(idArray, initiative.name);
 
-    initiative.campaign_ids.forEach(el => {
-      let days = InsightsBreakdownsByDays.find(
-        {'data.campaign_id': el},
-        { fields: {
-          'data.date_start': 1,
-          'data.impressions': 1,
-          'data.clicks': 1,
-          'data.like': 1,
-          'data.spend': 1,
-          'data.campaign_name': 1,
-          'data.cost_per_like': 1,
-          'data.cost_per_video_view': 1,
-          'data.cpc': 1,
-          'data.cpm': 1,
-          'data.video_view': 1,
-          _id: 0
-          }
-        }).fetch()
-      days ? arr.push(days) : '';
-    });
+    // TODO - grab all daily insights or aggregate them and boil it down to chartable data
+    // can even return the highcharts data object here and send it back to client
+    // can grab parameters from the initiative
 
-    arr = _.flatten(arr);
-
-    // need to sort this array by date_start
-    // arr = _.sortBy(arr, function (el){ return moment(el.data.date_start, "MM-DD-YYYY").format("MM-DD-YYYY") });
-
-    arr = _.sortBy(arr, function (el){ return moment(el.data.date_start, moment.ISO_8601)});
-    // console.log(arr[0])
-    // console.log(arr[1])
-    // console.log(arr[0], arr[1], arr[2], arr[3]);
-
-
-
-    // need to account for no likes or video views - so set both to zero if
-    // doesn't exist
-    arr.forEach(el => {
-      if (el.data.like === undefined || el.data.like === NaN || ! el.data.like) {
-        el.data.like = 0;
+    const days = InsightsBreakdownsByDays.find(
+      {'data.campaign_id': {$in: idArray}}, 
+      {fields: {
+        'data.date_start': 1,
+        'data.impressions': 1,
+        'data.spend': 1,
+        'data.cpm': 1,
+        'data.like': 1,
+        'data.video_view': 1,
+        'data.cost_per_like': 1,
+        'data.cost_per_video_view': 1,
+        'data.clicks': 1,
+        'data.cpc': 1,
+        '_id': 0
       }
-      if (el.data.video_view === undefined || el.data.video_view === NaN || ! el.data.video_view) {
-        el.data.video_view = 0;
-      }
-      if (el.data.cost_per_like === undefined || el.data.cost_per_like === NaN || ! el.data.cost_per_like) {
-        el.data.cost_per_like = 0;
-      }
-      if (el.data.cost_per_video_view === undefined || el.data.cost_per_video_view === NaN || ! el.data.cost_per_video_view) {
-        el.data.cost_per_video_view = 0;
-      }
-    });
+    }).fetch();
+    // now we have all the days in one array
 
-    /*
-    In the below code block, we are saying that if the temp obj does not have
-    a key that is equal to the start date of the object being iterated over,
-    set a key equal to start date and then set keys and values for all the
-    required values (impressions, clicks, etc..) and if there is already that
-    start date key, then just add the required values onto the already existing
-    values. The next if statement has it's own explainer below.
-    */
-
-    let otherArray = [];
-
-    try {
-
-      let temp = {}
-      let obj = null;
-
-      for (var i = 0; i < arr.length; i++) {
-        obj = arr[i].data;
-
-        if (! temp[obj.date_start]) {
-          temp['date'] = obj.date_start;
-          temp['impressions'] = obj.impressions;
-          temp['clicks'] = obj.clicks;
-          temp['spend'] = obj.spend;
-          temp['like'] = obj.like || 0;
-          temp['cost_per_like'] = obj.cost_per_like;
-          temp['cost_per_video_view'] = obj.cost_per_video_view;
-          temp['cpm'] = obj.cpm;
-          temp['cpc'] = obj.cpc;
-          temp['video_view'] = obj.video_view;
-        } else {
-          temp['impressions'] += obj.impressions;
-          temp['clicks'] += obj.clicks;
-          temp['spend'] += obj.spend;
-          temp['like'] += obj.like;
-          temp['video_view'] += obj.video_view;
-          temp['cpm'] = temp.spend / (temp.impressions / 1000);
-          temp['cpc'] = temp.spend / temp.clicks;
-          temp['cost_per_like'] = temp.spend / temp.like;
+    // loop over array, assign date_start and data to an empty object key/value, if we hit that again, add to array
+    let combinedArray = [];
+    let obj = {}
+    days.forEach((day) => {
+      
+      if (!obj[day.data.date_start]) {
+        obj[day.data.date_start] = {
+          date_start: day.data.date_start,
+          impressions: parseInt(day.data.impressions),
+          spend: accounting.unformat(day.data.spend),
+          like: day.data.like || 0,
+          video_view: day.data.video_view || 0,
+          clicks: day.data.clicks || 0
         }
-        /*
-        this next if statement says essentially: if the object start date is
-        not equal to the start date of the following object --> arr[i + 1], push the temp obj
-        into the otherArray and reset the temp object
-        */
-
-        /*
-        at the end, arr[i+1] will be undefined, so needed to account for that scenario
-        */
-        if (arr[i+1] === undefined || arr[i].data.date_start !== arr[i+1].data.date_start) {
-          otherArray.push(temp);
-          temp = {};
-        }
+      } else if (obj[day.data.date_start]) {
+        obj[day.data.date_start]['impressions'] += parseInt(day.data.impressions);
+        obj[day.data.date_start]['spend'] += accounting.unformat(day.data.spend);
+        obj[day.data.date_start]['like'] += day.data.like || 0;
+        obj[day.data.date_start]['video_view'] += day.data.video_view || 0;
+        obj[day.data.date_start]['clicks'] += day.data.clicks;
       }
-    } catch(e) {
-      console.log("Error in charts.js, aggregateChart function:", e);
+        
+    });
+    
+    for (let key in obj) {
+      combinedArray.push(obj[key])
     }
 
-    // make sure all values are null so the charts reflect that
-    otherArray.forEach(el => {
-      if (el.impressions === null) {
-        el.spend = null;
-        el.like = null;
-        el.cost_per_like = null;
-        el.cost_per_video_view = null;
-        el.cpm = null;
-        el.cpc = null;
-      }
-      if (el.cost_per_like === Infinity) {
-        el.cost_per_like = 0;
-      }
+    combinedArray = _.sortBy(combinedArray, 'date_start')
+    // array is in order
+
+    // need to make cost per action for each object in array
+
+    combinedArray.forEach((day) => {
+      day['cpm'] = day.spend / (day.impressions / 1000);
+      day['cpc'] = day.spend / day.clicks;
+      day['cpl'] = day.spend / day.like;
+      day['cpvv'] = day.spend / day.video_view;
     });
 
-    //make labels here...
-    const LABEL_ARRAY = [];
-    arr.forEach(el => {
-      LABEL_ARRAY.push(el.data.date_start);
+    console.log(combinedArray[0], combinedArray[1], combinedArray[2], combinedArray[3]);
+
+
+    // need to get data into two formats - one for delivery chart and one for cost per chart
+    // delivery chart means arrays of impressions, clicks, likes, video_views and spend (added up each day) over days
+    // cost per chart means arrays of cpm, cpc, cpl, cpvv over days
+
+    // ------------------------ delivery chart ----------------------- //
+
+    const deliveryImpressions = [];
+    const deliveryClicks = [];
+    const deliveryLikes = [];
+    const deliveryVideoViews = [];
+    const deliverySpend = [];
+    const deliveryDays = [];
+    let impressions = 0;
+    let clicks = 0;
+    let likes = 0;
+    let video_views = 0;
+    let spend = 0;
+
+    combinedArray.forEach((day) => {
+      impressions += day.impressions;
+      deliveryImpressions.push(impressions);
+      clicks += day.clicks;
+      deliveryClicks.push(clicks);
+      likes += day.like;
+      deliveryLikes.push(likes);
+      video_views += day.video_view;
+      deliveryVideoViews.push(video_views);
+      spend += day.spend;
+      deliverySpend.push(spend);
+      deliveryDays.push(moment(day.date_start, moment.ISO_8601).format("MM-DD"));
     });
 
+    const deliveryObject = {
+          chart: {
+            zoomType: 'x'
+          },
+          // TODO FIX THIS
+          title: {
+            text: "Delivery" 
+          },
+
+          // subtitle: {
+          //   text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+          // },
+
+          tooltip: {
+            shared: true,
+            crosshairs: true
+          },
+          xAxis: {
+            // type: 'datetime',
+            categories: deliveryDays,
+            title: {
+                text: 'Days'
+            }
+          },
+
+          yAxis: {
+            title: {
+              text: "Amount"
+            },
+            plotLines: [{
+              value: 0,
+              width: 1,
+              color: '#808080'
+            }]
+          },
+
+          plotOptions: { // removes the markers along the plot lines
+            series: {
+              marker: {
+                enabled: false
+              }
+            }
+          },
+
+          // legend: {
+          //   borderWidth: 0,
+          //   layout: 'horizontal',
+          //   backgroundColor: '#FFFFFF',
+          //   align: 'left',
+          //   verticalAlign: 'top',
+          //   floating: true,
+          //   x: 25,
+          //   y: 50
+          // },
+
+          series: [{
+            name: 'Impressions',
+            data: deliveryImpressions,
+            color: '#90caf9'
+          }, {
+            name: 'Clicks',
+            data: deliveryClicks,
+            color: '#0d47a1'
+          }, {
+            name: 'Likes',
+            data: deliveryLikes,
+            color: '#b71c1c'
+          }, {
+            name: 'Video Views',
+            data: deliveryVideoViews,
+            color: '#ef9a9a'
+          }, {
+            name: 'Spend',
+            data: deliverySpend,
+            color: '#191919'
+          }]
+        } // end of return
+
+    // ------------------------ cost per chart ------------------------ //
+
+    const cpmArray = [];
+    const cpcArray = [];
+    const cplArray = [];
+    const cpvvArray = [];
+
+    combinedArray.forEach((day) => {
+      cpmArray.push(day.cpm);
+      cpcArray.push(day.cpc);
+      day.cpl === Infinity ? cplArray.push(null) : cplArray.push(day.cpl);
+      day.cpvv === Infinity ? cpvvArray.push(null) : cpvvArray.push(day.cpvv);
+    });
+
+    const costPerObject = {
+          chart: {
+            zoomType: 'x'
+          },
+          // TODO FIX THIS
+          title: {
+            text: "Cost Per"
+          },
+
+          // subtitle: {
+          //   text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+          // },
+
+          tooltip: {
+            valueSuffix: "",
+            shared: true,
+            crosshairs: true
+          },
+          xAxis: {
+            // type: 'datetime',
+            categories: deliveryDays,
+            title: {
+                text: 'Days'
+            }
+          },
+
+          yAxis: {
+            title: {
+              text: "Amount"
+            },
+            plotLines: [{
+              value: 1,
+              width: 3,
+              color: '#ff0000',
+              zIndex: 10,
+              label:{text:'Price'}
+            }]
+          },
+
+          plotOptions: { // removes the markers along the plot lines
+            series: {
+              marker: {
+                enabled: false
+              }
+            }
+          },
+
+          series: [{
+            name: "cpm",
+            data: cpmArray,
+            color: '#0d47a1'
+          }, {
+            name: "cpc",
+            data: cpcArray,
+            color: '#ff1b6b'
+          }, {
+            name: "cpl",
+            data: cplArray,
+            color: '#9600ff'
+          }, {
+            name: "cpvv",
+            data: cpvvArray,
+            color: '#2ddbb3'
+          }]
+        } // end of return
+
+
+    return {
+      deliveryObject: deliveryObject, 
+      costPerObject: costPerObject
+    }
 
   }
 });
