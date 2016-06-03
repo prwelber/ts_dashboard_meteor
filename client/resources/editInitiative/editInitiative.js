@@ -1,9 +1,10 @@
-import { Meteor } from 'meteor/meteor'
-import { FlowRouter} from 'meteor/kadira:flow-router'
-import { Moment } from 'meteor/momentjs:moment'
-import { Materialize } from 'meteor/materialize:materialize'
-import MasterAccounts from '/collections/MasterAccounts'
-import Initiatives from '/collections/Initiatives'
+import { Meteor } from 'meteor/meteor';
+import { FlowRouter} from 'meteor/kadira:flow-router';
+import { Moment } from 'meteor/momentjs:moment';
+import { Materialize } from 'meteor/materialize:materialize';
+import MasterAccounts from '/collections/MasterAccounts';
+import Initiatives from '/collections/Initiatives';
+import CampaignBasics from '/collections/CampaignBasics';
 
 
 
@@ -16,64 +17,69 @@ Template.editInitiative.onRendered(function () {
 });
 
 Template.editInitiative.helpers({
-    'getInitiative': function () {
-      let init =  Initiatives.findOne({_id: FlowRouter.current().params._id});
-      init.startDate = mastFunc.time(init.startDate);
-      init.endDate = mastFunc.time(init.endDate);
-      return init;
-    },
-    'getBrands': function () {
-      return MasterAccounts.find()
-    },
-    'getCampaigns': function () {
-      const init =  Initiatives.findOne({_id: FlowRouter.current().params._id});
-      return {names: init.campaign_names, ids: init.campaign_ids};
-    },
-    'getCampaignIds': function () {
-      const init =  Initiatives.findOne({_id: FlowRouter.current().params._id});
-      return init.campaign_ids;
-    },
-    'costPlusChecked': (indexNum) => {
-      const init =  Initiatives.findOne({_id: FlowRouter.current().params._id});
-      if (init.lineItems[indexNum].cost_plus === true) {
-        return "checked";
-      }
-    },
-    'percentTotalChecked': (num) => {
-      const init =  Initiatives.findOne({_id: FlowRouter.current().params._id});
-      if (init.lineItems[num].percent_total === true) {
-        return "checked";
-      }
-    },
-    'isClientChecked': (num) => {
-      const init =  Initiatives.findOne({_id: FlowRouter.current().params._id});
-      if (init.lineItems[num].is_client === true) {
-        return "checked";
-      }
-    },
-    'addOne': function (num) {
-      return num + 1;
-    },
-    'dateFormatter': (date) => {
-      if (date === null || date === "") {
-        return "";
-      } else {
-        return moment(date, moment.ISO_8601).format("MM-DD-YYYY hh:mm a");
-      }
-
-    },
-    'activeChecked': () => {
-      const init =  Initiatives.findOne({_id: FlowRouter.current().params._id});
-      if (init.userActive) {
-        return "checked";
-      }
-    },
-    dupObjectivesChecked: () => {
-      const init =  Initiatives.findOne({_id: FlowRouter.current().params._id});
-      if (init.dupObjectives) {
-        return "checked";
-      }
+  isReady: (sub) => {
+    if (FlowRouter.subsReady(sub)) {
+      return true;
+    };
+  },
+  'getInitiative': function () {
+    let init =  Initiatives.findOne({_id: FlowRouter.getParam('_id')});
+    init.startDate = mastFunc.time(init.startDate);
+    init.endDate = mastFunc.time(init.endDate);
+    return init;
+  },
+  'getBrands': function () {
+    return MasterAccounts.find();
+  },
+  'getCampaigns': function () {
+    const init =  Initiatives.findOne({_id: FlowRouter.getParam('_id')});
+    return {names: init.campaign_names, ids: init.campaign_ids};
+  },
+  'getCampaignIds': function () {
+    const init =  Initiatives.findOne({_id: FlowRouter.getParam('_id')});
+    return init.campaign_ids;
+  },
+  'costPlusChecked': (indexNum) => {
+    const init =  Initiatives.findOne({_id: FlowRouter.getParam('_id')});
+    if (init.lineItems[indexNum].cost_plus === true) {
+      return "checked";
     }
+  },
+  'percentTotalChecked': (num) => {
+    const init =  Initiatives.findOne({_id: FlowRouter.getParam('_id')});
+    if (init.lineItems[num].percent_total === true) {
+      return "checked";
+    }
+  },
+  'isClientChecked': (num) => {
+    const init =  Initiatives.findOne({_id: FlowRouter.getParam('_id')});
+    if (init.lineItems[num].is_client === true) {
+      return "checked";
+    }
+  },
+  'addOne': function (num) {
+    return num + 1;
+  },
+  'dateFormatter': (date) => {
+    if (date === null || date === "") {
+      return "";
+    } else {
+      return moment(date, moment.ISO_8601).format("MM-DD-YYYY hh:mm a");
+    }
+
+  },
+  'activeChecked': () => {
+    const init =  Initiatives.findOne({_id: FlowRouter.getParam('_id')});
+    if (init.userActive) {
+      return "checked";
+    }
+  },
+  dupObjectivesChecked: () => {
+    const init =  Initiatives.findOne({_id: FlowRouter.getParam('_id')});
+    if (init.dupObjectives) {
+      return "checked";
+    }
+  }
 });
 
 Template.editInitiative.events({
@@ -136,6 +142,21 @@ Template.editInitiative.events({
             if (result) {
               Materialize.toast('Success! You have updated the initiative.', 5000);
             }
+        });
+      }
+    },
+    "click .deleteCampaign": (event, instance) => {
+      const init = Initiatives.findOne({_id: FlowRouter.getParam('_id')});
+      console.log(event.target);
+      console.log(event.target.dataset.name);
+      const camp = CampaignBasics.findOne({'data.name': event.target.dataset.name});
+
+      if (camp && init) {
+        console.log('meteor call to removeCampaign')
+        Meteor.call('removeCampaign', init, camp.data.name, camp.data.campaign_id, (err, result) => {
+          if (result) {
+            console.log('great success wahwahweewah!')
+          }
         });
       }
     }

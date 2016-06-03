@@ -17,8 +17,6 @@ Template.accounts.events({
   'click .account-link': function () {
     if (Session.get('id') == Meteor.userId()) {
         console.log('you are propertly authenticated')
-    } else {
-        mastFunc.addToBox("You are not authenticated.")
     }
   }
 });

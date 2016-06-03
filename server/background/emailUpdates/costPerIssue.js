@@ -19,7 +19,7 @@ SyncedCron.add({
 
   schedule: (parser) => {
     // return parser.text('at 9:45am');
-    return parser.text('at 6:06pm');
+    return parser.text('at 1:16pm');
   },
 
   job: () => {

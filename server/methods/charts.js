@@ -416,5 +416,140 @@ Meteor.methods({
     }
     return {male: finalMale, female: finalFemale};
 
+  },
+  aggregateChart: (initiative) => {
+
+    var arr = [];
+
+    initiative.campaign_ids.forEach(el => {
+      let days = InsightsBreakdownsByDays.find(
+        {'data.campaign_id': el},
+        { fields: {
+          'data.date_start': 1,
+          'data.impressions': 1,
+          'data.clicks': 1,
+          'data.like': 1,
+          'data.spend': 1,
+          'data.campaign_name': 1,
+          'data.cost_per_like': 1,
+          'data.cost_per_video_view': 1,
+          'data.cpc': 1,
+          'data.cpm': 1,
+          'data.video_view': 1,
+          _id: 0
+          }
+        }).fetch()
+      days ? arr.push(days) : '';
+    });
+
+    arr = _.flatten(arr);
+
+    // need to sort this array by date_start
+    // arr = _.sortBy(arr, function (el){ return moment(el.data.date_start, "MM-DD-YYYY").format("MM-DD-YYYY") });
+
+    arr = _.sortBy(arr, function (el){ return moment(el.data.date_start, moment.ISO_8601)});
+    // console.log(arr[0])
+    // console.log(arr[1])
+    // console.log(arr[0], arr[1], arr[2], arr[3]);
+
+
+
+    // need to account for no likes or video views - so set both to zero if
+    // doesn't exist
+    arr.forEach(el => {
+      if (el.data.like === undefined || el.data.like === NaN || ! el.data.like) {
+        el.data.like = 0;
+      }
+      if (el.data.video_view === undefined || el.data.video_view === NaN || ! el.data.video_view) {
+        el.data.video_view = 0;
+      }
+      if (el.data.cost_per_like === undefined || el.data.cost_per_like === NaN || ! el.data.cost_per_like) {
+        el.data.cost_per_like = 0;
+      }
+      if (el.data.cost_per_video_view === undefined || el.data.cost_per_video_view === NaN || ! el.data.cost_per_video_view) {
+        el.data.cost_per_video_view = 0;
+      }
+    });
+
+    /*
+    In the below code block, we are saying that if the temp obj does not have
+    a key that is equal to the start date of the object being iterated over,
+    set a key equal to start date and then set keys and values for all the
+    required values (impressions, clicks, etc..) and if there is already that
+    start date key, then just add the required values onto the already existing
+    values. The next if statement has it's own explainer below.
+    */
+
+    let otherArray = [];
+
+    try {
+
+      let temp = {}
+      let obj = null;
+
+      for (var i = 0; i < arr.length; i++) {
+        obj = arr[i].data;
+
+        if (! temp[obj.date_start]) {
+          temp['date'] = obj.date_start;
+          temp['impressions'] = obj.impressions;
+          temp['clicks'] = obj.clicks;
+          temp['spend'] = obj.spend;
+          temp['like'] = obj.like || 0;
+          temp['cost_per_like'] = obj.cost_per_like;
+          temp['cost_per_video_view'] = obj.cost_per_video_view;
+          temp['cpm'] = obj.cpm;
+          temp['cpc'] = obj.cpc;
+          temp['video_view'] = obj.video_view;
+        } else {
+          temp['impressions'] += obj.impressions;
+          temp['clicks'] += obj.clicks;
+          temp['spend'] += obj.spend;
+          temp['like'] += obj.like;
+          temp['video_view'] += obj.video_view;
+          temp['cpm'] = temp.spend / (temp.impressions / 1000);
+          temp['cpc'] = temp.spend / temp.clicks;
+          temp['cost_per_like'] = temp.spend / temp.like;
+        }
+        /*
+        this next if statement says essentially: if the object start date is
+        not equal to the start date of the following object --> arr[i + 1], push the temp obj
+        into the otherArray and reset the temp object
+        */
+
+        /*
+        at the end, arr[i+1] will be undefined, so needed to account for that scenario
+        */
+        if (arr[i+1] === undefined || arr[i].data.date_start !== arr[i+1].data.date_start) {
+          otherArray.push(temp);
+          temp = {};
+        }
+      }
+    } catch(e) {
+      console.log("Error in charts.js, aggregateChart function:", e);
+    }
+
+    // make sure all values are null so the charts reflect that
+    otherArray.forEach(el => {
+      if (el.impressions === null) {
+        el.spend = null;
+        el.like = null;
+        el.cost_per_like = null;
+        el.cost_per_video_view = null;
+        el.cpm = null;
+        el.cpc = null;
+      }
+      if (el.cost_per_like === Infinity) {
+        el.cost_per_like = 0;
+      }
+    });
+
+    //make labels here...
+    const LABEL_ARRAY = [];
+    arr.forEach(el => {
+      LABEL_ARRAY.push(el.data.date_start);
+    });
+
+
   }
 });

@@ -18,8 +18,8 @@ SyncedCron.add({
   name: "Calculate Net Numbers",
 
   schedule: (parser) => {
-    // return parser.text('at 6:02pm')
-    return parser.text('every 30 minutes');
+    // return parser.text('at 10:47am')
+    return parser.text('every 10 minutes');
   },
 
   job: () => {
@@ -61,10 +61,14 @@ SyncedCron.add({
           netNumbs['net_cpvv'] = netNumbs.spend / init[objective]['videoViews'];
           const dataToSet = {};
           dataToSet[objective+".net"] = netNumbs;
-          Initiatives.update(
-            {name: init.name},
-            {$set: dataToSet}
-          );
+          try {
+            Initiatives.update(
+              {name: init.name},
+              {$set: dataToSet}
+            );
+          } catch(e) {
+            console.log(e);
+          }
         }
 
         // if percent total deal
@@ -81,10 +85,14 @@ SyncedCron.add({
           netNumbs['net_cpvv'] = netNumbs.spend / init[objective]['videoViews'];
           const dataToSet = {};
           dataToSet[objective+".net"] = netNumbs;
-          Initiatives.update(
-            {name: init.name},
-            {$set: dataToSet}
-          );
+          try {
+            Initiatives.update(
+              {name: init.name},
+              {$set: dataToSet}
+            );
+          } catch(e) {
+            console.log(e);
+          }
         }
       }); // end of init.lineItems.forEach((item))
     }); // end of inits.forEach((init))

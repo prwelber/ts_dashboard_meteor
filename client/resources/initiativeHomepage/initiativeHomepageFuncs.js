@@ -3,6 +3,7 @@ import CampaignInsights from '/collections/CampaignInsights'
 import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
 import range from 'moment-range';
 import moment from 'moment';
+const Promise = require('bluebird');
 
 const deliveryTypeChecker = function deliveryTypeChecker (init, index) {
   if (init.lineItems[index].dealType === "CPM") {
@@ -306,15 +307,12 @@ export const initiativeHomepageFunctions = {
     let insights;
     let allDays = InsightsBreakdownsByDays.find({'data.initiative': init.name}, {sort: {'data.date_start': 1}}).fetch();
     // remove any dailyInsights with a different objective
-    console.log(objective);
-    console.log(allDays.length)
     allDays.forEach((day, index) => {
-      console.log(day.data.objective)
       if (day.data.objective !== objective) {
         allDays.splice(index, 1);
       }
     });
-    console.log(allDays.length)
+
 
     let obj = {};
     var typeMap = new Map();
@@ -358,8 +356,6 @@ export const initiativeHomepageFunctions = {
       spendArray.push(spendCount);
       spendCount += accounting.unformat(value);
     }
-    // console.log('spendArray', spendArray);
-
 
     // ----------- make ideal spend and delivery ------------ //
     const avg = parseFloat(init.lineItems[index].quantity) / daysDiff;
@@ -587,5 +583,96 @@ export const initiativeHomepageFunctions = {
       }]
     } // end of return
 
+  },
+  makeAggregateChart: (initiative) => {
+
+    // var call = Promise.promisify(Meteor.call);
+
+    // call('aggregateChart', initiative)
+    // .then(function (res) {
+    //   console.log(res)
+    //   // Session.set('res', res);
+    //   // totes = res[0][type]
+    // }).catch(function (err) {
+    //   console.log('uh no error', err)
+    // });
+
+
+
+
+
+
+
+    // return {
+    //   chart: {
+    //     zoomType: 'x'
+    //   },
+    //   // TODO FIX THIS
+    //   title: {
+    //     text: "Delivery for " + objective
+    //   },
+
+    //   subtitle: {
+    //     text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+    //   },
+
+    //   tooltip: {
+    //     valueSuffix: " " + type,
+    //     shared: true,
+    //     crosshairs: true
+    //   },
+    //   xAxis: {
+    //     // type: 'datetime',
+    //     categories: xAxisArray
+    //   },
+
+    //   yAxis: {
+    //     title: {
+    //       text: type
+    //     },
+    //     plotLines: [{
+    //       value: 0,
+    //       width: 1,
+    //       color: '#808080'
+    //     }]
+    //   },
+
+    //   plotOptions: { // removes the markers along the plot lines
+    //     series: {
+    //       marker: {
+    //         enabled: false
+    //       }
+    //     }
+    //   },
+
+    //   legend: {
+    //     borderWidth: 0,
+    //     layout: 'horizontal',
+    //     backgroundColor: '#FFFFFF',
+    //     align: 'left',
+    //     verticalAlign: 'top',
+    //     floating: true,
+    //     x: 25,
+    //     y: 50
+    //   },
+
+    //   series: [{
+    //     name: 'Ideal Distribution',
+    //     data: avgDeliveryArray,
+    //     color: '#90caf9'
+    //   }, {
+    //     name: 'Real Distribution',
+    //     data: typeArray,
+    //     color: '#0d47a1'
+    //   }, {
+    //     name: 'Spend',
+    //     data: spendArray,
+    //     color: '#b71c1c'
+    //   }, {
+    //     name: 'Ideal Spend',
+    //     data: avgSpendArray,
+    //     color: '#ef9a9a'
+    //   }]
+    // } // end of return
   }
 };

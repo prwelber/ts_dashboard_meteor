@@ -17,6 +17,7 @@
               <li><a href="/admin">Admin</a></li>
               {{#if whatRoute "initiativeHomepage"}}
                 <li><a id="view-initiative-stats-modal" class="modal-trigger" href="#modal1">Initiative Stats</a></li>
+                <li><a id="view-aggregate-modal" class="modal-trigger" href="#modal2">Campaign Aggregator</a></li>
               {{/if}}
               {{#if overviewRoute "overview"}}
                 <li class="{{active "overview"}}"><a href="/accounts/{{getCampaignNumber}}/overview">Overview</a></li>
