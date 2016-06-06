@@ -353,16 +353,16 @@ Template.initiativeHomepage.helpers({
         }
       },
 
-      legend: {
-        borderWidth: 0,
-        layout: 'horizontal',
-        backgroundColor: '#FFFFFF',
-        align: 'left',
-        verticalAlign: 'top',
-        floating: true,
-        x: 25,
-        y: 25
-      },
+      // legend: {
+      //   borderWidth: 0,
+      //   layout: 'horizontal',
+      //   backgroundColor: '#FFFFFF',
+      //   align: 'left',
+      //   verticalAlign: 'top',
+      //   floating: true,
+      //   x: 25,
+      //   y: 25
+      // },
 
       series: [{
         name: 'Ideal Distribution',
@@ -695,7 +695,6 @@ Template.initiativeHomepage.events({
     event.preventDefault();
     const checkedInputs = event.target.aggregate;
     const lineItem = event.target.lineItemSelect.value;
-    console.log(lineItem)
     const idArray = [];
 
     if (checkedInputs.length >= 2) {
@@ -714,7 +713,6 @@ Template.initiativeHomepage.events({
     meteorCall('campaignAggregatorChart', idArray, initiative, lineItem)
     .then(function (returnedData) {
       template.templateDictionary.set('chartData', returnedData);
-      console.log('from templatedictionary', template.templateDictionary.get('chartData'))
     }).catch(function (err) {
       console.log('Error in campaignAggregatorChart promise:', err)
     });

@@ -106,11 +106,14 @@
                       <em>Owner: {{owner}} | Agency: {{agency}} | Brand: {{brand}}</em>
                     </p>
                   </div>
-                  <div class="col s3">
+                  {{!-- <div class="col s3">
                     <p>
                       <input type="checkbox" id="double{{_id}}" class="filled-in double-check" checked="{{dailyCheck _id}}"/>
                       <label for="double{{_id}}">Daily Check</label>
                     </p>
+                  </div> --}}
+                  <div class="col s3">
+                    <p>Checked Today: {{checkedToday _id}}</p>
                   </div>
                   <div class="col s3">
                     <p class="right-align {{isActiveClass}}">{{isActiveInitiative}}</p>

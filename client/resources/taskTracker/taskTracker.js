@@ -12,30 +12,39 @@ Template.taskTracker.helpers({
       return FlowRouter.subsReady();
     }
   },
+  getInit: () => {
+    return Initiatives.findOne({_id: FlowRouter.getParam('_id')});
+  },
   "targetingChecked": function () {
     if (FlowRouter.subsReady()) {
-      let init = Initiatives.findOne({_id: FlowRouter.getParam('_id')});
+      const init = Initiatives.findOne({_id: FlowRouter.getParam('_id')});
       return init.approved_targeting === true ? "checked" : "";
     }
   },
   "creativeChecked": function () {
     if (FlowRouter.subsReady()) {
-      let init = Initiatives.findOne({_id: FlowRouter.getParam('_id')});
+      const init = Initiatives.findOne({_id: FlowRouter.getParam('_id')});
       return init.received_creative === true ? "checked" : "";
     }
   },
   "trackingChecked": function () {
     if (FlowRouter.subsReady()) {
-      let init = Initiatives.findOne({_id: FlowRouter.getParam('_id')});
+      const init = Initiatives.findOne({_id: FlowRouter.getParam('_id')});
       return init.received_tracking === true ? "checked" : "";
     }
   },
   "signedIoChecked": function () {
     if (FlowRouter.subsReady()) {
-      let init = Initiatives.findOne({_id: FlowRouter.getParam('_id')});
+      const init = Initiatives.findOne({_id: FlowRouter.getParam('_id')});
       return init.signed_IO === true ? "checked" : "";
     }
-  }
+  },
+  dailyCheck: (_id) => {
+    const init = Initiatives.findOne({_id: FlowRouter.getParam('_id')});
+    if (init.dailyCheck) {
+      return "checked";
+    }
+  },
 });
 
 Template.taskTracker.events({
@@ -50,7 +59,19 @@ Template.taskTracker.events({
     } else if (event.target.name === "signedIO") {
       Meteor.call("updateSignedIO", init._id, ! init.signed_IO);
     }
-  }
+  },
+  "click .double-check": (event, instance) => {
+    let id = event.target.id.toString().split("double")[1];
+    if (event.target.checked === false) {
+      const checked = false;
+      Meteor.call('toggleDailyCheck', id, checked);
+    } else if (event.target.checked === true) {
+      const checked = true;
+      Meteor.call('toggleDailyCheck', id, checked);
+    } else {
+      alert("there is a problem with this feature");
+    }
+  },
 });
 
 Template.taskTracker.onDestroyed(func => {

@@ -160,12 +160,15 @@ Meteor.methods({
     */
 
     const initiative = Initiatives.findOne({name: name});
+
     let objectiveArr = _.map(initiative.lineItems, function (el) {
       return el.objective;
     });
-    let cleanedArr = _.without(objectiveArr, null, ''); // removes any null values
+
+    let cleanedArr = _.without(objectiveArr, null, ''); // removes null and empty strings
     let objective; // to be reassigned and used in the pipeline
 
+    // function for making a pipeline
     const makePipeline = function makePipeline (name, objective) {
       return [
         {$match:
@@ -185,6 +188,7 @@ Meteor.methods({
     }
 
     let objectiveAggregateArray = [];
+
     for (let i = 0; i < cleanedArr.length; i++) {
       cleanedArr[i] = cleanedArr[i].toUpperCase().split(' ').join('_');
       let result = CampaignInsights.aggregate(makePipeline(name, cleanedArr[i]));
@@ -194,20 +198,39 @@ Meteor.methods({
         result[0]['cpm'] = result[0].spend / (result[0].impressions / 1000);
         result[0]['cpl'] = result[0].spend / result[0].likes;
         result[0]['cpvv'] = result[0].spend / result[0].videoViews;
+        result[0]['net'] = {
+          name: name,
+          objective: objective,
+          deal: undefined,
+          percentage: undefined,
+          spend: undefined,
+          budget: undefined,
+          spendPercent: undefined,
+          net_cpc: undefined,
+          net_cpl: undefined,
+          net_cpm: undefined,
+          net_cpvv: undefined
+        }
       } catch(e) {
         console.log('Error adding cost per data to aggregate', e);
       }
         objectiveAggregateArray.push(result);
     }
+
+
     let setObject = {};
     objectiveAggregateArray = _.flatten(objectiveAggregateArray);
+    console.log(objectiveAggregateArray);
+
+
+
     for (let i = 0; i < objectiveAggregateArray.length; i++) {
       setObject = {[objectiveAggregateArray[i]['_id']]: objectiveAggregateArray[i]};
       // inserting objectiveAggregate data into the intiative
       Initiatives.update(
         {name: name},
-        {$set: setObject
-      });
+        {$set: setObject}
+      );
     }
 
     return "success!";

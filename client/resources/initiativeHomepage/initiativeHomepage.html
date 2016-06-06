@@ -226,7 +226,7 @@ include charting for each lineItem and definitely aggregations --}}
 
   <div id="modal2" class="modal" style="width: 95%;">
     <div class="modal-content">
-      <div class="row">
+      {{!-- <div class="row">
         <div class="col s12">
           {{#with initiativeStats}}
             <h5>Gross Aggregate | Client Numbers</h5>
@@ -260,7 +260,7 @@ include charting for each lineItem and definitely aggregations --}}
             </table>
           {{/with}}
         </div>
-      </div>
+      </div> --}}
       <div class="row">
         <div class="col s12">
           <form action="#" id="campaignAggregateForm">
@@ -357,7 +357,9 @@ include charting for each lineItem and definitely aggregations --}}
       </table>
     </div>
     {{!-- task tracker --}}
-    {{> Template.dynamic template=tasks}}
+    {{#if isInRole "admin"}}
+      {{> Template.dynamic template=tasks}}
+    {{/if}}
     <br><br>
     <div class="row">
       <h3 class="center-align">Changelog</h3>
@@ -404,6 +406,7 @@ include charting for each lineItem and definitely aggregations --}}
         {{/each}}
       </div>
     </div>
+  </div>
 
 {{!--     {{#each initiative.lineItems}}
     <div class="row">
@@ -412,49 +415,48 @@ include charting for each lineItem and definitely aggregations --}}
       </div>
     </div>
     {{/each}} --}}
-    <div class="row">
-      {{#if initiative.lineItems.[0].budget}}
-        <div class="col s6">
-          {{> highchartsHelper chartId="objectiveChart0" chartWidth="100%" chartHeight="70%" chartObject=objectiveChart0}}
-        </div>
-        <div class="col s6">
-          {{> highchartsHelper chartId="objectiveCostPerChart0" chartWidth="100%" chartHeight="70%" chartObject=objectiveCostPerChart0}}
-        </div>
-      {{/if}}
-      {{#if initiative.lineItems.[1].budget}}
-        <div class="col s6">
-          {{> highchartsHelper chartId="objectiveChart1" chartWidth="100%" chartHeight="70%" chartObject=objectiveChart1}}
-        </div>
-        <div class="col s6">
-          {{> highchartsHelper chartId="objectiveCostPerChart1" chartWidth="100%" chartHeight="70%" chartObject=objectiveCostPerChart1}}
-        </div>
-      {{/if}}
-      {{#if initiative.lineItems.[2].budget}}
-        <div class="col s6">
-          {{> highchartsHelper chartId="objectiveChart2" chartWidth="100%" chartHeight="70%" chartObject=objectiveChart2}}
-        </div>
-        <div class="col s6">
-          {{> highchartsHelper chartId="objectiveCostPerChart2" chartWidth="100%" chartHeight="70%" chartObject=objectiveCostPerChart2}}
-        </div>
-      {{/if}}
-      {{#if initiative.lineItems.[3].budget}}
-        <div class="col s6">
-          {{> highchartsHelper chartId="objectiveChart3" chartWidth="100%" chartHeight="70%" chartObject=objectiveChart3}}
-        </div>
-        <div class="col s6">
-          {{> highchartsHelper chartId="objectiveCostPerChart3" chartWidth="100%" chartHeight="70%" chartObject=objectiveCostPerChart3}}
-        </div>
-      {{/if}}
-      {{#if initiative.lineItems.[4].budget}}
-        <div class="col s6">
-          {{> highchartsHelper chartId="objectiveChart4" chartWidth="100%" chartHeight="70%" chartObject=objectiveChart4}}
-        </div>
-        <div class="col s6">
-          {{> highchartsHelper chartId="objectiveCostPerChart4" chartWidth="100%" chartHeight="70%" chartObject=objectiveCostPerChart4}}
-        </div>
-      {{/if}}
-    </div>
-  </div> {{! ----- end of <div class="container"> -------- }}
+  <div class="row" style="width: 90%;">
+    {{#if initiative.lineItems.[0].budget}}
+      <div class="col s6">
+        {{> highchartsHelper chartId="objectiveChart0" chartWidth="90%" chartHeight="70%" chartObject=objectiveChart0}}
+      </div>
+      <div class="col s6">
+        {{> highchartsHelper chartId="objectiveCostPerChart0" chartWidth="90%" chartHeight="70%" chartObject=objectiveCostPerChart0}}
+      </div>
+    {{/if}}
+    {{#if initiative.lineItems.[1].budget}}
+      <div class="col s6">
+        {{> highchartsHelper chartId="objectiveChart1" chartWidth="90%" chartHeight="70%" chartObject=objectiveChart1}}
+      </div>
+      <div class="col s6">
+        {{> highchartsHelper chartId="objectiveCostPerChart1" chartWidth="90%" chartHeight="70%" chartObject=objectiveCostPerChart1}}
+      </div>
+    {{/if}}
+    {{#if initiative.lineItems.[2].budget}}
+      <div class="col s6">
+        {{> highchartsHelper chartId="objectiveChart2" chartWidth="90%" chartHeight="70%" chartObject=objectiveChart2}}
+      </div>
+      <div class="col s6">
+        {{> highchartsHelper chartId="objectiveCostPerChart2" chartWidth="90%" chartHeight="70%" chartObject=objectiveCostPerChart2}}
+      </div>
+    {{/if}}
+    {{#if initiative.lineItems.[3].budget}}
+      <div class="col s6">
+        {{> highchartsHelper chartId="objectiveChart3" chartWidth="90%" chartHeight="70%" chartObject=objectiveChart3}}
+      </div>
+      <div class="col s6">
+        {{> highchartsHelper chartId="objectiveCostPerChart3" chartWidth="90%" chartHeight="70%" chartObject=objectiveCostPerChart3}}
+      </div>
+    {{/if}}
+    {{#if initiative.lineItems.[4].budget}}
+      <div class="col s6">
+        {{> highchartsHelper chartId="objectiveChart4" chartWidth="90%" chartHeight="70%" chartObject=objectiveChart4}}
+      </div>
+      <div class="col s6">
+        {{> highchartsHelper chartId="objectiveCostPerChart4" chartWidth="90%" chartHeight="70%" chartObject=objectiveCostPerChart4}}
+      </div>
+    {{/if}}
+  </div>
 
   {{!--  List of campaigns within the initiative  --}}
   <div class="container">

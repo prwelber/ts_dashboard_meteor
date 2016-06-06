@@ -419,30 +419,33 @@ Meteor.methods({
   },
   campaignAggregatorChart: (idArray, initiative, lineItem) => {
 
-    console.log(idArray, initiative.name);
-
-    // TODO - grab all daily insights or aggregate them and boil it down to chartable data
-    // can even return the highcharts data object here and send it back to client
-    // can grab parameters from the initiative
-
-    //  ---------------- GRAB LINE ITEM INFORMATION ---------------- //
+    //  ---------- GRAB LINE ITEM INFORMATION ---------- //
 
     const line = _.where(initiative.lineItems, {name: lineItem})[0];
-    console.log('line', line);
     let type;
-    line.dealType === 'CPM' ? type = 'cpm' : '';
-    line.dealType === 'CPC' ? type = 'cpc' : '';
-    line.dealType === 'CPL' ? type = 'cpl' : '';
-    line.dealType === 'CPVV' ? type = 'cpvv' : '';
 
+    // ---------- TIME RANGE AND IDEAL SPEND / IDEAL DELIVERY ---------- //
+    const start = moment(line.startDate, moment.ISO_8601);
+    const end = moment(line.endDate, moment.ISO_8601);
+    const now = moment();
+    const totalTimeDiff = end.diff(start, 'd');
+    const currentTimeDiff = now.diff(start, 'd');
+    const idealDailySpend = parseFloat(line.budget) / totalTimeDiff;
+    const idealDailyDelivery = parseFloat(line.quantity) / totalTimeDiff;
+    const idealSpendArray = [];
+    const idealDeliveryArray = [];
 
-
-
-
-
+    let idealDeliveryTotal = 0,
+        idealSpendTotal    = 0;
+    for (let i = 0; i < currentTimeDiff + 1; i++) {
+      idealDeliveryTotal = idealDeliveryTotal + idealDailyDelivery;
+      idealSpendTotal = idealSpendTotal + idealDailySpend;
+      idealDeliveryArray.push(idealDeliveryTotal);
+      idealSpendArray.push(idealSpendTotal);
+    }
 
     const days = InsightsBreakdownsByDays.find(
-      {'data.campaign_id': {$in: idArray}}, 
+      {'data.campaign_id': {$in: idArray}},
       {fields: {
         'data.date_start': 1,
         'data.impressions': 1,
@@ -457,11 +460,10 @@ Meteor.methods({
         '_id': 0
       }
     }).fetch();
-    // now we have all the days in one array
 
     // loop over array, assign date_start and data to an empty object key/value, if we hit that again, add to array
-    // this is where we combine the two arrays based on the date_start key/value
 
+    // ------ COMBINE ARRAYS BASED ON DATE_START KEY/VAL PAIR ---- //
     let combinedArray = [];
     let obj = {}
     days.forEach((day) => {
@@ -482,7 +484,7 @@ Meteor.methods({
         obj[day.data.date_start]['clicks'] += day.data.clicks;
       }
     });
-    
+
     for (let key in obj) {
       combinedArray.push(obj[key])
     }
@@ -499,14 +501,11 @@ Meteor.methods({
       day['cpvv'] = day.spend / day.video_view;
     });
 
-    console.log(combinedArray[0], combinedArray[1], combinedArray[2], combinedArray[3]);
-
-
     // need to get data into two formats - one for delivery chart and one for cost per chart
     // delivery chart means arrays of impressions, clicks, likes, video_views and spend (added up each day) over days
     // cost per chart means arrays of cpm, cpc, cpl, cpvv over days
 
-    // ------------------------ delivery chart ----------------------- //
+    // ------------------------ DELIVERY CHART ----------------------- //
 
     const deliveryImpressions = [];
     const deliveryClicks = [];
@@ -534,18 +533,102 @@ Meteor.methods({
       deliveryDays.push(moment(day.date_start, moment.ISO_8601).format("MM-DD"));
     });
 
+    const impressionsChartObj = {
+      name: 'Impressions',
+      data: deliveryImpressions,
+      color: '#e65100',
+      visible: false
+    }
+    const clicksChartObj = {
+      name: 'Clicks',
+      data: deliveryClicks,
+      color: '#0d47a1',
+      visible: false
+    }
+    const likesChartObj = {
+      name: 'Likes',
+      data: deliveryLikes,
+      color: '#b71c1c',
+      visible: false
+    }
+    const videoViewsChartObj = {
+      name: 'Video Views',
+      data: deliveryVideoViews,
+      color: '#ef9a9a',
+      visible: false
+    }
+
+
+    // ------------------- COST PER CHART CALCULATIONS ------------------- //
+
+    const cpmArray = [];
+    const cpcArray = [];
+    const cplArray = [];
+    const cpvvArray = [];
+
+    combinedArray.forEach((day) => {
+      cpmArray.push(day.cpm);
+      cpcArray.push(day.cpc);
+      day.cpl === Infinity ? cplArray.push(null) : cplArray.push(day.cpl);
+      day.cpvv === Infinity ? cpvvArray.push(null) : cpvvArray.push(day.cpvv);
+    });
+
+
+    const cpm = {
+      name: "cpm",
+      data: cpmArray,
+      color: '#0d47a1',
+      visible: false
+    }
+    const cpc = {
+      name: "cpc",
+      data: cpcArray,
+      color: '#ff1b6b',
+      visible: false
+    }
+    const cpl = {
+      name: "cpl",
+      data: cplArray,
+      color: '#9600ff',
+      visible: false
+    }
+    const cpvv = {
+      name: "cpvv",
+      data: cpvvArray,
+      color: '#2ddbb3',
+      visible: false
+    }
+
+    // ----------- DYNAMIC CHANGES TO CHARTING SERIES OBJECTS ----------- //
+
+    if (line.dealType === "CPM") {
+      type = "impressions";
+      impressionsChartObj.visible = true;
+      cpm.visible = true;
+    } else if (line.dealType === "CPC") {
+      type = "clicks";
+      clicksChartObj.visible = true;
+      cpc.visible = true;
+    } else if (line.dealType === "CPL") {
+      type = "like";
+      likesChartObj.visible = true;
+      cpl.visible = true;
+    } else if (line.dealType === "CPVV") {
+      type = "video_view",
+      videoViewsChartObj.visible = true;
+      cpvv.visible = true;
+    }
+
+    // -------------------- CREATE CHART OBJECTS ----------------------- //
+
     const deliveryObject = {
           chart: {
             zoomType: 'x'
           },
           // TODO FIX THIS
           title: {
-            text: "Delivery" 
+            text: "Delivery"
           },
-
-          // subtitle: {
-          //   text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
-          // },
 
           tooltip: {
             shared: true,
@@ -578,53 +661,40 @@ Meteor.methods({
             }
           },
 
-          // legend: {
-          //   borderWidth: 0,
-          //   layout: 'horizontal',
-          //   backgroundColor: '#FFFFFF',
-          //   align: 'left',
-          //   verticalAlign: 'top',
-          //   floating: true,
-          //   x: 25,
-          //   y: 50
-          // },
-
-          series: [{
-            name: 'Impressions',
-            data: deliveryImpressions,
-            color: '#90caf9'
-          }, {
-            name: 'Clicks',
-            data: deliveryClicks,
-            color: '#0d47a1'
-          }, {
-            name: 'Likes',
-            data: deliveryLikes,
-            color: '#b71c1c'
-          }, {
-            name: 'Video Views',
-            data: deliveryVideoViews,
-            color: '#ef9a9a'
-          }, {
-            name: 'Spend',
-            data: deliverySpend,
-            color: '#191919'
-          }]
+          series: [
+            // these are objects defined above
+            impressionsChartObj,
+            clicksChartObj,
+            likesChartObj,
+            videoViewsChartObj,
+            {
+              name: 'Spend',
+              data: deliverySpend,
+              color: '#388e3c',
+              tooltip: {
+                valueSuffix: ' USD',
+                valuePrefix: '$',
+                valueDecimals: 2
+              }
+            }, {
+              name: 'Ideal Spend',
+              data: idealSpendArray,
+              color: '#a5d6a7',
+              tooltip: {
+                valueSuffix: ' USD',
+                valuePrefix: '$',
+                valueDecimals: 2
+              }
+            }, {
+              name: 'Ideal Delivery',
+              data: idealDeliveryArray,
+              color: '#90caf9'
+            }
+          ]
         } // end of return
 
-    // ------------------------ cost per chart ------------------------ //
 
-    const cpmArray = [];
-    const cpcArray = [];
-    const cplArray = [];
-    const cpvvArray = [];
 
-    combinedArray.forEach((day) => {
-      cpmArray.push(day.cpm);
-      cpcArray.push(day.cpc);
-      day.cpl === Infinity ? cplArray.push(null) : cplArray.push(day.cpl);
-      day.cpvv === Infinity ? cpvvArray.push(null) : cpvvArray.push(day.cpvv);
-    });
 
     const costPerObject = {
           chart: {
@@ -634,10 +704,6 @@ Meteor.methods({
           title: {
             text: "Cost Per"
           },
-
-          // subtitle: {
-          //   text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
-          // },
 
           tooltip: {
             valueSuffix: "",
@@ -673,30 +739,17 @@ Meteor.methods({
             }
           },
 
-          series: [{
-            name: "cpm",
-            data: cpmArray,
-            color: '#0d47a1'
-          }, {
-            name: "cpc",
-            data: cpcArray,
-            color: '#ff1b6b'
-          }, {
-            name: "cpl",
-            data: cplArray,
-            color: '#9600ff'
-          }, {
-            name: "cpvv",
-            data: cpvvArray,
-            color: '#2ddbb3'
-          }]
+          series: [
+            cpm,
+            cpc,
+            cpl,
+            cpvv
+          ]
         } // end of return
 
-
     return {
-      deliveryObject: deliveryObject, 
+      deliveryObject: deliveryObject,
       costPerObject: costPerObject
     }
-
   }
 });

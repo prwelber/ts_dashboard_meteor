@@ -31,6 +31,16 @@
             <label for="signedIO">Signed IO</label>
           </h4>
         </div>
+        <div class="col s12">
+          <div class="center-align" style="margin-top: 1em;">
+            {{#with getInit}}
+              <h4>
+                <input type="checkbox" id="double{{_id}}" class="filled-in double-check" checked="{{dailyCheck _id}}"/>
+                <label for="double{{_id}}">Daily Check</label>
+              </h4>
+            {{/with}}
+          </div>
+        </div>
       </div>
     {{else}}
       <p>Loading...</p>

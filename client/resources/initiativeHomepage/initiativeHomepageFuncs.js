@@ -82,7 +82,7 @@ export const initiativeHomepageFunctions = {
           if (camp) {
             if (camp.data.objective === objective && camp) {
               // once I have the campaign, pull all the daily insights for that
-              insights = InsightsBreakdownsByDays.find({'data.campaign_name': camp.data.campaign_name}).fetch();
+              insights = InsightsBreakdownsByDays.find({'data.campaign_name': camp.data.campaign_name}, {sort: {'data.date_start': 1}}).fetch();
             } else {
               null;
             }
@@ -97,9 +97,9 @@ export const initiativeHomepageFunctions = {
         let typeCount = parseFloat(insights[0].data[type]);
         insights.forEach(el => {
           xAxisArray.push(moment(el.data.date_start, moment.ISO_8601).format("MM-DD"));
-          typeArray.push(typeCount);
+          typeArray.push(parseFloat(typeCount.toFixed(2)));
           typeCount += parseFloat(el.data[type]);
-          spendArray.push(spendCount);
+          spendArray.push(parseFloat(spendCount.toFixed(2)));
           spendCount += accounting.unformat(el.data.spend);
         });
 
@@ -114,8 +114,8 @@ export const initiativeHomepageFunctions = {
         for (let i = 0; i < daysDiff + 1; i++) {
           total = total + avg;
           idealSpendTotal = idealSpendTotal + spendAvg;
-          avgDeliveryArray.push(total);
-          avgSpendArray.push(idealSpendTotal);
+          avgDeliveryArray.push(parseFloat(total.toFixed(2)));
+          avgSpendArray.push(parseFloat(idealSpendTotal.toFixed(2)));
         }
 
         return {
@@ -159,18 +159,6 @@ export const initiativeHomepageFunctions = {
               }
             }
           },
-
-          legend: {
-            borderWidth: 0,
-            layout: 'horizontal',
-            backgroundColor: '#FFFFFF',
-            align: 'left',
-            verticalAlign: 'top',
-            floating: true,
-            x: 25,
-            y: 50
-          },
-
           series: [{
             name: 'Ideal Distribution',
             data: avgDeliveryArray,
@@ -182,11 +170,19 @@ export const initiativeHomepageFunctions = {
           }, {
             name: 'Spend',
             data: spendArray,
-            color: '#b71c1c'
+            color: '#b71c1c',
+            tooltip: {
+              valueSuffix: ' USD',
+              valuePrefix: '$'
+            }
           }, {
             name: 'Ideal Spend',
             data: avgSpendArray,
-            color: '#ef9a9a'
+            color: '#ef9a9a',
+            tooltip: {
+              valueSuffix: ' USD',
+              valuePrefix: '$'
+            }
           }]
         } // end of return
       }; // end of if (objective) {
@@ -216,7 +212,7 @@ export const initiativeHomepageFunctions = {
           if (camp) {
             if (camp.data.objective === objective && camp) {
               // once I have the campaign, pull all the daily insights for that
-              insights = InsightsBreakdownsByDays.find({'data.campaign_name': camp.data.campaign_name}).fetch();
+              insights = InsightsBreakdownsByDays.find({'data.campaign_name': camp.data.campaign_name}, {sort: {'data.date_start': 1}}).fetch();
             } else {
               null;
             }
@@ -274,18 +270,6 @@ export const initiativeHomepageFunctions = {
               }
             }
           },
-
-          legend: {
-            borderWidth: 0,
-            layout: 'horizontal',
-            backgroundColor: '#FFFFFF',
-            align: 'left',
-            verticalAlign: 'top',
-            floating: true,
-            x: 25,
-            y: 50
-          },
-
           series: [{
             name: type,
             data: typeArray,

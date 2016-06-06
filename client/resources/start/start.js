@@ -245,10 +245,18 @@ Template.initiativesHome.helpers({
       return "";
     }
   },
-  dailyCheck: (_id) => {
+  // dailyCheck: (_id) => {
+  //   const init = Initiatives.findOne({_id: _id});
+  //   if (init.dailyCheck) {
+  //     return "checked";
+  //   }
+  // },
+  checkedToday: (_id) => {
     const init = Initiatives.findOne({_id: _id});
     if (init.dailyCheck) {
-      return "checked";
+      return "True";
+    } else {
+      return "False";
     }
   },
   getBrands: () => {
@@ -284,18 +292,18 @@ Template.initiativesHome.events({
       Session.set('ownerSelect', event.target.value);
     }
   },
-  "click .double-check": (event, instance) => {
-    let id = event.target.id.toString().split("double")[1];
-    if (event.target.checked === false) {
-      const checked = false;
-      Meteor.call('toggleDailyCheck', id, checked);
-    } else if (event.target.checked === true) {
-      const checked = true;
-      Meteor.call('toggleDailyCheck', id, checked);
-    } else {
-      alert("there is a problem with this feature");
-    }
-  },
+  // "click .double-check": (event, instance) => {
+  //   let id = event.target.id.toString().split("double")[1];
+  //   if (event.target.checked === false) {
+  //     const checked = false;
+  //     Meteor.call('toggleDailyCheck', id, checked);
+  //   } else if (event.target.checked === true) {
+  //     const checked = true;
+  //     Meteor.call('toggleDailyCheck', id, checked);
+  //   } else {
+  //     alert("there is a problem with this feature");
+  //   }
+  // },
   "change #agencySelect": (event, instance) => {
     Session.set("brandSelect", null);
     Session.set("ownerSelect", null);
