@@ -431,11 +431,19 @@ export const initiativeHomepageFunctions = {
       }, {
         name: 'Spend',
         data: spendArray,
-        color: '#b71c1c'
+        color: '#b71c1c',
+        tooltip: {
+          valueSuffix: ' USD',
+          valuePrefix: '$'
+        }
       }, {
         name: 'Ideal Spend',
         data: avgSpendArray,
-        color: '#ef9a9a'
+        color: '#ef9a9a',
+        tooltip: {
+          valueSuffix: ' USD',
+          valuePrefix: '$'
+        }
       }]
     } // end of return
 
@@ -566,97 +574,5 @@ export const initiativeHomepageFunctions = {
         color: '#0d47a1'
       }]
     } // end of return
-
-  },
-  makeAggregateChart: (initiative) => {
-
-    // var call = Promise.promisify(Meteor.call);
-
-    // call('aggregateChart', initiative)
-    // .then(function (res) {
-    //   console.log(res)
-    //   // Session.set('res', res);
-    //   // totes = res[0][type]
-    // }).catch(function (err) {
-    //   console.log('uh no error', err)
-    // });
-
-
-
-
-
-
-
-    // return {
-    //   chart: {
-    //     zoomType: 'x'
-    //   },
-    //   // TODO FIX THIS
-    //   title: {
-    //     text: "Delivery for " + objective
-    //   },
-
-    //   subtitle: {
-    //     text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
-    //   },
-
-    //   tooltip: {
-    //     valueSuffix: " " + type,
-    //     shared: true,
-    //     crosshairs: true
-    //   },
-    //   xAxis: {
-    //     // type: 'datetime',
-    //     categories: xAxisArray
-    //   },
-
-    //   yAxis: {
-    //     title: {
-    //       text: type
-    //     },
-    //     plotLines: [{
-    //       value: 0,
-    //       width: 1,
-    //       color: '#808080'
-    //     }]
-    //   },
-
-    //   plotOptions: { // removes the markers along the plot lines
-    //     series: {
-    //       marker: {
-    //         enabled: false
-    //       }
-    //     }
-    //   },
-
-    //   legend: {
-    //     borderWidth: 0,
-    //     layout: 'horizontal',
-    //     backgroundColor: '#FFFFFF',
-    //     align: 'left',
-    //     verticalAlign: 'top',
-    //     floating: true,
-    //     x: 25,
-    //     y: 50
-    //   },
-
-    //   series: [{
-    //     name: 'Ideal Distribution',
-    //     data: avgDeliveryArray,
-    //     color: '#90caf9'
-    //   }, {
-    //     name: 'Real Distribution',
-    //     data: typeArray,
-    //     color: '#0d47a1'
-    //   }, {
-    //     name: 'Spend',
-    //     data: spendArray,
-    //     color: '#b71c1c'
-    //   }, {
-    //     name: 'Ideal Spend',
-    //     data: avgSpendArray,
-    //     color: '#ef9a9a'
-    //   }]
-    // } // end of return
   }
 };

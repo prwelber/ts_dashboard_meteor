@@ -20,12 +20,6 @@ Tracker.autorun(function () {
   // }
 });
 
-
-Template.initiativesHome.onRendered(function () {
-  Meteor.typeahead.inject();
-  $('.tooltipped').tooltip({ delay: 50 });
-});
-
 Template.initiativesHome.onCreated(function () {
   if (!Session.get("initiativeSelect")) {
     Session.set("initiativeSelect", null);
@@ -34,6 +28,15 @@ Template.initiativesHome.onCreated(function () {
     Session.set("ownerSelect", null);
   }
 })
+
+Template.initiativesHome.onRendered(function () {
+  Meteor.typeahead.inject();
+  $('.tooltipped').tooltip({ delay: 50 });
+  Session.set('dateSort', {'lineItems.0.endDate': 1});
+  // Session.set('startDateSort', {'lineItems.0.startDate': 1});
+  Session.set('alphaSort', 1);
+});
+
 
 Template.initiativesHome.helpers({
   isReady: (sub1) => {
@@ -73,7 +76,9 @@ Template.initiativesHome.helpers({
     const agency = Session.get('agencySelect');
     const n = moment().toISOString();
     let inits;
-
+    // const endDateSort = Session.get('endDateSort');
+    const dateSort = Session.get('dateSort');
+    const alphaSort = Session.get('alphaSort');
 
     /*
       messy here, need to REFACTOR. this is a if/else tree that
@@ -83,100 +88,119 @@ Template.initiativesHome.helpers({
       template is created, intiativeSelect is set to "Active" and ownerSelect
       is set to "All"
     */
+    let date;
+    let now = moment().toISOString();
 
-    if (sesh === null && owner === null) {
-      inits = Initiatives.find({userActive: true},
-        {sort:
-          {"lineItems.0.endDate": -1}
-        },
-        {limit: 100}
-      ).fetch();
+    if (sesh === 'Ending Soon') {
+      date = moment().add(30, 'd').toISOString();
+    } else if (sesh === 'Recently Ended') {
+      date = moment().subtract(30, 'd').toISOString();
     }
 
-    if (brand) {
-      inits = Initiatives.find({brand: brand},
-        {sort:
-          {"lineItems.0.endDate": -1}
-        },
-        {limit: 100}
-      ).fetch();
 
+    if (sesh === 'All' && !owner) {
+      return Initiatives.find({}, {sort: dateSort});
+    } else {
+      // return Initiatives.find({owner: owner}, {sort: endDateSort});
+      return Initiatives.find(
+        {owner: owner},
+        {sort: dateSort}
+      );
     }
-
-    if (agency) {
-      inits = Initiatives.find({agency: agency},
-        {sort:
-          {"lineItems.0.endDate": -1}
-        },
-        {limit: 100}
-      ).fetch();
-    }
-
 
     if (sesh === 'Active') {
-      if (owner !== null) {
-        inits = Initiatives.find({userActive: true, owner: owner},
-          {sort: {"lineItems.0.endDate": -1}}).fetch();
-      } else {
-        inits = Initiatives.find({userActive: true},
-        {sort: {"lineItems.0.endDate": -1}}).fetch();
-      }
-
-    } else if (sesh === 'Ending Soon') {
-      const d = moment().add(30, 'd').toISOString();
-      if (owner !== null) {
-        inits = Initiatives.find({
-          "lineItems.0.endDate": {$lte: d, $gte: n}, owner: owner
-        },{sort: {"lineItems.0.endDate": -1}}).fetch();
-      } else {
-        inits = Initiatives.find({
-          "lineItems.0.endDate": {$lte: d, $gte: n}
-        },{sort: {"lineItems.0.endDate": -1}}).fetch();
-      }
-    } else if (sesh === 'Recently Ended') {
-      const d = moment().subtract(30, 'd').toISOString();
-      if (owner !== null) {
-        inits = Initiatives.find({
-          "lineItems.0.endDate": {$gte: d, $lte: n}, owner: owner
-        }, {sort: {"lineItems.0.endDate": -1}}).fetch();
-      } else {
-        inits = Initiatives.find({
-          "lineItems.0.endDate": {$gte: d, $lte: n}
-        }, {sort: {"lineItems.0.endDate": -1}}).fetch();
-      }
-    } else if (sesh === 'Pending') {
-      if (owner !== null) {
-        inits = Initiatives.find({
-          "lineItems.0.startDate": {$gte: n}, owner: owner
-        }, {sort: {"lineItems.0.startDate": 1}}).fetch();
-      } else {
-        inits = Initiatives.find({
-          "lineItems.0.startDate": {$gte: n}
-        }, {sort: {"lineItems.0.startDate": 1}}).fetch();
-      }
-    } else if (sesh === 'All') {
-      if (owner !== null) {
-        inits = Initiatives.find({owner: owner},
-          {sort:
-            {"lineItems.0.endDate": -1}
-          },
-          {limit: 100}
-        ).fetch();
-      } else {
-        inits = Initiatives.find({},
-          {sort:
-            {"lineItems.0.endDate": -1}
-          },
-          {limit: 100}
-        ).fetch();
-      }
+      return Initiatives.find({userActive: true}, {sort: dateSort})
     }
 
 
-    // inits.forEach(el => {
-    //   el.startDate = moment(el.startDate, moment.ISO_8601).format("MM-DD-YYYY hh:mm a");
-    //   el.endDate = moment(el.endDate, moment.ISO_8601).format("MM-DD-YYYY hh:mm a");
-    // });
+
+    // if (sesh === null && owner === null) {
+    //   inits = Initiatives.find({userActive: true},
+    //     {sort:
+    //       {"lineItems.0.endDate": -1}
+    //     },
+    //     {limit: 100}
+    //   ).fetch();
+    // }
+
+    // if (brand) {
+    //   inits = Initiatives.find({brand: brand},
+    //     {sort:
+    //       {"lineItems.0.endDate": -1}
+    //     },
+    //     {limit: 100}
+    //   ).fetch();
+
+    // }
+
+    // if (agency) {
+    //   inits = Initiatives.find({agency: agency},
+    //     {sort:
+    //       {"lineItems.0.endDate": -1}
+    //     },
+    //     {limit: 100}
+    //   ).fetch();
+    // }
+
+
+    // if (sesh === 'Active') {
+    //   if (owner !== null) {
+    //     inits = Initiatives.find({userActive: true, owner: owner},
+    //       {sort: {"lineItems.0.endDate": -1}}).fetch();
+    //   } else {
+    //     inits = Initiatives.find({userActive: true},
+    //     {sort: {"lineItems.0.endDate": -1}}).fetch();
+    //   }
+
+    // } else if (sesh === 'Ending Soon') {
+    //   const d = moment().add(30, 'd').toISOString();
+    //   if (owner !== null) {
+    //     inits = Initiatives.find({
+    //       "lineItems.0.endDate": {$lte: d, $gte: n}, owner: owner
+    //     },{sort: {"lineItems.0.endDate": -1}}).fetch();
+    //   } else {
+    //     inits = Initiatives.find({
+    //       "lineItems.0.endDate": {$lte: d, $gte: n}
+    //     },{sort: {"lineItems.0.endDate": -1}}).fetch();
+    //   }
+    // } else if (sesh === 'Recently Ended') {
+    //   const d = moment().subtract(30, 'd').toISOString();
+    //   if (owner !== null) {
+    //     inits = Initiatives.find({
+    //       "lineItems.0.endDate": {$gte: d, $lte: n}, owner: owner
+    //     }, {sort: {"lineItems.0.endDate": -1}}).fetch();
+    //   } else {
+    //     inits = Initiatives.find({
+    //       "lineItems.0.endDate": {$gte: d, $lte: n}
+    //     }, {sort: {"lineItems.0.endDate": -1}}).fetch();
+    //   }
+    // } else if (sesh === 'Pending') {
+    //   if (owner !== null) {
+    //     inits = Initiatives.find({
+    //       "lineItems.0.startDate": {$gte: n}, owner: owner
+    //     }, {sort: {"lineItems.0.startDate": 1}}).fetch();
+    //   } else {
+    //     inits = Initiatives.find({
+    //       "lineItems.0.startDate": {$gte: n}
+    //     }, {sort: {"lineItems.0.startDate": 1}}).fetch();
+    //   }
+    // } else if (sesh === 'All') {
+    //   if (owner !== null) {
+    //     inits = Initiatives.find({owner: owner},
+    //       {sort:
+    //         {"lineItems.0.endDate": -1}
+    //       },
+    //       {limit: 100}
+    //     ).fetch();
+    //   } else {
+    //     inits = Initiatives.find({},
+    //       {sort:
+    //         {"lineItems.0.endDate": -1}
+    //       },
+    //       {limit: 100}
+    //     ).fetch();
+    //   }
+    // }
 
     return inits;
   },
@@ -315,6 +339,25 @@ Template.initiativesHome.events({
     Session.set("ownerSelect", null);
     Session.set("initiativeSelect", null);
     Session.set('brandSelect', event.target.value);
+  },
+  "click #alpha-sort": (event, instance) => {
+    Session.set('alphaSort', (-1 * Session.get('alphaSort')));
+  },
+  "click #end-date-sort": (event, instance) => {
+    if (Session.get('dateSort')['lineItems.0.endDate'] === 1) {
+      Session.set('dateSort', {'lineItems.0.endDate': -1})
+    } else {
+      Session.set('dateSort', {'lineItems.0.endDate': 1})
+    }
+  },
+  "click #start-date-sort": (event, instance) => {
+    if (!Session.get('dateSort')['lineItems.0.startDate']) {
+      Session.set('dateSort', {'lineItems.0.startDate': -1})
+    } else if (Session.get('dateSort')['lineItems.0.startDate'] === 1){
+      Session.set('dateSort', {'lineItems.0.startDate': -1})
+    } else {
+      Session.set('dateSort', {'lineItems.0.startDate': 1})
+    }
   }
 });
 

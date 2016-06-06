@@ -122,3 +122,11 @@ a:hover {
 .typeahead-text {
   color: #000000;
 }
+
+
+/* --------------- Sort Label on Start Page ----------------- */
+
+.sort-label {
+  display: block;
+  text-align: center;
+}

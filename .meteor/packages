@@ -46,3 +46,5 @@ sergeyt:typeahead
 mizzao:autocomplete
 meteorhacks:ssr
 mrt:moment-timezone
+practicalmeteor:mocha
+

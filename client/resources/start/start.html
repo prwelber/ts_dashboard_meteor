@@ -6,66 +6,87 @@
   <div class="container">
     <div class="row">
       <h1 class="align-center" style="margin-top: 6%; margin-bottom: 6%; font-size: 3em;">Initiatives</h1>
-        <div class="col s3">
-          <label>Initiatives by Status (default is Active)</label>
-          <select id="initiativeSelect" class="browser-default tooltipped" data-position="top" data-delay="50" data-tooltip="Can be combined with Owner">
-            <option value="" disabled selected>Choose Status</option>
-            <option value="Active">Active</option>
-            <option value="Ending Soon">Ending Soon</option>
-            <option value="Recently Ended">Recently Ended</option>
-            <option value="Pending">Pending</option>
-            <option value="All">All</option>
-          </select>
-        </div>
-        <div class="col s3">
-          <label>Initiatives by Owner</label>
-          <select id="ownerSelect" class="browser-default tooltipped" data-position="top" data-delay="50" data-tooltip="Can be combined with Status">
-            <option value="" disabled selected>Choose Owner</option>
-            <option value="null">All</option>
-            <option value="Corey">Corey</option>
-            <option value="Kathia">Kathia</option>
-            <option value="Veronika">Veronika</option>
-            <option value="Sheri">Sheri</option>
-            <option value="Ashwin">Ashwin</option>
-            <option value="Phil">Phil</option>
-            <option value="Plato">Plato</option>
-          </select>
-        </div>
-        <div class="col s3">
-          <label>Initiatives by Agency</label>
-          <select id="agencySelect" class="browser-default">
-            <option value="" disabled selected>Choose Agency</option>
-            <option value="Citizens">Citizens</option>
-            <option value="Constellation">Constellation</option>
-            <option value="Cornerstone">Cornerstone</option>
-            <option value="CUE">CUE</option>
-            <option value="Farm Rich">Farm Rich</option>
-            <option value="Hadeler Krueger">Hadeler Krueger</option>
-            <option value="High Wide & Handsome">High Wide & Handsome</option>
-            <option value="Hitachi">Hitachi</option>
-            <option value="Horizon">Horizon</option>
-            <option value="Icon">Icon</option>
-            <option value="Mundy">Mundy</option>
-            <option value="Power Creative">Power Creative</option>
-            <option value="Rachael Piper">Rachel Piper</option>
-            <option value="SapientNitro">SapientNitro</option>
-            <option value="True Media">True Media</option>
-            <option value="Uniworld">Uniworld</option>
-          </select>
-        </div>
-        <div class="col s3">
-          <label>Initiatives by Brand</label>
-          <select id="brandSelect" class="browser-default">
-            <option value="" disabled selected>Choose Brand</option>
-            {{#each brand in getBrands}}
-              <option value="{{brand.name}}">{{brand.name}}</option>
-            {{/each}}
-          </select>
-        </div>
-        <div class="col s12" style="margin-top: 1em;">
-          {{> inputAutocomplete settings=settings id="initiative-typeahead" class="autocomplete" placeholder="Search For Initiative (Case Sensitive)"}}
-        </div>
+      <div class="col s3">
+        <label>Initiatives by Status (default is Active)</label>
+        <select id="initiativeSelect" class="browser-default tooltipped" data-position="top" data-delay="50" data-tooltip="Can be combined with Owner">
+          <option value="" disabled selected>Choose Status</option>
+          <option value="Active">Active</option>
+          <option value="Ending Soon">Ending Soon</option>
+          <option value="Recently Ended">Recently Ended</option>
+          <option value="Pending">Pending</option>
+          <option value="All">All</option>
+        </select>
       </div>
+      <div class="col s3">
+        <label>Initiatives by Owner</label>
+        <select id="ownerSelect" class="browser-default tooltipped" data-position="top" data-delay="50" data-tooltip="Can be combined with Status">
+          <option value="" disabled selected>Choose Owner</option>
+          <option value="null">All</option>
+          <option value="Corey">Corey</option>
+          <option value="Kathia">Kathia</option>
+          <option value="Veronika">Veronika</option>
+          <option value="Sheri">Sheri</option>
+          <option value="Ashwin">Ashwin</option>
+          <option value="Phil">Phil</option>
+          <option value="Plato">Plato</option>
+        </select>
+      </div>
+      <div class="col s3">
+        <label>Initiatives by Agency</label>
+        <select id="agencySelect" class="browser-default">
+          <option value="" disabled selected>Choose Agency</option>
+          <option value="Citizens">Citizens</option>
+          <option value="Constellation">Constellation</option>
+          <option value="Cornerstone">Cornerstone</option>
+          <option value="CUE">CUE</option>
+          <option value="Farm Rich">Farm Rich</option>
+          <option value="Hadeler Krueger">Hadeler Krueger</option>
+          <option value="High Wide & Handsome">High Wide & Handsome</option>
+          <option value="Hitachi">Hitachi</option>
+          <option value="Horizon">Horizon</option>
+          <option value="Icon">Icon</option>
+          <option value="Mundy">Mundy</option>
+          <option value="Power Creative">Power Creative</option>
+          <option value="Rachael Piper">Rachel Piper</option>
+          <option value="SapientNitro">SapientNitro</option>
+          <option value="True Media">True Media</option>
+          <option value="Uniworld">Uniworld</option>
+        </select>
+      </div>
+      <div class="col s3">
+        <label>Initiatives by Brand</label>
+        <select id="brandSelect" class="browser-default">
+          <option value="" disabled selected>Choose Brand</option>
+          {{#each brand in getBrands}}
+            <option value="{{brand.name}}">{{brand.name}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+    <div class="row valign-wrapper" style="margin-bottom: -3px">
+      <div class="col s1 valign">
+        <button class="btn waves-effect waves-light" id="alpha-sort">
+          <i class="fa fa-sort-alpha-asc fa-2x" aria-hidden="true"></i>
+        </button>
+        <label for="alpha-sort" class="sort-label">Sort by Name</label>
+      </div>
+      <div class="col s9 valign" style="margin-top: 1em;">
+        {{> inputAutocomplete settings=settings id="initiative-typeahead" class="autocomplete" placeholder="Search For Initiative (Case Sensitive)"}}
+      </div>
+      <div class="col s1 valign">
+        <button class="btn waves-effect waves-light" id="start-date-sort">
+          <i class="fa fa-sort fa-2x" aria-hidden="true"></i>
+        </button>
+        <label for="start-date-sort" class="sort-label">Start Date</label>
+      </div>
+      <div class="col s1 valign">
+        <button class="btn waves-effect waves-light" id="end-date-sort">
+          <i class="fa fa-sort fa-2x" aria-hidden="true"></i>
+        </button>
+        <label for="end-date-sort" class="sort-label">End Date</label>
+      </div>
+    </div>
+
       <div class="row">
       {{#if isReady "Initiatives"}}
       {{!-- autocomplete library https://github.com/mizzao/meteor-autocomplete --}}
