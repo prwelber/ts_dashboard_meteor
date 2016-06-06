@@ -417,13 +417,29 @@ Meteor.methods({
     return {male: finalMale, female: finalFemale};
 
   },
-  campaignAggregatorChart: (idArray, initiative) => {
+  campaignAggregatorChart: (idArray, initiative, lineItem) => {
 
     console.log(idArray, initiative.name);
 
     // TODO - grab all daily insights or aggregate them and boil it down to chartable data
     // can even return the highcharts data object here and send it back to client
     // can grab parameters from the initiative
+
+    //  ---------------- GRAB LINE ITEM INFORMATION ---------------- //
+
+    const line = _.where(initiative.lineItems, {name: lineItem})[0];
+    console.log('line', line);
+    let type;
+    line.dealType === 'CPM' ? type = 'cpm' : '';
+    line.dealType === 'CPC' ? type = 'cpc' : '';
+    line.dealType === 'CPL' ? type = 'cpl' : '';
+    line.dealType === 'CPVV' ? type = 'cpvv' : '';
+
+
+
+
+
+
 
     const days = InsightsBreakdownsByDays.find(
       {'data.campaign_id': {$in: idArray}}, 
@@ -444,10 +460,11 @@ Meteor.methods({
     // now we have all the days in one array
 
     // loop over array, assign date_start and data to an empty object key/value, if we hit that again, add to array
+    // this is where we combine the two arrays based on the date_start key/value
+
     let combinedArray = [];
     let obj = {}
     days.forEach((day) => {
-      
       if (!obj[day.data.date_start]) {
         obj[day.data.date_start] = {
           date_start: day.data.date_start,
@@ -464,7 +481,6 @@ Meteor.methods({
         obj[day.data.date_start]['video_view'] += day.data.video_view || 0;
         obj[day.data.date_start]['clicks'] += day.data.clicks;
       }
-        
     });
     
     for (let key in obj) {
@@ -641,7 +657,7 @@ Meteor.methods({
               text: "Amount"
             },
             plotLines: [{
-              value: 1,
+              value: line.price,
               width: 3,
               color: '#ff0000',
               zIndex: 10,

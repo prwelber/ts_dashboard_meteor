@@ -655,6 +655,9 @@ Template.initiativeHomepage.helpers({
     } else if (chartData) {
       return chartData.costPerObject;
     }
+  },
+  initiativeLineItems: () => {
+    return Template.instance().templateDict.get('initiative').lineItems;
   }
 
 });
@@ -690,7 +693,9 @@ Template.initiativeHomepage.events({
   },
   'submit #campaignAggregateForm': (event, template) => {
     event.preventDefault();
-    const checkedInputs = event.target.aggregate
+    const checkedInputs = event.target.aggregate;
+    const lineItem = event.target.lineItemSelect.value;
+    console.log(lineItem)
     const idArray = [];
 
     if (checkedInputs.length >= 2) {
@@ -706,7 +711,7 @@ Template.initiativeHomepage.events({
     const initiative = Template.instance().templateDict.get('initiative');
     var meteorCall = Promise.promisify(Meteor.call);
 
-    meteorCall('campaignAggregatorChart', idArray, initiative)
+    meteorCall('campaignAggregatorChart', idArray, initiative, lineItem)
     .then(function (returnedData) {
       template.templateDictionary.set('chartData', returnedData);
       console.log('from templatedictionary', template.templateDictionary.get('chartData'))

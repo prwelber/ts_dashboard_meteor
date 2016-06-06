@@ -263,15 +263,28 @@ include charting for each lineItem and definitely aggregations --}}
       </div>
       <div class="row">
         <div class="col s12">
-          <h2>Choose Campaigns to Aggregate</h2>
           <form action="#" id="campaignAggregateForm">
-            {{#each campaign in getCampaigns}}
-              <p>
-                <input type="checkbox" name="aggregate" id="{{campaign.data.campaign_id}}"/>
-                <label for="{{campaign.data.campaign_id}}" style="font-size: 1.7em;">{{campaign.data.name}}</label>
-              </p>
-            {{/each}}
-            <input type="submit" value="Aggregate Chosen Campaigns" class="btn waves-effect waves-light">
+            <div class="col s6">
+              <h3>Choose Campaigns to Aggregate</h3>
+              {{#each campaign in getCampaigns}}
+                <p>
+                  <input type="checkbox" name="aggregate" id="{{campaign.data.campaign_id}}"/>
+                  <label for="{{campaign.data.campaign_id}}" style="font-size: 1.7em;">{{campaign.data.name}}</label>
+                </p>
+              {{/each}}
+            </div>
+            <div class="col s6">
+              <h3>Choose Line Item</h3>
+              <select name="lineItemSelect" id="aggregator-line-item-select" class="browser-default">
+                <option value="" disabled selected>Choose Line Item</option>
+                {{#each line in initiativeLineItems}}
+                  <option value="{{line.name}}">{{line.name}}: {{line.platform}} - {{line.dealType}}</option>
+                {{/each}}
+              </select>
+            </div>
+            <div class="col s12 center-align">
+              <input type="submit" value="Aggregate Chosen Campaigns" class="btn waves-effect waves-light" style="margin-top: 2em;">
+            </div>
           </form>
         </div>
       </div>
