@@ -220,9 +220,6 @@ Meteor.methods({
 
     let setObject = {};
     objectiveAggregateArray = _.flatten(objectiveAggregateArray);
-    console.log(objectiveAggregateArray);
-
-
 
     for (let i = 0; i < objectiveAggregateArray.length; i++) {
       setObject = {[objectiveAggregateArray[i]['_id']]: objectiveAggregateArray[i]};
