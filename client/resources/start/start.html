@@ -6,6 +6,7 @@
   <div class="container">
     <div class="row">
       <h1 class="align-center" style="margin-top: 6%; margin-bottom: 6%; font-size: 3em;">Initiatives</h1>
+      {{#if isInRole "admin"}}
       <div class="col s3">
         <label>Initiatives by Status (default is Active)</label>
         <select id="initiativeSelect" class="browser-default tooltipped" data-position="top" data-delay="50" data-tooltip="Can be combined with Owner">
@@ -62,6 +63,19 @@
           {{/each}}
         </select>
       </div>
+      {{else}}
+      <div class="col s12 center-align">
+        <label>Initiatives by Status (default is Active)</label>
+        <select id="initiativeSelect" class="browser-default">
+          <option value="" disabled selected>Choose Status</option>
+          <option value="Active">Active</option>
+          <option value="Ending Soon">Ending Soon</option>
+          <option value="Recently Ended">Recently Ended</option>
+          <option value="Pending">Pending</option>
+          <option value="All">All</option>
+        </select>
+      </div>
+      {{/if}}
     </div>
     <div class="row valign-wrapper" style="margin-bottom: -3px">
       <div class="col s1 valign">
@@ -112,8 +126,13 @@
                     </label>
                   </div>
                 {{else}}
-                  <div class="col s3">
-                    <p>Placeholder</p>
+                  <div class="switch col s3">
+                    <label>
+                      Not Updating
+                      <input disabled type="checkbox" {{activeUpdates _id}} data-id="{{_id}}">
+                      <span class="lever"></span>
+                      Updating
+                    </label>
                   </div>
                 {{/if}}
                 <div class="col s3">

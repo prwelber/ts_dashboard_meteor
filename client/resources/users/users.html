@@ -159,6 +159,7 @@
           <th>Name</th>
           <th>Admin</th>
           <th>Agency</th>
+          <th>Last Login</th>
           <th>Actions</th>
         </thead>
         <tbody>
@@ -169,6 +170,7 @@
               <td>{{firstName}} {{lastName}}</td>
               <td>{{admin}}</td>
               <td>{{agency}}</td>
+              <td>{{date lastLogin}}</td>
               <td><a href="/admin/users/{{_id}}/edit">Edit</a> | <a href="#" class="delete-user">Delete</a></td>
             </tr>
           {{/each}}

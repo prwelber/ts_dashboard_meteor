@@ -44,10 +44,19 @@ Meteor.methods({
   },
   'deleteUser': function (userId) {
     Meteor.users.remove(userId);
+  },
+  createNewUser: (options) => {
+    Accounts.createUser({
+      username: options.username,
+      password: options.password,
+      email: options.email,
+      profile: options
+    });
+    return 'success!';
   }
 });
 
-var id = Accounts.onCreateUser(function (options, user) {
+Accounts.onCreateUser((options, user) => {
   user['firstName'] = options.firstName;
   user['lastName'] = options.lastName;
   user['email'] = options.email;
@@ -60,6 +69,16 @@ var id = Accounts.onCreateUser(function (options, user) {
 });
 
 
+Accounts.onLogin(() => {
+  const user = Meteor.user()
+  const now = moment().toISOString();
+  Meteor.users.update(
+    {_id: user._id},
+    {$set: {
+      lastLogin: now
+    }
+  });
+});
 
 
 Meteor.startup(function () {

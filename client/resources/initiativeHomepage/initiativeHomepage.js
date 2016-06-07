@@ -716,6 +716,10 @@ Template.initiativeHomepage.events({
     }).catch(function (err) {
       console.log('Error in campaignAggregatorChart promise:', err)
     });
+  },
+  'submit #file-upload-form': (event, instance) => {
+    event.preventDefault();
+    console.log(event.target)
   }
 
 });

@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import { FlowRouter } from 'meteor/kadira:flow-router'
 import Initiatives from '/collections/Initiatives'
+import moment from 'moment-timezone';
 
 Meteor.subscribe("usersList");
 
@@ -92,6 +93,9 @@ Template.allUsers.events({
 Template.allUsers.helpers({
     'fetchUsers': function () {
       return Meteor.users.find({});
+    },
+    date: (date) => {
+      return moment(date, moment.ISO_8601).tz("America/New_York").format("MM-DD-YYYY hh:mm a z");
     }
 });
 
@@ -141,13 +145,21 @@ Template.createUser.events({
 
     console.log(options);
 
-    Accounts.createUser(options, function (err) {
+    Meteor.call('createNewUser', options, (err, res) => {
       if (err) {
         alert(err);
       } else {
-        Materialize.toast('User Created!', 2000);
+        Materialize.toast('User Created!', 1500);
       }
-    })
+    });
+
+    // Accounts.createUser(options, function (err) {
+    //   if (err) {
+    //     alert(err);
+    //   } else {
+    //     Materialize.toast('User Created!', 2000);
+    //   }
+    // })
   }
 });
 
@@ -156,6 +168,6 @@ Accounts.onLogin(function () {
   const path = FlowRouter.current().path;
 
   if (path !== "/") {
-    FlowRouter.go("/");
+    FlowRouter.go("/home");
   }
 });

@@ -1,6 +1,7 @@
 <head>
   <title>Dashboard</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
   <script src="https://use.fontawesome.com/db01e81c7a.js"></script>
 </head>
 
@@ -18,7 +19,10 @@
               <li><a href="/admin">Admin</a></li>
               {{#if whatRoute "initiativeHomepage"}}
                 <li><a id="view-initiative-stats-modal" class="modal-trigger" href="#modal1">Initiative Stats</a></li>
-                <li><a id="view-aggregate-modal" class="modal-trigger" href="#modal2">Campaign Aggregator</a></li>
+                {{#if isInRole "admin"}}
+                  <li><a id="view-aggregate-modal" class="modal-trigger" href="#modal2">Campaign Aggregator</a></li>
+                  <li><a id="file-upload-modal" class="modal-trigger" href="#modal3">File Upload</a></li>
+                {{/if}}
               {{/if}}
               {{#if overviewRoute "overview"}}
                 <li class="{{active "overview"}}"><a href="/accounts/{{getCampaignNumber}}/overview">Overview</a></li>
