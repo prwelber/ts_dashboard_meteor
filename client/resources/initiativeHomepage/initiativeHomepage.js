@@ -2,6 +2,7 @@ import CampaignInsights from '/collections/CampaignInsights'
 import Initiatives from '/collections/Initiatives'
 import CampaignBasics from '/collections/CampaignBasics'
 import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
+import Uploads from '/collections/Uploads';
 import { Meteor } from 'meteor/meteor'
 import { FlowRouter } from 'meteor/kadira:flow-router'
 import { Materialize } from 'meteor/materialize:materialize'
@@ -658,8 +659,65 @@ Template.initiativeHomepage.helpers({
   },
   initiativeLineItems: () => {
     return Template.instance().templateDict.get('initiative').lineItems;
-  }
+  },
+  specificFormData: function() {
+    const init = Template.instance().templateDict.get('initiative');
+    return {
+      // id: this._id,
+      // other: this.other,
+      contentType: 'reports',
+      hard: 'Lolcats',
+      initiative: init.name,
+      // fileTypes: '.jpg, .pdf, .png, .csv'
+    }
+  },
+  uploadCallbacks: () => {
+    const init = Template.instance().templateDict.get('initiative');
+    const date = moment().toISOString();
+    return {
+      formData: () => {
+        return {
+          id: "123456789",
+          other: "this is the other key in formData",
+          initiative: init.name
+        }
+      },
+      finished: (index, fileInfo, context) => {
+        fileInfo['uploaded'] = moment().toISOString();
+        fileInfo['initiative'] = init.name;
+        Meteor.call('insertUpload', fileInfo, (err, res) => {
+          if (!err) {
+            Materialize.toast('Upload Successful', 1500);
+          }
+        })
+        return {
+          finished: true,
+          finishedString: "this is a string"
+        }
+      }
+    }
+  },
+  getUploads: () => {
+    return Uploads.find();
+  },
+  fileType: (type) => {
+    if (/(spreadsheet|sheet)/g.test(type)) {
+      return "fa-file-excel-o";
+    } else if (/pdf/.test(type)) {
+      return "fa-file-pdf-o";
+    } else if (/plain/.test(type)) {
+      return "fa-file-text-o";
+    } else if (/png/.test(type)) {
+      return "fa-file-image-o";
+    } else if (/(javascript|html)/g.test(type)) {
+      return "fa-file-code-o";
+    } else if (/(word|processing)/g.test(type)) {
+      return "fa-file-word-o";
+    } else {
+      return "fa-file-o";
+    }
 
+  }
 });
 
 
@@ -719,12 +777,15 @@ Template.initiativeHomepage.events({
   },
   'submit #file-upload-form': (event, instance) => {
     event.preventDefault();
-    console.log(event.target)
     var file = event.target['file-upload'].value;
-    console.log(file)
-    console.log(typeof file)
-  }
 
+  },
+  'click #delete-file': (event, instance) => {
+    event.preventDefault();
+    const uploadId = event.target.parentElement.getAttribute('href');
+
+    Meteor.call('deleteUpload', uploadId);
+  }
 });
 
 
@@ -733,4 +794,5 @@ Template.initiativeHomepage.events({
 Template.initiativeHomepage.onDestroyed(function () {
   $('#modal1').closeModal();
   $('#modal2').closeModal();
+  $('#modal3').closeModal();
 });

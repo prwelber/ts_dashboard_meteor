@@ -48,3 +48,6 @@ meteorhacks:ssr
 mrt:moment-timezone
 practicalmeteor:mocha
 useraccounts:materialize
+tomi:upload-server
+tomi:upload-jquery
+

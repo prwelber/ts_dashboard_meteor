@@ -309,23 +309,38 @@ include charting for each lineItem and definitely aggregations --}}
 
 <div id="modal3" class="modal" style="width: 65%;">
   <div class="modal-content">
-    <form action="#" id="file-upload-form">
+    <div class="row">
       <h3>Upload File</h3>
-      <div class="file-field input-field">
-        <div class="btn">
-          <span>File</span>
-          <input type="file" name="file-upload">
-        </div>
-        <div class="file-path-wrapper">
-          <input class="file-path validate" type="text">
-        </div>
+      <p>Accepted File Formats: | .xlsx | .png | .jpg | .pdf | .csv | .docx | .txt | .js | .html |</p>
+      <div class="col s12">
+        {{> upload_bootstrap multiple=true formData=specificFormData callbacks=uploadCallbacks}}
       </div>
-      <input type="submit" value="Submit" class="btn">
-    </form>
+    </div>
+    <div class="row">
+      <div class="col s12">
+        <ul class="collection with-header">
+          <li class="collection-header"><h3>Files for this Initiative</h3></li>
+          {{#each upload in getUploads}}
+            <li class="collection-item">
+              <div>
+                <i class="fa {{fileType upload.type}}" aria-hidden="true"></i> {{upload.name}}
+                <a target="_blank" href="{{upload.url}}" class="secondary-content" style="margin-left: 10px;">
+                  <i class="fa fa-link fa-2x" aria-hidden="true"></i>
+                </a>
+                <a target="_blank" href="{{upload.url}}" class="secondary-content" download style="margin-left: 10px;">
+                  <i class="fa fa-cloud-download fa-2x" aria-hidden="true"></i>
+                </a>
+                <a href="{{upload._id}}" class="secondary-content" id="delete-file" style="margin-left: 10px;">
+                  <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+                </a>
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
-
-
 
 
 {{#if isReady "Initiatives" "campaignInsightList" "insightsBreakdownByDaysList"}}
