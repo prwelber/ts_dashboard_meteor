@@ -5,10 +5,9 @@ import mastFunc from '../masterFunctions'
 
 var Promise = require('bluebird');
 
-// Tracker.autorun(function () {
-//   if (FlowRouter.subsReady('AdSetsList')) {
-//   }
-// });
+Template.adsets.onRendered(() => {
+  $('.tooltipped').tooltip({delay: 50});
+});
 
 Template.adsets.helpers({
   isReady: function (sub) {
@@ -34,7 +33,7 @@ Template.adsets.helpers({
     const campaignNumber = FlowRouter.current().params.campaign_id;
 
     if (AdSets.find({'data.campaign_id': campaignNumber}).count() >= 1) {
-      let adsets = AdSets.find({'data.campaign_id': campaignNumber}).fetch();
+      let adsets = AdSets.find({'data.campaign_id': campaignNumber}, {sort: {'data.end_time': -1}}).fetch();
       adsets.forEach(el => {
         for (let key in el.data) {
           if (key.startsWith("cost")) {       // format cost related data
@@ -64,30 +63,50 @@ Template.adsets.helpers({
     let campaignNumber = FlowRouter.current().params.campaign_id;
     return campaignNumber;
   },
-    'isActive': function (pathName) {
-      let pathNameRegEx;
-      if (pathName === "overview") {
-        pathNameRegEx = /overview/;
-      } else if (pathName === "targeting") {
-        pathNameRegEx = /targeting/;
-      } else if (pathName === "creative") {
-        pathNameRegEx = /creative/;
-      } else if (pathName === "breakdowns") {
-        pathNameRegEx = /breakdowns/;
-      } else if (pathName === "daybreakdowns") {
-        pathNameRegEx = /daybreakdowns/;
-      } else if (pathName === "hourlybreakdowns") {
-        pathNameRegEx = /hourlybreakdowns/;
-      } else if (pathName === "charts") {
-        pathNameRegEx = /charts/;
-      }
-      if (pathNameRegEx.test(FlowRouter.current().path) === true) {
-        return "active";
-      } else {
-        return '';
-      }
+  'isActive': function (pathName) {
+    let pathNameRegEx;
+    if (pathName === "overview") {
+      pathNameRegEx = /overview/;
+    } else if (pathName === "targeting") {
+      pathNameRegEx = /targeting/;
+    } else if (pathName === "creative") {
+      pathNameRegEx = /creative/;
+    } else if (pathName === "breakdowns") {
+      pathNameRegEx = /breakdowns/;
+    } else if (pathName === "daybreakdowns") {
+      pathNameRegEx = /daybreakdowns/;
+    } else if (pathName === "hourlybreakdowns") {
+      pathNameRegEx = /hourlybreakdowns/;
+    } else if (pathName === "charts") {
+      pathNameRegEx = /charts/;
     }
+    if (pathNameRegEx.test(FlowRouter.current().path) === true) {
+      return "active";
+    } else {
+      return '';
+    }
+  },
+  money: (num) => {
+    return mastFunc.money(num);
+  },
+  number: (num) => {
+    return mastFunc.num(num);
+  },
+  twoDecimals: (num) => {
+    return mastFunc.twoDecimals(num);
+  },
+  timezone: (time) => {
+    return moment(time, "MM-DD-YYYY hh:mm a").tz("America/New_York").format("MM-DD-YYYY hh:mm a z");
+  }
 });
 
+Template.adsets.events({
+  'click #refresh-adsets': (event, template) => {
+    const campId = event.target.dataset.id
+    Meteor.call('refreshAdsets', campId);
+  }
+})
+
 Template.adsets.onDestroyed(func => {
+  $('.tooltipped').tooltip('remove');
 });

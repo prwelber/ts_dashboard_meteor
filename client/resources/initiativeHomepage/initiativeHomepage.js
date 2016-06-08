@@ -782,9 +782,15 @@ Template.initiativeHomepage.events({
   },
   'click #delete-file': (event, instance) => {
     event.preventDefault();
-    const uploadId = event.target.parentElement.getAttribute('href');
 
-    Meteor.call('deleteUpload', uploadId);
+    const uploadId = event.target.parentElement.getAttribute('href');
+    const makeSure = confirm('Are you sure you want to delete this file?')
+
+    if (makeSure) {
+      Meteor.call('deleteUpload', uploadId);
+    } else {
+      return '';
+    }
   }
 });
 

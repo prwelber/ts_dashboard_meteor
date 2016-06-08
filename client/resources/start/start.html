@@ -77,23 +77,23 @@
       </div>
       {{/if}}
     </div>
-    <div class="row valign-wrapper" style="margin-bottom: -3px">
-      <div class="col s1 valign">
+    <div class="row" style="margin-bottom: -3px">
+      <div class="col s12 valign" style="margin-top: 1em;">
+        {{> inputAutocomplete settings=settings id="initiative-typeahead" class="autocomplete" placeholder="Search For Initiative (Case Sensitive)"}}
+      </div>
+      <div class="col s1">
         <button class="btn waves-effect waves-light" id="alpha-sort">
           <i class="fa fa-sort-alpha-asc fa-2x" aria-hidden="true"></i>
         </button>
-        <label for="alpha-sort" class="sort-label">Sort by Name</label>
+        <label for="alpha-sort" class="sort-label">Name</label>
       </div>
-      <div class="col s9 valign" style="margin-top: 1em;">
-        {{> inputAutocomplete settings=settings id="initiative-typeahead" class="autocomplete" placeholder="Search For Initiative (Case Sensitive)"}}
-      </div>
-      <div class="col s1 valign">
+      <div class="col s1 push-s9 center-align">
         <button class="btn waves-effect waves-light" id="start-date-sort">
           <i class="fa fa-sort fa-2x" aria-hidden="true"></i>
         </button>
         <label for="start-date-sort" class="sort-label">Start Date</label>
       </div>
-      <div class="col s1 valign">
+      <div class="col s1 push-s9 center-align">
         <button class="btn waves-effect waves-light" id="end-date-sort">
           <i class="fa fa-sort fa-2x" aria-hidden="true"></i>
         </button>
