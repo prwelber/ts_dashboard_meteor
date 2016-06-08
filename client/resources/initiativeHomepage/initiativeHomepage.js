@@ -720,6 +720,9 @@ Template.initiativeHomepage.events({
   'submit #file-upload-form': (event, instance) => {
     event.preventDefault();
     console.log(event.target)
+    var file = event.target['file-upload'].value;
+    console.log(file)
+    console.log(typeof file)
   }
 
 });
