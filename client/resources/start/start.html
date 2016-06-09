@@ -83,19 +83,19 @@
         {{> inputAutocomplete settings=settings id="initiative-typeahead" class="autocomplete" placeholder="Search For Initiative (Case Sensitive)"}}
       </div>
       <div class="col s1">
-        <button class="btn waves-effect waves-light" id="alpha-sort">
+        <button class="btn waves-effect waves-light start-page-sort" id="alpha-sort">
           <i class="fa fa-sort-alpha-asc fa-2x" aria-hidden="true"></i>
         </button>
         <label for="alpha-sort" class="sort-label">Name</label>
       </div>
       <div class="col s1 push-s9 center-align">
-        <button class="btn waves-effect waves-light" id="start-date-sort">
+        <button class="btn waves-effect waves-light start-page-sort" id="start-date-sort">
           <i class="fa fa-sort fa-2x" aria-hidden="true"></i>
         </button>
         <label for="start-date-sort" class="sort-label">Start Date</label>
       </div>
       <div class="col s1 push-s9 center-align">
-        <button class="btn waves-effect waves-light" id="end-date-sort">
+        <button class="btn waves-effect waves-light start-page-sort" id="end-date-sort">
           <i class="fa fa-sort fa-2x" aria-hidden="true"></i>
         </button>
         <label for="end-date-sort" class="sort-label">End Date</label>
@@ -107,14 +107,14 @@
       {{!-- autocomplete library https://github.com/mizzao/meteor-autocomplete --}}
         <ul class="collection">
           {{#each getAllInitiatives}}
-            <li class="collection-item">
+            <li class="collection-item grey lighten-3">
               <div class="row" style="margin-bottom: 5px;">
                 <div class="col s6">
                   <a href="/initiatives/{{_id}}/homepage">
                     <span class="title" style="font-size: 20px;">{{name}}</span>
                   </a>
                   <a href="/admin/initiatives/{{_id}}/edit" style="margin-left: 10px;">
-                    <i class="tiny material-icons">mode_edit</i>
+                    <i class="fa fa-pencil-square-o"></i>
                   </a>
                 </div>
                 {{#if isInRole 'admin'}}
@@ -142,7 +142,7 @@
               </div>
               {{#if isInRole 'admin'}}
               <div class="row" style="margin: 10px 0 10px 0;">
-                <div class="col s6">
+                <div class="col s6" style="padding-left: 0px;">
                   <p>
                     <em>Owner: {{owner}} | Agency: {{agency}} | Brand: {{brand}}</em>
                   </p>
@@ -157,7 +157,7 @@
               </div>
               {{/if}}
               {{#if isInRole 'admin'}}
-                <div class="row">
+                <div class="row" style="margin-bottom: 10px;">
                   <div class="col s4 offset-s3">
                     <span class="percent-circle-header">Spend</span>
                     <span class="percent-circle-header">Delivery</span>

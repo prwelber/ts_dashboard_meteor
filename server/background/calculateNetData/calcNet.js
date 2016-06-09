@@ -18,8 +18,8 @@ SyncedCron.add({
   name: "Calculate Net Numbers",
 
   schedule: (parser) => {
-    // return parser.text('at 1:05pm')
-    return parser.text('every 10 minutes');
+    return parser.text('at 4:13pm')
+    // return parser.text('every 10 minutes');
   },
 
   job: () => {
@@ -61,6 +61,7 @@ SyncedCron.add({
           netNumbs['net_cpvv'] = netNumbs.spend / init[objective]['videoViews'];
           const dataToSet = {};
           dataToSet[objective+".net"] = netNumbs;
+          console.log(netNumbs)
           try {
             Initiatives.update(
               {name: init.name},

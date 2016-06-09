@@ -20,7 +20,7 @@
         <h4 class="center-align no-top-margin">{{getInitiative.product}}</h4>
       </div>
     </div>
-    <div class="row">
+    <div class="row" style="margin-bottom: 0px;">
       <table class="centered">
         {{#each getInitiative.lineItems}}
           <thead>
@@ -63,79 +63,93 @@
       <h2 class="center-align">{{campaign_name}}</h2>
       <p class="center-align">Updated: {{timezone inserted}}</p>
 
-      <div class="col s2 card">
+      <div class="col s2 card grey lighten-5">
         <div class="card-content">
           <span class="center-align dash-data">{{money spend}}</span><br>
           <span class="">Spend</span>
         </div>
       </div>
-      <div class="col s2 card">
+      <div class="col s2 card grey lighten-5">
         <div class="card-content">
           <span class="center-align dash-data">{{campaign_id}}</span><br>
           <span class="">Campaign ID</span>
         </div>
       </div>
-      <div class="col s2 card">
+      <div class="col s2 card grey lighten-5">
         <div class="card-content">
           <span class="center-align dash-data">{{objectiveText objective}}</span><br>
           <span class="">Objective</span>
         </div>
       </div>
-      <div class="col s2 card">
+      <div class="col s2 card {{impressionsObjective}}">
         <div class="card-content">
           <span class="center-align dash-data">{{number impressions}}</span><br>
           <span class="">Impressions</span>
         </div>
       </div>
-      <div class="col s2 card">
+      <div class="col s2 card {{impressionsObjective}}">
         <div class="card-content">
           <span class="center-align dash-data">{{money cpm}}</span><br>
           <span class="">CPM</span>
         </div>
       </div>
-      <div class="col s2 card">
+      <div class="col s2 card {{clicksObjective}}">
         <div class="card-content ">
           <span class="center-align dash-data">{{number clicks}}</span><br>
           <span class="">Clicks</span>
         </div>
       </div>
-      <div class="col s2 card">
+      <div class="col s2 card {{clicksObjective}}">
         <div class="card-content">
           <span class="center-align dash-data">{{money cpc}}</span><br>
           <span class="">CPC</span>
         </div>
       </div>
-      <div class="col s2 card">
+      <div class="col s2 card {{likesObjective}}">
         <div class="card-content">
           <span class="center-align dash-data">{{number like}}</span><br>
           <span class="">Likes</span>
         </div>
       </div>
-      <div class="col s2 card">
+      <div class="col s2 card {{likesObjective}}">
         <div class="card-content ">
           <span class="center-align dash-data">{{money cpl}}</span><br>
           <span class="">CPL</span>
         </div>
       </div>
-      <div class="col s2 card">
+      <div class="col s2 card {{videoObjective}}">
         <div class="card-content ">
-          <span class="center-align dash-data">{{number total_actions}}</span><br>
-          <span class="">Actions</span>
+          <span class="center-align dash-data">{{money cost_per_video_view}}</span><br>
+          <span class="">CPVV</span>
         </div>
       </div>
-      <div class="col s2 card">
+      <div class="col s2 card grey lighten-5">
         <div class="card-content ">
           <span class="center-align dash-data">{{money cost_per_total_action}}</span><br>
           <span class="">Cost Per Action</span>
         </div>
       </div>
-      <div class="col s2 card">
+      <div class="col s2 card grey lighten-5">
         <div class="card-content ">
           <span class="center-align dash-data">{{number reach}}</span><br>
           <span class="">Reach</span>
         </div>
       </div>
+      {{#if offsite_conversion}}
       <div class="col s2 card">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{number offsite_conversion}}</span><br>
+          <span class="">Conversions</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{cost_per_offsite_conversion}}</span><br>
+          <span class="">CP Conversion</span>
+        </div>
+      </div>
+      {{/if}}
+      {{!-- <div class="col s2 card">
         <div class="card-content ">
           <span class="center-align dash-data">{{twoDecimals frequency}}</span><br>
           <span class="">Frequency</span>
@@ -206,7 +220,7 @@
           <span class="center-align dash-data">{{cost_per_offsite_conversion}}</span><br>
           <span class="">CP Conversion</span>
         </div>
-      </div>
+      </div> --}}
 
 
 
@@ -309,49 +323,45 @@
       </table> --}}
     {{/with}}
   </div> {{!-- end of row --}}
-  <div class="col s12">
-    <h3 class="center-align">Campaign Stats - Net</h3>
+  <div class="row">
+    {{!-- <h3 class="center-align">Campaign Stats - Net</h3> --}}
     {{#with netInsights}}
-      <table class="centered">
-        <thead>
-          <tr>
-            <th>Spend</th>
-            {{!-- <th>Impressions</th> --}}
-            <th>CPM</th>
-            {{!-- <th>Clicks</th> --}}
-            <th>CPC</th>
-            {{!-- <th>Likes</th> --}}
-            <th>CPL</th>
-            {{!-- <th>Total Actions</th> --}}
-            <th>Cost Per Tot Act</th>
-            {{!-- <th>Reach</th> --}}
-            {{!-- <th>Frequency</th> --}}
-            <th>Cost Per Post Eng</th>
-            <th>Cost Per Page Eng</th>
-            <th>Cost Per Video View</th>
-            <th>Cost Per Video Play</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{{money netData.spend}}</td>
-            {{!-- <td>{{number camp.impressions}}</td> --}}
-            <td>{{money netData.netcp_impressions}}</td>
-            {{!-- <td>{{camp.clicks}}</td> --}}
-            <td>{{money netData.netcp_clicks}}</td>
-            {{!-- <td>{{camp.like}}</td> --}}
-            <td>{{money netData.netcp_like}}</td>
-            {{!-- <td>{{camp.total_actions}}</td> --}}
-            <td>{{money netData.netcp_total_actions}}</td>
-            {{!-- <td>{{number camp.reach}}</td> --}}
-            {{!-- <td>{{twoDecimals camp.frequency}}</td> --}}
-            <td>{{money netData.netcp_post_engagement}}</td>
-            <td>{{money netData.netcp_page_engagement}}</td>
-            <td>{{money netData.netcp_video_view}}</td>
-            <td>{{money netData.netcp_video_play}}</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="col s2 card grey lighten-5">
+      <div class="card-content ">
+        <span class="center-align dash-data">{{money netData.spend}}</span><br>
+        <span class="">Net Spend</span>
+      </div>
+    </div>
+    <div class="col s2 card grey lighten-5">
+      <div class="card-content ">
+        <span class="center-align dash-data">{{spendPerc getNet.spendPercent}}%</span><br>
+        <span class="">Spend Percent of Total</span>
+      </div>
+    </div>
+    <div class="col s2 card {{impressionsObjective}}">
+      <div class="card-content ">
+        <span class="center-align dash-data">{{money netData.netcp_impressions}}</span><br>
+        <span class="">Net CPM</span>
+      </div>
+    </div>
+    <div class="col s2 card {{clicksObjective}}">
+      <div class="card-content ">
+        <span class="center-align dash-data">{{money netData.netcp_clicks}}</span><br>
+        <span class="">Net CPC</span>
+      </div>
+    </div>
+    <div class="col s2 card {{likesObjective}}">
+      <div class="card-content ">
+        <span class="center-align dash-data">{{money netData.netcp_like}}</span><br>
+        <span class="">Net CPL</span>
+      </div>
+    </div>
+    <div class="col s2 card {{videoObjective}}">
+      <div class="card-content ">
+        <span class="center-align dash-data">{{money netData.netcp_video_view}}</span><br>
+        <span class="">Net CP Video View</span>
+      </div>
+    </div>
     {{/with}}
   </div>
     {{!-- </div>  end of row --}}

@@ -95,5 +95,8 @@ export const initiativesFunctionObject = {
       returnObj['net_cpvv'] = spend / objectiveAg['videoViews'];
       return returnObj;
     }
+  },
+  calculateSingleNumber: () => {
+
   }
 };

@@ -171,6 +171,50 @@ Template.campaignDashboard.helpers({
 
     newText = newText.split('_').join(' ');
     return newText;
+  },
+  spendPerc: (num) => {
+    return num.toFixed(2);
+  },
+  getNet: () => {
+    const camp = CampaignInsights.findOne({'data.campaign_id': FlowRouter.getParam('campaign_id')});
+    const init = Template.instance().templateDict.get('initiative');
+    const objective = camp.data.objective;
+    // if (!init[objective]['net']) {
+
+    // }
+    return init[objective]['net'];
+  },
+  impressionsObjective: () => {
+    const camp = CampaignInsights.findOne({'data.campaign_id': FlowRouter.getParam('campaign_id')});
+    if (camp.data.objective === "POST_ENGAGEMENT") {
+      return "red lighten-5";
+    } else {
+      return "grey lighten-5";
+    }
+  },
+  clicksObjective: () => {
+    const camp = CampaignInsights.findOne({'data.campaign_id': FlowRouter.getParam('campaign_id')});
+    if (camp.data.objective === "LINK_CLICKS") {
+      return "red lighten-5";
+    } else {
+      return "grey lighten-5";
+    }
+  },
+  likesObjective: () => {
+    const camp = CampaignInsights.findOne({'data.campaign_id': FlowRouter.getParam('campaign_id')});
+    if (camp.data.objective === "PAGE_LIKES") {
+      return "red lighten-5";
+    } else {
+      return "grey lighten-5";
+    }
+  },
+  videoObjective: () => {
+    const camp = CampaignInsights.findOne({'data.campaign_id': FlowRouter.getParam('campaign_id')});
+    if (camp.data.objective === "VIDEO_VIEWS") {
+      return "red lighten-5";
+    } else {
+      return "grey lighten-5";
+    }
   }
 });
 
