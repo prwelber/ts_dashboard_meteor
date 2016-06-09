@@ -6,11 +6,12 @@
   <div class="container">
     <div class="row">
       <h1 class="align-center" style="margin-top: 6%; margin-bottom: 6%; font-size: 3em;">Initiatives</h1>
+
       {{#if isInRole "admin"}}
       <div class="col s3">
-        <label>Initiatives by Status (default is Active)</label>
+        {{!-- <label>Initiatives by Status (default is Active)</label> --}}
         <select id="initiativeSelect" class="browser-default tooltipped" data-position="top" data-delay="50" data-tooltip="Can be combined with Owner">
-          <option value="" disabled selected>Choose Status</option>
+          <option value="" disabled selected>Sort by Status</option>
           <option value="Active">Active</option>
           <option value="Ending Soon">Ending Soon</option>
           <option value="Recently Ended">Recently Ended</option>
@@ -19,9 +20,9 @@
         </select>
       </div>
       <div class="col s3">
-        <label>Initiatives by Owner</label>
+        {{!-- <label>Initiatives by Owner</label> --}}
         <select id="ownerSelect" class="browser-default tooltipped" data-position="top" data-delay="50" data-tooltip="Can be combined with Status">
-          <option value="" disabled selected>Choose Owner</option>
+          <option value="" disabled selected>Sort by Owner</option>
           <option value="All">All</option>
           <option value="Corey">Corey</option>
           <option value="Kathia">Kathia</option>
@@ -33,9 +34,9 @@
         </select>
       </div>
       <div class="col s3">
-        <label>Initiatives by Agency</label>
+        {{!-- <label>Initiatives by Agency</label> --}}
         <select id="agencySelect" class="browser-default">
-          <option value="" disabled selected>Choose Agency</option>
+          <option value="" disabled selected>Sort by Agency</option>
           <option value="Citizens">Citizens</option>
           <option value="Constellation">Constellation</option>
           <option value="Cornerstone">Cornerstone</option>
@@ -55,9 +56,9 @@
         </select>
       </div>
       <div class="col s3">
-        <label>Initiatives by Brand</label>
+        {{!-- <label>Initiatives by Brand</label> --}}
         <select id="brandSelect" class="browser-default">
-          <option value="" disabled selected>Choose Brand</option>
+          <option value="" disabled selected>Sort by Brand</option>
           {{#each brand in getBrands}}
             <option value="{{brand.name}}">{{brand.name}}</option>
           {{/each}}
@@ -139,38 +140,73 @@
                   <p class="right-align">{{formatDate lineItems.[0].startDate}} - {{formatDate lineItems.[0].endDate}}</p>
                 </div>
               </div>
-              <div class="row" style="margin-bottom: 5px;">
-                {{#if isInRole 'admin'}}
-                  <div class="col s6">
-                    <p>
-                      <em>Owner: {{owner}} | Agency: {{agency}} | Brand: {{brand}}</em>
-                    </p>
+              {{#if isInRole 'admin'}}
+              <div class="row" style="margin: 10px 0 10px 0;">
+                <div class="col s6">
+                  <p>
+                    <em>Owner: {{owner}} | Agency: {{agency}} | Brand: {{brand}}</em>
+                  </p>
+                </div>
+
+                <div class="col s3">
+                  <p>Checked Today: {{checkedToday _id}}</p>
+                </div>
+                <div class="col s3">
+                  <p class="right-align {{isActiveClass}}">{{isActiveInitiative}}</p>
+                </div>
+              </div>
+              {{/if}}
+              {{#if isInRole 'admin'}}
+                <div class="row">
+                  <div class="col s4 offset-s3">
+                    <span class="percent-circle-header">Spend</span>
+                    <span class="percent-circle-header">Delivery</span>
+                    <span class="percent-circle-header">Flight</span>
                   </div>
-                  {{!-- <div class="col s3">
-                    <p>
-                      <input type="checkbox" id="double{{_id}}" class="filled-in double-check" checked="{{dailyCheck _id}}"/>
-                      <label for="double{{_id}}">Daily Check</label>
-                    </p>
-                  </div> --}}
-                  <div class="col s3">
-                    <p>Checked Today: {{checkedToday _id}}</p>
-                  </div>
-                  <div class="col s3">
-                    <p class="right-align {{isActiveClass}}">{{isActiveInitiative}}</p>
-                  </div>
-                  <div class="col s12">
-                    {{#each item in lineItems}}
-                      {{#if item.budget}}
-                        <span>Objective: {{item.objective}} | Spend: {{calcSpend item.objective _id}}% | Delivery: {{calcDelivery _id @index}}% | Flight: {{calcFlight _id @index}}% <br> </span>
-                      {{/if}}
-                    {{/each}}
-                  </div>
+                </div>
+                <div class="row">
+                  {{#each item in lineItems}}
+                    {{#if item.budget}}
+
+                    <div class="col s9 push-s3">
+
+                      <div class="c100 p{{calcSpend item.objective _id}} small green grey lighten-1">
+                        <span>{{calcSpend item.objective _id}}%</span>
+                        <div class="slice">
+                          <div class="bar"></div>
+                          <div class="fill"></div>
+                        </div>
+                      </div>
+
+                      <div class="c100 p{{calcDelivery _id @index}} small grey lighten-1">
+                        <span>{{calcDelivery _id @index}}%</span>
+                        <div class="slice">
+                          <div class="bar"></div>
+                          <div class="fill"></div>
+                        </div>
+                      </div>
+
+                      <div class="c100 p{{calcFlight _id @index}} small orange grey lighten-1">
+                        <span>{{calcFlight _id @index}}%</span>
+                        <div class="slice">
+                          <div class="bar"></div>
+                          <div class="fill"></div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col s3 pull-s9">
+                      <h4 style="padding-top: 10%;">{{item.name}} - {{item.objective}}</h4>
+                    </div>
+                    {{/if}}
+                  {{/each}}
+                </div>
                 {{else}}
                   <div class="col s12">
                     <p class="right-align {{isActiveClass}}">{{isActiveInitiative}}</p>
                   </div>
                 {{/if}}
-              </div>
+
             </li>
           {{/each}}
         </ul>

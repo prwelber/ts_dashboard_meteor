@@ -16,8 +16,8 @@ SyncedCron.add({
   name: "Daily Breakdown Updater",
 
   schedule: (parser) => {
-    return parser.text('at 7:30am');
-    // return parser.text('every 3 minutes');
+    // return parser.text('at 7:30am');
+    return parser.text('every 3 minutes');
   },
 
   job: (time) => {

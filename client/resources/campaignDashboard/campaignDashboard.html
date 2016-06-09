@@ -20,223 +20,341 @@
         <h4 class="center-align no-top-margin">{{getInitiative.product}}</h4>
       </div>
     </div>
+    <div class="row">
+      <table class="centered">
+        {{#each getInitiative.lineItems}}
+          <thead>
+            <tr>
+              {{#if objective}} <th>Objective</th> {{/if}}
+              {{#if platform}} <th>Platform</th> {{/if}}
+              {{#if dealType}} <th>Deal Type</th> {{/if}}
+              {{#if quantity}} <th>Quantity</th> {{/if}}
+              {{#if price}} <th>Price</th> {{/if}}
+              {{#if budget}} <th>Budget</th> {{/if}}
+              {{#if startDate}} <th>Start Date</th> {{/if}}
+              {{#if endDate}} <th>End Date</th> {{/if}}
+              {{#if costPlusPercent}} <th>Cost Plus</th> {{/if}}
+              {{#if percentTotalPercent}} <th>Percent Total</th> {{/if}}
+              {{#if isClientPercent}} <th>Client</th> {{/if}}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {{#if objective}}<td>{{objective}}</td>{{/if}}
+              {{#if platform}}<td>{{platform}}</td>{{/if}}
+              {{#if dealType}}<td>{{dealType}}</td>{{/if}}
+              {{#if quantity}}<td>{{number quantity}}</td>{{/if}}
+              {{#if price}}<td>{{price}}</td>{{/if}}
+              {{#if budget}}<td>{{money budget}}</td>{{/if}}
+              {{#if startDate}}<td>{{formatDate startDate}}</td>{{/if}}
+              {{#if endDate}}<td>{{formatDate endDate}}</td>{{/if}}
+              {{#if costPlusPercent}}<td>{{costPlusPercent}}%</td>{{/if}}
+              {{#if percentTotalPercent}}<td>{{percentTotalPercent}}%</td>{{/if}}
+              {{#if isClientPercent}}<td>{{isClientPercent}}%</td>{{/if}}
+            </tr>
+          </tbody>
+        {{/each}}
+      </table>
+    </div>
+    <br>
 
-    <table class="centered">
-      {{#each getInitiative.lineItems}}
+    <div class="row">
+      {{#with fetchInsights}}
+      <h2 class="center-align">{{campaign_name}}</h2>
+      <p class="center-align">Updated: {{timezone inserted}}</p>
+
+      <div class="col s2 card">
+        <div class="card-content">
+          <span class="center-align dash-data">{{money spend}}</span><br>
+          <span class="">Spend</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content">
+          <span class="center-align dash-data">{{campaign_id}}</span><br>
+          <span class="">Campaign ID</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content">
+          <span class="center-align dash-data">{{objectiveText objective}}</span><br>
+          <span class="">Objective</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content">
+          <span class="center-align dash-data">{{number impressions}}</span><br>
+          <span class="">Impressions</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content">
+          <span class="center-align dash-data">{{money cpm}}</span><br>
+          <span class="">CPM</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{number clicks}}</span><br>
+          <span class="">Clicks</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content">
+          <span class="center-align dash-data">{{money cpc}}</span><br>
+          <span class="">CPC</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content">
+          <span class="center-align dash-data">{{number like}}</span><br>
+          <span class="">Likes</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{money cpl}}</span><br>
+          <span class="">CPL</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{number total_actions}}</span><br>
+          <span class="">Actions</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{money cost_per_total_action}}</span><br>
+          <span class="">Cost Per Action</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{number reach}}</span><br>
+          <span class="">Reach</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{twoDecimals frequency}}</span><br>
+          <span class="">Frequency</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{money cost_per_page_engagement}}</span><br>
+          <span class="">CP Page Eng</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{money cost_per_post_engagement}}</span><br>
+          <span class="">CP Post Eng</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{number video_play}}</span><br>
+          <span class="">Video Plays</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{number video_view}}</span><br>
+          <span class="">Video Views</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{money cost_per_video_play}}</span><br>
+          <span class="">CP Video Play</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{money cost_per_video_view}}</span><br>
+          <span class="">CP Video View</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{avgPctWatched}}%</span><br>
+          <span class="">Avg Pct Watched</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{avgSecWatched}}</span><br>
+          <span class="">Avg Secs Watched</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{number completeWatched}}</span><br>
+          <span class="">Completely Watched</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{number offsite_conversion}}</span><br>
+          <span class="">Conversions</span>
+        </div>
+      </div>
+      <div class="col s2 card">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{cost_per_offsite_conversion}}</span><br>
+          <span class="">CP Conversion</span>
+        </div>
+      </div>
+
+
+
+{{!--       <h3 class="center-align">Other Campaign Stats - Gross</h3>
+      <table class="centered">
         <thead>
           <tr>
-            {{#if objective}} <th>Objective</th> {{/if}}
-            {{#if platform}} <th>Platform</th> {{/if}}
-            {{#if dealType}} <th>Deal Type</th> {{/if}}
-            {{#if quantity}} <th>Quantity</th> {{/if}}
-            {{#if price}} <th>Price</th> {{/if}}
-            {{#if budget}} <th>Budget</th> {{/if}}
-            {{#if startDate}} <th>Start Date</th> {{/if}}
-            {{#if endDate}} <th>End Date</th> {{/if}}
-            {{#if costPlusPercent}} <th>Cost Plus</th> {{/if}}
-            {{#if percentTotalPercent}} <th>Percent Total</th> {{/if}}
-            {{#if isClientPercent}} <th>Client</th> {{/if}}
+            <th>Page Engagement</th>
+            <th>Cost Per Page Eng</th>
+            <th>Post Engagement</th>
+            <th>Cost Per Post Eng</th>
+            <th>CTR</th>
+            <th>CPP</th>
+            <th>Post</th>
+            <th>Cost Per Post</th>
+            <th>Photo View</th>
+            <th>Cost Per Photo View</th>
+            <th>Estimated Ad Recall Rate</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            {{#if objective}}<td>{{objective}}</td>{{/if}}
-            {{#if platform}}<td>{{platform}}</td>{{/if}}
-            {{#if dealType}}<td>{{dealType}}</td>{{/if}}
-            {{#if quantity}}<td>{{number quantity}}</td>{{/if}}
-            {{#if price}}<td>{{price}}</td>{{/if}}
-            {{#if budget}}<td>{{money budget}}</td>{{/if}}
-            {{#if startDate}}<td>{{formatDate startDate}}</td>{{/if}}
-            {{#if endDate}}<td>{{formatDate endDate}}</td>{{/if}}
-            {{#if costPlusPercent}}<td>{{costPlusPercent}}%</td>{{/if}}
-            {{#if percentTotalPercent}}<td>{{percentTotalPercent}}%</td>{{/if}}
-            {{#if isClientPercent}}<td>{{isClientPercent}}%</td>{{/if}}
+            <td>{{page_engagement}}</td>
+            <td>{{money cost_per_page_engagement}}</td>
+            <td>{{post_engagement}}</td>
+            <td>{{money cost_per_post_engagement}}</td>
+            <td>{{twoDecimals ctr}}</td>
+            <td>{{money cpp}}</td>
+            <td>{{post}}</td>
+            <td>{{money cost_per_post}}</td>
+            <td>{{photo_view}}</td>
+            <td>{{money cost_per_photo_view}}</td>
+            <td>{{twoDecimals estimated_ad_recall_rate}}</td>
           </tr>
         </tbody>
-      {{/each}}
-    </table>
-    <br>
-    <div class="row">
-      <div class="col s12">
-        {{#with fetchInsights}}
-          <h2 class="center-align">{{campaign_name}}</h2>
-          <p class="center-align">Objective:{{objective}}</p>
-          <p class="center-align">Updated: {{timezone inserted}}</p>
-          <h3 class="center-align">Campaign Stats - Gross</h3>
-          <table class="centered">
-            <thead>
-              <tr>
-                <th>Spend</th>
-                <th>Impressions</th>
-                <th>CPM</th>
-                <th>Clicks</th>
-                <th>CPC</th>
-                <th>Likes</th>
-                <th>CPL</th>
-                <th>Total Actions</th>
-                <th>Cost Per Tot Act</th>
-                <th>Reach</th>
-                <th>Frequency</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{{money spend}}</td>
-                <td>{{number impressions}}</td>
-                <td>{{money cpm}}</td>
-                <td>{{clicks}}</td>
-                <td>{{money cpc}}</td>
-                <td>{{like}}</td>
-                <td>{{money cpl}}</td>
-                <td>{{number total_actions}}</td>
-                <td>{{money cost_per_total_action}}</td>
-                <td>{{number reach}}</td>
-                <td>{{twoDecimals frequency}}</td>
-              </tr>
-            </tbody>
-            <thead>
-              <tr>
-                <th>Page Engagement</th>
-                <th>Cost Per Page Eng</th>
-                <th>Post Engagement</th>
-                <th>Cost Per Post Eng</th>
-                <th>CTR</th>
-                <th>CPP</th>
-                <th>Post</th>
-                <th>Cost Per Post</th>
-                <th>Photo View</th>
-                <th>Cost Per Photo View</th>
-                <th>Estimated Ad Recall Rate</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{{page_engagement}}</td>
-                <td>{{money cost_per_page_engagement}}</td>
-                <td>{{post_engagement}}</td>
-                <td>{{money cost_per_post_engagement}}</td>
-                <td>{{twoDecimals ctr}}</td>
-                <td>{{money cpp}}</td>
-                <td>{{post}}</td>
-                <td>{{money cost_per_post}}</td>
-                <td>{{photo_view}}</td>
-                <td>{{money cost_per_photo_view}}</td>
-                <td>{{twoDecimals estimated_ad_recall_rate}}</td>
-              </tr>
-            </tbody>
-            {{#if video_play}}
-            <thead>
-              <tr>
-                <th>Video Plays</th>
-                <th>Video View</th>
-                <th>Cost Per Video Play</th>
-                <th>Cost Per Video View</th>
-                <th>Video 10 Sec View</th>
-                <th>Cost Per 10 Sec View</th>
-                <th>15 Sec View</th>
-                <th>Avg Percent Watched</th>
-                <th>Avg Seconds Watched</th>
-                <th>Completely Watched</th>
-                <th>Placeholder</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{{number video_play}}</td>
-                <td>{{number video_view}}</td>
-                <td>{{cost_per_video_play}}</td>
-                <td>{{cost_per_video_view}}</td>
-                <td>{{number tenSecondView}}</td>
-                <td>{{costPerTenSecondView}}</td>
-                <td>{{number fifteenSecondView}}</td>
-                <td>{{avgPctWatched}}</td>
-                <td>{{avgSecWatched}}</td>
-                <td>{{number completeWatched}}</td>
-                <td>Placeholder</td>
-              </tr>
-            </tbody>
-            {{/if}}
-            {{#if offsite_conversion}}
-            <thead>
-              <tr>
-                <th>Offsite Conversions</th>
-                <th>Cost Per Offsite Conv</th>
-                <th>FB Pixel Complete Registration</th>
-                <th>Cost Per FB Pixel Compl Registr</th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{{number offsite_conversion}}</td>
-                <td>{{cost_per_offsite_conversion}}</td>
-                <td>{{number offsite_conversion_fb_pixel_complete_registration}}</td>
-                <td>{{cost_per_offsite_conversion_fb_pixel_complete_registration}}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-            {{/if}}
-          </table>
-        {{/with}}
-      </div>
-      <div class="col s12">
-        <h3 class="center-align">Campaign Stats - Net</h3>
-        {{#with netInsights}}
-          <table class="centered">
-            <thead>
-              <tr>
-                <th>Spend</th>
-                {{!-- <th>Impressions</th> --}}
-                <th>CPM</th>
-                {{!-- <th>Clicks</th> --}}
-                <th>CPC</th>
-                {{!-- <th>Likes</th> --}}
-                <th>CPL</th>
-                {{!-- <th>Total Actions</th> --}}
-                <th>Cost Per Tot Act</th>
-                {{!-- <th>Reach</th> --}}
-                {{!-- <th>Frequency</th> --}}
-                <th>Cost Per Post Eng</th>
-                <th>Cost Per Page Eng</th>
-                <th>Cost Per Video View</th>
-                <th>Cost Per Video Play</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{{money netData.spend}}</td>
-                {{!-- <td>{{number camp.impressions}}</td> --}}
-                <td>{{money netData.netcp_impressions}}</td>
-                {{!-- <td>{{camp.clicks}}</td> --}}
-                <td>{{money netData.netcp_clicks}}</td>
-                {{!-- <td>{{camp.like}}</td> --}}
-                <td>{{money netData.netcp_like}}</td>
-                {{!-- <td>{{camp.total_actions}}</td> --}}
-                <td>{{money netData.netcp_total_actions}}</td>
-                {{!-- <td>{{number camp.reach}}</td> --}}
-                {{!-- <td>{{twoDecimals camp.frequency}}</td> --}}
-                <td>{{money netData.netcp_post_engagement}}</td>
-                <td>{{money netData.netcp_page_engagement}}</td>
-                <td>{{money netData.netcp_video_view}}</td>
-                <td>{{money netData.netcp_video_play}}</td>
-              </tr>
-            </tbody>
-          </table>
-        {{/with}}
-      </div>
-    </div>
+        {{#if video_play}}
+        <thead>
+          <tr>
+            <th>Video Plays</th>
+            <th>Video View</th>
+            <th>Cost Per Video Play</th>
+            <th>Cost Per Video View</th>
+            <th>Video 10 Sec View</th>
+            <th>Cost Per 10 Sec View</th>
+            <th>15 Sec View</th>
+            <th>Avg Percent Watched</th>
+            <th>Avg Seconds Watched</th>
+            <th>Completely Watched</th>
+            <th>Placeholder</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{number video_play}}</td>
+            <td>{{number video_view}}</td>
+            <td>{{cost_per_video_play}}</td>
+            <td>{{cost_per_video_view}}</td>
+            <td>{{number tenSecondView}}</td>
+            <td>{{costPerTenSecondView}}</td>
+            <td>{{number fifteenSecondView}}</td>
+            <td>{{avgPctWatched}}</td>
+            <td>{{avgSecWatched}}</td>
+            <td>{{number completeWatched}}</td>
+            <td>Placeholder</td>
+          </tr>
+        </tbody>
+        {{/if}}
+        {{#if offsite_conversion}}
+        <thead>
+          <tr>
+            <th>Offsite Conversions</th>
+            <th>Cost Per Offsite Conv</th>
+            <th>FB Pixel Complete Registration</th>
+            <th>Cost Per FB Pixel Compl Registr</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{number offsite_conversion}}</td>
+            <td>{{cost_per_offsite_conversion}}</td>
+            <td>{{number offsite_conversion_fb_pixel_complete_registration}}</td>
+            <td>{{cost_per_offsite_conversion_fb_pixel_complete_registration}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+        {{/if}}
+      </table> --}}
+    {{/with}}
+  </div> {{!-- end of row --}}
+  <div class="col s12">
+    <h3 class="center-align">Campaign Stats - Net</h3>
+    {{#with netInsights}}
+      <table class="centered">
+        <thead>
+          <tr>
+            <th>Spend</th>
+            {{!-- <th>Impressions</th> --}}
+            <th>CPM</th>
+            {{!-- <th>Clicks</th> --}}
+            <th>CPC</th>
+            {{!-- <th>Likes</th> --}}
+            <th>CPL</th>
+            {{!-- <th>Total Actions</th> --}}
+            <th>Cost Per Tot Act</th>
+            {{!-- <th>Reach</th> --}}
+            {{!-- <th>Frequency</th> --}}
+            <th>Cost Per Post Eng</th>
+            <th>Cost Per Page Eng</th>
+            <th>Cost Per Video View</th>
+            <th>Cost Per Video Play</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{money netData.spend}}</td>
+            {{!-- <td>{{number camp.impressions}}</td> --}}
+            <td>{{money netData.netcp_impressions}}</td>
+            {{!-- <td>{{camp.clicks}}</td> --}}
+            <td>{{money netData.netcp_clicks}}</td>
+            {{!-- <td>{{camp.like}}</td> --}}
+            <td>{{money netData.netcp_like}}</td>
+            {{!-- <td>{{camp.total_actions}}</td> --}}
+            <td>{{money netData.netcp_total_actions}}</td>
+            {{!-- <td>{{number camp.reach}}</td> --}}
+            {{!-- <td>{{twoDecimals camp.frequency}}</td> --}}
+            <td>{{money netData.netcp_post_engagement}}</td>
+            <td>{{money netData.netcp_page_engagement}}</td>
+            <td>{{money netData.netcp_video_view}}</td>
+            <td>{{money netData.netcp_video_play}}</td>
+          </tr>
+        </tbody>
+      </table>
+    {{/with}}
+  </div>
+    {{!-- </div>  end of row --}}
   {{else}}
     <p>Loading...</p>
   {{/if}}

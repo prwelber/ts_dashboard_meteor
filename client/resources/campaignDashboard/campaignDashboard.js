@@ -154,6 +154,23 @@ Template.campaignDashboard.helpers({
   },
   timezone: (time) => {
     return moment(time, "MM-DD-YYYY hh:mm a").tz("America/New_York").format("MM-DD-YYYY hh:mm a z");
+  },
+  objectiveText: (text) => {
+    text = text.toLowerCase();
+    var newText = "";
+
+    for (var i = 0; i < text.length; i++) {
+      if (i === 0) {
+        newText += text[i].toUpperCase();
+      } else if (text[i-1] === "_") {
+        newText += text[i].toUpperCase()
+      } else {
+        newText += text[i]
+      }
+    }
+
+    newText = newText.split('_').join(' ');
+    return newText;
   }
 });
 

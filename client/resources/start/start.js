@@ -181,18 +181,30 @@ Template.initiativesHome.helpers({
         if (! init[key]['net']) {
           return '';
         } else {
-          return numeral(init[key]['net']['spendPercent']).format("00.00");
+          if (parseFloat(init[key]['net']['spendPercent']) >= 100) {
+            return "100";
+          } else {
+            return numeral(init[key]['net']['spendPercent']).format("00");
+          }
         }
       }
     }
   },
   calcDelivery: (_id, index) => {
     const init = Initiatives.findOne({_id: _id});
-    return numeral(initiativesFunctionObject.calculateDeliveryPercent(init, index)).format("00.00");
+    if (parseFloat(initiativesFunctionObject.calculateDeliveryPercent(init, index)) >= 100) {
+      return "100";
+    } else {
+      return numeral(initiativesFunctionObject.calculateDeliveryPercent(init, index)).format("00");
+    }
   },
   calcFlight: (_id, index) => {
     const init = Initiatives.findOne({_id: _id});
-    return numeral(initiativesFunctionObject.calculateFlightPercentage(init, index)).format("00.00");
+    if (parseFloat(initiativesFunctionObject.calculateFlightPercentage(init, index)) >= 100) {
+      return "100";
+    } else {
+      return numeral(initiativesFunctionObject.calculateFlightPercentage(init, index)).format("00");
+    }
   },
   activeUpdates: (_id) => {
     const init = Initiatives.findOne({_id: _id});
@@ -218,7 +230,67 @@ Template.initiativesHome.helpers({
   },
   getBrands: () => {
     return MasterAccounts.find({});
-  }
+  },
+  // sortSelect: () => {
+  //   const selection = Session.get("sortSelect");
+  //   const agencyList = [
+  //     {name: "Citizens"},
+  //     {name: "Constellation"},
+  //     {name: "Cornerstone"},
+  //     {name: "CUE"},
+  //     {name: "Farm Rich"},
+  //     {name: "Hadeler Krueger"},
+  //     {name: "High Wide & Handsome"},
+  //     {name: "Hitachi"},
+  //     {name: "Horizon"},
+  //     {name: "Icon"},
+  //     {name: "Mundy"},
+  //     {name: "Power Creative"},
+  //     {name: "Rachael Piper"},
+  //     {name: "SapientNitro"},
+  //     {name: "True Media"},
+  //     {name: "Uniworld"},
+  //   ];
+
+  //   const ownerList = [
+  //     {name: "All"},
+  //     {name: "Corey"},
+  //     {name: "Kathia"},
+  //     {name: "Veronika"},
+  //     {name: "Sheri"},
+  //     {name: "Ashwin"},
+  //     {name: "Phil"},
+  //     {name: "Plato"}
+  //   ];
+
+  //   const statusList = [
+  //     {name: "Active"},
+  //     {name: "Ending Soon"},
+  //     {name: "Recently Ended"},
+  //     {name: "Pending"},
+  //     {name: "All"}
+  //   ]
+
+  //   if (selection === "Brand") {
+  //     Session.set("agencySelect", null);
+  //     Session.set("ownerSelect", null);
+  //     Session.set("initiativeSelect", null);
+  //     return MasterAccounts.find({})
+  //   } else if (selection === "Agency") {
+  //     Session.set("brandSelect", null);
+  //     Session.set("ownerSelect", null);
+  //     Session.set("initiativeSelect", null);
+  //     return agencyList;
+  //   } else if (selection === "Owner") {
+  //     Session.set("agencySelect", null);
+  //     Session.set("brandSelect", null);
+  //     return ownerList;
+  //   } else if (selection === "Status") {
+  //     Session.set("agencySelect", null);
+  //     Session.set("brandSelect", null);
+  //     return statusList;
+  //   }
+//   }
 });
 
 Template.initiativesHome.events({
@@ -249,18 +321,6 @@ Template.initiativesHome.events({
       Session.set('ownerSelect', event.target.value);
     }
   },
-  // "click .double-check": (event, instance) => {
-  //   let id = event.target.id.toString().split("double")[1];
-  //   if (event.target.checked === false) {
-  //     const checked = false;
-  //     Meteor.call('toggleDailyCheck', id, checked);
-  //   } else if (event.target.checked === true) {
-  //     const checked = true;
-  //     Meteor.call('toggleDailyCheck', id, checked);
-  //   } else {
-  //     alert("there is a problem with this feature");
-  //   }
-  // },
   "change #agencySelect": (event, instance) => {
     Session.set("brandSelect", null);
     Session.set("ownerSelect", null);
@@ -273,6 +333,13 @@ Template.initiativesHome.events({
     Session.set("initiativeSelect", null);
     Session.set('brandSelect', event.target.value);
   },
+  // "change #sort-select": (event, instance) => {
+  //   console.log(event.target.value);
+  //   Session.set("sortSelect", event.target.value)
+  // },
+  // "change #sort-select-category": (event, instance) => {
+
+  // },
   "click #alpha-sort": (event, instance) => {
     var date = Session.get('dateSort')
 
