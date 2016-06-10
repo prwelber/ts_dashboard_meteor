@@ -17,6 +17,7 @@
               <li class="userLogout"> <a href="">Logout</a></li>
               <li><a href="/home">Home</a></li>
               <li><a href="/admin">Admin</a></li>
+
               {{#if whatRoute "initiativeHomepage"}}
                 <li><a id="view-initiative-stats-modal" class="modal-trigger" href="#modal1">Initiative Stats</a></li>
                 {{#if isInRole "admin"}}
@@ -73,7 +74,6 @@
           <div class="row">
             <div class="col l6 s12">
               <h5 class="white-text">Footer Content Here</h5>
-              {{!-- {{> loginButtons}} --}}
               <p class="white-text">Today is {{getDate}}</p>
               <p class="white-text">More Footer Content</p>
             </div>

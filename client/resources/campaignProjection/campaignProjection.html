@@ -1,5 +1,6 @@
 <template name="projections">
   {{#if isReady "Initiatives"}}
+  <div class="container">
     <div class="row">
       <h3 class="center-align">Projections</h3>
       <div class="input-field col s6">
@@ -81,6 +82,7 @@
       </div>
       {{/with}}
     </div>
+  </div>
 
   {{else}}
     <p>Loading..</p>

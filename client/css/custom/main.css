@@ -5,6 +5,7 @@ body {
     flex-direction: column;
   }
 
+
 main {
   flex: 1 0 auto;
 }
@@ -118,6 +119,14 @@ a:hover {
 
 .projection-buttons {
   margin-top: 2%;
+}
+
+#project-up {
+  border-radius: 15px;
+}
+
+#project-down {
+  border-radius: 15px;
 }
 
 .typeahead-text {

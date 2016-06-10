@@ -4,8 +4,8 @@
 
 <template name="initiativesHome">
   <div class="container">
-    <div class="row">
-      <h1 class="align-center" style="margin-top: 6%; margin-bottom: 6%; font-size: 3em;">Initiatives</h1>
+    <div class="row" style="margin-top: 6%; margin-bottom: 1%;">
+      <!-- <h1 class="align-center" style="margin-top: 6%; margin-bottom: 6%; font-size: 3em;">Initiatives</h1> -->
 
       {{#if isInRole "admin"}}
       <div class="col s3">
@@ -79,7 +79,7 @@
       {{/if}}
     </div>
     <div class="row" style="margin-bottom: -3px">
-      <div class="col s12 valign" style="margin-top: 1em;">
+      <div class="col s12" style="margin-top: 1em;">
         {{> inputAutocomplete settings=settings id="initiative-typeahead" class="autocomplete" placeholder="Search For Initiative (Case Sensitive)"}}
       </div>
       <div class="col s1">
