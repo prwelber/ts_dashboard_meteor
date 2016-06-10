@@ -34,7 +34,8 @@ export function dailyUpdate(array) {
 
         console.log('getDailyBreakdown background job running');
         // remove any old versions
-        InsightsBreakdownsByDays.remove({'data.campaign_id': array[counter]});
+        
+        // InsightsBreakdownsByDays.remove({'data.campaign_id': array[counter]});
 
         // this begins the portion of the code taken from
         // the server method

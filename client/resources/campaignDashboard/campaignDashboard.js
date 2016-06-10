@@ -187,7 +187,7 @@ Template.campaignDashboard.helpers({
   impressionsObjective: () => {
     const camp = CampaignInsights.findOne({'data.campaign_id': FlowRouter.getParam('campaign_id')});
     if (camp.data.objective === "POST_ENGAGEMENT") {
-      return "red lighten-5";
+      return "amber lighten-5";
     } else {
       return "grey lighten-5";
     }
@@ -195,7 +195,7 @@ Template.campaignDashboard.helpers({
   clicksObjective: () => {
     const camp = CampaignInsights.findOne({'data.campaign_id': FlowRouter.getParam('campaign_id')});
     if (camp.data.objective === "LINK_CLICKS") {
-      return "red lighten-5";
+      return "amber lighten-5";
     } else {
       return "grey lighten-5";
     }
@@ -203,7 +203,7 @@ Template.campaignDashboard.helpers({
   likesObjective: () => {
     const camp = CampaignInsights.findOne({'data.campaign_id': FlowRouter.getParam('campaign_id')});
     if (camp.data.objective === "PAGE_LIKES") {
-      return "red lighten-5";
+      return "amber lighten-5";
     } else {
       return "grey lighten-5";
     }
@@ -211,7 +211,7 @@ Template.campaignDashboard.helpers({
   videoObjective: () => {
     const camp = CampaignInsights.findOne({'data.campaign_id': FlowRouter.getParam('campaign_id')});
     if (camp.data.objective === "VIDEO_VIEWS") {
-      return "red lighten-5";
+      return "amber lighten-5";
     } else {
       return "grey lighten-5";
     }
