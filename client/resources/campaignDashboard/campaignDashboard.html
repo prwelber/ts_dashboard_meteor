@@ -135,14 +135,53 @@
           <span class="">Reach</span>
         </div>
       </div>
+      {{#with netInsights}}
+      <div class="col s6 m4 l3 card grey lighten-5">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{money netData.spend}}</span><br>
+          <span class="">Net Spend</span>
+        </div>
+      </div>
+      <div class="col s6 m4 l3 card grey lighten-5">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{spendPerc getNet.spendPercent}}%</span><br>
+          <span class="">Spend Percent of Total</span>
+        </div>
+      </div>
+      <div class="col s6 m4 l3 card {{impressionsObjective}}">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{money netData.netcp_impressions}}</span><br>
+          <span class="">Net CPM</span>
+        </div>
+      </div>
+      <div class="col s6 m4 l3 card {{clicksObjective}}">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{money netData.netcp_clicks}}</span><br>
+          <span class="">Net CPC</span>
+        </div>
+      </div>
+      <div class="col s6 m4 l3 card {{likesObjective}}">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{money netData.netcp_like}}</span><br>
+          <span class="">Net CPL</span>
+        </div>
+      </div>
+      <div class="col s6 m4 l3 card {{videoObjective}}">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{money netData.netcp_video_view}}</span><br>
+          <span class="">Net CP Video View</span>
+        </div>
+      </div>
+      {{/with}}
+
       {{#if offsite_conversion}}
-      <div class="col s6 m4 l2 card">
+      <div class="col s6 m4 l3 card">
         <div class="card-content ">
           <span class="center-align dash-data">{{number offsite_conversion}}</span><br>
           <span class="">Conversions</span>
         </div>
       </div>
-      <div class="col s6 m4 l2 card">
+      <div class="col s6 m4 l3 card">
         <div class="card-content ">
           <span class="center-align dash-data">{{cost_per_offsite_conversion}}</span><br>
           <span class="">CP Conversion</span>
@@ -326,44 +365,7 @@
   </div>
   <div class="row">
     {{!-- <h3 class="center-align">Campaign Stats - Net</h3> --}}
-    {{#with netInsights}}
-    <div class="col s6 m4 l2 card grey lighten-5">
-      <div class="card-content ">
-        <span class="center-align dash-data">{{money netData.spend}}</span><br>
-        <span class="">Net Spend</span>
-      </div>
-    </div>
-    <div class="col s6 m4 l2 card grey lighten-5">
-      <div class="card-content ">
-        <span class="center-align dash-data">{{spendPerc getNet.spendPercent}}%</span><br>
-        <span class="">Spend Percent of Total</span>
-      </div>
-    </div>
-    <div class="col s6 m4 l2 card {{impressionsObjective}}">
-      <div class="card-content ">
-        <span class="center-align dash-data">{{money netData.netcp_impressions}}</span><br>
-        <span class="">Net CPM</span>
-      </div>
-    </div>
-    <div class="col s6 m4 l2 card {{clicksObjective}}">
-      <div class="card-content ">
-        <span class="center-align dash-data">{{money netData.netcp_clicks}}</span><br>
-        <span class="">Net CPC</span>
-      </div>
-    </div>
-    <div class="col s6 m4 l2 card {{likesObjective}}">
-      <div class="card-content ">
-        <span class="center-align dash-data">{{money netData.netcp_like}}</span><br>
-        <span class="">Net CPL</span>
-      </div>
-    </div>
-    <div class="col s6 m4 l2 card {{videoObjective}}">
-      <div class="card-content ">
-        <span class="center-align dash-data">{{money netData.netcp_video_view}}</span><br>
-        <span class="">Net CP Video View</span>
-      </div>
-    </div>
-    {{/with}}
+
   </div>
     {{!-- </div>  end of row --}}
   {{else}}
