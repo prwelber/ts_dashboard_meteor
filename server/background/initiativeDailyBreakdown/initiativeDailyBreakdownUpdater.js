@@ -17,7 +17,7 @@ SyncedCron.add({
 
   schedule: (parser) => {
     // return parser.text('at 7:30am');
-    return parser.text('every 2 minutes');
+    return parser.text('every 4 minutes');
   },
 
   job: (time) => {

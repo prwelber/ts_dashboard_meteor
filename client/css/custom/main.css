@@ -137,12 +137,13 @@ a:hover {
 /* --------------- Sort Label on Start Page ----------------- */
 
 .sort-label {
+  margin-left: 5px;
   display: block;
   text-align: center;
 }
 
 .percent-circle-header {
-  margin: 0 20px 0 20px;
+  margin: 0 7px 0 7px;
 }
 
 .dash-data {
@@ -222,7 +223,7 @@ a:hover {
   font-size: 240px;
 }
 .c100.small {
-  font-size: 80px;
+  font-size: 55px;
 }
 .c100 > span {
   position: absolute;
@@ -233,7 +234,8 @@ a:hover {
   width: 5em;
   line-height: 5em;
   font-size: 0.2em;
-  color: #cccccc;
+  /*color: #cccccc;*/
+  color: #9b9b9b;
   display: block;
   text-align: center;
   white-space: nowrap;

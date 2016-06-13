@@ -7,6 +7,8 @@
     <div class="row" style="margin-top: 6%; margin-bottom: 1%;">
       <!-- <h1 class="align-center" style="margin-top: 6%; margin-bottom: 6%; font-size: 3em;">Initiatives</h1> -->
 
+      <div class="circle" id="circles-1"></div>
+
       {{#if isInRole "admin"}}
       <div class="col s3">
         {{!-- <label>Initiatives by Status (default is Active)</label> --}}
@@ -113,9 +115,11 @@
                   <a href="/initiatives/{{_id}}/homepage">
                     <span class="title" style="font-size: 20px;">{{name}}</span>
                   </a>
-                  <a href="/admin/initiatives/{{_id}}/edit" style="margin-left: 10px;">
-                    <i class="fa fa-pencil-square-o"></i>
-                  </a>
+                  {{#if isInRole "admin"}}
+                    <a href="/admin/initiatives/{{_id}}/edit" style="margin-left: 10px;">
+                      <i class="fa fa-pencil-square-o"></i>
+                    </a>
+                  {{/if}}
                 </div>
                 {{#if isInRole 'admin'}}
                   <div class="switch col s3">
@@ -164,7 +168,7 @@
                     <span class="percent-circle-header">Flight</span>
                   </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-bottom: 5px;">
                   {{#each item in lineItems}}
                     {{#if item.budget}}
 
@@ -196,14 +200,16 @@
 
                     </div>
                     <div class="col s3 pull-s9">
-                      <h4 style="padding-top: 10%;">{{item.name}} - {{item.objective}}</h4>
+                      <h4 style="padding-top: 6%;">{{item.name}} - {{item.objective}}</h4>
                     </div>
                     {{/if}}
                   {{/each}}
                 </div>
                 {{else}}
-                  <div class="col s12">
-                    <p class="right-align {{isActiveClass}}">{{isActiveInitiative}}</p>
+                  <div class="row">
+                    <div class="col s12">
+                      <p class="right-align {{isActiveClass}}">{{isActiveInitiative}}</p>
+                    </div>
                   </div>
                 {{/if}}
 

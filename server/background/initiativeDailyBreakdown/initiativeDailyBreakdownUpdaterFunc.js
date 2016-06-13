@@ -34,7 +34,7 @@ export function dailyUpdate(array) {
 
         console.log('getDailyBreakdown background job running');
         // remove any old versions
-        
+
         // InsightsBreakdownsByDays.remove({'data.campaign_id': array[counter]});
 
         // this begins the portion of the code taken from
@@ -156,6 +156,7 @@ export function dailyUpdate(array) {
         // }
         counter++;
       } // end of else block in if (counter >= array.length)
+    // }, 10000);
     }, 5000); // end of Meteor.setInterval
   } // end if if(array)
 }

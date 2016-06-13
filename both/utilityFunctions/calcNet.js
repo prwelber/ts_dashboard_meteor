@@ -1,6 +1,5 @@
-import { Meteor } from 'meteor/meteor';
-import { SyncedCron } from 'meteor/percolate:synced-cron';
 import Initiatives from '/collections/Initiatives';
+
 
 const stringToCostPlusPercentage = function stringToCostPlusPercentage (num) {
   num = num.toString().split('');
@@ -9,23 +8,11 @@ const stringToCostPlusPercentage = function stringToCostPlusPercentage (num) {
   return num;
 }
 
-SyncedCron.config({
-  collectionName: 'cronCollection'
-});
 
 
-SyncedCron.add({
-  name: "Calculate Net Numbers",
-
-  schedule: (parser) => {
-    // return parser.text('at 2:10pm')
-    return parser.text('every 10 minutes')
-  },
-
-  job: () => {
-    console.log('running netCalc job')
-    const inits = Initiatives.find({userActive: true}).fetch();
-
+export const calcNet = {
+  calculateNetNumbers: (name) => {
+    const inits = Initiatives.find({name: name}).fetch();
     let deal,
         percent,
         spend,
@@ -122,8 +109,8 @@ SyncedCron.add({
             console.log(e);
           }
         }
-
       }); // end of init.lineItems.forEach((item))
     }); // end of inits.forEach((init))
-  } // end of job
-});
+  }
+}
+

@@ -35,6 +35,7 @@ Template.initiativesHome.onRendered(function () {
   Session.set('dateSort', {'lineItems.0.endDate': 1});
   // Session.set('startDateSort', {'lineItems.0.startDate': 1});
   // Session.set('alphaSort', {name: 1});
+
 });
 
 
@@ -379,3 +380,8 @@ Template.initiativesHome.onDestroyed(() => {
   Session.set("brandSelect", null);
   $('.tooltipped').tooltip('remove');
 })
+
+
+
+
+

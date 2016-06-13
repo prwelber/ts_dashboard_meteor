@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor'
 import { SyncedCron } from 'meteor/percolate:synced-cron';
 // import { Moment } from 'meteor/momentjs:moment'
-import { initiativeAggregator } from './initAggregateUpdaterFunc'
+import { initiativeAggregator } from './initAggregateUpdaterFunc';
+import { calcNet } from '/both/utilityFunctions/calcNet';
 import Initiatives from '/collections/Initiatives'
 const later = require('later');
 
@@ -14,7 +15,7 @@ SyncedCron.add({
 
   schedule: (parser) => {
     // return parser.text('at 12:54pm');
-    return parser.text('every 15 minutes');
+    return parser.text('every 45 minutes');
   },
 
   job: (time) => {
@@ -42,8 +43,8 @@ SyncedCron.add({
 SyncedCron.add({
   name: "Objective Aggregator",
   schedule: (parser) => {
-    // return parser.text('every 30 minutes');
-    return parser.text('at 12:40pm')
+    // return parser.text('every 59 minutes');
+    return parser.text('at 5:30pm')
   },
   job: () => {
     const inits = Initiatives.find({userActive: true}).fetch();
@@ -59,9 +60,10 @@ SyncedCron.add({
           Meteor.clearInterval(setIntervalId);
         } else {
           Meteor.call('aggregateObjective', activeInitiatives[counter]);
+          calcNet.calculateNetNumbers(activeInitiatives[counter]);
           counter++;
         }
-      }, 1000);
+      }, 500);
     }
   }
 });

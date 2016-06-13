@@ -165,6 +165,10 @@ Template.editInitiativeCampaigns.helpers({
         const re = new RegExp(reResult[0], "i");
         const camps = CampaignInsights.find({'data.campaign_name': {$regex: re}}).fetch();
         return camps
+    },
+    getFromInitiative: () => {
+      const initiative = Template.instance().templateDict.get('initiative');
+      return initiative.campaign_names;
     }
 });
 
@@ -186,6 +190,13 @@ Template.editInitiativeCampaigns.events({
             Materialize.toast('Campaigns Updated!', 5000);
         }
       });
+    },
+    "click .remove-camp-from-init": (event, instance) => {
+      const initiative = Template.instance().templateDict.get('initiative');
+      const name = event.target.dataset.name;
+      // const camp = CampaignInsights.findOne({'data.name': name})
+      // const id = camp.data.campaign_id;
+      Meteor.call('removeCampaignName', initiative._id, name)
     }
 });
 

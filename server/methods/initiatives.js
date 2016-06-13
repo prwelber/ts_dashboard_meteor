@@ -320,6 +320,15 @@ Meteor.methods({
       {$set: {dailyCheck: checked}
     });
     return "success";
+  },
+  removeCampaignName: (_id, name) => {
+    Initiatives.update(
+      {_id: _id},
+      {$pull: {
+        campaign_names: name
+        }
+      }
+    )
   }
 });
 

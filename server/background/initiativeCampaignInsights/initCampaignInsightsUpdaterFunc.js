@@ -70,21 +70,21 @@ export function insightUpdate(array) {
 
     const setIntervalId = Meteor.setInterval(() => {
 
-      const camp = CampaignBasics.findOne({'data.campaign_id': array[counter]});
-      const insight = CampaignInsights.findOne({'data.campaign_id': array[counter]});
+      // const camp = CampaignBasics.findOne({'data.campaign_id': array[counter]});
+      // const insight = CampaignInsights.findOne({'data.campaign_id': array[counter]});
 
       if (counter >= array.length) {
         console.log('clearInterval');
         counter++;
         Meteor.clearInterval(setIntervalId);
-      } else if ((camp && insight) && (moment(insight.data.inserted, "MM-DD-YYYY hh:mm a").isAfter(moment(camp.data.stop_time, moment.ISO_8601)))) {
-        console.log('no need to update old data');
-        counter++;
-      } else {
+      }
+      // else if ((camp && insight) && (moment(insight.data.inserted, "MM-DD-YYYY hh:mm a").isAfter(moment(camp.data.stop_time, moment.ISO_8601)))) {
+      //   counter++;
+      // }
+      else {
 
         console.log('campaignInsightUpdater background job running');
         console.log('counter', counter);
-        console.log('campaign_id', array[counter]);
 
         //remove old version and any null values
         CampaignInsights.remove({'data.campaign_id': array[counter]});
@@ -147,15 +147,17 @@ export function insightUpdate(array) {
         // ends initiative matching
 
         try {
-          CampaignInsights.insert({
-            data: insightData
-          });
+          CampaignInsights.update(
+            {'data.campaign_id': insightData.campaign_id},
+            {data: insightData},
+            {upsert: true}
+          );
         } catch(e) {
           // statements
-          console.log(e);
+          console.log("error inserting updated camp insight:", e);
         }
         counter++;
       } // end of else
-    }, 3500); // end of Meteor.setInterval
+    }, 4000); // end of Meteor.setInterval
   } // end of if array.length >= 1
 } // end of export function

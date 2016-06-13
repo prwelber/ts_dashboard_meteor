@@ -54,6 +54,11 @@
 <template name="editInitiativeCampaigns">
   <h2>Edit Initiative Campaigns</h2>
   <div class="row">
+    {{#each camp in getFromInitiative}}
+      <p>{{camp}} <a class="remove-camp-from-init" data-name="{{camp}}" href="#">remove campaign from initiative</a></p>
+    {{/each}}
+  </div>
+  <div class="row">
     <div id="left" class="col s6">
       <h3>Currently Associated Campaigns</h3>
       {{#each getCampaigns}}

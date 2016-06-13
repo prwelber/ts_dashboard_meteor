@@ -16,7 +16,9 @@
             <ul id="nav-mobile" class="left hide-on-med-and-down">
               <li class="userLogout"> <a href="">Logout</a></li>
               <li><a href="/home">Home</a></li>
-              <li><a href="/admin">Admin</a></li>
+              {{#if isInRole "admin"}}
+                <li><a href="/admin">Admin</a></li>
+              {{/if}}
 
               {{#if whatRoute "initiativeHomepage"}}
                 <li><a id="view-initiative-stats-modal" class="modal-trigger" href="#modal1">Initiative Stats</a></li>
