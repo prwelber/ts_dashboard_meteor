@@ -50,3 +50,5 @@ useraccounts:materialize
 tomi:upload-server
 tomi:upload-jquery
 
+service-configuration
+accounts-base
