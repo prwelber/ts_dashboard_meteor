@@ -45,7 +45,7 @@ Template.initiativeHomepage.onRendered(function () {
 
 
   const initiative = Initiatives.findOne({_id: FlowRouter.getParam("_id")});
-
+  Meteor.call('getAggregate', initiative.name);
   // Meteor.call('aggregateObjective', initiative.name);
 
 });

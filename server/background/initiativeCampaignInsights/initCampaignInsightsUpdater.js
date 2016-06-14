@@ -14,7 +14,8 @@ SyncedCron.add({
   name: "Insight Updater",
 
   schedule: (parser) => {
-    return parser.text('at 12:54pm');
+    return parser.text('every 2 hours')
+    // return parser.text('at 12:54pm');
   },
 
   job: (time) => {

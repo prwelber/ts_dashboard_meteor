@@ -158,6 +158,6 @@ export function insightUpdate(array) {
         }
         counter++;
       } // end of else
-    }, 4000); // end of Meteor.setInterval
+    }, 10000); // end of Meteor.setInterval
   } // end of if array.length >= 1
 } // end of export function

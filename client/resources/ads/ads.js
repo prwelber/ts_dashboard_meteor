@@ -79,7 +79,6 @@ Template.ads.helpers({
 Template.ads.events({
   'click #refresh-ads': (event, template) => {
     const campId = event.target.dataset.id;
-    console.log(campId);
     Meteor.call('refreshAds', campId);
   }
 });

@@ -43,8 +43,8 @@ SyncedCron.add({
 SyncedCron.add({
   name: "Objective Aggregator",
   schedule: (parser) => {
-    // return parser.text('every 59 minutes');
-    return parser.text('at 5:30pm')
+    return parser.text('every 55 minutes');
+    // return parser.text('at 5:30pm')
   },
   job: () => {
     const inits = Initiatives.find({userActive: true}).fetch();
