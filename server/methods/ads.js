@@ -11,13 +11,16 @@ Meteor.methods({
 
 
 Meteor.methods({
+  refreshAds: (campaignId) => {
+    Ads.remove({'data.campaign_id': campaignId});
+  },
   'getAds': function (accountNumber) {
     let adsArray = [];
     let otherArray = [];
     let masterArray = [];
     let carouselArray = [];
     let ads;
-    const query = '/ads?fields=adcreatives{object_story_id,image_url,object_id,body,title,template_url,name,thumbnail_url,url_tags,link_url},insights{clicks,actions,cost_per_action_type,total_actions,spend,objective,cpc,cpp,cpm,ctr,impressions,frequency,reach},account_id,adset_id,campaign_id,name,id&limit=75&access_token='
+    const query = '/ads?fields=adcreatives{object_story_id,image_url,object_id,body,title,template_url,name,thumbnail_url,url_tags,link_url},insights{clicks,actions,cost_per_action_type,total_actions,spend,objective,cpc,cpp,cpm,ctr,impressions,frequency,reach},account_id,adset_id,campaign_id,name,id&date_perset=lifetime&limit=75&access_token='
     try {
         let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+query+token+'', {});
         ads = result;
@@ -57,7 +60,7 @@ Meteor.methods({
 
               // now make another call for individual carousel stats and we will
               // add it to the appropriate ID
-              let carouselNumbers = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/insights?fields=impressions,inline_link_clicks,actions,website_ctr&action_breakdowns=["action_type","action_carousel_card_id"]&access_token='+token+'', {});
+              let carouselNumbers = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/insights?fields=impressions,inline_link_clicks,actions,website_ctr&action_breakdowns=["action_type","action_carousel_card_id"]&date_preset=lifetime&access_token='+token+'', {});
 
               let numbers = carouselNumbers.data.data[0];
               /*

@@ -1,12 +1,16 @@
 import CampaignInsights from '/collections/CampaignInsights'
 import Initiatives from '/collections/Initiatives'
 import Ads from '/collections/Ads'
-
 const Promise = require('bluebird');
+import mastFunc from '../masterFunctions'
 
-Tracker.autorun(function () {
-    if (FlowRouter.subsReady('AdsList')) {
-    }
+// Tracker.autorun(function () {
+//     if (FlowRouter.subsReady('AdsList')) {
+//     }
+// });
+
+Template.ads.onRendered(() => {
+  $('.tooltipped').tooltip({delay: 50});
 });
 
 Template.ads.helpers({
@@ -21,7 +25,6 @@ Template.ads.helpers({
       var call = Promise.promisify(Meteor.call);
       call('getAds', campaignNumber)
       .then(function (result) {
-        console.log("result from promise", result)
         Blaze.remove(spun);
       }).catch(function (err) {
         console.log('uh no error', err)
@@ -67,5 +70,20 @@ Template.ads.helpers({
   'getCampaignNumber': function () {
       let campaignNumber = FlowRouter.current().params.campaign_id;
       return campaignNumber;
+  },
+  number: (num) => {
+    return mastFunc.num(num);
+  },
+});
+
+Template.ads.events({
+  'click #refresh-ads': (event, template) => {
+    const campId = event.target.dataset.id;
+    console.log(campId);
+    Meteor.call('refreshAds', campId);
   }
+});
+
+Template.ads.onDestroyed(func => {
+  $('.tooltipped').tooltip('remove');
 });
