@@ -57,6 +57,7 @@ Meteor.methods({
 });
 
 Accounts.onCreateUser((options, user) => {
+  console.log('user from createUser', user)
   user['firstName'] = options.firstName;
   user['lastName'] = options.lastName;
   user['email'] = options.email;
@@ -72,12 +73,30 @@ Accounts.onCreateUser((options, user) => {
 Accounts.onLogin(() => {
   const user = Meteor.user()
   const now = moment().toISOString();
-  Meteor.users.update(
-    {_id: user._id},
-    {$set: {
-      lastLogin: now
-    }
-  });
+  let services;
+  user.services.facebook ? services = true : services = false;
+
+  // if user has logged in with facebook, set first, last and email to info
+  // in facebook object
+
+  if (services) {
+    Meteor.users.update(
+      {_id: user._id},
+      {$set: {
+        lastLogin: now,
+        firstName: user.services.facebook.first_name,
+        lastName: user.services.facebook.last_name,
+        email: user.services.facebook.email
+      }
+    });
+  } else {
+    Meteor.users.update(
+      {_id: user._id},
+      {$set: {
+        lastLogin: now
+      }
+    });
+  }
 });
 
 
