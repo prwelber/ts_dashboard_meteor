@@ -2,13 +2,10 @@ import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base'
 
 const assignUserRoles = function assignUserRoles (id, stuff) {
-  console.log('id', id);
-  console.log('checking for agency user');
   if (stuff.agency.length >= 1) {
     // adds the array of agencies to the roles, and the group is 'agency'
     Roles.addUsersToRoles(id, stuff.agency, 'agency');
   }
-  console.log('checking for admin user');
   if (stuff.admin === true) {
     Roles.addUsersToRoles(id, 'admin', Roles.GLOBAL_GROUP)
   }
@@ -71,6 +68,8 @@ Accounts.onCreateUser((options, user) => {
 
 Accounts.onLogin(() => {
   const user = Meteor.user()
+  console.log('user', user)
+  console.log('user.services', user.services)
   const now = moment().toISOString();
   Meteor.users.update(
     {_id: user._id},

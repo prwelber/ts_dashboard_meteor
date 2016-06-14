@@ -166,7 +166,6 @@ Template.createUser.events({
 // redirects logging in user to "/"
 Accounts.onLogin(function () {
   const path = FlowRouter.current().path;
-
   if (path !== "/") {
     FlowRouter.go("/home");
   }
