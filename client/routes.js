@@ -231,6 +231,19 @@ FlowRouter.route('/admin/brands/:account_id/update', {
     }
 });
 
+// --------------------- CAMPAIGN ---------------------- //
+
+FlowRouter.route('/admin/campaigns', {
+    subscriptions: function () {
+        this.register('campaignInsightList', Meteor.subscribe('campaignInsightList'));
+    },
+    name: "editCampaignInit",
+    action: function () {
+        BlazeLayout.render('index', {main: 'editCampaignInit'});
+    }
+});
+
+
 // ---------------------- USERS ------------------------ //
 
 FlowRouter.route('/admin/users/', {
@@ -297,9 +310,9 @@ FlowRouter.route('/admin/initiatives/:_id/edit', {
 });
 
 FlowRouter.route('/admin/initiatives/:_id/edit/campaigns', {
-    subscriptions: function () {
+    subscriptions: function (params) {
         this.register('Initiatives', Meteor.subscribe('Initiatives'));
-        this.register('campaignInsightList', Meteor.subscribe('campaignInsightList'));
+        this.register('campaignInsightList', Meteor.subscribe('campaignInsightList', params._id));
     },
     name: "editInitiativeCampaigns",
     action: function () {

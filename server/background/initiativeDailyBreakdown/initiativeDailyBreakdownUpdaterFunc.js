@@ -32,7 +32,6 @@ export function dailyUpdate(array) {
         Meteor.clearInterval(setIntervalId);
       } else {
 
-        console.log('getDailyBreakdown background job running');
         // remove any old versions
 
         // InsightsBreakdownsByDays.remove({'data.campaign_id': array[counter]});
@@ -62,7 +61,7 @@ export function dailyUpdate(array) {
                 breakdown = HTTP.call('GET', breakdown.data.paging['next'], {});
                 dailyBreakdownArray.push(breakdown.data.data);
             } catch(e) {
-                console.log('no more pages or error in while true loop', e);
+                // console.log('no more pages or error in while true loop', e);
                 break;
 
             }

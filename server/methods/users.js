@@ -69,8 +69,6 @@ Accounts.onCreateUser((options, user) => {
 
 Accounts.onLogin(() => {
   const user = Meteor.user()
-  console.log('user', user)
-  console.log('user.services', user.services)
   const now = moment().toISOString();
   let services;
   user.services.facebook ? services = true : services = false;

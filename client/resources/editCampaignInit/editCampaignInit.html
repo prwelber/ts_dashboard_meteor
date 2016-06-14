@@ -1,0 +1,14 @@
+<template name="editCampaignInit">
+  <div class="container">
+  {{#if isReady "campaignInsightList"}}
+    <div class="row">
+      <div class="col s12">
+        <h3 class="center-align">Edit Campaign / Initiative Relationship</h3>
+        {{getCampaigns}}
+      </div>
+    </div>
+  {{else}}
+    <p>Loading....</p>
+  {{/if}}
+  </div>
+</template>

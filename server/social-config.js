@@ -4,8 +4,6 @@ import { Meteor } from 'meteor/meteor'
 
 var appId = Meteor.settings.facebookAppId;
 var secret = Meteor.settings.facebookSecret;
-console.log("appId", appId)
-console.log("secret", secret)
 ServiceConfiguration.configurations.remove({
     service: 'facebook'
 });

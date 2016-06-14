@@ -90,17 +90,32 @@ Meteor.methods({
 
 // need a meteor.publish here
 Meteor.publish('campaignBasicsList', function (opts) {
+    const init = Initiatives.findOne(opts._id);
+    console.log(init.name, opts)
+
   if (opts.page === "homepage") {
     const init = Initiatives.findOne({_id: opts._id});
     // lookup initiative and match campaigns to that
     return CampaignBasics.find({"data.initiative": init.name});
+
+  } else if (init) {
+
+    return CampaignBasics.find({'data.initiative': init.name});
+
   } else if (opts.page === "edit") {
+
     return CampaignBasics.find();
+
   } else if (! opts) {
+
     return CampaignBasics.find({});
-  } else if (opts.toString().length < 15) {
+
+  }  else if (opts.toString().length < 15) {
+
     return CampaignBasics.find({"data.campaign_id": opts}, {sort: {"data.sort_time_start": -1}});
+
   } else if (opts.toString().length >= 15) {
+
     return CampaignBasics.find({"data.account_id": opts}, {sort: {"data.sort_time_start": -1}});
   }
 
