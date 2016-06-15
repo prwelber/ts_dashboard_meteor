@@ -3,6 +3,10 @@ import CampaignInsights from '/collections/CampaignInsights';
 import Initiatives from '/collections/Initiatives';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
+Template.editCampaignInit.onCreated( () => {
+  Session.set('templateReady', false);
+});
+
 Template.editCampaignInit.onRendered(() => {
   Session.set('limit', 25);
   Session.set('search', false);
@@ -10,9 +14,18 @@ Template.editCampaignInit.onRendered(() => {
 
 Template.editCampaignInit.helpers({
   isReady: (sub) => {
-    if (FlowRouter.subsReady(sub)) {
-      return true;
-    }
+    const sub2 = Meteor.subscribe('campaignInsightList');
+    Tracker.autorun(() => {
+      const isReady = sub2.ready();
+      if (isReady) {
+        if (FlowRouter.subsReady(sub)) {
+          Session.set('templateReady', true)
+        }
+      }
+    });
+
+    // return Template.instance().templateDict.get('isItReady');
+    return Session.get('templateReady');
   },
   getCampaigns: () => {
     const limit = Session.get('limit');
@@ -46,10 +59,17 @@ Template.editCampaignInit.events({
         console.log('change made successfully', res)
       }
     });
-
-
   },
   "keyup #search-campaigns": (event, instance) => {
     Session.set('search', event.target.value)
   }
+});
+
+Template.editCampaignInit.onDestroyed(() => {
+  Session.set('templateReady', null)
+  delete Session.keys.templateReady;
+  Session.set('limit', null)
+  delete Session.keys.limit;
+  Session.set('search', null)
+  delete Session.keys.search;
 });

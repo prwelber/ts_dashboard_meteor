@@ -18,6 +18,9 @@ Meteor.methods({
   }
 });
 
+//TODO use server session here to look up originalInitiative and pass it to getInsights
+// for when user refreshes data --- or maybe we can send init to server with meteor.call
+
 Meteor.methods({
   'getInsights': function (accountNumber, end_date) {
     let insightsArray = [];

@@ -23,7 +23,7 @@ SyncedCron.add({
   },
 
   job: () => {
-    console.log('running netCalc job')
+    // console.log('running netCalc job')
     const inits = Initiatives.find({userActive: true}).fetch();
 
     let deal,
@@ -98,12 +98,12 @@ SyncedCron.add({
 
         // if no percent total or no cost plus
         if ((!item.percent_total && !item.cost_plus) && (item.budget && item.quantity)) {
-          console.log('running calcNet with no dealType', init.name);
-          console.log("item", item)
-          console.log(item.percent_total, item.cost_plus)
+          // console.log('running calcNet with no dealType', init.name);
+          // console.log("item", item)
+          // console.log(item.percent_total, item.cost_plus)
           netNumbs['deal'] = "Contracted Spend";
           netNumbs['percentage'] = null;
-          console.log("init[objective]", init[objective])
+          // console.log("init[objective]", init[objective])
           netNumbs['spend'] = parseFloat((init[objective]['spend']).toFixed(2));
           netNumbs['budget'] = parseFloat((totalBudget).toFixed(2));
           netNumbs['spendPercent'] = parseFloat((netNumbs['spend'] / netNumbs['budget']) * 100);

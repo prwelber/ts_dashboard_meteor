@@ -135,7 +135,8 @@ Meteor.methods({
       result[0]['cpl'] = result[0].spend / result[0].likes;
       result[0]['cpvv'] = result[0].spend / result[0].videoViews;
     } catch(e) {
-      console.log('Error adding date to aggregate', e);
+      console.log('Error adding date to aggregate in initiatives.js and logging result', e, result[0]);
+
     }
 
     Initiatives.update(

@@ -77,8 +77,6 @@ Meteor.methods({
             }
         });
 
-        console.log(campaignOverviewArray[0]);
-
         campaignOverviewArray.forEach(el => {
             CampaignBasics.insert({
                 data: el
@@ -91,7 +89,6 @@ Meteor.methods({
 // need a meteor.publish here
 Meteor.publish('campaignBasicsList', function (opts) {
     const init = Initiatives.findOne(opts._id);
-    console.log(init.name, opts)
 
   if (opts.page === "homepage") {
     const init = Initiatives.findOne({_id: opts._id});
