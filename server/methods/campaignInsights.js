@@ -160,13 +160,83 @@ Meteor.methods({
       }
     });
     return "success!";
+  },
+  changeCampaignInitiative: (campName, initName) => {
+    // get campaign Id (findOne)
+    // reassign initiative (update)
+    // get init Id (findOne)
+    // update init campaign arrays with $pull (update) and $push
+    const camp = CampaignInsights.findOne({'data.campaign_name': campName});
+    const oldInitiative = camp.data.initiative;
+
+    CampaignInsights.update(
+      {_id: camp._id},
+      {$set: {
+        'data.initiative': initName
+        }
+      }
+    );
+
+    if (initName !== "None") {
+      const init = Initiatives.findOne({name: initName});
+      //update old initiative
+      Initiatives.update(
+        {name: oldInitiative},
+        {$pull: {
+          campaign_names: campName,
+          campaign_ids: camp.data.campaign_id
+          }
+        }
+      )
+      //update new initiative
+      Initiatives.update(
+        {name: initName},
+        {$addToSet: {
+          campaign_names: campName,
+          campaign_ids: camp.data.campaign_id
+          }
+        }
+      )
+    } else if (initName === "None") {
+      // only need to update old initiative
+      Initiatives.update(
+        {name: oldInitiative},
+        {$pull: {
+          campaign_names: campName,
+          campaign_ids: camp.data.campaign_id
+          }
+        }
+      )
+    }
+    return "successful implementation";
   }
 });
 
 
-Meteor.publish('campaignInsightList', function (opts) {
-    if (! opts) {
-      return CampaignInsights.find({}); //publish all insights
+Meteor.publish('campaignInsightList', function (opts, searchValue) {
+    CampaignInsights._ensureIndex({ "data.campaign_name": "text"});
+    if (! opts || searchValue) {
+      if (searchValue) {
+        return CampaignInsights.find(
+          {$text: {$search: searchValue}},
+          {
+            // `fields` is where we can add MongoDB projections. Here we're causing
+            // each document published to include a property named `score`, which
+            // contains the document's search rank, a numerical value, with more
+            // relevant documents having a higher score.
+            fields: {
+              score: { $meta: "textScore" }
+            },
+             // This indicates that we wish the publication to be sorted by the
+            // `score` property specified in the projection fields above.
+            sort: {
+              score: { $meta: "textScore"}
+            }
+          }
+        )
+      } else {
+        return CampaignInsights.find({}); //publish all insights
+      }
     } else if (/[a-z0-9]{16,18}/i.test(opts) === true) {
       const init = Initiatives.findOne({_id: opts});
       return CampaignInsights.find({'data.initiative': init.name});

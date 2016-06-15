@@ -235,7 +235,9 @@ FlowRouter.route('/admin/brands/:account_id/update', {
 
 FlowRouter.route('/admin/campaigns', {
     subscriptions: function () {
-        this.register('campaignInsightList', Meteor.subscribe('campaignInsightList'));
+        const params = "search";
+        // this.register('campaignInsightList', Meteor.subscribe('campaignInsightList', params));
+        this.register('Initiatives', Meteor.subscribe('Initiatives'));
     },
     name: "editCampaignInit",
     action: function () {

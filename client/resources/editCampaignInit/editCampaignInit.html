@@ -1,14 +1,42 @@
 <template name="editCampaignInit">
   <div class="container">
-  {{#if isReady "campaignInsightList"}}
+  {{#if isReady "Initiatives"}}
     <div class="row">
       <div class="col s12">
         <h3 class="center-align">Edit Campaign / Initiative Relationship</h3>
-        {{getCampaigns}}
       </div>
+      <div class="input-field col s12">
+        <input id="search-campaigns" type="text" name="campaignSearchInput">
+        <label for="search-campaigns">Search for Campaigns</label>
+      </div>
+      {{#each camp in getCampaigns}}
+        <div class="row">
+          <div class="col s4">
+            <h4 style="padding-top: 1.5em;">{{camp.data.campaign_name}}</h4>
+          </div>
+          <div class="col s3">
+            <p style="padding-top: 1.5em;">Initiative: {{camp.data.initiative}}</p>
+          </div>
+          <div class="col s3">
+            <select class="browser-default {{camp.data.campaign_name}}" name="{{camp.data.campaign_name}}" style="margin-top: 1em;">
+              <option value="" disabled selected>Change Initiative</option>
+              <option value="None">None</option>
+              {{#each init in getInitiatives}}
+                <option value="{{init.name}}">{{init.name}}</option>
+              {{/each}}
+            </select>
+          </div>
+          <div class="col s2">
+            <button class="btn waves-effect waves-light change-maker" name={{camp.data.campaign_name}}>
+              Make Change
+            </button>
+          </div>
+        </div>
+        <div class="divider"></div>
+      {{/each}}
     </div>
   {{else}}
-    <p>Loading....</p>
+    <p>Loading a lot of data for this page....</p>
   {{/if}}
   </div>
 </template>

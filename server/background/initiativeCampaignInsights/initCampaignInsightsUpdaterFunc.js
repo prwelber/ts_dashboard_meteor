@@ -105,6 +105,7 @@ export function insightUpdate(array) {
             // of objects
 
             // push into the masterArray the returned result of filterData
+            // filterData is function defined above
             insightData = filterData(insightsArray)
             masterArray.push(insightData);
         } catch(e) {
@@ -113,37 +114,44 @@ export function insightUpdate(array) {
 
         // where we search initiatives looking for the one that matches
 
-        try {
-          Initiatives._ensureIndex({
-              "search_text": "text"
-            });
-          // add check for when campaign_name is null
-          if (insightData && insightData.campaign_name) {
-            let inits = Initiatives.find(
-              {$text: { $search: insightData.campaign_name}},
-              {
-                fields: { // giving each document a text score
-                  score: {$meta: "textScore"}
-                },
-                sort: { // sorting by highest text score
-                  score: {$meta: "textScore"}
-                }
-              }
-            ).fetch();
-            inits = inits[0];  // set "inits" equal to initiative with highest textScore
-            insightData['initiative'] = inits.name; //assign initiative name to data object
+        /*
+        decided to remove this for now because it was assigning unwanted campaigns to
+        initiatives, thus causing the data to be inaccurate
+        Also, a feature for reassigning campaigns and their initiatives is built,
+        so that may be the best way to match campaigns + initiatives
+        */
 
-            Initiatives.update(   // assign campaign id and name to matching initiative
-              {name: inits.name},
-              {$addToSet: {
-                campaign_names: insightData.campaign_name,
-                campaign_ids: insightData.campaign_id
-              }
-            });
-          }
-        } catch(e) {
-          console.log(e);
-        }
+        // try {
+        //   Initiatives._ensureIndex({
+        //       "search_text": "text"
+        //     });
+        //   // add check for when campaign_name is null
+        //   if (insightData && insightData.campaign_name) {
+        //     let inits = Initiatives.find(
+        //       {$text: { $search: insightData.campaign_name}},
+        //       {
+        //         fields: { // giving each document a text score
+        //           score: {$meta: "textScore"}
+        //         },
+        //         sort: { // sorting by highest text score
+        //           score: {$meta: "textScore"}
+        //         }
+        //       }
+        //     ).fetch();
+        //     inits = inits[0];  // set "inits" equal to initiative with highest textScore
+        //     insightData['initiative'] = inits.name; //assign initiative name to data object
+
+        //     Initiatives.update(   // assign campaign id and name to matching initiative
+        //       {name: inits.name},
+        //       {$addToSet: {
+        //         campaign_names: insightData.campaign_name,
+        //         campaign_ids: insightData.campaign_id
+        //       }
+        //     });
+        //   }
+        // } catch(e) {
+        //   console.log(e);
+        // }
         // ends initiative matching
 
         try {

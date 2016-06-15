@@ -154,8 +154,11 @@ a:hover {
   border-radius: 10px;
 }
 
-
-
+.change-maker {
+  margin-top: 1.5em;
+  font-size: 10px;
+  width: 135px;
+}
 
 
 
