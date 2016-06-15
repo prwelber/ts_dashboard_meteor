@@ -1,6 +1,7 @@
-import CampaignInsights from '/collections/CampaignInsights'
-import Initiatives from '/collections/Initiatives'
-import { apiVersion } from '/server/token/token'
+import CampaignInsights from '/collections/CampaignInsights';
+import Initiatives from '/collections/Initiatives';
+import { apiVersion } from '/server/token/token';
+import CampaignBasics from '/collections/CampaignBasics';
 
 Meteor.startup(function () {
   CampaignInsights._ensureIndex({campUniqueId: 1});
@@ -169,11 +170,21 @@ Meteor.methods({
     // reassign initiative (update)
     // get init Id (findOne)
     // update init campaign arrays with $pull (update) and $push
+    //get campaignBasic and edit that initiative
+    const basic = CampaignBasics.findOne({'data.name': campName});
     const camp = CampaignInsights.findOne({'data.campaign_name': campName});
     const oldInitiative = camp.data.initiative;
 
     CampaignInsights.update(
       {_id: camp._id},
+      {$set: {
+        'data.initiative': initName
+        }
+      }
+    );
+
+    CampaignBasics.update(
+      {_id: basic._id},
       {$set: {
         'data.initiative': initName
         }
