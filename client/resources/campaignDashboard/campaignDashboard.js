@@ -153,7 +153,12 @@ Template.campaignDashboard.helpers({
     return mastFunc.twoDecimals(num);
   },
   timezone: (time) => {
-    return moment(time, "MM-DD-YYYY hh:mm a").tz("America/New_York").format("MM-DD-YYYY hh:mm a z");
+
+    if (Meteor.isProduction) {
+      return moment(time, "MM-DD-YYYY hh:mm a").subtract(4, 'hours').format("MM-DD-YYYY hh:mm a z");
+    } else {
+      return moment(time, "MM-DD-YYYY hh:mm a").tz("America/New_York").format("MM-DD-YYYY hh:mm a z");
+    }
   },
   objectiveText: (text) => {
     text = text.toLowerCase();

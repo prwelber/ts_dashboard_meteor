@@ -18,8 +18,8 @@ SyncedCron.add({
   name: "Calculate Net Numbers",
 
   schedule: (parser) => {
-    return parser.text('at 11:24am')
-    // return parser.text('every 10 minutes')
+    // return parser.text('at 11:24am')
+    return parser.text('every 15 minutes')
   },
 
   job: () => {

@@ -8,8 +8,6 @@ const stringToCostPlusPercentage = function stringToCostPlusPercentage (num) {
   return num;
 }
 
-
-
 export const calcNet = {
   calculateNetNumbers: (name) => {
     const inits = Initiatives.find({name: name}).fetch();
@@ -33,6 +31,7 @@ export const calcNet = {
 
       init.lineItems.forEach((item, index) => {
         const objective = item.objective.split(' ').join('_').toUpperCase();
+
         // if cost plus deal
         if (item.cost_plus) {
           let dataToSet = {};
