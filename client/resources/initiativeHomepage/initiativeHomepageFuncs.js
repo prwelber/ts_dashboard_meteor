@@ -222,10 +222,15 @@ export const initiativeHomepageFunctions = {
         // make array of x axis dates
         const xAxisArray = [];
         const typeArray = [];
-        insights.forEach(el => {
-          xAxisArray.push(moment(el.data.date_start, moment.ISO_8601).format("MM-DD"));
-          typeArray.push(accounting.unformat(el.data[type]));
-        });
+        try {
+          insights.forEach(el => {
+            xAxisArray.push(moment(el.data.date_start, moment.ISO_8601).format("MM-DD"));
+            typeArray.push(accounting.unformat(el.data[type]));
+          });
+        } catch (e) {
+          console.log('Error at insights.forEach in initiativeHomepageFuncs.js', e);
+        }
+
 
         return {
           chart: {
