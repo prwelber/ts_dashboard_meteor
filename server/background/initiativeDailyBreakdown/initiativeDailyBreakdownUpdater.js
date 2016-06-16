@@ -1,42 +1,42 @@
-import { Meteor } from 'meteor/meteor'
-import { SyncedCron } from 'meteor/percolate:synced-cron';
-import { Moment } from 'meteor/momentjs:moment'
-import { dailyUpdate } from './initiativeDailyBreakdownUpdaterFunc'
-import CampaignInsights from '/collections/CampaignInsights'
-import Initiatives from '/collections/Initiatives'
-import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
-import { apiVersion } from '/server/token/token'
-const later = require('later');
+// import { Meteor } from 'meteor/meteor'
+// import { SyncedCron } from 'meteor/percolate:synced-cron';
+// import { Moment } from 'meteor/momentjs:moment'
+// import { dailyUpdate } from './initiativeDailyBreakdownUpdaterFunc'
+// import CampaignInsights from '/collections/CampaignInsights'
+// import Initiatives from '/collections/Initiatives'
+// import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
+// import { apiVersion } from '/server/token/token'
+// const later = require('later');
 
-SyncedCron.config({
-  collectionName: 'cronCollection'
-});
+// SyncedCron.config({
+//   collectionName: 'cronCollection'
+// });
 
-SyncedCron.add({
-  name: "Daily Breakdown Updater",
+// SyncedCron.add({
+//   name: "Daily Breakdown Updater",
 
-  schedule: (parser) => {
-    // return parser.text('at 6:30am');
-    return parser.text('every 4 minutes');
-  },
+//   schedule: (parser) => {
+//     // return parser.text('at 6:30am');
+//     return parser.text('every 4 minutes');
+//   },
 
-  job: (time) => {
-    const inits = Initiatives.find({userActive: true}).fetch();
+//   job: (time) => {
+//     const inits = Initiatives.find({userActive: true}).fetch();
 
-    // const active = _.filter(inits, (el) => {
-    //   if (el.userActive) {
-    //     return el
-    //   }
-    // });
+//     // const active = _.filter(inits, (el) => {
+//     //   if (el.userActive) {
+//     //     return el
+//     //   }
+//     // });
 
-    let onlyIds = _.map(inits, (el) => {
-      return el.campaign_ids
-    });
-    // now i'm sitting with all the campaign ID's of the active initiatives
+//     let onlyIds = _.map(inits, (el) => {
+//       return el.campaign_ids
+//     });
+//     // now i'm sitting with all the campaign ID's of the active initiatives
 
-    let flat = _.flatten(onlyIds);
+//     let flat = _.flatten(onlyIds);
 
-    dailyUpdate(flat);
+//     dailyUpdate(flat);
 
-  }
-});
+//   }
+// });

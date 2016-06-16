@@ -156,6 +156,6 @@ export function dailyUpdate(array) {
         counter++;
       } // end of else block in if (counter >= array.length)
     // }, 10000);
-    }, 5000); // end of Meteor.setInterval
+    }, 15000); // end of Meteor.setInterval
   } // end if if(array)
 }
