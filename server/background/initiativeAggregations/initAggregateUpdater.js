@@ -35,7 +35,7 @@ SyncedCron.add({
           counter++;
           // aggregator(name);
         }
-      }, 1000);
+      }, 750);
     }
   }
 });
@@ -43,8 +43,8 @@ SyncedCron.add({
 SyncedCron.add({
   name: "Objective Aggregator",
   schedule: (parser) => {
-    return parser.text('every 16 minutes');
-    // return parser.text('at 5:45pm')
+    return parser.text('every 20 minutes');
+    // return parser.text('at 11:51am')
   },
   job: () => {
     const inits = Initiatives.find({userActive: true}).fetch();
