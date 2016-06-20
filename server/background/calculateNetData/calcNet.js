@@ -21,7 +21,6 @@ SyncedCron.add({
     // return parser.text('at 11:24am')
     return parser.text('every 15 minutes')
   },
-
   job: () => {
     // console.log('running netCalc job')
     const inits = Initiatives.find({userActive: true}).fetch();
