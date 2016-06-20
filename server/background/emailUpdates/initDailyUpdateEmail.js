@@ -13,9 +13,8 @@ SyncedCron.add({
   name: "Initiative Digest Emailer",
 
   schedule: (parser) => {
-    return parser.text('at 9:00am');
+    return parser.text('at 2:00pm');
   },
-
   job: () => {
     // loop through and run initiativesFunctions
 

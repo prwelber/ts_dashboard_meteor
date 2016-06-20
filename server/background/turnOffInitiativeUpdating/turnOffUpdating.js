@@ -12,7 +12,7 @@ SyncedCron.add({
   name: "Turn Off Initiative Updating",
 
   schedule: (parser) => {
-    return parser.text('at 6:00am');
+    return parser.text('at 2:00am');
   },
 
   job: (time) => {

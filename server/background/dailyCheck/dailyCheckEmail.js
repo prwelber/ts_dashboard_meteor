@@ -13,7 +13,7 @@ SyncedCron.add({
   name: "Daily Check Email Digest",
 
   schedule: (parser) => {
-    return parser.text('at 4:30pm');
+    return parser.text('at 2:00pm');
     // return parser.text('at 5:05pm');
   },
   job: (time) => {
