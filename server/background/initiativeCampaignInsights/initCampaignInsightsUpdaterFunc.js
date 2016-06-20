@@ -88,9 +88,16 @@ export function insightUpdate(array) {
 
         const camp = CampaignInsights.findOne({'data.campaign_id': array[counter]});
         let originalInitiative;
-        if (camp.data.initiative) {
-          originalInitiative = camp.data.initiative;
+        try {
+          if (camp.data.initiative) {
+            originalInitiative = camp.data.initiative;
+          }
+        } catch(e) {
+          console.log("Error assigning original Initiative in initCampaignInsightsUpdaterFunc", e);
+          console.log("Pushing up counter");
+          counter++;
         }
+
 
         //remove old version and any null values
         CampaignInsights.remove({'data.campaign_id': array[counter]});
