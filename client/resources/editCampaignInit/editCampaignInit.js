@@ -37,8 +37,9 @@ Template.editCampaignInit.helpers({
       return CampaignInsights.find({},
         {fields: {'data.initiative': 1, 'data.campaign_name': 1, 'data.campaign_id': 1}, limit: limit, sort: {'data.campaign_name': 1}}
       ).fetch();
+
     } else {
-      // console.log("mongo search result", CampaignInsights.find({}, {fields: {'data.initiative': 1, 'data.campaign_name': 1, 'data.campaign_id': 1}, limit: 25, sort: [["score", "desc"]]}).fetch())
+
       return CampaignInsights.find(
         {},
         {fields: {'data.initiative': 1, 'data.campaign_name': 1, 'data.campaign_id': 1}, limit: 25, sort: [["score", "desc"]]}

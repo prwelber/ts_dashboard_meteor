@@ -193,7 +193,7 @@ Meteor.methods({
     for (let i = 0; i < cleanedArr.length; i++) {
       cleanedArr[i] = cleanedArr[i].toUpperCase().split(' ').join('_');
       let result = CampaignInsights.aggregate(makePipeline(name, cleanedArr[i]));
-      console.log('result[0] from aggregateObjective', result[0])
+      // console.log('result[0] from aggregateObjective', result[0])
       try {
         result[0]['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
         result[0]['cpc'] = result[0].spend / result[0].clicks;

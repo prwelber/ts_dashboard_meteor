@@ -251,10 +251,19 @@ Meteor.publish('campaignInsightList', function (opts, searchValue) {
       } else {
         return CampaignInsights.find({}); //publish all insights
       }
+
+    } else if (opts.spending === "spending") {
+
+      return CampaignInsights.find({});
+
     } else if (/[a-z0-9]{16,18}/i.test(opts) === true) {
+
       const init = Initiatives.findOne({_id: opts});
       return CampaignInsights.find({'data.initiative': init.name});
+
     } else {
+
       return CampaignInsights.find({'data.campaign_id': opts});
+
     }
 });

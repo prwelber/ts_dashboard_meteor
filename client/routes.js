@@ -236,6 +236,9 @@ FlowRouter.route('/admin/brands/:account_id/update', {
 FlowRouter.route('/admin/campaigns', {
     subscriptions: function () {
         const params = "search";
+        // the campaign insight list subscription takes place in getCampaigns
+        // helper located in the editCampaignInit.js file on the client
+
         // this.register('campaignInsightList', Meteor.subscribe('campaignInsightList', params));
         this.register('Initiatives', Meteor.subscribe('Initiatives'));
     },
@@ -346,5 +349,20 @@ FlowRouter.route('/terms', {
     name: "terms",
     action: function () {
         BlazeLayout.render('index', {main: "terms"});
+    }
+});
+
+// ----------------------- SPENDING ----------------------- //
+
+FlowRouter.route('/admin/spending', {
+    subscriptions: function () {
+        const params = {"spending": "spending"};
+        this.register('campaignBasicsList', Meteor.subscribe('campaignBasicsList', params));
+        // this.register('campaignInsightList', Meteor.subscribe('campaignInsightList', params));
+        // this.register('insightsBreakdownByDaysList', Meteor.subscribe('insightsBreakdownByDaysList', params));
+    },
+    name: "spending",
+    action: () => {
+        BlazeLayout.render("index", {main: "spending"});
     }
 });

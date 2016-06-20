@@ -135,7 +135,18 @@ Meteor.methods({
   }
 });
 
-Meteor.publish('insightsBreakdownByDaysList', function (opts) {
+
+Meteor.publish('insightsBreakdownByDaysList', function (opts, start, end) {
+  if(opts.spending === "spending" && start) {
+    return InsightsBreakdownsByDays.find(
+      {
+        'data.date_start': {$gte: start, $lte: end},
+      },
+      {fields:
+        {'data.date_start': 1, 'data.date_stop': 1, 'data.campaign_name': 1, 'data.campaign_id': 1, 'data.spend': 1, 'data.impressions': 1, 'data.clicks': 1, 'data.like': 1}
+      });
+  }
+
   if (opts.toString().length <= 15) {
     // const insight = CampaignInsights.findOne({'data.campaign_id': opts});
     // if (insight && insight.data.initiative) {

@@ -90,6 +90,10 @@ Meteor.methods({
 Meteor.publish('campaignBasicsList', function (opts) {
     const init = Initiatives.findOne(opts._id);
 
+  if (opts.spending === "spending") {
+    return CampaignBasics.find({}, {fields: {'data.name': 1, 'data.start_time': 1, 'data.stop_time': 1}});
+  }
+
   if (opts.page === "homepage") {
     const init = Initiatives.findOne({_id: opts._id});
     // lookup initiative and match campaigns to that

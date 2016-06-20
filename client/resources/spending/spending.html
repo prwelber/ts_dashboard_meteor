@@ -1,0 +1,51 @@
+<template name="spending">
+  <h1>Spending Report</h1>
+  {{!-- {{#if isReady "campaignBasicsList" "insightsBreakdownByDaysList" "campaignInsightList"}} --}}
+  {{!-- {{#if isReady "campaignBasicsList" "insightsBreakdownByDaysList"}} --}}
+  {{#if isReady "campaignBasicsList"}}
+    <div class="container">
+      <div class="row">
+        <div class="col s5">
+          <label for="">Start Date</label>
+          <input type="date" class="datepicker" placeholder="Start Date" id="spending-start-date">
+        </div>
+        <div class="col s5">
+          <label for="">End Date</label>
+          <input type="date" class="datepicker" placeholder="End Date" id="spending-end-date">
+        </div>
+        <div class="col s2">
+          <button class="btn waves-effect waves-light">
+            Run
+          </button>
+        </div>
+        <div class="row">
+          <table class="striped">
+            <thead>
+              <tr>
+                <th>Campaign Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Spend</th>
+              </tr>
+            </thead>
+            <tbody>
+            {{#each camp in getBasics}}
+              <tr>
+                <td>{{camp.data.name}}</td>
+                <td>{{time camp.data.start_time}}</td>
+                <td>{{time camp.data.stop_time}}</td>
+                {{#with getSpend camp.data.name}}
+                <td>{{this}}</td>
+                {{/with}}
+              </tr>
+            {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  {{else}}
+    <p>Loading....</p>
+  {{/if}}
+</template>
