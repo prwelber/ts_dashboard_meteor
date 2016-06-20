@@ -97,6 +97,13 @@ Template.adsets.helpers({
   },
   timezone: (time) => {
     return moment(time, "MM-DD-YYYY hh:mm a").tz("America/New_York").format("MM-DD-YYYY hh:mm a z");
+  },
+  timing: (time) => {
+    if (Meteor.isProduction) {
+      return moment(time, "MM-DD-YYYY hh:mm a").subtract(4, 'hours').format("MM-DD-YYYY hh:mm a");
+    } else {
+      return moment(time, "MM-DD-YYYY hh:mm a").format("MM-DD-YYYY hh:mm a");
+    }
   }
 });
 

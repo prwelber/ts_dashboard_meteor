@@ -69,7 +69,11 @@ Template.insightsBreakdownDaily.helpers({
       return CampaignInsights.findOne({'data.campaign_id': FlowRouter.current().params.campaign_id}).data;
   },
   'prettyDate': (date) => {
-    return moment(date, moment.ISO_8601).format("dddd MMMM DD YYYY");
+    if (Meteor.isProduction) {
+      return moment(date, moment.ISO_8601).add(1, 'd').format("dddd MMMM DD YYYY");
+    } else {
+      return moment(date, moment.ISO_8601).format("dddd MMMM DD YYYY");
+    }
   }
 });
 
