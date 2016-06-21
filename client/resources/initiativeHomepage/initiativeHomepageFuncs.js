@@ -92,7 +92,7 @@ export const initiativeHomepageFunctions = {
         // make array of x axis dates, delivery numbers and spending
         const xAxisArray = [];
         const typeArray = [];
-        const spendArray = [];
+        let spendArray = [];
         let spendCount = 0;
         let typeCount = parseFloat(insights[0].data[type]);
         insights.forEach(el => {
@@ -102,6 +102,31 @@ export const initiativeHomepageFunctions = {
           spendArray.push(parseFloat(spendCount.toFixed(2)));
           spendCount += accounting.unformat(el.data.spend);
         });
+
+        // -------------- Adjust spend to reflect dealtype ----------- //
+
+        if (init.lineItems[index].cost_plus === true) {
+          let percent = init.lineItems[index].costPlusPercent.split('');
+          percent.unshift(".");
+          percent = 1 + parseFloat(percent.join(''));
+          // need to MULTIPLY spend by 'percent' (should be 1.15 or similar)
+          spendArray = spendArray.map((num) => {
+            return num * percent;
+          });
+        }
+
+        if (init.lineItems[index].percent_total === true) {
+          let percent = init.lineItems[index].percentTotalPercent.split('');
+          percent.unshift(".");
+          percent = parseFloat(percent.join(''));
+          // figure out what to multiply by
+          let multiplyBy = 1 / percent;
+          spendArray = spendArray.map((num) => {
+            return num * multiplyBy;
+          });
+        }
+        // --------------- End spend adjustment -------------------- //
+
 
         // make ideal spend and delivery
         const avg = parseFloat(init.lineItems[index].quantity) / daysDiff;
@@ -160,15 +185,15 @@ export const initiativeHomepageFunctions = {
             }
           },
           series: [{
-            name: 'Ideal Distribution',
+            name: 'Ideal Delivery',
             data: avgDeliveryArray,
             color: '#90caf9'
           }, {
-            name: 'Real Distribution',
+            name: 'Real Delivery',
             data: typeArray,
             color: '#0d47a1'
           }, {
-            name: 'Spend',
+            name: 'Client Spend',
             data: spendArray,
             color: '#b71c1c',
             tooltip: {
@@ -337,7 +362,7 @@ export const initiativeHomepageFunctions = {
       typeCount += value;
     }
 
-    const spendArray = [];
+    let spendArray = [];
     let spendValues = spendMap.values();
     // let spendCount = spendValues.next().value;
     let spendCount = 0;
@@ -350,7 +375,7 @@ export const initiativeHomepageFunctions = {
     const avg = parseFloat(init.lineItems[index].quantity) / daysDiff;
     const spendAvg = parseFloat(init.lineItems[index].budget) / daysDiff;
     const avgDeliveryArray = [];
-    const avgSpendArray = [];
+    let avgSpendArray = [];
 
     let total = 0,
         idealSpendTotal = 0;
@@ -361,6 +386,34 @@ export const initiativeHomepageFunctions = {
       avgSpendArray.push(idealSpendTotal);
     }
     // ----------- end of ideal spend and delivery ---------- //
+
+
+    // -------------- Adjust spend to reflect dealtype ----------- //
+
+    if (init.lineItems[index].cost_plus === true) {
+      let percent = init.lineItems[index].costPlusPercent.split('');
+      percent.unshift(".");
+      percent = 1 + parseFloat(percent.join(''));
+      // need to MULTIPLY spend by 'percent' (should be 1.15 or similar)
+      spendArray = spendArray.map((num) => {
+        return num * percent;
+      });
+    }
+
+    if (init.lineItems[index].percent_total === true) {
+      let percent = init.lineItems[index].percentTotalPercent.split('');
+      percent.unshift(".");
+      percent = parseFloat(percent.join(''));
+      // figure out what to multiply by
+      let multiplyBy = 1 / percent;
+      spendArray = spendArray.map((num) => {
+        return num * multiplyBy;
+      });
+    }
+
+    // --------------- End spend adjustment -------------------- //
+
+
 
     // ----------- functionality for X Axis ----------------- //
     const start = moment(allDays[0]['data']['date_start'], moment.ISO_8601);
@@ -426,15 +479,15 @@ export const initiativeHomepageFunctions = {
       },
 
       series: [{
-        name: 'Ideal Distribution',
+        name: 'Ideal Delivery',
         data: avgDeliveryArray,
         color: '#90caf9'
       }, {
-        name: 'Real Distribution',
+        name: 'Real Delivery',
         data: typeArray,
         color: '#0d47a1'
       }, {
-        name: 'Spend',
+        name: 'Client Spend',
         data: spendArray,
         color: '#b71c1c',
         tooltip: {

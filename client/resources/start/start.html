@@ -5,10 +5,7 @@
 <template name="initiativesHome">
   <div class="container">
     <div class="row" style="margin-top: 6%; margin-bottom: 1%;">
-      <!-- <h1 class="align-center" style="margin-top: 6%; margin-bottom: 6%; font-size: 3em;">Initiatives</h1> -->
-
       <div class="circle" id="circles-1"></div>
-
       {{#if isInRole "admin"}}
       <div class="col s3">
         {{!-- <label>Initiatives by Status (default is Active)</label> --}}
@@ -197,7 +194,6 @@
                           <div class="fill"></div>
                         </div>
                       </div>
-
                     </div>
                     <div class="col s3 pull-s9">
                       <h4 style="padding-top: 6%;">{{item.name}} - {{item.objective}}</h4>
@@ -212,7 +208,6 @@
                     </div>
                   </div>
                 {{/if}}
-
             </li>
           {{/each}}
         </ul>

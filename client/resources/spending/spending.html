@@ -5,44 +5,56 @@
   {{#if isReady "campaignBasicsList"}}
     <div class="container">
       <div class="row">
-        <div class="col s5">
+        <div class="col s4">
           <label for="">Start Date</label>
           <input type="date" class="datepicker" placeholder="Start Date" id="spending-start-date">
         </div>
-        <div class="col s5">
+        <div class="col s4">
           <label for="">End Date</label>
           <input type="date" class="datepicker" placeholder="End Date" id="spending-end-date">
         </div>
-        <div class="col s2">
-          <button class="btn waves-effect waves-light">
-            Run
+        <div class="col s4">
+          <button class="btn waves-effect waves-light" id="spending-button">
+            Get Report
           </button>
         </div>
+      </div>
+      {{#if datesReady}}
         <div class="row">
-          <table class="striped">
+          <table class="highlight" style="font-size: 15px;">
             <thead>
               <tr>
                 <th>Campaign Name</th>
-                <th>Start Date</th>
-                <th>End Date</th>
                 <th>Spend</th>
+                <th>Impressions</th>
+                <th>Clicks</th>
+                <th>Likes</th>
               </tr>
             </thead>
             <tbody>
             {{#each camp in getBasics}}
               <tr>
-                <td>{{camp.data.name}}</td>
-                <td>{{time camp.data.start_time}}</td>
-                <td>{{time camp.data.stop_time}}</td>
-                {{#with getSpend camp.data.name}}
+                <td>{{camp._id}}</td>
+                <td>{{money camp.spend}}</td>
+                <td>{{number camp.impressions}}</td>
+                <td>{{number camp.clicks}}</td>
+                <td>{{number camp.likes}}</td>
+                {{!-- {{#with getSpend camp.data.name}}
                 <td>{{this}}</td>
-                {{/with}}
+                {{/with}} --}}
               </tr>
             {{/each}}
             </tbody>
           </table>
         </div>
+        <a href="#" id="spending-export" target="_blank">Export as CSV (not working currently)</a>
+      {{else}}
+      <div class="row">
+        <blockquote>
+          Set dates and then click 'Get Report'
+        </blockquote>
       </div>
+      {{/if}}
     </div>
 
   {{else}}

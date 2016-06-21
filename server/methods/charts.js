@@ -511,7 +511,7 @@ Meteor.methods({
     const deliveryClicks = [];
     const deliveryLikes = [];
     const deliveryVideoViews = [];
-    const deliverySpend = [];
+    let deliverySpend = []; // use 'let' so it can be reassigned in next block
     const deliveryDays = [];
     let impressions = 0;
     let clicks = 0;
@@ -532,6 +532,33 @@ Meteor.methods({
       deliverySpend.push(spend);
       deliveryDays.push(moment(day.date_start, moment.ISO_8601).format("MM-DD"));
     });
+
+     // -------------- Adjust spend to reflect dealtype ----------- //
+
+    if (line.cost_plus === true) {
+      let percent = line.costPlusPercent.split('');
+      percent.unshift(".");
+      percent = 1 + parseFloat(percent.join(''));
+      // need to MULTIPLY spend by 'percent' (should be 1.15 or similar)
+      deliverySpend = deliverySpend.map((num) => {
+        return num * percent;
+      });
+      console.log("deliverySpend after", deliverySpend)
+    }
+
+    if (line.percent_total === true) {
+      let percent = line.percentTotalPercent.split('');
+      percent.unshift(".");
+      percent = parseFloat(percent.join(''));
+      // figure out what to multiply by
+      let multiplyBy = 1 / percent;
+      deliverySpend = deliverySpend.map((num) => {
+        return num * multiplyBy;
+      });
+      console.log("deliverySpend after", deliverySpend)
+    }
+
+    // --------------- End spend adjustment -------------------- //
 
     const impressionsChartObj = {
       name: 'Impressions',
@@ -668,7 +695,7 @@ Meteor.methods({
             likesChartObj,
             videoViewsChartObj,
             {
-              name: 'Spend',
+              name: 'Client Spend',
               data: deliverySpend,
               color: '#388e3c',
               tooltip: {

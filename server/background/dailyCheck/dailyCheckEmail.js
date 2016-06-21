@@ -13,8 +13,11 @@ SyncedCron.add({
   name: "Daily Check Email Digest",
 
   schedule: (parser) => {
-    return parser.text('at 2:00pm');
-    // return parser.text('at 5:05pm');
+    if (Meteor.isProduction) {
+      return parser.text('at 8:00pm');
+    } else {
+      return parser.text('at 4:00pm');
+    }
   },
   job: (time) => {
     const inits = Initiatives.find({userActive: true}).fetch();

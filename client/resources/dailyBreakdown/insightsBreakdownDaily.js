@@ -3,7 +3,8 @@ import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
 import { Meteor } from 'meteor/meteor'
 import { FlowRouter } from 'meteor/kadira:flow-router'
 import Promise from 'bluebird'
-import moment from 'moment'
+import moment from 'moment';
+import { formatters } from '/both/utilityFunctions/formatters';
 
 // Tracker.autorun(function () {
 //   if (FlowRouter.subsReady('insightsBreakdownByDaysList')) {
@@ -74,6 +75,12 @@ Template.insightsBreakdownDaily.helpers({
     } else {
       return moment(date, moment.ISO_8601).format("dddd MMMM DD YYYY");
     }
+  },
+  money: (num) => {
+    return formatters.money(num);
+  },
+  number: (num) => {
+    return formatters.num(num);
   }
 });
 

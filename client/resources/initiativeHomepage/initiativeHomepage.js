@@ -366,15 +366,15 @@ Template.initiativeHomepage.helpers({
       // },
 
       series: [{
-        name: 'Ideal Distribution',
+        name: 'Ideal Delivery',
         data: avgData,
         color: '#90caf9'
       }, {
-        name: 'Real Distribution',
+        name: 'Real Delivery',
         data: actionToChart,
         color: '#0d47a1'
       }, {
-        name: 'Spend',
+        name: 'Client Spend',
         data: spendChart,
         color: '#b71c1c'
       }, {

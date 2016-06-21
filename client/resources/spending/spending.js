@@ -6,12 +6,16 @@ import Initiatives from '/collections/Initiatives';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import moment from 'moment-timezone';
 import { formatters } from '/both/utilityFunctions/formatters';
+import Promise from 'bluebird';
+
 
 Template.spending.onRendered(() => {
   $('.datepicker').pickadate({
     selectMonths: true, // Creates a dropdown to control month
     selectYears: 10 // Creates a dropdown of 15 years to control year
   });
+  this.templateDict = new ReactiveDict();
+  this.templateDict.set('spending', [{_id: "Click 'Get Report' to run"}]);
 });
 
 Template.spending.helpers({
@@ -20,54 +24,61 @@ Template.spending.helpers({
       return true;
     }
   },
+  datesReady: () => {
+    if (Session.get('start') && Session.get('end')) {
+      return true;
+    }
+  },
   getBasics: () => {
-    const opts = {spending: "spending"};
     const start = moment(Session.get('start'), moment.ISO_8601).toISOString();
     const end = moment(Session.get('end'), moment.ISO_8601).toISOString();
-    if (start && end) {
+    const opts = {spending: "spending"};
+
+    if (Session.get('start') && Session.get('end')) {
       Meteor.subscribe("insightsBreakdownByDaysList", opts, start, end);
-
-      let days = InsightsBreakdownsByDays.find({}, {fields: {'data.campaign_name': 1}}).fetch();
-      // ------ Get Set (unique) of Names -------- //
-      var campaignSet = new Set();
-      days.forEach((name) => {
-        campaignSet.add(name.data.campaign_name);
-      });
-      // console.log(campaignSet);
-      const arr = Array.from(campaignSet); // creates Array from Set
-      // console.log("arr", arr);
-
-
-
-      Meteor.call('spendingAggregate', arr, start, end, (err, res) => {
-        if (!err) {
-          console.log('res', res);
-        }
-      });
     }
-    // get all the campaign names that were running in the time period
-    // do an aggregation on each campaign name for the time period
-
-
+    return this.templateDict.get('spending');
   },
-  time: (time) => {
-    return moment(time, moment.ISO_8601).format("MM-DD-YYYY");
+  money: (num) => {
+    return formatters.money(num);
   },
-  getDaily: () => {
-
-
-
+  number: (num) => {
+    return formatters.num(num);
   }
 });
 
 Template.spending.events({
   "change #spending-start-date": (event, instance) => {
-    console.log(event.target.value);
     Session.set('start', event.target.value);
   },
   "change #spending-end-date": (event, instance) => {
-    console.log(event.target.value)
     Session.set('end', event.target.value);
+  },
+  "click #spending-button": (event, instance) => {
+    const opts = {spending: "spending"};
+    const start = moment(Session.get('start'), moment.ISO_8601).toISOString();
+    const end = moment(Session.get('end'), moment.ISO_8601).toISOString();
+    let days = InsightsBreakdownsByDays.find({}, {fields: {'data.campaign_name': 1}}).fetch();
+      // ------ Get Set (unique) of Names -------- //
+      var campaignSet = new Set();
+      days.forEach((name) => {
+        campaignSet.add(name.data.campaign_name);
+      });
+      const arr = Array.from(campaignSet); // creates Array from Set
+
+      var call = Promise.promisify(Meteor.call);
+
+      call('spendingAggregate', arr, start, end)
+        .then(function (result) {
+          this.templateDict.set('spending', result);
+          return result;
+        }).catch(function (err) {
+          console.log('err', err);
+        });
+
+  },
+  "click #spending-export": (event, instance) => {
+    console.log(event.target);
   }
 });
 
