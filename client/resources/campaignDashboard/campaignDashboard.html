@@ -76,6 +76,12 @@
         </div>
       </div>
       <div class="col s6 m4 l3 card grey lighten-5">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{spendPerc getNet.spendPercent}}%</span><br>
+          <span class="">Spend Percent of Total</span>
+        </div>
+      </div>
+      <div class="col s6 m4 l3 card grey lighten-5">
         <div class="card-content">
           <span class="center-align dash-data">{{objectiveText objective}}</span><br>
           <span class="">Objective</span>
@@ -139,37 +145,31 @@
       <div class="col s6 m4 l3 card grey lighten-5">
         <div class="card-content ">
           <span class="center-align dash-data">{{money netData.spend}}</span><br>
-          <span class="">Net Spend</span>
-        </div>
-      </div>
-      <div class="col s6 m4 l3 card grey lighten-5">
-        <div class="card-content ">
-          <span class="center-align dash-data">{{spendPerc getNet.spendPercent}}%</span><br>
-          <span class="">Spend Percent of Total</span>
+          <span class="">Client Spend</span>
         </div>
       </div>
       <div class="col s6 m4 l3 card {{impressionsObjective}}">
         <div class="card-content ">
           <span class="center-align dash-data">{{money netData.netcp_impressions}}</span><br>
-          <span class="">Net CPM</span>
+          <span class="">Client CPM</span>
         </div>
       </div>
       <div class="col s6 m4 l3 card {{clicksObjective}}">
         <div class="card-content ">
           <span class="center-align dash-data">{{money netData.netcp_clicks}}</span><br>
-          <span class="">Net CPC</span>
+          <span class="">Client CPC</span>
         </div>
       </div>
       <div class="col s6 m4 l3 card {{likesObjective}}">
         <div class="card-content ">
           <span class="center-align dash-data">{{money netData.netcp_like}}</span><br>
-          <span class="">Net CPL</span>
+          <span class="">Client CPL</span>
         </div>
       </div>
       <div class="col s6 m4 l3 card {{videoObjective}}">
         <div class="card-content ">
           <span class="center-align dash-data">{{money netData.netcp_video_view}}</span><br>
-          <span class="">Net CP Video View</span>
+          <span class="">Client CPVV</span>
         </div>
       </div>
       {{/with}}

@@ -1,3 +1,11 @@
+const stringToPercentTotal = function stringToPercentTotal (num) {
+  num = num.split('')
+  num.unshift(".");
+  num = parseFloat(num.join(''));
+  num = 1 / num;
+  return num;
+}
+
 export const campaignDashboardFunctionObject = {
   netInsights: (init, camp) => {
     const stringToCostPlusPercentage = function stringToCostPlusPercentage (num) {
@@ -17,12 +25,12 @@ export const campaignDashboardFunctionObject = {
       deal = "costPlus";
       percent = init.lineItems[0].costPlusPercent;
       costPlusPercent = stringToCostPlusPercentage(init.lineItems[0].costPlusPercent);
-      spend = camp.data.spend / costPlusPercent;
+      spend = camp.data.spend * costPlusPercent;
     } else if (init.lineItems[0].percent_total) {
       deal = "percentTotal";
-      percent = init.lineItems[0].percentTotalPercent;
-      percentTotalPercent = parseInt(init.lineItems[0].percentTotalPercent) / 100;
-      spend = camp.data.spend * percentTotalPercent;
+      let multiplyBy = stringToPercentTotal(init.lineItems[0].percentTotalPercent);
+      // percentTotalPercent = parseInt(init.lineItems[0].percentTotalPercent) / 100;
+      spend = camp.data.spend * multiplyBy;
     }
 
     // arr with values to recalculate
