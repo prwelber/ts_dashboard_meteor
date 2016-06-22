@@ -15,7 +15,9 @@ SyncedCron.add({
 
   schedule: (parser) => {
     return parser.text('every 2 hours')
-    // return parser.text('at 12:54pm');
+    // return parser.text('at 12:29pm');
+
+    // REMEMBER to change interval length
   },
 
   job: (time) => {

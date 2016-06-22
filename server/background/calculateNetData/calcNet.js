@@ -9,6 +9,14 @@ const stringToCostPlusPercentage = function stringToCostPlusPercentage (num) {
   return num;
 }
 
+const stringToPercentTotal = function stringToPercentTotal (num) {
+  num = num.split('')
+  num.unshift(".");
+  num = parseFloat(num.join(''));
+  num = 1 / num;
+  return num;
+}
+
 SyncedCron.config({
   collectionName: 'cronCollection'
 });
@@ -33,8 +41,8 @@ SyncedCron.add({
         percentTotalPercent;
 
     inits.forEach((init) => {
-      let netNumbs = {};
-      netNumbs['name'] = init.name;
+      let numbs = {};
+      numbs['name'] = init.name;
       // get total budget
       let totalBudget = 0;
       init.lineItems.forEach((item) => {
@@ -49,20 +57,20 @@ SyncedCron.add({
         if (item.cost_plus) {
           let dataToSet = {};
           try {
-            netNumbs['objective'] = item.objective;
-            netNumbs['deal'] = "costPlus";
-            netNumbs['percentage'] = item.costPlusPercent;
+            numbs['objective'] = item.objective;
+            numbs['deal'] = "costPlus";
+            numbs['percentage'] = item.costPlusPercent;
             costPlusPercent = stringToCostPlusPercentage(item.costPlusPercent);
-            netNumbs['spend'] = parseFloat((init[objective]['spend'] / costPlusPercent).toFixed(2));
-            netNumbs['budget'] = parseFloat((totalBudget / costPlusPercent).toFixed(2));
-            netNumbs['spendPercent'] = parseFloat((netNumbs['spend'] / netNumbs['budget']) * 100);
-            netNumbs['net_cpc'] = netNumbs.spend / init[objective]['clicks'];
-            netNumbs['net_cpl'] = netNumbs.spend / init[objective]['likes'];
-            netNumbs['net_cpm'] = netNumbs.spend / (init[objective]['impressions'] / 1000);
-            netNumbs['net_cpvv'] = netNumbs.spend / init[objective]['videoViews'];
-            dataToSet[objective+".net"] = netNumbs;
+            numbs['spend'] = parseFloat((init[objective]['spend'] * costPlusPercent).toFixed(2));
+            numbs['budget'] = parseFloat((totalBudget * costPlusPercent).toFixed(2));
+            numbs['spendPercent'] = parseFloat((numbs['spend'] / numbs['budget']) * 100);
+            numbs['net_cpc'] = numbs.spend / init[objective]['clicks'];
+            numbs['net_cpl'] = numbs.spend / init[objective]['likes'];
+            numbs['net_cpm'] = numbs.spend / (init[objective]['impressions'] / 1000);
+            numbs['net_cpvv'] = numbs.spend / init[objective]['videoViews'];
+            dataToSet[objective+".net"] = numbs;
           } catch(e) {
-            console.log("Error in both/utilityFunctions/calcNet", e);
+            console.log("Error in server/background/calculateNetData/calcNet.js", e);
           }
           try {
             Initiatives.update(
@@ -76,18 +84,22 @@ SyncedCron.add({
 
         // if percent total deal
         if (item.percent_total) {
-          netNumbs['deal'] = "percentTotal";
-          netNumbs['percentage'] = item.percentTotalPercent;
-          percentTotalPercent = parseFloat(item.percentTotalPercent) / 100;
-          netNumbs['spend'] = parseFloat((init[objective]['spend'] * percentTotalPercent).toFixed(2));
-          netNumbs['budget'] = parseFloat((totalBudget * percentTotalPercent).toFixed(2));
-          netNumbs['spendPercent'] = parseFloat((netNumbs['spend'] / netNumbs['budget']) * 100);
-          netNumbs['net_cpc'] = netNumbs.spend / init[objective]['clicks'];
-          netNumbs['net_cpl'] = netNumbs.spend / init[objective]['likes'];
-          netNumbs['net_cpm'] = netNumbs.spend / (init[objective]['impressions'] / 1000);
-          netNumbs['net_cpvv'] = netNumbs.spend / init[objective]['videoViews'];
-          const dataToSet = {};
-          dataToSet[objective+".net"] = netNumbs;
+          let dataToSet = {};
+          try {
+            numbs['deal'] = "percentTotal";
+            numbs['percentage'] = item.percentTotalPercent;
+            percentTotalPercent = stringToPercentTotal(item.percentTotalPercent);
+            numbs['spend'] = parseFloat((init[objective]['spend'] * percentTotalPercent).toFixed(2));
+            numbs['budget'] = parseFloat((totalBudget * percentTotalPercent).toFixed(2));
+            numbs['spendPercent'] = parseFloat((numbs['spend'] / numbs['budget']) * 100);
+            numbs['net_cpc'] = numbs.spend / init[objective]['clicks'];
+            numbs['net_cpl'] = numbs.spend / init[objective]['likes'];
+            numbs['net_cpm'] = numbs.spend / (init[objective]['impressions'] / 1000);
+            numbs['net_cpvv'] = numbs.spend / init[objective]['videoViews'];
+            dataToSet[objective+".net"] = numbs;
+          } catch(e) {
+            console.log("Error in server/background/calculateNetData/calcNet.js", e, init.name);
+          }
           try {
             Initiatives.update(
               {name: init.name},
@@ -103,18 +115,18 @@ SyncedCron.add({
           // console.log('running calcNet with no dealType', init.name);
           // console.log("item", item)
           // console.log(item.percent_total, item.cost_plus)
-          netNumbs['deal'] = "Contracted Spend";
-          netNumbs['percentage'] = null;
+          numbs['deal'] = "Contracted Spend";
+          numbs['percentage'] = null;
           // console.log("init[objective]", init[objective])
-          netNumbs['spend'] = parseFloat((init[objective]['spend']).toFixed(2));
-          netNumbs['budget'] = parseFloat((totalBudget).toFixed(2));
-          netNumbs['spendPercent'] = parseFloat((netNumbs['spend'] / netNumbs['budget']) * 100);
-          netNumbs['net_cpc'] = netNumbs.spend / init[objective]['clicks'];
-          netNumbs['net_cpl'] = netNumbs.spend / init[objective]['likes'];
-          netNumbs['net_cpm'] = netNumbs.spend / (init[objective]['impressions'] / 1000);
-          netNumbs['net_cpvv'] = netNumbs.spend / init[objective]['videoViews'];
-          const dataToSet = {};
-          dataToSet[objective+".net"] = netNumbs;
+          numbs['spend'] = parseFloat((init[objective]['spend']).toFixed(2));
+          numbs['budget'] = parseFloat((totalBudget).toFixed(2));
+          numbs['spendPercent'] = parseFloat((numbs['spend'] / numbs['budget']) * 100);
+          numbs['net_cpc'] = numbs.spend / init[objective]['clicks'];
+          numbs['net_cpl'] = numbs.spend / init[objective]['likes'];
+          numbs['net_cpm'] = numbs.spend / (init[objective]['impressions'] / 1000);
+          numbs['net_cpvv'] = numbs.spend / init[objective]['videoViews'];
+          let dataToSet = {};
+          dataToSet[objective+".net"] = numbs;
           try {
             Initiatives.update(
               {name: init.name},

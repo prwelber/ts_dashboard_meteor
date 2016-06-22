@@ -70,17 +70,12 @@ export function insightUpdate(array) {
 
     const setIntervalId = Meteor.setInterval(() => {
 
-      // const camp = CampaignBasics.findOne({'data.campaign_id': array[counter]});
-      // const insight = CampaignInsights.findOne({'data.campaign_id': array[counter]});
-
       if (counter >= array.length) {
         console.log('clearInterval');
         counter++;
         Meteor.clearInterval(setIntervalId);
       }
-      // else if ((camp && insight) && (moment(insight.data.inserted, "MM-DD-YYYY hh:mm a").isAfter(moment(camp.data.stop_time, moment.ISO_8601)))) {
-      //   counter++;
-      // }
+
       else {
 
         console.log('campaignInsightUpdater background job running');

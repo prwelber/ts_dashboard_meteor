@@ -543,7 +543,6 @@ Meteor.methods({
       deliverySpend = deliverySpend.map((num) => {
         return num * percent;
       });
-      console.log("deliverySpend after", deliverySpend)
     }
 
     if (line.percent_total === true) {
@@ -555,7 +554,6 @@ Meteor.methods({
       deliverySpend = deliverySpend.map((num) => {
         return num * multiplyBy;
       });
-      console.log("deliverySpend after", deliverySpend)
     }
 
     // --------------- End spend adjustment -------------------- //
