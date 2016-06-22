@@ -7,6 +7,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import moment from 'moment-timezone';
 import { formatters } from '/both/utilityFunctions/formatters';
 import Promise from 'bluebird';
+import Papa from 'papaparse';
 
 
 Template.spending.onRendered(() => {
@@ -30,6 +31,7 @@ Template.spending.helpers({
     }
   },
   getBasics: () => {
+    var template = this;
     const start = moment(Session.get('start'), moment.ISO_8601).toISOString();
     const end = moment(Session.get('end'), moment.ISO_8601).toISOString();
     const opts = {spending: "spending"};
@@ -37,13 +39,18 @@ Template.spending.helpers({
     if (Session.get('start') && Session.get('end')) {
       Meteor.subscribe("insightsBreakdownByDaysList", opts, start, end);
     }
-    return this.templateDict.get('spending');
+    return template.templateDict.get('spending');
   },
   money: (num) => {
     return formatters.money(num);
   },
   number: (num) => {
     return formatters.num(num);
+  },
+  linkReady: () => {
+    if (Session.get('linkReady')) {
+      return true;
+    }
   }
 });
 
@@ -70,15 +77,22 @@ Template.spending.events({
 
       call('spendingAggregate', arr, start, end)
         .then(function (result) {
-          this.templateDict.set('spending', result);
-          return result;
+          this.templateDict.set('spending', result.result);
+          this.templateDict.set('jsonData', result.json);
+          Session.set('linkReady', true);
         }).catch(function (err) {
           console.log('err', err);
         });
 
   },
   "click #spending-export": (event, instance) => {
-    console.log(event.target);
+
+    var dataAsJson = this.templateDict.get('jsonData');
+    var csv = Papa.unparse(dataAsJson);
+    var blob = new Blob([csv]);
+    var a = this.$("#spending-export");
+      a.attr('href', window.URL.createObjectURL(blob, {type: "text/plain"}));
+      a.download = "spending.csv";
   }
 });
 
@@ -87,4 +101,6 @@ Template.spending.onDestroyed(() => {
   delete Session.keys.start;
   Session.set('end', null);
   delete Session.keys.end;
+  Session.set('linkReady', null);
+  delete Session.keys.linkReady;
 })

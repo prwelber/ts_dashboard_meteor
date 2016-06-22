@@ -47,7 +47,11 @@
             </tbody>
           </table>
         </div>
-        <a href="#" id="spending-export" target="_blank">Export as CSV (not working currently)</a>
+        {{#if linkReady}}
+          <a href="#" id="spending-export" target="_blank">Open CSV in new tab (you can then copy/paste)</a>
+          <br>
+          <a href="https://www.itsupportguides.com/office-2013/excel-2013-how-to-paste-comma-separated-values/" target="_blank">How to paste CSV into Excel</a>
+        {{/if}}
       {{else}}
       <div class="row">
         <blockquote>

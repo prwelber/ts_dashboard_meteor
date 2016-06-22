@@ -2,11 +2,13 @@ import { Meteor } from 'meteor/meteor';
 import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays';
 import { check } from 'meteor/check';
 import { EJSON } from 'meteor/ejson';
+var json2csv = require('json2csv');
+var fs = require('fs');
+
 
 
 Meteor.methods({
   spendingAggregate: (campArray, start, end) => {
-    console.log('campSet', campArray);
     const resultArray = [];
 
     const makePipeline = function makePipeline (name) {
@@ -30,10 +32,19 @@ Meteor.methods({
       resultArray.push(result[0]);
     });
     // convert to JSON so I can turn into a CSV
-    var test = EJSON.stringify(resultArray);
-    console.log('test', test)
-    // console.log('array:', resultArray);
+    var testJSON = EJSON.stringify(resultArray);
+    var fields = ['_id', 'spend', 'impressions', 'clicks', 'likes'];
 
-    return resultArray;
+    // console.log('array:', resultArray);
+    var makeCSV = json2csv({ data: testJSON, fields: fields}, function (err, csv) {
+      if (err) console.log(err);
+      return csv;
+      // fs.writeFile('test.csv', csv, function (err) {
+      //   if (err) throw err;
+      //   console.log('file saved');
+      // })
+    });
+
+    return {result: resultArray, csv: makeCSV, json: testJSON};
   }
 });
