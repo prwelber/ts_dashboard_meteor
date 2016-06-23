@@ -44,7 +44,7 @@ SyncedCron.add({
   name: "Objective Aggregator",
   schedule: (parser) => {
     return parser.text('every 12 minutes');
-    // return parser.text('at 3:06pm')
+    // return parser.text('at 5:01pm')
   },
   job: () => {
     const inits = Initiatives.find({userActive: true}).fetch();
