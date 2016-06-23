@@ -70,6 +70,7 @@ export const initiativeHomepageFunctions = {
     if (index < count && index !== undefined) {
       // need to grab the objective from the line item
       const objective = init.lineItems[index]['objective'].split(' ').join('_').toUpperCase();
+      const quotedPrice = parseFloat(init.lineItems[index].price);
       const daysDiff = moment(init.lineItems[index]['endDate'], moment.ISO_8601).diff(moment(init.lineItems[index]['startDate'], moment.ISO_8601), 'days');
       let insights;
       const type = deliveryTypeChecker(init, index);
@@ -116,13 +117,21 @@ export const initiativeHomepageFunctions = {
         }
 
         if (init.lineItems[index].percent_total === true) {
-          let percent = init.lineItems[index].percentTotalPercent.split('');
-          percent.unshift(".");
-          percent = parseFloat(percent.join(''));
-          // figure out what to multiply by
-          let multiplyBy = 1 / percent;
-          spendArray = spendArray.map((num) => {
-            return num * multiplyBy;
+
+          let action;
+          init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
+          init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
+          init.lineItems[index].dealType === "CPL" ? action = "like" : '';
+
+          spendCount = 0;
+          spendArray = [];
+          insights.forEach(day => {
+            if (action === "impressions") {
+              spendCount = spendCount + ((day['data'][action] / 1000) * quotedPrice);
+            } else {
+              spendCount = spendCount + (day['data'][action] * quotedPrice);
+            }
+            spendArray.push(parseFloat(spendCount.toFixed(2)));
           });
         }
         // --------------- End spend adjustment -------------------- //
@@ -387,7 +396,6 @@ export const initiativeHomepageFunctions = {
     }
     // ----------- end of ideal spend and delivery ---------- //
 
-
     // -------------- Adjust spend to reflect dealtype ----------- //
 
     if (init.lineItems[index].cost_plus === true) {
@@ -401,14 +409,21 @@ export const initiativeHomepageFunctions = {
     }
 
     if (init.lineItems[index].percent_total === true) {
-      let percent = init.lineItems[index].percentTotalPercent.split('');
-      percent.unshift(".");
-      percent = parseFloat(percent.join(''));
-      // figure out what to multiply by
-      let multiplyBy = 1 / percent;
-      spendArray = spendArray.map((num) => {
-        return num * multiplyBy;
-      });
+      const quotedPrice = parseFloat(init.lineItems[index].price);
+      let action;
+      init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
+      init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
+      init.lineItems[index].dealType === "CPL" ? action = "like" : '';
+      spendCount = 0;
+      spendArray = [];
+      for (let [key, value] of typeMap) {
+        if (action === "impressions") {
+          spendCount = spendCount + ((value / 1000) * quotedPrice)
+        } else {
+          spendCount = spendCount + (value * quotedPrice);
+        }
+        spendArray.push(spendCount);
+      }
     }
 
     // --------------- End spend adjustment -------------------- //

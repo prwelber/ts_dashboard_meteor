@@ -181,6 +181,7 @@ FlowRouter.route('/admin/aggregations', {
     },
     name: "aggregations",
     action: function () {
+        Session.set("route", "admin");
         BlazeLayout.render('index', {main: "aggregations"});
     }
 });
@@ -190,6 +191,7 @@ FlowRouter.route('/admin/aggregations', {
 FlowRouter.route('/admin/agencies/new', {
     name: 'newAgency',
     action: function (params) {
+        Session.set("route", "admin");
         BlazeLayout.render('index', {main: 'newAgency'});
     }
 });
@@ -197,6 +199,7 @@ FlowRouter.route('/admin/agencies/new', {
 FlowRouter.route('/admin/agencies/:_id/update', {
     name: 'updateAgency',
     action: function (params) {
+        Session.set("route", "admin");
         BlazeLayout.render('index', {main: 'updateAgency'});
     }
 });
@@ -204,6 +207,7 @@ FlowRouter.route('/admin/agencies/:_id/update', {
 FlowRouter.route('/admin/agencies', {
     name: 'agencies',
     action: function () {
+        Session.set("route", "admin");
         BlazeLayout.render('index', {main: 'agencies'});
     }
 });
@@ -213,6 +217,7 @@ FlowRouter.route('/admin/agencies', {
 FlowRouter.route('/admin/brands/new', {
     name: "newBrand",
     action: function () {
+        Session.set("route", "admin");
         BlazeLayout.render('index', {main: 'newBrand'});
     }
 });
@@ -220,6 +225,7 @@ FlowRouter.route('/admin/brands/new', {
 FlowRouter.route('/admin/brands/', {
     name: "brands",
     action: function () {
+        Session.set("route", "admin");
         BlazeLayout.render('index', {main: 'brands'});
     }
 });
@@ -227,6 +233,7 @@ FlowRouter.route('/admin/brands/', {
 FlowRouter.route('/admin/brands/:account_id/update', {
     name: "updatebrand",
     action: function () {
+        Session.set("route", "admin");
         BlazeLayout.render('index', {main: 'updateBrand'});
     }
 });
@@ -244,6 +251,7 @@ FlowRouter.route('/admin/campaigns', {
     },
     name: "editCampaignInit",
     action: function () {
+        Session.set("route", "admin");
         BlazeLayout.render('index', {main: 'editCampaignInit'});
     }
 });
@@ -254,6 +262,7 @@ FlowRouter.route('/admin/campaigns', {
 FlowRouter.route('/admin/users/', {
     name: "users",
     action: function () {
+        Session.set("route", "admin");
         BlazeLayout.render('index', {main: 'allUsers'})
     }
 });
@@ -264,6 +273,7 @@ FlowRouter.route('/admin/users/:_id/edit', {
     },
     name: "editUser",
     action: function (params) {
+        Session.set("route", "admin");
         BlazeLayout.render('index', {main: 'editUser'});
     }
 });
@@ -274,6 +284,7 @@ FlowRouter.route('/admin/users/create', {
     },
     name: "createUser",
     action: function () {
+        Session.set("route", "admin");
         BlazeLayout.render('index', {main: "createUser"});
     }
 });
@@ -286,6 +297,7 @@ FlowRouter.route('/admin/initiatives/', {
     },
     name: "initiatives",
     action: function () {
+        Session.set("route", "admin");
         BlazeLayout.render('index', {main: "initiatives"});
     }
 });
@@ -296,6 +308,7 @@ FlowRouter.route('/admin/initiatives/:_id', {
     },
     name: "initiative",
     action: function () {
+        Session.set("route", "admin");
         BlazeLayout.render('index', {main: "initiative"});
     }
 });
@@ -310,6 +323,7 @@ FlowRouter.route('/admin/initiatives/:_id/edit', {
     },
     name: "editInitiative",
     action: function () {
+        Session.set("route", "admin");
         BlazeLayout.render('index', {main: "editInitiative"});
     }
 });
@@ -321,6 +335,7 @@ FlowRouter.route('/admin/initiatives/:_id/edit/campaigns', {
     },
     name: "editInitiativeCampaigns",
     action: function () {
+        Session.set("route", "admin");
         BlazeLayout.render('index', {main: "editInitiativeCampaigns"});
     }
 });
@@ -331,6 +346,7 @@ FlowRouter.route('/admin/initiatives/:_id/aggregate', {
     },
     name: "initiativeAggregate",
     action: function () {
+        Session.set("route", "admin");
         BlazeLayout.render('index', {main: "initiativeAggregate"});
     }
 });
@@ -363,6 +379,7 @@ FlowRouter.route('/admin/spending', {
     },
     name: "spending",
     action: () => {
+        Session.set("route", "admin");
         BlazeLayout.render("index", {main: "spending"});
     }
 });

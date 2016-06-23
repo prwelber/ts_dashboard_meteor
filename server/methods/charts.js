@@ -422,6 +422,7 @@ Meteor.methods({
     //  ---------- GRAB LINE ITEM INFORMATION ---------- //
 
     const line = _.where(initiative.lineItems, {name: lineItem})[0];
+    const quotedPrice = parseFloat(line.price);
     let type;
 
     // ---------- TIME RANGE AND IDEAL SPEND / IDEAL DELIVERY ---------- //
@@ -546,13 +547,20 @@ Meteor.methods({
     }
 
     if (line.percent_total === true) {
-      let percent = line.percentTotalPercent.split('');
-      percent.unshift(".");
-      percent = parseFloat(percent.join(''));
-      // figure out what to multiply by
-      let multiplyBy = 1 / percent;
-      deliverySpend = deliverySpend.map((num) => {
-        return num * multiplyBy;
+
+      let action;
+      line.dealType === "CPC" ? action = "clicks" : '';
+      line.dealType === "CPM" ? action = "impressions" : '';
+      line.dealType === "CPL" ? action = "like" : '';
+      spend = 0;
+      deliverySpend = [];
+      combinedArray.forEach((day) => {
+        if (action === "impressions") {
+          spend = spend + ((day[action] / 1000) * quotedPrice);
+        } else {
+          spend = spend + (day[action] * quotedPrice);
+        }
+        deliverySpend.push(spend);
       });
     }
 

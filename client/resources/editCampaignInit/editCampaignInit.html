@@ -36,7 +36,25 @@
       {{/each}}
     </div>
   {{else}}
-    <p>Need to load a lot of data for this page....</p>
+    <div class="row">
+      <div class="col s12 center-align" style="margin-top: 5em;">
+        <div class="preloader-wrapper big active center-align">
+          <div class="spinner-layer spinner-blue">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+              <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {{!-- <p>Need to load a lot of data for this page....</p> --}}
   {{/if}}
   </div>
 </template>

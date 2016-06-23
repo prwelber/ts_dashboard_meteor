@@ -9,53 +9,58 @@
     <body>
       {{#if loggedInUser}}
         <main>
-        <nav>
-          <div class="nav-wrapper blue-grey darken-2">
-            <a href="#" class="brand-logo right">Hello, {{getUser}}</a>
-            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-            <ul id="nav-mobile" class="left hide-on-med-and-down">
-              <li class="userLogout"> <a href="">Logout</a></li>
-              <li><a href="/home">Home</a></li>
-              {{#if isInRole "admin"}}
-                <li><a href="/admin">Admin</a></li>
-              {{/if}}
-
-              {{#if whatRoute "initiativeHomepage"}}
-                <li><a id="view-initiative-stats-modal" class="modal-trigger" href="#modal1">Initiative Stats</a></li>
+          <nav>
+            <div class="nav-wrapper blue-grey darken-2">
+              <ul id="nav-mobile" class="right">
+                <li class="userLogout"> <a href="">Logout</a></li>
+              </ul>
+              <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+              <ul id="nav-mobile" class="left hide-on-med-and-down">
+                <li>Hi, {{getUser}}</li>
+                {{!-- <li class="userLogout"> <a href="">Logout</a></li> --}}
+                <li><a href="/home">Home</a></li>
                 {{#if isInRole "admin"}}
-                  <li><a id="view-aggregate-modal" class="modal-trigger" href="#modal2">Campaign Aggregator</a></li>
-                  <li><a id="file-upload-modal" class="modal-trigger" href="#modal3">Files</a></li>
+                  <li><a class="{{active "admin"}}" href="/admin">Admin</a></li>
                 {{/if}}
-              {{/if}}
-              {{#if overviewRoute "overview"}}
-                <li class="{{active "overview"}}"><a href="/accounts/{{getCampaignNumber}}/overview">Overview</a></li>
-                <li class="{{active "targeting"}}"><a href="/accounts/{{getCampaignNumber}}/targeting">Targeting</a></li>
-                <li class="{{active "creative"}}"><a href="/accounts/{{getCampaignNumber}}/creative">Creative</a></li>
-                <li class="{{active "breakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/breakdowns">Age & Gender</a></li>
-                <li class="{{active "daybreakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/daybreakdowns">Daily</a></li>
-                <li class="{{active "hourlyBreakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/hourlybreakdowns">Hourly</a></li>
-                <li class="{{active "charts"}}"><a class="tooltipped" data-position="bottom" data-tooltip="View Charts" href="/accounts/{{getCampaignNumber}}/charts"><i class="material-icons">trending_up</i> </a></li>
-              {{/if}}
-            </ul>
-            <ul class="side-nav" id="mobile-demo">
-              <li><a href="/">Home</a></li>
-              <li><a href="/admin">Admin</a></li>
-              {{#if whatRoute "initiativeHomepage"}}
-                <li><a id="view-initiative-stats-modal" class="modal-trigger" href="#modal1">Initiative Stats</a></li>
-                <li><a id="view-aggregate-modal" class="modal-trigger" href="#modal2">Campaign Aggregator</a></li>
-              {{/if}}
-              {{#if overviewRoute "overview"}}
-                <li class="{{active "overview"}}"><a href="/accounts/{{getCampaignNumber}}/overview">Overview</a></li>
-                <li class="{{active "targeting"}}"><a href="/accounts/{{getCampaignNumber}}/targeting">Targeting</a></li>
-                <li class="{{active "creative"}}"><a href="/accounts/{{getCampaignNumber}}/creative">Creative</a></li>
-                <li class="{{active "breakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/breakdowns">Age & Gender</a></li>
-                <li class="{{active "daybreakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/daybreakdowns">Daily</a></li>
-                <li class="{{active "hourlyBreakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/hourlybreakdowns">Hourly</a></li>
-                <li class="{{active "charts"}}"><a class="tooltipped" data-position="bottom" data-tooltip="View Charts" href="/accounts/{{getCampaignNumber}}/charts"><i class="material-icons">trending_up</i> </a></li>
-              {{/if}}
-            </ul>
-          </div>
-        </nav>
+
+                {{#if whatRoute "initiativeHomepage"}}
+                  <li><a id="view-initiative-stats-modal" class="modal-trigger" href="#modal1">Initiative Stats</a></li>
+                  {{#if isInRole "admin"}}
+                    <li><a id="view-aggregate-modal" class="modal-trigger" href="#modal2">Campaign Aggregator</a></li>
+                    <li><a id="file-upload-modal" class="modal-trigger" href="#modal3">Files</a></li>
+                  {{/if}}
+                {{/if}}
+                {{#if overviewRoute "overview"}}
+                  <li class="{{active "overview"}}"><a href="/accounts/{{getCampaignNumber}}/overview">Overview</a></li>
+                  <li class="{{active "targeting"}}"><a href="/accounts/{{getCampaignNumber}}/targeting">Targeting</a></li>
+                  <li class="{{active "creative"}}"><a href="/accounts/{{getCampaignNumber}}/creative">Creative</a></li>
+                  <li class="{{active "breakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/breakdowns">Age & Gender</a></li>
+                  <li class="{{active "daybreakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/daybreakdowns">Daily</a></li>
+                  <li class="{{active "hourlyBreakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/hourlybreakdowns">Hourly</a></li>
+                  <li class="{{active "charts"}}"><a class="tooltipped" data-position="bottom" data-tooltip="View Charts" href="/accounts/{{getCampaignNumber}}/charts"><i class="material-icons">trending_up</i> </a></li>
+                {{/if}}
+              </ul>
+              <ul class="side-nav" id="mobile-demo">
+                <li><a href="/">Home</a></li>
+                <li><a class="{{active "admin"}}" href="/admin">Admin</a></li>
+                {{#if whatRoute "initiativeHomepage"}}
+                  <li><a id="view-initiative-stats-modal" class="modal-trigger" href="#modal1">Initiative Stats</a></li>
+                  <li><a id="view-aggregate-modal" class="modal-trigger" href="#modal2">Campaign Aggregator</a></li>
+                {{/if}}
+                {{#if overviewRoute "overview"}}
+                  <li class="{{active "overview"}}"><a href="/accounts/{{getCampaignNumber}}/overview">Overview</a></li>
+                  <li class="{{active "targeting"}}"><a href="/accounts/{{getCampaignNumber}}/targeting">Targeting</a></li>
+                  <li class="{{active "creative"}}"><a href="/accounts/{{getCampaignNumber}}/creative">Creative</a></li>
+                  <li class="{{active "breakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/breakdowns">Age & Gender</a></li>
+                  <li class="{{active "daybreakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/daybreakdowns">Daily</a></li>
+                  <li class="{{active "hourlyBreakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/hourlybreakdowns">Hourly</a></li>
+                  <li class="{{active "charts"}}"><a class="tooltipped" data-position="bottom" data-tooltip="View Charts" href="/accounts/{{getCampaignNumber}}/charts"><i class="material-icons">trending_up</i> </a></li>
+                {{/if}}
+              </ul>
+            </div>
+          </nav>
+
+
 
           <div id="spinner-div">
           </div>

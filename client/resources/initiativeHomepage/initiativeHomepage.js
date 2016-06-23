@@ -232,158 +232,159 @@ Template.initiativeHomepage.helpers({
     });
     return returnArray;
   },
-  'modalDeliveryChart': (number) => {
-    const initiative = Template.instance().templateDict.get('initiative');
-    const labels     = [], // this will be the date range
-          timeFormat = "MM-DD-YYYY",
-          days       = moment(initiative.lineItems[0].endDate, moment.ISO_8601).diff(moment(initiative.lineItems[0].startDate, moment.ISO_8601), 'days'),
-          avg        = parseFloat(initiative.lineItems[0].quantity / days),
-          spendAvg   = parseFloat(initiative.lineItems[0].budget / days),
-          avgData    = [],
-          idealSpend = [];
+  // 'modalDeliveryChart': (number) => {
+  //   console.log('modalDeliveryChart is being called!!!!')
+  //   const initiative = Template.instance().templateDict.get('initiative');
+  //   const labels     = [], // this will be the date range
+  //         timeFormat = "MM-DD-YYYY",
+  //         days       = moment(initiative.lineItems[0].endDate, moment.ISO_8601).diff(moment(initiative.lineItems[0].startDate, moment.ISO_8601), 'days'),
+  //         avg        = parseFloat(initiative.lineItems[0].quantity / days),
+  //         spendAvg   = parseFloat(initiative.lineItems[0].budget / days),
+  //         avgData    = [],
+  //         idealSpend = [];
 
-    let total           = 0,
-        idealSpendTotal = 0;
-    for (let i = 0; i < days + 1; i++) {
-        total = total + avg;
-        idealSpendTotal = idealSpendTotal + spendAvg;
-        avgData.push(total);
-        idealSpend.push(idealSpendTotal);
-      }
+  //   let total           = 0,
+  //       idealSpendTotal = 0;
+  //   for (let i = 0; i < days + 1; i++) {
+  //       total = total + avg;
+  //       idealSpendTotal = idealSpendTotal + spendAvg;
+  //       avgData.push(total);
+  //       idealSpend.push(idealSpendTotal);
+  //     }
 
-    //for setting dealType
-    let type;
-    if (initiative.lineItems[0].dealType === "CPM") {
-      type = "impressions";
-    } else if (initiative.lineItems[0].dealType === "CPC") {
-      type = "clicks";
-    } else if (initiative.lineItems[0].dealType === "CPL") {
-      type = "like";
-    }
+  //   //for setting dealType
+  //   let type;
+  //   if (initiative.lineItems[0].dealType === "CPM") {
+  //     type = "impressions";
+  //   } else if (initiative.lineItems[0].dealType === "CPC") {
+  //     type = "clicks";
+  //   } else if (initiative.lineItems[0].dealType === "CPL") {
+  //     type = "like";
+  //   }
 
-    let actionToChart = [],
-        spendChart    = [],
-        spendTotal    = 0,
-        totes         = 0; // Template.instance().templateDict.get('data')[0].type;
+  //   let actionToChart = [],
+  //       spendChart    = [],
+  //       spendTotal    = 0,
+  //       totes         = 0; // Template.instance().templateDict.get('data')[0].type;
 
-    // seeing if Bluebird will work for promises and meteor.call
-    var call = Promise.promisify(Meteor.call);
+  //   // seeing if Bluebird will work for promises and meteor.call
+  //   var call = Promise.promisify(Meteor.call);
 
-    call('aggregateForChart', initiative)
-    .then(function (res) {
-      Session.set('initChartData', res.dataArray);
-      Session.set('labelArray', res.labelArray);
-      totes = res.dataArray[0][type]
-    }).catch(function (err) {
-      console.log('Error in modalDeliveryChart Promise call:', err)
-    });
+  //   call('aggregateForChart', initiative)
+  //   .then(function (res) {
+  //     Session.set('initChartData', res.dataArray);
+  //     Session.set('labelArray', res.labelArray);
+  //     totes = res.dataArray[0][type]
+  //   }).catch(function (err) {
+  //     console.log('Error in modalDeliveryChart Promise call:', err)
+  //   });
 
-    const SESSION_DATA = Session.get('initChartData');
+  //   const SESSION_DATA = Session.get('initChartData');
 
-    if (SESSION_DATA) {
-      try {
-        SESSION_DATA.forEach(el => {
-          totes += el[type];
-          spendTotal += el.spend;
-          actionToChart.push(totes);
-          spendChart.push(spendTotal);
-        });
-      } catch(e) {
-        console.log("Error running forEach", e.message);
-      }
-    }
+  //   if (SESSION_DATA) {
+  //     try {
+  //       SESSION_DATA.forEach(el => {
+  //         totes += el[type];
+  //         spendTotal += el.spend;
+  //         actionToChart.push(totes);
+  //         spendChart.push(spendTotal);
+  //       });
+  //     } catch(e) {
+  //       console.log("Error running forEach", e.message);
+  //     }
+  //   }
 
-    // for getting x axis labels
-    const LABEL_DATA = Session.get('labelArray');
-    if (LABEL_DATA) {
-      try {
-        let start       = moment(LABEL_DATA[0], "MM-DD"),
-            end         = moment(LABEL_DATA[LABEL_DATA.length - 1], "MM-DD"),
-            dr          = moment.range(start, end),
-            arrayOfDays = dr.toArray('days');
+  //   // for getting x axis labels
+  //   const LABEL_DATA = Session.get('labelArray');
+  //   if (LABEL_DATA) {
+  //     try {
+  //       let start       = moment(LABEL_DATA[0], "MM-DD"),
+  //           end         = moment(LABEL_DATA[LABEL_DATA.length - 1], "MM-DD"),
+  //           dr          = moment.range(start, end),
+  //           arrayOfDays = dr.toArray('days');
 
-        if (arrayOfDays) {
-          arrayOfDays.forEach(el => {
-            labels.push(moment(el).format("MM-DD"))
-          });
-        }
-      } catch(e) {
-        console.log("Error creating x axis labels:", e);
-      }
-    }
+  //       if (arrayOfDays) {
+  //         arrayOfDays.forEach(el => {
+  //           labels.push(moment(el).format("MM-DD"))
+  //         });
+  //       }
+  //     } catch(e) {
+  //       console.log("Error creating x axis labels:", e);
+  //     }
+  //   }
 
-    return {
-      chart: {
-        zoomType: 'x'
-      },
-      // TODO FIX THIS
-      title: {
-        text: "Delivery"
-      },
+  //   return {
+  //     chart: {
+  //       zoomType: 'x'
+  //     },
+  //     // TODO FIX THIS
+  //     title: {
+  //       text: "Delivery"
+  //     },
 
-      subtitle: {
-        text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
-      },
+  //     subtitle: {
+  //       text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+  //     },
 
-      tooltip: {
-        valueSuffix: " " + type,
-        shared: true,
-        crosshairs: true
-      },
-      xAxis: {
-        // type: 'datetime',
-        categories: Session.get('labelArray')
-      },
+  //     tooltip: {
+  //       valueSuffix: " " + type,
+  //       shared: true,
+  //       crosshairs: true
+  //     },
+  //     xAxis: {
+  //       // type: 'datetime',
+  //       categories: Session.get('labelArray')
+  //     },
 
-      yAxis: {
-        title: {
-          text: type
-        },
-        plotLines: [{
-          value: 0,
-          width: 1,
-          color: '#808080'
-        }]
-      },
+  //     yAxis: {
+  //       title: {
+  //         text: type
+  //       },
+  //       plotLines: [{
+  //         value: 0,
+  //         width: 1,
+  //         color: '#808080'
+  //       }]
+  //     },
 
-      plotOptions: { // removes the markers along the plot lines
-        series: {
-          marker: {
-            enabled: false
-          }
-        }
-      },
+  //     plotOptions: { // removes the markers along the plot lines
+  //       series: {
+  //         marker: {
+  //           enabled: false
+  //         }
+  //       }
+  //     },
 
-      // legend: {
-      //   borderWidth: 0,
-      //   layout: 'horizontal',
-      //   backgroundColor: '#FFFFFF',
-      //   align: 'left',
-      //   verticalAlign: 'top',
-      //   floating: true,
-      //   x: 25,
-      //   y: 25
-      // },
+  //     // legend: {
+  //     //   borderWidth: 0,
+  //     //   layout: 'horizontal',
+  //     //   backgroundColor: '#FFFFFF',
+  //     //   align: 'left',
+  //     //   verticalAlign: 'top',
+  //     //   floating: true,
+  //     //   x: 25,
+  //     //   y: 25
+  //     // },
 
-      series: [{
-        name: 'Ideal Delivery',
-        data: avgData,
-        color: '#90caf9'
-      }, {
-        name: 'Real Delivery',
-        data: actionToChart,
-        color: '#0d47a1'
-      }, {
-        name: 'Client Spend',
-        data: spendChart,
-        color: '#b71c1c'
-      }, {
-        name: 'Ideal Spend',
-        data: idealSpend,
-        color: '#ef9a9a'
-      }]
-    }
-  },
+  //     series: [{
+  //       name: 'Ideal Delivery',
+  //       data: avgData,
+  //       color: '#90caf9'
+  //     }, {
+  //       name: 'Real Delivery',
+  //       data: actionToChart,
+  //       color: '#0d47a1'
+  //     }, {
+  //       name: 'Client Spend',
+  //       data: spendChart,
+  //       color: '#b71c1c'
+  //     }, {
+  //       name: 'Ideal Spend',
+  //       data: idealSpend,
+  //       color: '#ef9a9a'
+  //     }]
+  //   }
+  // },
   'costPerChart': () => {
     const initiative = Template.instance().templateDict.get('initiative');
 
