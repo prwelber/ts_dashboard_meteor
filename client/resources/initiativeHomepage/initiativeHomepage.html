@@ -53,9 +53,11 @@
               {{#if budget}} <th>Budget</th> {{/if}}
               {{#if startDate}} <th>Start Date</th> {{/if}}
               {{#if endDate}} <th>End Date</th> {{/if}}
-              {{#if costPlusPercent}} <th>Cost Plus</th> {{/if}}
-              {{#if percentTotalPercent}} <th>Percent Total</th> {{/if}}
-              {{#if isClientPercent}} <th>Client</th> {{/if}}
+              {{#if isInRole "admin"}}
+                {{#if costPlusPercent}} <th>Cost Plus</th> {{/if}}
+                {{#if percentTotalPercent}} <th>Percent Total</th> {{/if}}
+                {{#if isClientPercent}} <th>Client</th> {{/if}}
+              {{/if}}
             </tr>
           </thead>
           <tbody>
@@ -63,22 +65,25 @@
               {{#if objective}}<td>{{objective}}</td>{{/if}}
               {{#if platform}}<td>{{platform}}</td>{{/if}}
               {{#if dealType}}<td>{{dealType}}</td>{{/if}}
-              {{#if quantity}}<td>{{quantity}}</td>{{/if}}
+              {{#if quantity}}<td>{{formatNumber quantity}}</td>{{/if}}
               {{#if price}}<td>{{price}}</td>{{/if}}
               {{#if budget}}<td>{{budget}}</td>{{/if}}
               {{#if startDate}}<td>{{formatDate startDate}}</td>{{/if}}
               {{#if endDate}}<td>{{formatDate endDate}}</td>{{/if}}
-              {{#if costPlusPercent}}<td>{{costPlusPercent}}%</td>{{/if}}
-              {{#if percentTotalPercent}}<td>{{percentTotalPercent}}%</td>{{/if}}
-              {{#if isClientPercent}}<td>{{isClientPercent}}%</td>{{/if}}
+              {{#if isInRole "admin"}}
+                {{#if costPlusPercent}}<td>{{costPlusPercent}}%</td>{{/if}}
+                {{#if percentTotalPercent}}<td>{{percentTotalPercent}}%</td>{{/if}}
+                {{#if isClientPercent}}<td>{{isClientPercent}}%</td>{{/if}}
+              {{/if}}
             </tr>
           </tbody>
           {{/each}}
         </table>
         <br>
+        {{#if isInRole "admin"}}
         <div class="col s10">
           {{#with initiativeStats}}
-          <h5>Gross Aggregate | Client Numbers</h5>
+          <h5>Targeted Social Numbers</h5>
           <table class="centered">
             <thead>
               <tr>
@@ -97,7 +102,7 @@
               <tr>
                 <td class="insights-table-data">{{spend}}</td>
                 <td class="insights-table-data">{{spendPercent}}</td>
-                <td class="insights-table-data">{{clicks}}</td>
+                <td class="insights-table-data">{{formatNumber clicks}}</td>
                 <td class="insights-table-data">{{cpc}}</td>
                 <td class="insights-table-data">{{impressions}}</td>
                 <td class="insights-table-data">{{cpm}}</td>
@@ -142,6 +147,7 @@
             </table>
           {{/each}}
         </div>
+        {{/if}}
       </div>
     </div>
 {{!-- TODO here --> create template for each initiative, maybe down the line
@@ -377,9 +383,11 @@ include charting for each lineItem and definitely aggregations --}}
             {{#if budget}} <th>Budget</th> {{/if}}
             {{#if startDate}} <th>Start Date</th> {{/if}}
             {{#if endDate}} <th>End Date</th> {{/if}}
-            {{#if costPlusPercent}} <th>Cost Plus</th> {{/if}}
-            {{#if percentTotalPercent}} <th>Percent Total</th> {{/if}}
-            {{#if isClientPercent}} <th>Client</th> {{/if}}
+            {{#if isInRole "admin"}}
+              {{#if costPlusPercent}} <th>Cost Plus</th> {{/if}}
+              {{#if percentTotalPercent}} <th>Percent Total</th> {{/if}}
+              {{#if isClientPercent}} <th>Client</th> {{/if}}
+            {{/if}}
           </tr>
         </thead>
         <tbody>
@@ -392,9 +400,11 @@ include charting for each lineItem and definitely aggregations --}}
             {{#if budget}}<td>{{formatMoney budget}}</td>{{/if}}
             {{#if startDate}}<td>{{formatDate startDate}}</td>{{/if}}
             {{#if endDate}}<td>{{formatDate endDate}}</td>{{/if}}
-            {{#if costPlusPercent}}<td>{{costPlusPercent}}%</td>{{/if}}
-            {{#if percentTotalPercent}}<td>{{percentTotalPercent}}%</td>{{/if}}
-            {{#if isClientPercent}}<td>{{isClientPercent}}%</td>{{/if}}
+            {{#if isInRole "admin"}}
+              {{#if costPlusPercent}}<td>{{costPlusPercent}}%</td>{{/if}}
+              {{#if percentTotalPercent}}<td>{{percentTotalPercent}}%</td>{{/if}}
+              {{#if isClientPercent}}<td>{{isClientPercent}}%</td>{{/if}}
+            {{/if}}
           </tr>
         </tbody>
         {{/each}}

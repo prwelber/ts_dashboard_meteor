@@ -16,15 +16,21 @@ Tracker.autorun(function () {
 
 Template.campaignDashboard.onCreated( function () {
   this.templateDict = new ReactiveDict();
-  const initiative = Initiatives.findOne(
-    {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
-  });
-  this.templateDict.set('initiative', initiative);
+  // const initiative = Initiatives.findOne(
+  //   {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
+  // });
+  // this.templateDict.set('initiative', initiative);
 });
 
 Template.campaignDashboard.onRendered(function () {
     $(".dropdown-button").dropdown({hover: true});
     $(".button-collapse").sideNav();
+
+    // this.templateDict = new ReactiveDict();
+    // const initiative = Initiatives.findOne(
+    //   {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
+    // });
+    // this.templateDict.set('initiative', initiative);
 });
 
 Template.campaignDashboard.events({
@@ -48,7 +54,12 @@ Template.campaignDashboard.events({
 
 Template.campaignDashboard.helpers({
   isReady: (sub1, sub2) => {
+    const template = Template.instance();
     if (FlowRouter.subsReady(sub1) && FlowRouter.subsReady(sub2)) {
+      const initiative = Initiatives.findOne(
+        {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
+      });
+      template.templateDict.set('initiative', initiative);
       return true;
     }
   },

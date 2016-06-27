@@ -29,13 +29,13 @@ Meteor.methods({
 
     campArray.forEach((name) => {
       let result = InsightsBreakdownsByDays.aggregate(makePipeline(name));
+      result[0]['campaign_id'] = InsightsBreakdownsByDays.findOne({'data.campaign_name': name}).data.campaign_id;
       resultArray.push(result[0]);
     });
     // convert to JSON so I can turn into a CSV
     var testJSON = EJSON.stringify(resultArray);
     var fields = ['_id', 'spend', 'impressions', 'clicks', 'likes'];
 
-    // console.log('array:', resultArray);
     var makeCSV = json2csv({ data: testJSON, fields: fields}, function (err, csv) {
       if (err) console.log(err);
       return csv;

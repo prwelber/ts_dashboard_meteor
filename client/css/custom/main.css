@@ -160,7 +160,34 @@ a:hover {
   width: 135px;
 }
 
+/**************** small headers for core campaign stats ****************/
 
+.fancy {
+  line-height: 0.5;
+  text-align: center;
+}
+.fancy span {
+  display: inline-block;
+  position: relative;
+}
+.fancy span:before,
+.fancy span:after {
+  content: "";
+  position: absolute;
+  height: 5px;
+  border-bottom: 1px solid grey;
+  border-top: none;
+  top: 0;
+  width: 15em;
+}
+.fancy span:before {
+  right: 100%;
+  margin-right: 10px;
+}
+.fancy span:after {
+  left: 100%;
+  margin-left: 10px;
+}
 
 
 /****************************************************************

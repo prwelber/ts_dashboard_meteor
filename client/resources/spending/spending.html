@@ -34,14 +34,11 @@
             <tbody>
             {{#each camp in getBasics}}
               <tr>
-                <td>{{camp._id}}</td>
+                <td><a href="/accounts/{{camp.campaign_id}}/overview">{{camp._id}}</a></td>
                 <td>{{money camp.spend}}</td>
                 <td>{{number camp.impressions}}</td>
                 <td>{{number camp.clicks}}</td>
                 <td>{{number camp.likes}}</td>
-                {{!-- {{#with getSpend camp.data.name}}
-                <td>{{this}}</td>
-                {{/with}} --}}
               </tr>
             {{/each}}
             </tbody>

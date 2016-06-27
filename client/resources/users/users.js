@@ -12,13 +12,10 @@ Template.editUser.helpers({
   },
   'isAdmin': function () {
     const user = Meteor.users.findOne({_id: FlowRouter.current().params._id});
-
-    if (user && user._id) {
-      if (user.admin === true) {
-        return "checked"
-      } else {
-        return "";
-      }
+    if (user.admin === true) {
+      return "checked"
+    } else {
+      return ""
     }
   },
   'getInits': function () {
