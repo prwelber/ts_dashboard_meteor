@@ -1,5 +1,6 @@
 import CampaignInsights from '/collections/CampaignInsights'
-import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
+import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays';
+import Initiatives from '/collections/Initiatives';
 import { Meteor } from 'meteor/meteor'
 import { FlowRouter } from 'meteor/kadira:flow-router'
 import Promise from 'bluebird'
@@ -11,6 +12,23 @@ import { formatters } from '/both/utilityFunctions/formatters';
 //     console.log('insightsBreakdownByDays subs ready!');
 //   }
 // });
+
+const stringToCostPlusPercentage = function stringToCostPlusPercentage (num) {
+  num = num.toString().split('');
+  num.unshift(".");
+  num = 1 + parseFloat(num.join(''));
+  return num;
+}
+
+const defineAction = function defineAction (init) {
+  let action;
+  init.lineItems[0].dealType === "CPC" ? action = "clicks" : '';
+  init.lineItems[0].dealType === "CPM" ? action = "impressions" : '';
+  init.lineItems[0].dealType === "CPL" ? action = "like" : '';
+  return action;
+}
+
+
 
 Template.insightsBreakdownDaily.onCreated(function () {
   this.templateDict = new ReactiveDict();
@@ -52,8 +70,64 @@ Template.insightsBreakdownDaily.helpers({
   'getDailyBreakdown': () => {
       const campaignNumber = FlowRouter.getParam('campaign_id');
       let dailyBreakdown = InsightsBreakdownsByDays.findOne({'data.campaign_id': campaignNumber});
-      if(dailyBreakdown) {
-        return InsightsBreakdownsByDays.find({'data.campaign_id': campaignNumber}, {sort: {'data.date_start': -1}});
+      const init = Initiatives.findOne({name: dailyBreakdown.data.initiative})
+      const objective = dailyBreakdown.data.objective;
+      Template.instance().templateDict.set('initiative', init)
+      const clientSpend = init[objective].net.client_spend;
+      if (dailyBreakdown) {
+        let days = InsightsBreakdownsByDays.find({'data.campaign_id': campaignNumber}, {sort: {'data.date_start': -1}}).fetch();
+        console.log('days', days[0], days[1], days[2], days[3]);
+        console.log('objective', objective)
+
+
+        if (init.lineItems[0].cost_plus === true) {
+          // run cost plus calculations
+          const costPlusPercent = stringToCostPlusPercentage(init.lineItems[0].costPlusPercent);
+          let daySpend = 0;
+          days.forEach((day) => {
+            daySpend = accounting.unformat(day.data.spend) * costPlusPercent;
+            day.data.spend = daySpend;
+            day.data.cpm = daySpend / (day.data.impressions / 1000);
+            day.data.cpc = daySpend / day.data.clicks;
+            day.data.cpl = daySpend / day.data.like;
+            day.data['cost_per_total_action'] = daySpend / day.data.total_actions;
+            day.data.cost_per_video_view = daySpend / day.data.video_view;
+            day.data.cost_per_page_engagement = daySpend / day.data.page_engagement;
+            day.data.cost_per_post_like = daySpend / day.data.post_like;
+          });
+          return days;
+
+        } else if (init.lineItems[0].percent_total === true) {
+          console.log('running percent_total calculations');
+          // run cost plus calculations
+          let daySpend = 0;
+          let quotedPrice = init.lineItems[0].price;
+          let action = defineAction(init)
+
+          days.forEach((day) => {
+            // need to get day spend according to the quotedPrice on IO
+            if (action === "impressions") {
+              daySpend = (day.data.impressions / 1000) * quotedPrice;
+            } else {
+              daySpend = day.data[action] * quotedPrice;
+            }
+            console.log('daySpend', daySpend);
+            day.data.spend = daySpend;
+            day.data.cpm = daySpend / (day.data.impressions / 1000);
+            day.data.cpc = daySpend / day.data.clicks;
+            day.data.cpl = daySpend / day.data.like;
+            day.data['cost_per_total_action'] = daySpend / day.data.total_actions;
+            day.data.cost_per_video_view = daySpend / day.data.video_view;
+            day.data.cost_per_page_engagement = daySpend / day.data.page_engagement;
+            day.data.cost_per_post_like = daySpend / day.data.post_like;
+          });
+          return days;
+
+        } else {
+          return '';
+        }
+
+        // return days;
       } else {
           var target = document.getElementById("spinner-div");
           let spun = Blaze.render(Template.spin, target);

@@ -170,13 +170,30 @@
           <span class="">Frequency</span>
         </div>
       </div>
+      {{!-- {{#if offsite_conversion}}
+      <div class="col s12">
+        <p class="fancy"><span>Conversion Stats</span></p>
+      </div>
+      <div class="col s6 m4 l3 card">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{number offsite_conversion}}</span><br>
+          <span class="">Conversions</span>
+        </div>
+      </div>
+      <div class="col s6 m4 l3 card">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{cost_per_offsite_conversion}}</span><br>
+          <span class="">CP Conversion</span>
+        </div>
+      </div>
+    {{/if}} --}}
 
 {{!-- Show client stats --}}
 
   {{#with netInsights}}
     {{#if isInRole "admin"}}
       <div class="col s12">
-        <p class="fancy"><span>Client Stats</span></p>
+        <p class="fancy" style="margin-bottom: 1em;"><span>Client Stats</span></p>
       </div>
       <div class="col s6 m4 l3 card grey lighten-5">
         <div class="card-content ">
@@ -208,7 +225,10 @@
           <span class="">Client CPVV</span>
         </div>
       </div>
+
+
     {{else}}
+    {{!------------ BELOW IS WHAT CLIENT SEES ------------}}
       <div class="col s6 m4 l3 card grey lighten-5">
         <div class="card-content ">
           <span class="center-align dash-data">{{money netData.client_spend}}</span><br>
@@ -241,24 +261,6 @@
       </div>
     {{/if}}
   {{/with}}
-
-    {{#if offsite_conversion}}
-      <div class="col s12">
-        <p class="fancy"><span>Conversion Stats</span></p>
-      </div>
-      <div class="col s6 m4 l3 card">
-        <div class="card-content ">
-          <span class="center-align dash-data">{{number offsite_conversion}}</span><br>
-          <span class="">Conversions</span>
-        </div>
-      </div>
-      <div class="col s6 m4 l3 card">
-        <div class="card-content ">
-          <span class="center-align dash-data">{{cost_per_offsite_conversion}}</span><br>
-          <span class="">CP Conversion</span>
-        </div>
-      </div>
-    {{/if}}
 
     {{/with}}
   </div> {{!-- end of row --}}

@@ -2,6 +2,9 @@
   <div class="row">
       <h2 class="center-align">Day by Day Insights Breakdown</h2>
       <h2 class="center-align">{{campaignInfo.campaign_name}}</h2>
+      {{#if isInRole "admin"}}
+        <p class="center-align">***The below are all client numbers.***</p>
+      {{/if}}
   </div>
   {{#if isReady "Initiatives" "insightsBreakdownByDaysList"}}
     <div class="row">
@@ -24,26 +27,29 @@
               <th class="insights-table-header">CPC</th>
               <th class="insights-table-header">Likes</th>
               <th class="insights-table-header">CPL</th>
+              <th class="insights-table-header">Reach</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td class="insights-table-data">{{money data.spend}}</td>
               <td class="insights-table-data">{{number data.impressions}}</td>
-              <td class="insights-table-data">{{data.cpm}}</td>
+              <td class="insights-table-data">{{money data.cpm}}</td>
               <td class="insights-table-data">{{number data.clicks}}</td>
-              <td class="insights-table-data">{{data.cpc}}</td>
+              <td class="insights-table-data">{{money data.cpc}}</td>
               <td class="insights-table-data">{{number data.like}}</td>
-              <td class="insights-table-data">{{data.cpl}}</td>
+              <td class="insights-table-data">{{money data.cpl}}</td>
+              <td class="insights-table-data">{{number data.reach}}</td>
             </tr>
           </tbody>
           <thead>
             <tr>
               <th class="insights-table-header">Total Actions</th>
-              <th class="insights-table-header">Post Engagement</th>
-              <th class="insights-table-header">Cost per Post Eng</th>
-              <th class="insights-table-header">Reach</th>
-              <th class="insights-table-header">CPP</th>
+              <th class="insights-table-header">Cost per Total Action</th>
+              <th class="insights-table-header">Page Engagement</th>
+              <th class="insights-table-header">Cost per Page Eng</th>
+              <th class="insights-table-header">Video Views</th>
+              <th class="insights-table-header">Cost per Video View</th>
               <th class="insights-table-header">Post Like</th>
               <th class="insights-table-header">Cost per Post Like</th>
             </tr>
@@ -51,12 +57,13 @@
           <tbody>
             <tr>
               <td class="insights-table-data">{{number data.total_actions}}</td>
-              <td class="insights-table-data">{{number data.post_engagement}}</td>
-              <td class="insights-table-data">{{data.cost_per_post_engagement}}</td>
-              <td class="insights-table-data">{{number data.reach}}</td>
-              <td class="insights-table-data">{{data.cpp}}</td>
+              <td class="insights-table-data">{{money data.cost_per_total_action}}</td>
+              <td class="insights-table-data">{{number data.page_engagement}}</td>
+              <td class="insights-table-data">{{money data.cost_per_page_engagement}}</td>
+              <td class="insights-table-data">{{number data.video_view}}</td>
+              <td class="insights-table-data">{{money data.cost_per_video_view}}</td>
               <td class="insights-table-data">{{number data.post_like}}</td>
-              <td class="insights-table-data">{{data.cost_per_post_like}}</td>
+              <td class="insights-table-data">{{money data.cost_per_post_like}}</td>
             </tr>
           </tbody>
         </table>

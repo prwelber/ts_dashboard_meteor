@@ -66,7 +66,7 @@ const filterData = function filterData (array) {
 export function insightUpdate(array) {
   if (array.length >= 1) {
     let counter = 0;
-    console.log('length of array', array.length)
+    console.log('Running campaign insight background func with length of array', array.length)
 
     const setIntervalId = Meteor.setInterval(() => {
 
@@ -75,12 +75,7 @@ export function insightUpdate(array) {
         counter++;
         Meteor.clearInterval(setIntervalId);
       }
-
       else {
-
-        console.log('campaignInsightUpdater background job running');
-        console.log('counter', counter);
-
         const camp = CampaignInsights.findOne({'data.campaign_id': array[counter]});
         let originalInitiative;
         try {

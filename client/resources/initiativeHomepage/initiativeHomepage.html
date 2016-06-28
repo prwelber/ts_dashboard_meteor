@@ -67,7 +67,7 @@
               {{#if dealType}}<td>{{dealType}}</td>{{/if}}
               {{#if quantity}}<td>{{formatNumber quantity}}</td>{{/if}}
               {{#if price}}<td>{{price}}</td>{{/if}}
-              {{#if budget}}<td>{{budget}}</td>{{/if}}
+              {{#if budget}}<td>{{formatMoney budget}}</td>{{/if}}
               {{#if startDate}}<td>{{formatDate startDate}}</td>{{/if}}
               {{#if endDate}}<td>{{formatDate endDate}}</td>{{/if}}
               {{#if isInRole "admin"}}
@@ -88,7 +88,7 @@
             <thead>
               <tr>
                 <th class="insights-table-header">Spend</th>
-                <th class="insights-table-header">Spend %</th>
+                {{!-- <th class="insights-table-header">Spend %</th> --}}
                 <th class="insights-table-header">Clicks</th>
                 <th class="insights-table-header">CPC</th>
                 <th class="insights-table-header">Impressions</th>
@@ -101,7 +101,7 @@
             <tbody>
               <tr>
                 <td class="insights-table-data">{{spend}}</td>
-                <td class="insights-table-data">{{spendPercent}}</td>
+                {{!-- <td class="insights-table-data">{{spendPercent}}</td> --}}
                 <td class="insights-table-data">{{formatNumber clicks}}</td>
                 <td class="insights-table-data">{{cpc}}</td>
                 <td class="insights-table-data">{{impressions}}</td>
@@ -113,8 +113,6 @@
             </tbody>
           </table>
           {{/with}}
-
-
           {{#each objectiveAggregates}}
             <h5>Aggregate for Objective {{_id}}</h5>
             <table class="centered">
@@ -134,11 +132,11 @@
               <tbody>
                 <tr>
                   <td class="insights-table-data">{{spend}}</td>
-                  <td class="insights-table-data">{{clicks}}</td>
+                  <td class="insights-table-data">{{formatNumber clicks}}</td>
                   <td class="insights-table-data">{{cpc}}</td>
                   <td class="insights-table-data">{{impressions}}</td>
                   <td class="insights-table-data">{{cpm}}</td>
-                  <td class="insights-table-data">{{likes}}</td>
+                  <td class="insights-table-data">{{formatNumber likes}}</td>
                   <td class="insights-table-data">{{cpl}}</td>
                   <td class="insights-table-data">{{videoViews}}</td>
                   <td class="insights-table-data">{{cpvv}}</td>
@@ -146,7 +144,70 @@
               </tbody>
             </table>
           {{/each}}
+          {{#each num in getClientNumbers}}
+          <h5>Client Numbers for Objective: {{num._id}}</h5>
+          <table class="centered">
+            <thead>
+              <tr>
+                <th class="insights-table-header">Spend</th>
+                <th class="insights-table-header">Clicks</th>
+                <th class="insights-table-header">CPC</th>
+                <th class="insights-table-header">Impressions</th>
+                <th class="insights-table-header">CPM</th>
+                <th class="insights-table-header">Likes</th>
+                <th class="insights-table-header">CPL</th>
+                <th class="insights-table-header">Video Views</th>
+                <th class="insights-table-header">CPVV</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="insights-table-data">{{formatMoney num.net.client_spend}}</td>
+                <td class="insights-table-data">{{formatNumber num.clicks}}</td>
+                <td class="insights-table-data">{{formatMoney num.net.client_cpc}}</td>
+                <td class="insights-table-data">{{formatNumber num.impressions}}</td>
+                <td class="insights-table-data">{{formatMoney num.net.client_cpm}}</td>
+                <td class="insights-table-data">{{formatNumber num.likes}}</td>
+                <td class="insights-table-data">{{formatMoney num.net.client_cpl}}</td>
+                <td class="insights-table-data">{{formatNumber num.videoViews}}</td>
+                <td class="insights-table-data">{{formatMoney num.net.client_cpvv}}</td>
+              </tr>
+            </tbody>
+          </table>
+          {{/each}}
         </div>
+        {{else}}
+          {{#each num in getClientNumbers}}
+          <h5>Stats for Objective: {{num._id}}</h5>
+          <table class="centered">
+            <thead>
+              <tr>
+                <th class="insights-table-header">Spend</th>
+                <th class="insights-table-header">Clicks</th>
+                <th class="insights-table-header">CPC</th>
+                <th class="insights-table-header">Impressions</th>
+                <th class="insights-table-header">CPM</th>
+                <th class="insights-table-header">Likes</th>
+                <th class="insights-table-header">CPL</th>
+                <th class="insights-table-header">Video Views</th>
+                <th class="insights-table-header">CPVV</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="insights-table-data">{{formatMoney num.net.client_spend}}</td>
+                <td class="insights-table-data">{{formatNumber num.clicks}}</td>
+                <td class="insights-table-data">{{formatMoney num.net.client_cpc}}</td>
+                <td class="insights-table-data">{{formatNumber num.impressions}}</td>
+                <td class="insights-table-data">{{formatMoney num.net.client_cpm}}</td>
+                <td class="insights-table-data">{{formatNumber num.likes}}</td>
+                <td class="insights-table-data">{{formatMoney num.net.client_cpl}}</td>
+                <td class="insights-table-data">{{formatNumber num.videoViews}}</td>
+                <td class="insights-table-data">{{formatMoney num.net.client_cpvv}}</td>
+              </tr>
+            </tbody>
+          </table>
+          {{/each}}
         {{/if}}
       </div>
     </div>
