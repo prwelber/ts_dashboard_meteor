@@ -106,7 +106,11 @@ export const initiativeHomepageFunctions = {
 
         // -------------- Adjust spend to reflect dealtype ----------- //
 
+        let action;
         if (init.lineItems[index].cost_plus === true) {
+          init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
+          init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
+          init.lineItems[index].dealType === "CPL" ? action = "like" : '';
           let percent = init.lineItems[index].costPlusPercent.split('');
           percent.unshift(".");
           percent = 1 + parseFloat(percent.join(''));
@@ -118,7 +122,6 @@ export const initiativeHomepageFunctions = {
 
         if (init.lineItems[index].percent_total === true) {
 
-          let action;
           init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
           init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
           init.lineItems[index].dealType === "CPL" ? action = "like" : '';
@@ -158,7 +161,7 @@ export const initiativeHomepageFunctions = {
           },
           // TODO FIX THIS
           title: {
-            text: "Delivery for " + objective
+            text: "Results for " + action,
           },
 
           subtitle: {
@@ -272,7 +275,7 @@ export const initiativeHomepageFunctions = {
           },
           // TODO FIX THIS
           title: {
-            text: "Cost Per for " + objective
+            text: "Cost Per Result"
           },
 
           subtitle: {
@@ -398,7 +401,11 @@ export const initiativeHomepageFunctions = {
 
     // -------------- Adjust spend to reflect dealtype ----------- //
 
+    let action;
     if (init.lineItems[index].cost_plus === true) {
+      init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
+      init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
+      init.lineItems[index].dealType === "CPL" ? action = "like" : '';
       let percent = init.lineItems[index].costPlusPercent.split('');
       percent.unshift(".");
       percent = 1 + parseFloat(percent.join(''));
@@ -410,7 +417,6 @@ export const initiativeHomepageFunctions = {
 
     if (init.lineItems[index].percent_total === true) {
       const quotedPrice = parseFloat(init.lineItems[index].price);
-      let action;
       init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
       init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
       init.lineItems[index].dealType === "CPL" ? action = "like" : '';
@@ -446,7 +452,7 @@ export const initiativeHomepageFunctions = {
       },
       // TODO FIX THIS
       title: {
-        text: "Delivery for " + objective
+        text: "Results for " + action,
       },
 
       subtitle: {
@@ -592,7 +598,7 @@ export const initiativeHomepageFunctions = {
       },
       // TODO FIX THIS
       title: {
-        text: "Cost Per for " + objective
+        text: "Cost Per Result"
       },
 
       subtitle: {

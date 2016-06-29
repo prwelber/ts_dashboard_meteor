@@ -300,7 +300,7 @@ Template.initiativeHomepage.helpers({
       },
 
       title: {
-        text: "Cost per Type for Initiative"
+        text: "Cost per Result"
       },
 
       subtitle: {
