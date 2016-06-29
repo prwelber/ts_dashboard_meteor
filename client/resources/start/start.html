@@ -171,16 +171,16 @@
 
                     <div class="col s9 push-s3">
 
-                      <div class="c100 p{{calcSpend item.objective _id}} small green grey lighten-1">
-                        <span>{{calcSpend item.objective _id}}%</span>
+                      <div class="c100 p{{calcSpend item.objective _id "circle"}} small green grey lighten-1">
+                        <span>{{calcSpend item.objective _id "number"}}%</span>
                         <div class="slice">
                           <div class="bar"></div>
                           <div class="fill"></div>
                         </div>
                       </div>
 
-                      <div class="c100 p{{calcDelivery _id @index}} small grey lighten-1">
-                        <span>{{calcDelivery _id @index}}%</span>
+                      <div class="c100 p{{calcDelivery _id @index "circle"}} small grey lighten-1">
+                        <span>{{calcDelivery _id @index "number"}}%</span>
                         <div class="slice">
                           <div class="bar"></div>
                           <div class="fill"></div>

@@ -163,7 +163,7 @@ Template.initiativesHome.helpers({
   getOwner: () => {
     return this.owner;
   },
-  calcSpend: (objective, _id) => {
+  calcSpend: (objective, _id, state) => {
     const init = Initiatives.findOne({_id: _id});
     const allCapsObjective = objective.split(' ').join('_').toUpperCase();
     for (let key in init) {
@@ -171,8 +171,10 @@ Template.initiativesHome.helpers({
         if (! init[key]['net']) {
           return '';
         } else {
-          if (parseFloat(init[key]['net']['spendPercent']) >= 100) {
+          if (parseFloat(init[key]['net']['spendPercent']) >= 100 && state === "circle") {
             return "100";
+          } else if (parseFloat(init[key]['net']['spendPercent']) >= 100 && state === "number") {
+            return numeral(init[key]['net']['spendPercent']).format("00");
           } else {
             return numeral(init[key]['net']['spendPercent']).format("00");
           }
@@ -180,10 +182,12 @@ Template.initiativesHome.helpers({
       }
     }
   },
-  calcDelivery: (_id, index) => {
+  calcDelivery: (_id, index, state) => {
     const init = Initiatives.findOne({_id: _id});
-    if (parseFloat(initiativesFunctionObject.calculateDeliveryPercent(init, index)) >= 100) {
+    if (parseFloat(initiativesFunctionObject.calculateDeliveryPercent(init, index)) >= 100 && state === "circle") {
       return "100";
+    } else if (parseFloat(initiativesFunctionObject.calculateDeliveryPercent(init, index)) >= 100 && state === "number") {
+      return numeral(initiativesFunctionObject.calculateDeliveryPercent(init, index)).format("00");
     } else {
       return numeral(initiativesFunctionObject.calculateDeliveryPercent(init, index)).format("00");
     }

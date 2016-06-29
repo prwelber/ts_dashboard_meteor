@@ -58,7 +58,7 @@ Template.insightsBreakdownDaily.helpers({
       var call = Promise.promisify(Meteor.call);
         call('getDailyBreakdown', campaignNumber)
         .then(function (result) {
-          console.log("result from promise", result)
+          // console.log("result from promise", result)
           Blaze.remove(spun);
         }).catch(function (err) {
           console.log('uh no error', err)
@@ -73,11 +73,9 @@ Template.insightsBreakdownDaily.helpers({
       const init = Initiatives.findOne({name: dailyBreakdown.data.initiative})
       const objective = dailyBreakdown.data.objective;
       Template.instance().templateDict.set('initiative', init)
-      const clientSpend = init[objective].net.client_spend;
       if (dailyBreakdown) {
         let days = InsightsBreakdownsByDays.find({'data.campaign_id': campaignNumber}, {sort: {'data.date_start': -1}}).fetch();
-        console.log('days', days[0], days[1], days[2], days[3]);
-        console.log('objective', objective)
+
 
 
         if (init.lineItems[0].cost_plus === true) {
@@ -94,11 +92,11 @@ Template.insightsBreakdownDaily.helpers({
             day.data.cost_per_video_view = daySpend / day.data.video_view;
             day.data.cost_per_page_engagement = daySpend / day.data.page_engagement;
             day.data.cost_per_post_like = daySpend / day.data.post_like;
+            day.data.cost_per_link_click = dayspend / day.data.link_click;
           });
           return days;
 
         } else if (init.lineItems[0].percent_total === true) {
-          console.log('running percent_total calculations');
           // run cost plus calculations
           let daySpend = 0;
           let quotedPrice = init.lineItems[0].price;
@@ -111,7 +109,6 @@ Template.insightsBreakdownDaily.helpers({
             } else {
               daySpend = day.data[action] * quotedPrice;
             }
-            console.log('daySpend', daySpend);
             day.data.spend = daySpend;
             day.data.cpm = daySpend / (day.data.impressions / 1000);
             day.data.cpc = daySpend / day.data.clicks;
@@ -120,6 +117,7 @@ Template.insightsBreakdownDaily.helpers({
             day.data.cost_per_video_view = daySpend / day.data.video_view;
             day.data.cost_per_page_engagement = daySpend / day.data.page_engagement;
             day.data.cost_per_post_like = daySpend / day.data.post_like;
+            day.data.cost_per_link_click = daySpend / day.data.link_click
           });
           return days;
 

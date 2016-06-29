@@ -10,6 +10,12 @@ export function dailyUpdate(array) {
 
     let counter = 0;
 
+    /*
+    * Basic premise here is that we are removing the last three days in each
+    * collection of campaign day by day insights and then querying facebook for
+    * only the last three days.
+    */
+
     // format moments for querying collection
     const dateFormat = 'YYYY-MM-DD';
     const today = moment().format(dateFormat);
@@ -35,7 +41,6 @@ export function dailyUpdate(array) {
       /*
       * These if / else if statements say the following:
       * if the counter is greater than or equal to the array length, quit
-      * if inserted date is after end date of campaign, do nothing
       * else, run the download job
       */
 
