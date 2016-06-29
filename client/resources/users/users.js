@@ -10,12 +10,12 @@ Template.editUser.helpers({
     let user = Meteor.users.findOne({_id: FlowRouter.current().params._id});
     return user;
   },
-  'isAdmin': function () {
+  'isAdminChecked': function () {
     const user = Meteor.users.findOne({_id: FlowRouter.current().params._id});
     if (user.admin === true) {
       return "checked"
     } else {
-      return ""
+      return false
     }
   },
   'getInits': function () {
@@ -66,11 +66,12 @@ Template.editUser.events({
       initiatives: initArray
     };
 
-    console.log(user);
+    // console.log(user);
     const _id = FlowRouter.current().params._id;
     Meteor.call('updateUser', _id, user, function (err, res) {
       if (res) {
-        Materialize.toast('User Updated!', 2000);
+        Materialize.toast('User Updated!', 1000);
+        FlowRouter.go('/admin/users');
       }
     });
 
@@ -92,7 +93,14 @@ Template.allUsers.helpers({
       return Meteor.users.find({});
     },
     date: (date) => {
-      return moment(date, moment.ISO_8601).tz("America/New_York").format("MM-DD-YYYY hh:mm a z");
+      if (date === "None") {
+        return "None";
+      }
+      if (Meteor.isProduction) {
+        return moment(date, moment.ISO_8601).subtract(4, 'hours').format("MM-DD-YYYY hh:mm a z");
+      } else {
+        return moment(date, moment.ISO_8601).tz("America/New_York").format("MM-DD-YYYY hh:mm a z");
+      }
     }
 });
 
@@ -109,44 +117,43 @@ Template.createUser.helpers({
 Template.createUser.events({
   "submit #create-user-form": function (event, template) {
     event.preventDefault();
-    const firstName = template.find('[name="first-name"]').value;
+    // const firstName = template.find('[name="first-name"]').value;
 
     // get all agencies
-    const select = document.getElementsByName("agency");
-    const agencyArray = [];
-    for (let i = 0; i < select[0].length; i++) {
-      if (select[0][i].selected === true) {
-        agencyArray.push(select[0][i].value);
-      }
-    }
+    // const select = document.getElementsByName("agency");
+    // const agencyArray = [];
+    // for (let i = 0; i < select[0].length; i++) {
+    //   if (select[0][i].selected === true) {
+    //     agencyArray.push(select[0][i].value);
+    //   }
+    // }
 
     // get all initiatives
-    const initSelect = document.getElementsByName("initiatives");
-    const initArray = [];
-    for (let i = 0; i < initSelect[0].length; i++) {
-      if (initSelect[0][i].selected === true) {
-        initArray.push(initSelect[0][i].value);
-      }
-    }
+    // const initSelect = document.getElementsByName("initiatives");
+    // const initArray = [];
+    // for (let i = 0; i < initSelect[0].length; i++) {
+    //   if (initSelect[0][i].selected === true) {
+    //     initArray.push(initSelect[0][i].value);
+    //   }
+    // }
 
     const options = {
-      firstName: template.find('[name="first-name"]').value,
-      lastName: template.find('[name="last-name"]').value,
+      // firstName: template.find('[name="first-name"]').value,
+      // lastName: template.find('[name="last-name"]').value,
       username: template.find('[name="username"]').value,
       email: template.find('[name="email"]').value,
       password: template.find('[name="password"]').value,
-      agency: agencyArray,
-      initiatives: initArray,
-      admin: template.find('[name="adminCheckbox"]').checked
+      // agency: agencyArray,
+      // initiatives: initArray,
+      // admin: template.find('[name="adminCheckbox"]').checked
     };
-
-    console.log(options);
 
     Meteor.call('createNewUser', options, (err, res) => {
       if (err) {
         alert(err);
       } else {
         Materialize.toast('User Created!', 1500);
+        FlowRouter.go('/admin/users');
       }
     });
 

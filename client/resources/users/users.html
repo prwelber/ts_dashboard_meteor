@@ -24,9 +24,9 @@
         <label for="email" class="active">Email</label>
       </div>
       <div class="row">
-        <div class="col s12">
+        <div class="input-field col s12">
           <p>
-            <input type="checkbox" id="admin" name="admin" checked={{isAdmin}} />
+            <input type="checkbox" id="admin" name="admin" checked="{{isAdminChecked}}" />
             <label for="admin">Admin Permissions? | Admins Have Access To Everything</label>
           </p>
         </div>
@@ -87,28 +87,28 @@
     <form id="create-user-form" class="col s12">
       <div class="row">
 
-        <div class="input-field col s4">
+        {{!-- <div class="input-field col s4">
           <input type="text" id="first_name" class="validate" name="first-name">
           <label for="first_name">First Name</label>
         </div>
         <div class="input-field col s4">
           <input type="text" id="last_name" class="validate" name="last-name">
           <label for="last_name">Last Name</label>
-        </div>
+        </div> --}}
         <div class="input-field col s4">
           <input type="text" id="username" class="validate" name="username">
           <label for="username">Username</label>
         </div>
 
-        <div class="input-field col s6">
-          <input type="email" id="email" class="validate" placeholder="This will the username for logging in" name="email">
-          <label for="email" class="active">Email</label>
+        <div class="input-field col s4">
+          <input type="email" id="email" class="validate" name="email">
+          <label for="email">Email</label>
         </div>
-        <div class="input-field col s6">
+        <div class="input-field col s4">
           <input type="password" id="password" class="validate" name="password">
           <label for="password">Password</label>
         </div>
-        <div class="col s12">
+        {{!-- <div class="col s12">
           <p>
             <input type="checkbox" id="adminCheckbox" name="adminCheckbox">
             <label for="adminCheckbox">Admin?</label>
@@ -151,14 +151,16 @@
             {{/each}}
           </select>
           <label class="active">Initiatives</label>
-        </div>
+        </div> --}}
       </div>
-      <button class="btn waves-effect waves-light" type="submit" name="action">
-        Create User
-      </button>
-      <blockquote>
+      <div class="col s12 center-align">
+        <button class="btn waves-effect waves-light" type="submit" name="action">
+          Create User
+        </button>
+      </div>
+      {{!-- <blockquote>
         Creating a new user will log you out and log you in as the new user.
-      </blockquote>
+      </blockquote> --}}
     </form>
   </div>
 </template>

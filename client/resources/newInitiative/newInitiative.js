@@ -12,7 +12,7 @@ import CampaignInsights from '/collections/CampaignInsights'
 
 Template.newInitiative.helpers({
     'getBrands': function () {
-        return MasterAccounts.find();
+        return MasterAccounts.find({}, {sort: {name: 1}});
     },
     'getTargetedUsers': function () {
         return Meteor.users.find({});
@@ -74,7 +74,6 @@ Template.newInitiative.events({
                 }
             });
             finalObj['lineItems'] = testArray;
-            console.log(finalObj);
             return finalObj;
         }
 
@@ -87,9 +86,10 @@ Template.newInitiative.events({
         } else {
           Meteor.call('insertNewInitiative', newInitiative, function (error, result) {
             if (error) {
-              console.log(error);
+              alert(error);
             } else {
-              Materialize.toast('Initiative Created!', 2500);
+              Materialize.toast('Initiative Created!', 1000);
+              FlowRouter.go('/home');
             }
           });
         }
@@ -97,9 +97,12 @@ Template.newInitiative.events({
     'blur #new-init-budget': function (event, template) {
         let re = /[^0-9.]/
         let result = re.test(event.target.value)
-        console.log(result)
         if (result == true) {
             alert('Budget format is incorrect. Only include numbers and one period.')
         }
     }
+});
+
+Template.newInitiative.onDestroyed(() => {
+    $('.tooltipped').tooltip('remove');
 });

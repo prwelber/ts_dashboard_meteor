@@ -4,9 +4,10 @@
     <h2>Initiatives</h2>
     {{#each getInitiatives}}
         <a href="/admin/initiatives/{{_id}}"><h4>{{name}}</h4></a>
-        <p>Dates: {{startDate}} -- {{endDate}}</p>
-        <p>Deal Type: {{dealType}}</p>
-        <p>Budget: {{budget}}</p>
+        <p>Brand: {{brand}}</p>
+        <p>Owner: {{owner}}</p>
+        <p>Agency: {{agency}}</p>
+        <p>Created on: {{inserted_date}}</p>
     {{/each}}
 
 </template>

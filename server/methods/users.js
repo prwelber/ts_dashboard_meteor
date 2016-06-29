@@ -24,18 +24,18 @@ Meteor.methods({
           username: data.username,
           agency: data.agency,
           initiatives: data.initiatives,
-          updatedOn: moment().format("MM-DD-YYYY hh:mm a")
+          updatedOn: moment().toISOString()
         }
       }
     ) //end of update
-    // console.log(data.agency, data.admin)
-    // console.log('id', _id);
-    // if (data.agency.length >= 1) {
-    //   Roles.addUsersToRoles(_id, ['agency']);
-    // }
-    // if (data.admin === true) {
-    //   Roles.addUsersToRoles(_id, 'admin', Roles.GLOBAL_GROUP)
-    // }
+    if (data.admin === false) {
+      Meteor.users.update(
+        { _id: _id },
+        {$unset:
+          {roles: ""}
+        }
+      )
+    }
     assignUserRoles(_id, data);
     return "success!";
   },
@@ -46,22 +46,25 @@ Meteor.methods({
     Accounts.createUser({
       username: options.username,
       password: options.password,
-      email: options.email,
-      profile: options
+      email: options.email
+      // profile: options
     });
     return 'success!';
   }
 });
 
 Accounts.onCreateUser((options, user) => {
-  console.log('user from createUser', user)
+  if (options.profile) {
+    user.profile = options.profile
+  }
   user['firstName'] = options.firstName;
   user['lastName'] = options.lastName;
   user['email'] = options.email;
   user['agency'] = options.agency;
   user['initiatives'] = options.initiatives;
   user['admin'] = options.admin;
-  user['createdOn'] = moment().format('MM-DD-YYYY hh:mm a');
+  user['createdOn'] = moment().toISOString();
+  user['lastLogin'] = "None";
   // user.password = options.password;
   return user;
 });
