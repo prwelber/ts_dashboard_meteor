@@ -76,9 +76,10 @@ Template.campaignDashboard.helpers({
         camp.data['avgPctWatched'] = camp.data['video_avg_pct_watched_actions'][0]['value'];
         camp.data['avgSecWatched'] = camp.data['video_avg_sec_watched_actions'][0]['value'];
         camp.data['completeWatched'] = camp.data['video_complete_watched_actions'][0]['value'];
-
+        Template.instance().templateDict.set('campData', camp.data)
         return camp.data;
       } else {
+        Template.instance().templateDict.set('campData', camp.data)
         return camp.data;
       }
     } else {
@@ -153,6 +154,29 @@ Template.campaignDashboard.helpers({
     const init = Template.instance().templateDict.get('initiative');
     const netData = campaignDashboardFunctionObject.netInsights(init, camp);
     return {netData: netData, camp: camp.data};
+  },
+  clientStatsSpend: (num, type) => {
+    const init = Template.instance().templateDict.get('initiative');
+    const item = init.lineItems[0];
+    const quotedPrice = item.price;
+    const campData = Template.instance().templateDict.get('campData');
+    let dealType;
+    item.cost_plus ? dealType = "cost_plus" : '';
+    item.percent_total ? dealType = "percent_total" : '';
+    Template.instance().templateDict.set('clientSpend', campaignDashboardFunctionObject.clientSpend(num, type, dealType, item, quotedPrice, campData, init))
+    return mastFunc.money(campaignDashboardFunctionObject.clientSpend(num, type, dealType, item, quotedPrice, campData, init))
+
+  },
+  clientStats: () => {
+    const clientSpend = Template.instance().templateDict.get('clientSpend');
+    const campData = Template.instance().templateDict.get('campData');
+    const init = Template.instance().templateDict.get('initiative');
+    const item = init.lineItems[0];
+    const quotedPrice = item.price;
+    let dealType;
+    item.cost_plus ? dealType = "cost_plus" : '';
+    item.percent_total ? dealType = "percent_total" : '';
+    return campaignDashboardFunctionObject.clientNumbers(clientSpend, campData, init, item, quotedPrice, dealType)
   },
   money: (num) => {
     return mastFunc.money(num);

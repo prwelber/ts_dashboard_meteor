@@ -6,6 +6,21 @@ const stringToPercentTotal = function stringToPercentTotal (num) {
   return num;
 }
 
+const stringToCostPlusPercentage = function stringToCostPlusPercentage (num) {
+  num = num.toString().split('');
+  num.unshift(".");
+  num = 1 + parseFloat(num.join(''));
+  return num;
+}
+
+const defineAction = function defineAction (init) {
+  let action;
+  init.lineItems[0].dealType === "CPC" ? action = "clicks" : '';
+  init.lineItems[0].dealType === "CPM" ? action = "impressions" : '';
+  init.lineItems[0].dealType === "CPL" ? action = "like" : '';
+  return action;
+}
+
 export const campaignDashboardFunctionObject = {
   netInsights: (init, camp) => {
     const stringToCostPlusPercentage = function stringToCostPlusPercentage (num) {
@@ -31,30 +46,43 @@ export const campaignDashboardFunctionObject = {
     } else if (init.lineItems[0].percent_total) {
       deal = "percentTotal";
       const quotedPrice = init.lineItems[0].price;
-      let action;
-      init.lineItems[0].dealType === "CPC" ? action = "clicks" : '';
-      init.lineItems[0].dealType === "CPM" ? action = "impressions" : '';
-      init.lineItems[0].dealType === "CPL" ? action = "like" : '';
+      let action = defineAction(init)
+      // init.lineItems[0].dealType === "CPC" ? action = "clicks" : '';
+      // init.lineItems[0].dealType === "CPM" ? action = "impressions" : '';
+      // init.lineItems[0].dealType === "CPL" ? action = "like" : '';
       spend = init[objective].net.client_spend;
       return init[objective].net;
     }
-
-    // arr with values to recalculate
-    // const recalc = ["clicks", "total_actions", "page_engagement", "post_engagement", "video_view", "video_play"];
-
-    // if (camp.data.like) {
-    //   recalc.push("like")
-    // } else if (camp.data.post_like) {
-    //   recalc.push("post_like")
-    // }
-    // // loop over recalc array and calculate new values according to deal type
-    // for (let i = 0; i <= recalc.length - 1; i++) {
-    //   var newKey = "netcp_" + recalc[i];
-    //   var newValue = spend / camp.data[recalc[i]];
-    //   netData[newKey] = newValue;
-    // }
-    // netData['netcp_impressions'] = spend / (camp.data.impressions / 1000);
-    // netData['spend'] = spend;
-    // return netData;
+  },
+  clientSpend: (number, typeNumb, dealType, item, quotedPrice, campData, init) => {
+    if (dealType === "cost_plus") {
+      let percent = stringToCostPlusPercentage(item.costPlusPercent);
+      if (typeNumb === "spend") {
+        return number * percent;
+      }
+    } else if (dealType === "percent_total") {
+      let action = defineAction(init);
+      if (action === "impressions") {
+        return (campData[action] / 1000) * quotedPrice;
+      } else {
+        return campData[action] * quotedPrice;
+      }
+    }
+  },
+  clientNumbers: (clientSpend, campData, init, item, quotedPrice, dealType) => {
+    let clientNumbers = {};
+    if (dealType === "cost_plus") {
+      clientNumbers["cpm"] =  clientSpend / (campData.impressions / 1000);
+      clientNumbers["cpc"] = clientSpend / campData.clicks;
+      clientNumbers["cpl"] = clientSpend / campData.like;
+      clientNumbers["cpvv"] = clientSpend / campData.video_view;
+      return clientNumbers;
+    } else if (dealType === "percent_total") {
+      clientNumbers["cpm"] =  clientSpend / (campData.impressions / 1000);
+      clientNumbers["cpc"] = clientSpend / campData.clicks;
+      clientNumbers["cpl"] = clientSpend / campData.like;
+      clientNumbers["cpvv"] = clientSpend / campData.video_view;
+      return clientNumbers;
+    }
   }
 };

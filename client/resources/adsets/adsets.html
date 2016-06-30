@@ -30,8 +30,8 @@
         {{#if data.also_match}}<li class="collection-item">And Who Also Match: {{data.also_match}}</li>{{/if}}
       </ul>
 
-      <h4>Spend: {{data.spend}}</h4>
-      <p>CPP: {{data.cpp}}</p>
+      <h4>Spend: {{money data.spend}}</h4>
+      <p>CPP: {{money data.cpp}}</p>
       <table class="striped centered">
         <thead>
           <tr>
@@ -59,8 +59,8 @@
           <tr>
             <th>Link Click</th>
             <th>CP Link Click</th>
+            <th>Page Engagement</th>
             <th>CP Page Eng</th>
-            <th>CP Post Eng</th>
             <th>Website Click</th>
             <th>CP Website Click</th>
             <th>CTR</th>
@@ -68,17 +68,17 @@
         </thead>
         <tbody>
           <tr>
-            <td>{{data.link_click}}</td>
-            <td>{{data.cost_per_link_click}}</td>
-            <td>{{data.cost_per_page_engagement}}</td>
-            <td>{{data.cost_per_post_engagement}}</td>
+            <td>{{number data.link_click}}</td>
+            <td>{{money data.cost_per_link_click}}</td>
+            <td>{{number data.post_engagement}}</td>
+            <td>{{money data.cost_per_post_engagement}}</td>
             <td>{{number data.website_clicks}}</td>
-            <td>{{data.cost_per_website_clicks}}</td>
-            <td>{{data.ctr}}</td>
+            <td>{{money data.cost_per_website_clicks}}</td>
+            <td>{{twoDecimals data.ctr}}</td>
           </tr>
         </tbody>
       </table>
-      {{#if data.video_play}}
+      {{!-- {{#if data.video_play}}
         <table class="centered">
           <thead>
             <tr>
@@ -109,7 +109,7 @@
             </tr>
           </tbody>
         </table>
-      {{/if}}
+      {{/if}} --}}
     </div>
     </div>
     {{else}}

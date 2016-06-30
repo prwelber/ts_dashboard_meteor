@@ -1,9 +1,36 @@
+import { Meteor } from 'meteor/meteor'
 import CampaignInsights from '/collections/CampaignInsights'
 import Initiatives from '/collections/Initiatives'
 import AdSets from '/collections/AdSets'
 import mastFunc from '../masterFunctions'
+import { FlowRouter } from 'meteor/kadira:flow-router'
 
 var Promise = require('bluebird');
+
+// -------------- FUNCTIONS -------------- //
+const stringToCostPlusPercentage = function stringToCostPlusPercentage (num) {
+  num = num.toString().split('');
+  num.unshift(".");
+  num = 1 + parseFloat(num.join(''));
+  return num;
+}
+
+const defineAction = function defineAction (init) {
+  let action;
+  init.lineItems[0].dealType === "CPC" ? action = "clicks" : '';
+  init.lineItems[0].dealType === "CPM" ? action = "impressions" : '';
+  init.lineItems[0].dealType === "CPL" ? action = "like" : '';
+  return action;
+}
+
+// ------------ END FUNCTIONS -------------- //
+
+Template.adsets.onCreated(function () {
+  this.templateDict = new ReactiveDict();
+  const campaign = CampaignInsights.findOne({'data.campaign_id': FlowRouter.getParam('campaign_id')});
+  const init = Initiatives.findOne({name: campaign.data.initiative});
+  this.templateDict.set('init', init);
+});
 
 Template.adsets.onRendered(() => {
   $('.tooltipped').tooltip({delay: 50});
@@ -31,7 +58,7 @@ Template.adsets.helpers({
   },
   'getAdSets': function () {
     const campaignNumber = FlowRouter.current().params.campaign_id;
-
+    const init = Template.instance().templateDict.get('init');
     if (AdSets.find({'data.campaign_id': campaignNumber}).count() >= 1) {
       let adsets = AdSets.find({'data.campaign_id': campaignNumber}, {sort: {'data.end_time': -1}}).fetch();
       adsets.forEach(el => {
@@ -56,7 +83,53 @@ Template.adsets.helpers({
 
       });
 
-      return adsets;
+      if (init.lineItems[0].cost_plus === true) {
+        const costPlusPercent = stringToCostPlusPercentage(init.lineItems[0].costPlusPercent);
+        let adSetSpend = 0;
+        adsets.forEach((adset) => {
+          adSetSpend = accounting.unformat(adset.data.spend) * costPlusPercent;
+          adset.data.spend = adSetSpend;
+          adset.data.cpm = adSetSpend / (adset.data.impressions / 1000);
+          adset.data.cpc = adSetSpend / adset.data.clicks;
+          adset.data.cpl = adSetSpend / adset.data.like;
+          adset.data['cost_per_total_action'] = adSetSpend / adset.data.total_actions;
+          adset.data.cost_per_video_view = adSetSpend / adset.data.video_view;
+          adset.data.cost_per_post_engagement = adSetSpend / adset.data.post_engagement;
+          adset.data.cost_per_post_like = adSetSpend / adset.data.post_like;
+          adset.data.cost_per_link_click = adSetSpend / adset.data.link_click;
+          adset.data.cost_per_website_clicks = adSetSpend / adset.data.website_clicks;
+        });
+        return adsets;
+      } else if (init.lineItems[0].percent_total === true) {
+
+        let adSetSpend = 0;
+        let quotedPrice = init.lineItems[0].price;
+        let action = defineAction(init);
+
+        adsets.forEach((adset) => {
+          if (action === "impressions") {
+            adSetSpend = (adset.data.impressions / 1000) * quotedPrice;
+          } else {
+            adSetSpend = adset.data[action] * quotedPrice;
+          }
+          adset.data.spend = adSetSpend;
+          adset.data.cpm = adSetSpend / (adset.data.impressions / 1000);
+          adset.data.cpc = adSetSpend / adset.data.clicks;
+          adset.data.cpl = adSetSpend / adset.data.like;
+          adset.data['cost_per_total_action'] = adSetSpend / adset.data.total_actions;
+          adset.data.cost_per_video_view = adSetSpend / adset.data.video_view;
+          adset.data.cost_per_post_engagement = adSetSpend / adset.data.post_engagement;
+          adset.data.cost_per_post_like = adSetSpend / adset.data.post_like;
+          adset.data.cost_per_link_click = adSetSpend / adset.data.link_click;
+          adset.data.cost_per_website_clicks = adSetSpend / adset.data.website_clicks;
+        });
+        return adsets;
+      } else {
+        return '';
+      }
+
+
+      // return adsets;
     }
   },
   'getCampaignNumber': function () {

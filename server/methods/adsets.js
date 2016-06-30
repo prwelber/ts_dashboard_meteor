@@ -16,7 +16,7 @@ Meteor.methods({
     let adSetsArray = [];
     let masterArray = [];
     let adSets;
-    const query = "?fields=account_id,campaign_id,start_time,end_time,id,optimization_goal,name,targetingsentencelines,created_time,updated_time,insights{impressions,clicks,total_actions,actions,cost_per_action_type,website_clicks,spend,newsfeed_avg_position,cost_per_10_sec_video_view,frequency,ctr,cpc,cpm,cpp}";
+    const query = "?fields=account_id,campaign_id,start_time,end_time,id,optimization_goal,name,targetingsentencelines,created_time,updated_time,insights{impressions,clicks,total_actions,actions,cost_per_action_type,website_clicks,reach,spend,newsfeed_avg_position,cost_per_10_sec_video_view,frequency,ctr,cpc,cpm,cpp}";
 
     try {
       let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+'/adsets'+query+'&date_preset=lifetime&access_token='+token+'', {});

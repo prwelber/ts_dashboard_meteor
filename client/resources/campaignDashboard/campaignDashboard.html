@@ -170,99 +170,78 @@
           <span class="">Frequency</span>
         </div>
       </div>
-      {{!-- {{#if offsite_conversion}}
-      <div class="col s12">
-        <p class="fancy"><span>Conversion Stats</span></p>
-      </div>
-      <div class="col s6 m4 l3 card">
-        <div class="card-content ">
-          <span class="center-align dash-data">{{number offsite_conversion}}</span><br>
-          <span class="">Conversions</span>
-        </div>
-      </div>
-      <div class="col s6 m4 l3 card">
-        <div class="card-content ">
-          <span class="center-align dash-data">{{cost_per_offsite_conversion}}</span><br>
-          <span class="">CP Conversion</span>
-        </div>
-      </div>
-    {{/if}} --}}
 
-{{!-- Show client stats --}}
-
-  {{#with netInsights}}
+    {{!-- Show client stats --}}
     {{#if isInRole "admin"}}
       <div class="col s12">
         <p class="fancy" style="margin-bottom: 1em;"><span>Client Stats</span></p>
       </div>
       <div class="col s6 m4 l3 card grey lighten-5">
         <div class="card-content ">
-          <span class="center-align dash-data">{{money netData.client_spend}}</span><br>
+          <span class="center-align dash-data">{{clientStatsSpend spend "spend"}}</span><br>
           <span class="">Client Spend</span>
         </div>
       </div>
+
       <div class="col s6 m4 l3 card {{impressionsObjective}}">
         <div class="card-content ">
-          <span class="center-align dash-data">{{money netData.client_cpm}}</span><br>
+          <span class="center-align dash-data">{{money clientStats.cpm}}</span><br>
           <span class="">Client CPM</span>
         </div>
       </div>
+
       <div class="col s6 m4 l3 card {{clicksObjective}}">
         <div class="card-content ">
-          <span class="center-align dash-data">{{money netData.client_cpc}}</span><br>
+          <span class="center-align dash-data">{{money clientStats.cpc}}</span><br>
           <span class="">Client CPC</span>
         </div>
       </div>
       <div class="col s6 m4 l3 card {{likesObjective}}">
         <div class="card-content ">
-          <span class="center-align dash-data">{{money netData.client_cpl}}</span><br>
+          <span class="center-align dash-data">{{money clientStats.cpl}}</span><br>
           <span class="">Client CPL</span>
         </div>
       </div>
       <div class="col s6 m4 l3 card {{videoObjective}}">
         <div class="card-content ">
-          <span class="center-align dash-data">{{money netData.client_cpvv}}</span><br>
+          <span class="center-align dash-data">{{money clientStats.cpvv}}</span><br>
           <span class="">Client CPVV</span>
         </div>
       </div>
-
-
     {{else}}
-    {{!------------ BELOW IS WHAT CLIENT SEES ------------}}
+      {{!------------ BELOW IS WHAT CLIENT SEES ------------}}
       <div class="col s6 m4 l3 card grey lighten-5">
         <div class="card-content ">
-          <span class="center-align dash-data">{{money netData.client_spend}}</span><br>
+          <span class="center-align dash-data">{{clientStatsSpend spend "spend"}}</span><br>
           <span class="">Spend</span>
         </div>
       </div>
       <div class="col s6 m4 l3 card {{impressionsObjective}}">
         <div class="card-content ">
-          <span class="center-align dash-data">{{money netData.client_cpm}}</span><br>
+          <span class="center-align dash-data">{{money clientStats.cpm}}</span><br>
           <span class="">CPM</span>
         </div>
       </div>
       <div class="col s6 m4 l3 card {{clicksObjective}}">
         <div class="card-content ">
-          <span class="center-align dash-data">{{money netData.client_cpc}}</span><br>
+          <span class="center-align dash-data">{{money clientStats.cpc}}</span><br>
           <span class="">CPC</span>
         </div>
       </div>
       <div class="col s6 m4 l3 card {{likesObjective}}">
         <div class="card-content ">
-          <span class="center-align dash-data">{{money netData.client_cpl}}</span><br>
+          <span class="center-align dash-data">{{money clientStats.cpl}}</span><br>
           <span class="">CPL</span>
         </div>
       </div>
       <div class="col s6 m4 l3 card {{videoObjective}}">
         <div class="card-content ">
-          <span class="center-align dash-data">{{money netData.client_cpvv}}</span><br>
+          <span class="center-align dash-data">{{money clientStats.cpvv}}</span><br>
           <span class="">CPVV</span>
         </div>
       </div>
     {{/if}}
   {{/with}}
-
-    {{/with}}
   </div> {{!-- end of row --}}
   </div>
   <div class="row">
