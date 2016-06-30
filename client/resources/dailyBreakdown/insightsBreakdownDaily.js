@@ -92,7 +92,7 @@ Template.insightsBreakdownDaily.helpers({
             day.data.cost_per_video_view = daySpend / day.data.video_view;
             day.data.cost_per_page_engagement = daySpend / day.data.page_engagement;
             day.data.cost_per_post_like = daySpend / day.data.post_like;
-            day.data.cost_per_link_click = dayspend / day.data.link_click;
+            day.data.cost_per_link_click = daySpend / day.data.link_click;
           });
           return days;
 
