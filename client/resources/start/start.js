@@ -130,21 +130,25 @@ Template.initiativesHome.helpers({
   'isActiveInitiative': function () {
     const now = moment()
     if (moment(this.lineItems[0].endDate, moment.ISO_8601).isAfter(now)) {
-      return "Active"
+      return "Active";
+    } else if (now.diff(moment(this.lineItems[0].endDate, moment.ISO_8601), 'd') === 0) {
+      return "Active";
     } else if (now.diff(moment(this.lineItems[0].endDate, moment.ISO_8601), "days") <= 45) {
-      return "Ended Recently"
+      return "Ended Recently";
     } else {
-      return "Not Active"
+      return "Ended";
     }
   },
   'isActiveClass': function () {
     const now = moment()
     if (moment(this.lineItems[0].endDate, moment.ISO_8601).isAfter(now)) {
-      return "green-text"
+      return "green-text";
+    } else if (now.diff(moment(this.lineItems[0].endDate, moment.ISO_8601), 'd') === 0) {
+      return "green-text";
     } else if (now.diff(moment(this.lineItems[0].endDate, moment.ISO_8601), "days") <= 45) {
-      return "orange-text"
+      return "orange-text";
     } else {
-      return "red-text"
+      return "red-text";
     }
   },
   'formatDate': (date) => {
@@ -217,7 +221,7 @@ Template.initiativesHome.helpers({
     }
   },
   getBrands: () => {
-    return MasterAccounts.find({});
+    return MasterAccounts.find({}, {sort: {name: 1}});
   }
 });
 

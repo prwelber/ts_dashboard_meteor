@@ -4,7 +4,8 @@ import { FlowRouter } from 'meteor/kadira:flow-router'
 FlowRouter.route('/', {
     name: 'landing',
     action: () => {
-        BlazeLayout.render('landing')
+        FlowRouter.go('/home');
+        // BlazeLayout.render('landing')
     }
 });
 

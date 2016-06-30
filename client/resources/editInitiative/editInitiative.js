@@ -140,7 +140,8 @@ Template.editInitiative.events({
       } else {
         Meteor.call('updateInitiative', updatedInitiative, function (error, result) {
             if (result) {
-              Materialize.toast('Success! You have updated the initiative.', 5000);
+              Materialize.toast('Success! You have updated the initiative.', 2000);
+              FlowRouter.go('/home');
             }
         });
       }

@@ -1,10 +1,13 @@
 <template name="adsets">
   <div class="col s10">
-    <h2 class="center-align">AdSet Insights and Targeting</h2>
+    <h2 class="center-align">AdSet Results and Targeting</h2>
     <div class="col s12 center-align">
       <button id="refresh-adsets" class="btn-large waves-effect waves-light tooltipped" name="action" data-position="bottom" data-tooltip="Refresh Adset Data" data-id="{{getCampaignNumber}}">
         <h4>REFRESH ADSETS</h4>
       </button>
+      {{#if isInRole "admin"}}
+        <p>***all below numbers are client adjusted***</p>
+      {{/if}}
     </div>
     <div class="divider" style="margin: 1em 0 1em 0;"></div>
   </div>
@@ -24,6 +27,7 @@
         {{#if data.behaviors}}<li class="collection-item">Behaviors: {{data.behaviors}}</li>{{/if}}
         {{#if data.location}}<li class="collection-item">Location: {{data.location}}</li>{{/if}}
         {{#if data.locations}}<li class="collection-item">Locations: {{data.locations}}</li>{{/if}}
+        {{#if data.location_living_in}}<li class="collection-item">Location- Living In: {{data.location_living_in}}</li>{{/if}}
         {{#if data.placements}}<li class="collection-item">Placements: {{data.placements}}</li>{{/if}}
         {{#if data.connections}}<li class="collection-item">Connections: {{data.connections}}</li>{{/if}}
         {{#if data.match}}<li class="collection-item">People Who Match: {{data.match}}</li>{{/if}}
@@ -31,7 +35,7 @@
       </ul>
 
       <h4>Spend: {{money data.spend}}</h4>
-      <p>CPP: {{money data.cpp}}</p>
+      {{!-- <p>CPP: {{money data.cpp}}</p> --}}
       <table class="striped centered">
         <thead>
           <tr>

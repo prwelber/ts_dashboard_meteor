@@ -70,9 +70,9 @@ Template.insightsBreakdownDaily.helpers({
   'getDailyBreakdown': () => {
       const campaignNumber = FlowRouter.getParam('campaign_id');
       let dailyBreakdown = InsightsBreakdownsByDays.findOne({'data.campaign_id': campaignNumber});
-      const init = Initiatives.findOne({name: dailyBreakdown.data.initiative})
+      const init = Initiatives.findOne({name: dailyBreakdown.data.initiative});
       const objective = dailyBreakdown.data.objective;
-      Template.instance().templateDict.set('initiative', init)
+      Template.instance().templateDict.set('initiative', init);
       if (dailyBreakdown) {
         let days = InsightsBreakdownsByDays.find({'data.campaign_id': campaignNumber}, {sort: {'data.date_start': -1}}).fetch();
 

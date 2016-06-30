@@ -7,7 +7,7 @@ import InsightsBreakdowns from '/collections/InsightsBreakdowns'
 
 Tracker.autorun(function () {
     if (FlowRouter.subsReady('insightsBreakdownList')) {
-        console.log("insightsBreakdownList subs ready!");
+        // console.log("insightsBreakdownList subs ready!");
     }
 });
 
@@ -23,7 +23,7 @@ Template.insightsBreakdown.helpers({
             var call = Promise.promisify(Meteor.call);
               call('getBreakdown', campaignNumber)
               .then(function (result) {
-                console.log("result from promise", result)
+                // console.log("result from promise", result)
                 Blaze.remove(spun);
               }).catch(function (err) {
                 console.log('uh no error', err)
@@ -33,7 +33,7 @@ Template.insightsBreakdown.helpers({
         }
     },
     'getBreakdown': function () {
-        console.log('getBreakdown running');
+        // console.log('getBreakdown running');
         const campaignNumber = FlowRouter.getParam("campaign_id")
         let breakdown = InsightsBreakdowns.findOne({'data.campaign_id': campaignNumber});
 
