@@ -8,6 +8,8 @@
 // import Initiatives from '/collections/Initiatives';
 // import MasterAccounts from '/collections/MasterAccounts';
 // const later = require('later');
+// const token = require('/server/token/token.js');
+
 
 // SyncedCron.config({
 //   collectionName: 'cronCollection'
@@ -51,7 +53,7 @@
 //         let campaignOverview;
 //         let campaignOverviewArray = [];
 //         try {
-//           let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/act_'+brandIds[counter].account_id+'/campaigns?fields=name,created_time,start_time,stop_time,updated_time,objective,id,account_id&limit=50&access_token='+token+'', {});
+//           let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/act_'+brandIds[counter].account_id+'/campaigns?fields=name,created_time,start_time,stop_time,updated_time,objective,id,account_id&limit=50&access_token='+token.token+'', {});
 //           campaignOverview = result;
 
 //           campaignOverviewArray.push(campaignOverview.data.data);

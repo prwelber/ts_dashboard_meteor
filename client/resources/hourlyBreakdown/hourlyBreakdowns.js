@@ -4,11 +4,11 @@ import { hourlyBreakdownsFunction } from './hourlyBreakdownsFunc';
 import { Meteor } from 'meteor/meteor'
 var Promise = require('bluebird');
 
-Tracker.autorun(function () {
-    if (FlowRouter.subsReady('hourlyBreakdownsList')) {
-        console.log('hourlyBreakdownsList subs ready!');
-    }
-});
+// Tracker.autorun(function () {
+//     if (FlowRouter.subsReady('hourlyBreakdownsList')) {
+//         console.log('hourlyBreakdownsList subs ready!');
+//     }
+// });
 
 Template.hourlyBreakdowns.onCreated(function () {
   this.templateDict = new ReactiveDict();
@@ -29,7 +29,6 @@ Template.hourlyBreakdowns.helpers({
         var call = Promise.promisify(Meteor.call);
         call('getHourlyBreakdown', campaignNumber)
         .then(function (result) {
-          console.log("result from promise", result)
           Blaze.remove(spun);
         }).catch(function (err) {
           console.log('uh no error', err)

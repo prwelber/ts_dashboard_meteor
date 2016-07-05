@@ -15,7 +15,7 @@ Meteor.methods({
         let masterArray = [];
         let breakdown;
         try {
-            let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+'/insights?breakdowns=age,gender&date_preset=lifetime&access_token='+token.token+'', {});
+            let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+'/insights?fields=impressions,clicks,cpm,cpc,website_clicks,total_actions,spend,reach,frequency,campaign_name,campaign_id,cost_per_action_type,actions&breakdowns=age,gender&date_preset=lifetime&access_token='+token.token+'', {});
             breakdown = result
             breakdownArray.push(breakdown.data.data);
             // flatten to get rid of nested array
@@ -59,18 +59,16 @@ Meteor.methods({
                     }
                 }
                 data['cpm'] = accounting.formatMoney(data.cpm, "$", 2);
-                data['cpp'] = accounting.formatMoney(data.cpp, "$", 2);
-                data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
-                data['campaign_name'] = campaignName;
-                data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
-                data['cpc'] = accounting.formatMoney((data.spend / data.clicks), "$", 2);
-                data['spend'] = accounting.formatMoney(data.spend, "$", 2);
-                data['date_start'] = moment(data.date_start).format("MM-DD-YYYY hh:mm a");
-                data['date_stop'] = moment(end_date).format("MM-DD-YYYY hh:mm a");
+                data['inserted'] = moment().toISOString();
+                // data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);
+                // data['cpc'] = accounting.formatMoney((data.spend / data.clicks), "$", 2);
+                // data['spend'] = accounting.formatMoney(data.spend, "$", 2);
+                data['date_start'] = moment(data.date_start).toISOString();
+                data['date_stop'] = moment(data.date_stop).toISOString();
                 masterArray.push(data);
             });
         } catch(e) {
-            console.log("Error pulling Insights Breakdown, here's the error:", e);
+            console.log("Error pulling Age & Gender Insights Breakdown", e);
         }
         try {
             // loop over array made up of gender/age objects and insert each one
@@ -82,9 +80,10 @@ Meteor.methods({
             });
         } catch(e) {
             console.log('Error inserting into DB:', e);
-        } finally {
-            return "this is a return statement";
         }
+    },
+    refreshInsights: (campaignNumber) => {
+
     }
 });
 

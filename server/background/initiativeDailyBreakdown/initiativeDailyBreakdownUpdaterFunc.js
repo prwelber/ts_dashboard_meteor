@@ -2,7 +2,9 @@ import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
 import Initiatives from '/collections/Initiatives'
 import CampaignBasics from '/collections/CampaignBasics'
 import { Meteor } from 'meteor/meteor'
-import { apiVersion } from '/server/token/token'
+import { apiVersion } from '/server/token/token';
+const token = require('/server/token/token.js');
+
 
 export function dailyUpdate(array) {
 
@@ -59,7 +61,7 @@ export function dailyUpdate(array) {
         let result;
         try {
           // console.log('making http request')
-          result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+array[counter]+'/insights?fields=date_start,date_stop,campaign_id,campaign_name,total_actions,impressions,spend,reach,ctr,cpm,cpp,actions,cost_per_action_type,objective&time_increment=1&date_preset=last_3_days&access_token='+token+'', {});
+          result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+array[counter]+'/insights?fields=date_start,date_stop,campaign_id,campaign_name,total_actions,impressions,spend,reach,ctr,cpm,cpp,actions,cost_per_action_type,objective&time_increment=1&date_preset=last_3_days&access_token='+token.token+'', {});
         } catch(e) {
           console.log("error with HTTP call - clearInterval and stop cron job:", e);
           Meteor.clearInterval(setIntervalId);

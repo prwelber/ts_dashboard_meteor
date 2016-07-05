@@ -120,26 +120,34 @@ Template.campaignDashboard.helpers({
   'getAggregate': function () {
     const init = Template.instance().templateDict.get('initiative');
     var call = Promise.promisify(Meteor.call);
-    call('getAggregate', init.name).then(function (result) {
-      // console.log('result from getAggregate', result);
-    }).catch(function (err) {
-      console.log('aggghhh error:', err)
-    })
+    try {
+      call('getAggregate', init.name).then(function (result) {
+        // console.log('result from getAggregate', result);
+      }).catch(function (err) {
+        console.log('aggghhh error:', err)
+      })
+    } catch (e) {
+      console.log('Error in dashboard getAggregate', e);
+    }
 
     // moment stuff to figure out timeLeft on initiative
-    const ends = moment(init.lineItems[0].endDate, moment.ISO_8601);
-    const starts = moment(init.lineItems[0].startDate, moment.ISO_8601);
-    const now = moment(new Date);
-    let timeLeft;
-    // if now is after the end date, timeleft is zero, else...
-    now.isAfter(ends) ? timeLeft = 0 : timeLeft = ends.diff(now, 'days');
+    if (init) {
 
-    let agData = init.aggregateData // for brevity later on
+      let ends = moment(init.lineItems[0].endDate, moment.ISO_8601);
+      let starts = moment(init.lineItems[0].startDate, moment.ISO_8601);
+      let now = moment(new Date);
+      let timeLeft;
 
-    const spendPercent = numeral((agData.spend / parseFloat(init.lineItems[0].budget))).format("0.00%")
+      // if now is after the end date, timeleft is zero, else...
+      now.isAfter(ends) ? timeLeft = 0 : timeLeft = ends.diff(now, 'days');
 
-    // formats numbers
-    agData = mastFunc.formatAll(agData);
+      let agData = init.aggregateData // for brevity later on
+
+      const spendPercent = numeral((agData.spend / parseFloat(init.lineItems[0].budget))).format("0.00%")
+
+      // formats numbers
+      agData = mastFunc.formatAll(agData);
+    }
   },
   'makeProjections': function () {
     const initiative = Template.instance().templateDict.get('initiative');
