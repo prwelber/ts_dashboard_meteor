@@ -1,5 +1,6 @@
 import Ads from '/collections/Ads'
-import { apiVersion } from '/server/token/token'
+import { apiVersion } from '/server/token/token';
+const token = require('/server/token/token.js');
 
 Meteor.methods({
   'removeAds': function () {
@@ -22,7 +23,7 @@ Meteor.methods({
     let ads;
     const query = '/ads?fields=adcreatives{object_story_id,image_url,object_id,body,title,template_url,name,thumbnail_url,url_tags,link_url},insights{clicks,actions,cost_per_action_type,total_actions,spend,objective,cpc,cpp,cpm,ctr,impressions,frequency,reach},account_id,adset_id,campaign_id,name,id&date_perset=lifetime&limit=75&access_token='
     try {
-        let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+query+token+'', {});
+        let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+query+token.token+'', {});
         ads = result;
         // ads variable is now an array of objects
         adsArray.push(ads.data.data);

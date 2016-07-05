@@ -3,7 +3,8 @@ import { HTTP } from 'meteor/http'
 import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
 import Initiatives from '/collections/Initiatives'
 import CampaignInsights from '/collections/CampaignInsights'
-import { apiVersion } from '/server/token/token'
+import { apiVersion } from '/server/token/token';
+const token = require('/server/token/token.js');
 
 Meteor.methods({
   'removeDaily': function () {
@@ -18,7 +19,7 @@ Meteor.methods({
     let masterArray = [];
     let breakdown;
     try {
-        let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+'/insights?fields=date_start,date_stop,campaign_id,campaign_name,objective,total_actions,impressions,spend,reach,ctr,cpm,cpp,actions,cost_per_action_type&time_increment=1&date_preset=lifetime&access_token='+token+'', {});
+        let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+'/insights?fields=date_start,date_stop,campaign_id,campaign_name,objective,total_actions,impressions,spend,reach,ctr,cpm,cpp,actions,cost_per_action_type&time_increment=1&date_preset=lifetime&access_token='+token.token+'', {});
         breakdown = result;
         //breakdown is an array of objects
         dailyBreakdownArray.push(breakdown.data.data);

@@ -1,6 +1,7 @@
 import CampaignBasics from '/collections/CampaignBasics'
 import Initiatives from '/collections/Initiatives'
-import { apiVersion } from '/server/token/token'
+import { apiVersion } from '/server/token/token';
+const token = require('/server/token/token.js');
 
 Meteor.methods({
     'removeCampaigns': function (account) {
@@ -16,7 +17,7 @@ Meteor.methods({
         let campaignOverviewArray = [];
         let campaignOverview;
         try {
-            let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/act_'+accountNumber+'/campaigns?fields=name,created_time,start_time,stop_time,updated_time,objective,id,account_id&limit=50&access_token='+token+'', {});
+            let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/act_'+accountNumber+'/campaigns?fields=name,created_time,start_time,stop_time,updated_time,objective,id,account_id&limit=50&access_token='+token.token+'', {});
             campaignOverview = result;
             campaignOverviewArray.push(campaignOverview.data.data);
 

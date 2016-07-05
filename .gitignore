@@ -6,3 +6,5 @@ packages
 settings.json
 server/sendgrid
 .uploads
+**/long_live_token.js
+**/facebook_token

@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import MasterAccounts from '/collections/MasterAccounts'
-import { apiVersion } from '/server/token/token'
+import { apiVersion } from '/server/token/token';
+const token = require('/server/token/token.js');
 
 
 Meteor.methods({
@@ -18,7 +19,7 @@ Meteor.methods({
         let accountsDataArray = [];
         let accountsData;
         try {
-            let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/678433138873450/adaccounts?fields=name,amount_spent&limit=50&access_token='+token+'', {});
+            let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/678433138873450/adaccounts?fields=name,amount_spent&limit=50&access_token='+token.token+'', {});
             accountsData = result;
             accountsDataArray.push(accountsData.data.data);
 
