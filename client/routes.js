@@ -90,6 +90,18 @@ FlowRouter.route('/accounts/:campaign_id/overview', {
   }
 });
 
+FlowRouter.route('/accounts/:campaign_id/report', {
+    subscriptions: function (params) {
+        this.register('campaignInsightList', Meteor.subscribe('campaignInsightList', params.campaign_id));
+        this.register('Initiatives', Meteor.subscribe('Initiatives'));
+    },
+    name: 'report',
+    action: function (params) {
+        Session.set("route", "report");
+        BlazeLayout.render('index', {main: 'report'});
+    }
+});
+
 FlowRouter.route('/accounts/:campaign_id/charts', {
   subscriptions: function (params) {
     this.register('Initiatives', Meteor.subscribe('Initiatives'));
