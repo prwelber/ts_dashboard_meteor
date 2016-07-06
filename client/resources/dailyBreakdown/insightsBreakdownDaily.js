@@ -56,13 +56,13 @@ Template.insightsBreakdownDaily.helpers({
       let spun = Blaze.render(Template.spin, target);
       const campaignNumber = FlowRouter.getParam('campaign_id');
       var call = Promise.promisify(Meteor.call);
-        call('getDailyBreakdown', campaignNumber)
-        .then(function (result) {
-          // console.log("result from promise", result)
-          Blaze.remove(spun);
-        }).catch(function (err) {
-          console.log('uh no error', err)
-        });
+      call('getDailyBreakdown', campaignNumber)
+      .then(function (result) {
+        // console.log("result from promise", result)
+        Blaze.remove(spun);
+      }).catch(function (err) {
+        console.log('uh no error', err)
+      });
     } else {
       return true;
     }
