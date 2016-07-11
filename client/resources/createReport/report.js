@@ -55,6 +55,22 @@ Template.report.helpers({
     const init = template.templateDict.get('initiative');
     const lineItem = template.choices.get('lineItem');
     return reportFunctions.handleData(data, actions, performance, init, lineItem);
+  },
+  money: (num) => {
+    return mastFunc.money(num);
+  },
+  number: (num) => {
+    return mastFunc.num(num);
+  },
+  formatString: (str) => {
+    console.log(str)
+    str[0] = str[0].toUpperCase();
+    for (let i = 1; i < str.length - 1; i++) {
+      if (str[i] === " ") {
+        str[i+1] = str[i+1].toUpperCase();
+      }
+    }
+    return str;
   }
 });
 

@@ -20,10 +20,10 @@ const buildQuery = function buildQuery (start, end, performance, actions, campai
   }
 
   if (actions[0]) {
-    query += 'actions,cost_per_action_type,'
+    query += 'actions,cost_per_action_type,clicks,cpc,website_clicks,'
   }
 
-  query = query.slice(0, query.length - 1);
+  query = query.slice(0, query.length - 1); //remove last comma
 
   const requestString = createQuery(query, time, campaignNum, token.token);
 
