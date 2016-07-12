@@ -63,14 +63,18 @@ Template.report.helpers({
     return mastFunc.num(num);
   },
   formatString: (str) => {
-    console.log(str)
-    str[0] = str[0].toUpperCase();
-    for (let i = 1; i < str.length - 1; i++) {
-      if (str[i] === " ") {
-        str[i+1] = str[i+1].toUpperCase();
+    let newStr = '';
+    newStr += str[0].toUpperCase();
+    for (let i = 1; i < str.length; i++) {
+      if (str[i] === "_") {
+        newStr += " ";
+      } else if (str[i - 1] === "_" || str[i - 1] === " ") {
+        newStr += str[i].toUpperCase();
+      } else {
+        newStr += str[i];
       }
     }
-    return str;
+    return newStr;
   }
 });
 
