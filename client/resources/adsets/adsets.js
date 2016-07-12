@@ -152,6 +152,8 @@ Template.adsets.helpers({
       pathNameRegEx = /hourlybreakdowns/;
     } else if (pathName === "charts") {
       pathNameRegEx = /charts/;
+    } else if (pathname === "report") {
+      pathNameRegEx = /report/;
     }
     if (pathNameRegEx.test(FlowRouter.current().path) === true) {
       return "active";

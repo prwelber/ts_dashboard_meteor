@@ -48,7 +48,7 @@ Meteor.methods({
     const endDate = moment(data.lineItems[0].endDate, moment.ISO_8601).format("MM-DD-YYYY")
 
     const emailHTML = "<p>Name: "+data.name+"</p><p>Owner: "+data.owner+"</p><p>Brand: "+data.brand+"</p><p>Agency: "+data.agency+"</p><p>Dates: "+startDate+" - "+endDate+"</p>";
-    const toList = ["prwelber@gmail.com"]
+    const toList = ['kyu@targetedsocial.com', 'vguity@targetedsocial.com', 'pwelber@targetedsocial.com', 'cgottlieb@targetedsocial.com', 'selowsky@targetedsocial.com'];
 
     email.sendEmail(toList, data.name +" Initiative Created", emailHTML);
 

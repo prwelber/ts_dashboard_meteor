@@ -31,6 +31,7 @@
                   {{/if}}
                 {{/if}}
                 {{#if overviewRoute "overview"}}
+                  <li class="{{active "report"}}"><a href="/accounts/{{getCampaignNumber}}/report">Reporting</a></li>
                   <li class="{{active "overview"}}"><a href="/accounts/{{getCampaignNumber}}/overview">Overview</a></li>
                   <li class="{{active "targeting"}}"><a href="/accounts/{{getCampaignNumber}}/targeting">Targeting</a></li>
                   {{#if isInRole "admin"}}
@@ -52,6 +53,7 @@
                   <li><a id="view-aggregate-modal" class="modal-trigger" href="#modal2">Campaign Aggregator</a></li>
                 {{/if}}
                 {{#if overviewRoute "overview"}}
+                  <li class="{{active "report"}}"><a href="/accounts/{{getCampaignNumber}}/report">Reporting</a></li>
                   <li class="{{active "overview"}}"><a href="/accounts/{{getCampaignNumber}}/overview">Overview</a></li>
                   <li class="{{active "targeting"}}"><a href="/accounts/{{getCampaignNumber}}/targeting">Targeting</a></li>
                   <li class="{{active "creative"}}"><a href="/accounts/{{getCampaignNumber}}/creative">Creative</a></li>

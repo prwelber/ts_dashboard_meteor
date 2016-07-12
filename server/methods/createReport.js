@@ -10,9 +10,6 @@ const buildQuery = function buildQuery (start, end, performance, actions, campai
   } else {
     time = `date_preset=lifetime`;
   }
-
-  console.log(performance, actions)
-
   let query = '';
 
   for (let i = 0; i < performance.length; i++) {
@@ -21,6 +18,16 @@ const buildQuery = function buildQuery (start, end, performance, actions, campai
 
   if (actions[0]) {
     query += 'actions,cost_per_action_type,clicks,cpc,website_clicks,'
+  }
+
+  if (actions.indexOf('video_10_sec_watched_actions') >= 0) {
+    query += 'video_10_sec_watched_actions,'
+  }
+  if (actions.indexOf('video_30_sec_watched_actions') >= 0) {
+    query += 'video_30_sec_watched_actions,'
+  }
+  if (actions.indexOf('video_avg_pct_watched_actions') >= 0) {
+    query += 'video_avg_pct_watched_actions,'
   }
 
   query = query.slice(0, query.length - 1); //remove last comma
@@ -33,7 +40,6 @@ const buildQuery = function buildQuery (start, end, performance, actions, campai
 
 const createQuery = function createQuery (query, time, campNum, accessToken) {
   let string = `https://graph.facebook.com/v2.6/${campNum}/insights?fields=${query}&${time}&access_token=${accessToken}`;
-  console.log('string from createQuery', string);
   return string;
 }
 
@@ -41,9 +47,7 @@ const createQuery = function createQuery (query, time, campNum, accessToken) {
 
 Meteor.methods({
   createReport: (start, end, performance, actions, campNum) => {
-    console.log('createReport is running');
     let data = buildQuery(start, end, performance, actions, campNum);
-    console.log("data from createReport", data.data.data[0])
     return data.data.data[0];
   }
 });

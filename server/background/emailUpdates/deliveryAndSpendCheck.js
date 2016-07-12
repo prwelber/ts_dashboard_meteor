@@ -19,8 +19,8 @@ SyncedCron.add({
   name: "Initiative Digest Emailer",
 
   schedule: (parser) => {
-    return parser.text('at 9:00am');
-    // return parser.text('at 1:25pm')
+    return parser.text('at 1:00pm');
+    // return parser.text('at 2:20pm')
   },
   job: () => {
 
@@ -29,18 +29,19 @@ SyncedCron.add({
     // loop over lineItems and if there is a price (if it is filled in)
     // run the calculate delivery percent and calc flight percent functions
     // if delivery is 30 percentage points over or under flight, then send email alert
-
+    let emailBody = '';
     inits.forEach(init => {
       init.lineItems.forEach((item, index) => {
         if (item.price) {
           let deliv = initiativesFunctionObject.calculateDeliveryPercent(init, index);
           let flight = initiativesFunctionObject.calculateFlightPercentage(init, index);
           if ((deliv > (flight * 1.3) || deliv < (flight * 0.7)) && flight >= 10) {
-            const emailBody = `In Initiative ${init.name}, the Delivery percentage is ${deliv.toFixed(2)}, and the Flight percentage is ${flight.toFixed(2)}.`;
-            email.sendEmail("prwelber@gmail.com", "Delivery Out Of Range", emailBody);
+            emailBody += `In Initiative ${init.name}, the Delivery percentage is ${deliv.toFixed(2)}, and the Flight percentage is ${flight.toFixed(2)}.<br><br>`;
+            // email.sendEmail("prwelber@gmail.com", "Delivery Out Of Range", emailBody);
           }
         }
       });
     });
+    email.sendEmail(['kyu@targetedsocial.com', 'vguity@targetedsocial.com', 'pwelber@targetedsocial.com', 'cgottlieb@targetedsocial.com', 'selowsky@targetedsocial.com'], "Delivery Out Of Range", emailBody);
   }
 });

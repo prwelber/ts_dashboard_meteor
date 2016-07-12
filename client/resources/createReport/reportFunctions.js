@@ -45,6 +45,24 @@ const flattenData = function flattenData (array) {
             data["cost_per_"+el.action_type] = el.value;
           }
         });
+      } else if (key === "video_10_sec_watched_actions") {
+        el[key].forEach(element => {
+          if (element.action_type === "video_view") {
+            data["video_10_sec_watched_actions"] = element.value;
+          }
+        });
+      } else if (key === "video_30_sec_watched_actions") {
+        el[key].forEach(element => {
+          if (element.action_type === "video_view") {
+            data["video_30_sec_watched_actions"] = element.value;
+          }
+        });
+      } else if (key === "video_avg_pct_watched_actions") {
+        el[key].forEach(element => {
+          if (element.action_type === "video_view") {
+            data["video_avg_pct_watched_actions"] = element.value;
+          }
+        });
       } else {
         // this check looks for a period in the key name and
         // replaces it with an underscore
@@ -67,7 +85,7 @@ const money = function money (num) {
   return accounting.formatMoney(num, "$", 2);
 }
 
-const makeSpend = function makeSpend (data, init, itemNumber) {
+const makeSpend = function makeSpend (data, init, itemNumber, lineItemName) {
   let spend = 0;
   if (init.lineItems[0].cost_plus === true) {
     // run cost plus calculations
@@ -104,21 +122,18 @@ const makeSpend = function makeSpend (data, init, itemNumber) {
 
 export const reportFunctions = {
   handleData: (data, actions, performance, init, lineItemName) => {
-    console.log(actions, performance, init.name, lineItemName)
     const numbers = flattenData([data]); // numbers will be an object
-
     // get line item number
     const itemNumber = lineItemName.substring(lineItemName.length - 1, lineItemName.length);
 
     // determine dealType and adjust spend
-    const clientSpend = makeSpend(data, init, itemNumber);
-
-    console.log('spend', clientSpend)
+    const clientSpend = makeSpend(data, init, itemNumber, lineItemName);
 
     // go through actions and performance and pull out from api response
     // what user wants
     // and adjust cost per numbers for the client
-
+    const dateStart = data.date_start;
+    const dateStop = data.date_stop;
     let clientData = {};
     clientData['spend'] = clientSpend;
 
@@ -136,14 +151,13 @@ export const reportFunctions = {
         clientData[performance[i]] = numbers[performance[i]]
       }
     }
-
-    console.log('old client data', clientData)
-
     // format numbers and create client numbers
     for (let i in clientData) {
       if (i === "clicks") {
         clientData.cpc = money(clientSpend / clientData.clicks);
         clientData['clicks'] = num(clientData.clicks);
+      } else if (i === "video_avg_pct_watched_actions") {
+        clientData[i] = clientData[i] + "%";
       } else if (i === "reach" || i === "total_actions") {
         clientData[i] = num(clientData[i])
       } else if (i === "impressions") {
@@ -163,10 +177,11 @@ export const reportFunctions = {
     }
 
     clientData.spend = money(clientData.spend);
-    console.log('new clientData', clientData)
 
     // arrange headings in one array and values in another array for rendering
     const returnArray = [];
+    returnArray.push({'name': 'Date Start', 'amount': dateStart});
+    returnArray.push({'name': 'Date Stop', 'amount': dateStop});
     for (let i in clientData) {
       returnArray.push({'name': i, 'amount': clientData[i]})
     }

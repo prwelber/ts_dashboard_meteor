@@ -11,11 +11,12 @@ import { ReactiveDict } from 'meteor/reactive-dict';
 
 Template.report.onCreated(function () {
   this.templateDict = new ReactiveDict();
+  this.report = new ReactiveDict();
+  this.report.set('report', null);
 });
 
 Template.report.onRendered(function () {
   Session.set('checkboxes', true);
-  this.report = new ReactiveDict();
   this.choices = new ReactiveDict();
 });
 
@@ -43,6 +44,7 @@ Template.report.helpers({
   showReport: () => {
     var template = Template.instance();
     if (template.report.get('report')) {
+      // if report is true (if report exists)
       Session.set('checkboxes', false);
       return true;
     }
@@ -54,7 +56,15 @@ Template.report.helpers({
     const performance = template.choices.get('performance');
     const init = template.templateDict.get('initiative');
     const lineItem = template.choices.get('lineItem');
-    return reportFunctions.handleData(data, actions, performance, init, lineItem);
+    try {
+      return reportFunctions.handleData(data, actions, performance, init, lineItem);
+    } catch(e) {
+      if (e instanceof TypeError) {
+        alert('There was an issue with your request. Make sure you have selected a line item and/or no date or both dates. Click reset and try again.');
+      }
+      console.log(e);
+    }
+
   },
   money: (num) => {
     return mastFunc.money(num);
@@ -75,6 +85,11 @@ Template.report.helpers({
       }
     }
     return newStr;
+  },
+  campaignName: () => {
+    const id = FlowRouter.getParam('campaign_id');
+    const camp = CampaignInsights.findOne({'data.campaign_id': id});
+    return camp.data.campaign_name;
   }
 });
 
@@ -104,11 +119,14 @@ Template.report.events({
 
     call('createReport', start, end, performance, actions, campNum, lineItem)
     .then(function (result) {
-      console.log('result', result);
       template.report.set('report', result);
     }).catch(function (error) {
       console.log('Error creating report', error)
     })
+  },
+  "click #report-reset-button": (event, template) => {
+    Session.set('checkboxes', true);
+    template.report.set('report', null);
   }
 });
 
