@@ -96,11 +96,7 @@ Template.allUsers.helpers({
       if (date === "None") {
         return "None";
       }
-      if (Meteor.isProduction) {
-        return moment(date, moment.ISO_8601).subtract(4, 'hours').format("MM-DD-YYYY hh:mm a z");
-      } else {
-        return moment(date, moment.ISO_8601).tz("America/New_York").format("MM-DD-YYYY hh:mm a z");
-      }
+      return moment(date, moment.ISO_8601).tz("America/New_York").format("MM-DD-YYYY hh:mm a z");
     }
 });
 
