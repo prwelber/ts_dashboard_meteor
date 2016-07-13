@@ -82,8 +82,9 @@ Meteor.methods({
             console.log('Error inserting into DB:', e);
         }
     },
-    refreshInsights: (campaignNumber) => {
-
+    refreshAgeGender: (campaignNumber) => {
+      InsightsBreakdowns.remove({'data.campaign_id': campaignNumber});
+      return "success!";
     }
 });
 

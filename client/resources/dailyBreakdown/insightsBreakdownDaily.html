@@ -1,22 +1,16 @@
 <template name="insightsBreakdownDaily">
   <div class="container">
   <div class="row">
-      <h2 class="center-align">Day by Day Insights</h2>
-      {{!-- <h2 class="center-align">{{campaignInfo.campaign_name}}</h2> --}}
+      <h2 class="center-align insight-h2">Day by Day Insights</h2>
       {{#if isInRole "admin"}}
         <p class="center-align">***The below are all client numbers.***</p>
       {{/if}}
   </div>
   {{#if isReady "Initiatives" "insightsBreakdownByDaysList"}}
     <div class="row">
-{{!--       <div class="center-align">
-        <button id="refresh-daily" class="btn-floating btn-large waves-effect waves-light tooltipped" data-position="right" data-tooltip="Refresh Daily Insights">
-          <i class="material-icons">replay</i>
-        </button>
-      </div> --}}
       <div class="col s12 center-align">
         <button id="refresh-daily" class="btn-large waves-effect waves-light tooltipped" data-position="right" data-tooltip="Retrieve Live Data">
-          <h4>REFRESH DAILY INSIGHTS</h4>
+          <h4>REFRESH DATA</h4>
         </button>
       </div>
     </div>

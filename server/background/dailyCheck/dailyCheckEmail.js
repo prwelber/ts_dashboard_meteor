@@ -29,6 +29,8 @@ SyncedCron.add({
     });
     let htmlString = "<h3>The following Initiatives have not been checked today: </h3><br>" + notChecked.join('<br>') + ""
 
-    email.sendEmail(['kyu@targetedsocial.com', 'vguity@targetedsocial.com', 'pwelber@targetedsocial.com', 'cgottlieb@targetedsocial.com', 'selowsky@targetedsocial.com'], "Daily Check Digest", htmlString);
+    if (Meteor.isProduction) {
+      email.sendEmail(['kyu@targetedsocial.com', 'vguity@targetedsocial.com', 'pwelber@targetedsocial.com', 'cgottlieb@targetedsocial.com', 'selowsky@targetedsocial.com'], "Daily Check Digest", htmlString);
+    }
   }
 });

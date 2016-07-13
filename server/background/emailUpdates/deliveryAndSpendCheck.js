@@ -42,6 +42,8 @@ SyncedCron.add({
         }
       });
     });
-    email.sendEmail(['kyu@targetedsocial.com', 'vguity@targetedsocial.com', 'pwelber@targetedsocial.com', 'cgottlieb@targetedsocial.com', 'selowsky@targetedsocial.com'], "Delivery Out Of Range", emailBody);
+    if (Meteor.isProduction) {
+      email.sendEmail(['kyu@targetedsocial.com', 'vguity@targetedsocial.com', 'pwelber@targetedsocial.com', 'cgottlieb@targetedsocial.com', 'selowsky@targetedsocial.com'], "Delivery Out Of Range", emailBody);
+    }
   }
 });

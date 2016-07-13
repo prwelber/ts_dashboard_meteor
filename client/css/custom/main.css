@@ -189,6 +189,26 @@ a:hover {
   margin-left: 10px;
 }
 
+.age-gender-heading {
+  font-size: 2em;
+  padding-right: 10%;
+}
+
+.insights-table th {
+  padding: 10px 3px;
+}
+
+.insights-table td {
+  padding: 10px 3px;
+}
+
+.age-gender-heading-div {
+  margin-top: 4em;
+}
+
+.insight-h2 {
+  padding-bottom: 1em;
+}
 
 /****************************************************************
  *

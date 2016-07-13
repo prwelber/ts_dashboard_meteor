@@ -1,26 +1,122 @@
 <template name="insightsBreakdown">
-    <h2>Insights Breakdown by Age + Gender</h2>
-    <h3>Campaign: {{campaignInfo.campaign_name}}</h3>
-    {{#if isReady "insightsBreakdownList"}}
-        {{#each getBreakdown}}
-            <div class="col s10">
-                <h2>{{data.age}} | {{data.gender}}</h2>
-                <p>Spend: {{data.spend}}</p>
-                <p>Total Actions: {{data.total_actions}}</p>
-                <p>Impressions: {{data.impressions}}</p>
-                <p>Reach: {{data.reach}}</p>
-                <p>CTR: {{data.ctr}}</p>
-                <p>CPM: {{data.cpm}}</p>
-                <p>CPP: {{data.cpp}}</p>
-                {{#if data.clicks}} <p>Clicks: {{data.clicks}} | Cost per: {{data.cpc}}</p> {{/if}}
-                {{#if data.comment}}<p>Comment: {{data.comment}} | Cost per: {{data.cost_per_comment}}</p>{{/if}}
-                {{#if data.photo_view}}<p>Photo View: {{data.photo_view}} | Cost per: {{data.cost_per_photo_view}}</p>{{/if}}
-                {{#if data.post}}<p>Post: {{data.post}} | Cost per: {{data.cost_per_post}}</p>{{/if}}
-                {{#if data.post_like}}<p>Post Like: {{data.post_like}} | Cost per: {{data.cost_per_post_like}}</p>{{/if}}
-                <p>Page Engagement: {{data.page_engagement}} | Cost per: {{data.cost_per_page_engagement}}</p>
-                <p>Post Engagement: {{data.post_engagement}} | Cost per: {{data.cost_per_post_engagement}}</p>
-            </div>
-        {{/each}}
+  <div class="container">
+    {{#if isReady "insightsBreakdownList" "Initiatives"}}
+    <div class="row">
+      <div class="col s12 center-align">
+        <h2 class="insight-h2">Insights Breakdown by Age + Gender</h2>
+      </div>
+      <div class="col s12 center-align">
+        {{#if isInRole "admin"}}
+          <p class="center-align">***The below are all client numbers.***</p>
+        {{/if}}
+      </div>
+      <div class="row">
+        <div class="col s12 center-align">
+          <button id="refresh-age-gender" class="btn-large waves-effect waves-light tooltipped" data-position="right" data-tooltip="Retrieve Live Data">
+            <h4>REFRESH DATA</h4>
+          </button>
+        </div>
+      </div>
+      {{#each el in getBreakdown}}
+        <div class="row">
+          <div class="col s12 m2 age-gender-heading-div">
+            <span class="age-gender-heading">{{el.data.age}}</span>
+            <i class="fa fa-{{getGender el.data.gender}} fa-3x" aria-hidden="true"></i>
+          </div>
+          <div class="col s12 m10">
+            <table class="centered">
+              <thead>
+                <tr class="insights-table">
+                  <th>Spend</th>
+                  <th>Impressions</th>
+                  <th>CPM</th>
+                  <th>Clicks</th>
+                  <th>CPC</th>
+                  <th>Likes</th>
+                  <th>CPL</th>
+                  <th>Reach</th>
+                  {{#if el.data.offsite_conversion_fb_pixel_complete_registration}}
+                    <th>Conversions</th>
+                  {{/if}}
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="insights-table">
+                  <td>{{money el.data.spend}}</td>
+                  <td>{{number el.data.impressions}}</td>
+                  <td>{{money el.data.cpm}}</td>
+                  <td>{{number el.data.clicks}}</td>
+                  <td>{{money el.data.cpc}}</td>
+                  <td>{{number el.data.like}}</td>
+                  <td>{{money el.data.cpl}}</td>
+                  <td>{{number el.data.reach}}</td>
+                  {{#if el.data.offsite_conversion_fb_pixel_complete_registration}}
+                    <td>{{number el.data.offsite_conversion_fb_pixel_complete_registration}}</td>
+                  {{/if}}
+                </tr>
+              </tbody>
+              <thead>
+                <tr class="insights-table">
+                  <th>Total Actions</th>
+                  <th>Cost per Tot Act</th>
+                  <th>Page Engagement</th>
+                  <th>Cost per Page Eng</th>
+                  <th>Video Views</th>
+                  <th>Cost per VV</th>
+                  <th>Link Clicks</th>
+                  <th>Cost per Lnk Clk</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="insights-table">
+                  <td>{{number el.data.total_actions}}</td>
+                  <td>{{money el.data.cost_per_total_action}}</td>
+                  <td>{{number el.data.page_engagement}}</td>
+                  <td>{{money el.data.cost_per_page_engagement}}</td>
+                  <td>{{number el.data.video_view}}</td>
+                  <td>{{money el.data.cost_per_video_view}}</td>
+                  <td>{{number el.data.link_click}}</td>
+                  <td>{{money el.data.cost_per_link_click}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+
     {{/if}}
-        {{!-- TODO if statements for all possible data points --}}
+    {{!-- ^ end of isReady --}}
+  </div>
+
+
+
+
+
+
+
+
+
+  {{!-- {{#if isReady "insightsBreakdownList"}}
+    {{#each getBreakdown}}
+      <div class="col s10">
+        <h2>{{data.age}} | {{data.gender}}</h2>
+        <p>Spend: {{data.spend}}</p>
+        <p>Total Actions: {{data.total_actions}}</p>
+        <p>Impressions: {{data.impressions}}</p>
+        <p>Reach: {{data.reach}}</p>
+        <p>CTR: {{data.ctr}}</p>
+        <p>CPM: {{data.cpm}}</p>
+        <p>CPP: {{data.cpp}}</p>
+        {{#if data.clicks}} <p>Clicks: {{data.clicks}} | Cost per: {{data.cpc}}</p> {{/if}}
+        {{#if data.comment}}<p>Comment: {{data.comment}} | Cost per: {{data.cost_per_comment}}</p>{{/if}}
+        {{#if data.photo_view}}<p>Photo View: {{data.photo_view}} | Cost per: {{data.cost_per_photo_view}}</p>{{/if}}
+        {{#if data.post}}<p>Post: {{data.post}} | Cost per: {{data.cost_per_post}}</p>{{/if}}
+        {{#if data.post_like}}<p>Post Like: {{data.post_like}} | Cost per: {{data.cost_per_post_like}}</p>{{/if}}
+        <p>Page Engagement: {{data.page_engagement}} | Cost per: {{data.cost_per_page_engagement}}</p>
+        <p>Post Engagement: {{data.post_engagement}} | Cost per: {{data.cost_per_post_engagement}}</p>
+      </div>
+    {{/each}}
+  {{/if}} --}}
+      {{!-- TODO if statements for all possible data points --}}
 </template>
