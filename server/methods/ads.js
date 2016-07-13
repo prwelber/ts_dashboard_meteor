@@ -43,7 +43,7 @@ Meteor.methods({
           } else { // if there is object story id, make the 2nd api call to get more details
 
             // make 2nd api call with object_story_id to retrieve attachments
-            let attachment = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+el.adcreatives.data[0].object_story_id+'?fields=child_attachments,attachments,message&access_token='+token+'', {});
+            let attachment = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+el.adcreatives.data[0].object_story_id+'?fields=child_attachments,attachments,message&access_token='+token.token+'', {});
             // determine if carousel ad
             if (attachment.data.child_attachments && attachment.data.attachments.data[0].hasOwnProperty('subattachments')) {
               attachment.data.child_attachments.forEach(element => {
@@ -61,7 +61,7 @@ Meteor.methods({
 
               // now make another call for individual carousel stats and we will
               // add it to the appropriate ID
-              let carouselNumbers = HTTP.call('GET', 'https://graph.facebook.com/v2.5/'+accountNumber+'/insights?fields=impressions,inline_link_clicks,actions,website_ctr&action_breakdowns=["action_type","action_carousel_card_id"]&date_preset=lifetime&access_token='+token+'', {});
+              let carouselNumbers = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+'/insights?fields=impressions,inline_link_clicks,actions,website_ctr&action_breakdowns=["action_type","action_carousel_card_id"]&date_preset=lifetime&access_token='+token.token+'', {});
 
               let numbers = carouselNumbers.data.data[0];
               /*
