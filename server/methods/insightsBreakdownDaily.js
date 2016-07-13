@@ -6,6 +6,10 @@ import CampaignInsights from '/collections/CampaignInsights'
 import { apiVersion } from '/server/token/token';
 const token = require('/server/token/token.js');
 
+Meteor.startup(function () {
+  InsightsBreakdownsByDays._ensureIndex({"data.date_start": 1, "data.campaign_name": 1, "data.campaign_id": 1}, {unique: true});
+});
+
 Meteor.methods({
   'removeDaily': function () {
     console.log('removing InsightsBreakdownByDays collection')

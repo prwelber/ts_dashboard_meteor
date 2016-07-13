@@ -3,6 +3,7 @@ import Initiatives from '/collections/Initiatives';
 import { apiVersion } from '/server/token/token';
 import CampaignBasics from '/collections/CampaignBasics';
 const token = require('/server/token/token.js');
+
 Meteor.startup(function () {
   CampaignInsights._ensureIndex({campUniqueId: 1});
 });

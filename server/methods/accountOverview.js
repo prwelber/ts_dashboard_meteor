@@ -3,6 +3,10 @@ import Initiatives from '/collections/Initiatives'
 import { apiVersion } from '/server/token/token';
 const token = require('/server/token/token.js');
 
+Meteor.startup(function () {
+  CampaignBasics._ensureIndex({"data.campaign_id": 1}, {unique: 1});
+});
+
 Meteor.methods({
     'removeCampaigns': function (account) {
         console.log('removing CampaignBasicsList collection for a single account')
