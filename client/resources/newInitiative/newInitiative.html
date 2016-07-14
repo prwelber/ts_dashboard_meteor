@@ -162,41 +162,53 @@
                 </select>
                 <label class="active">Deal Type</label>
               </div>
-              <div class="input-field col s3">
+              <div class="input-field col s4">
                 <input type="text" id="start-date" name="startDate1">
                 <label for="start-date">Start Date</label>
               </div>
-              <div class="input-field col s3">
+              <div class="input-field col s4">
                 <input type="text" id="end-date" name="endDate1">
                 <label for="end-date">End Date</label>
               </div>
-              <div class=" input-field col s3">
+              <div class="input-field col s2">
                   <input type="checkbox" id="cost_plus" name="costplus1">
-                  <label for="cost_plus">Cost Plus?</label>
+                  <label for="cost_plus">Cost Plus</label>
               </div>
-              <div class="input-field col s9">
+              <div class="input-field col s2">
                 <input type="text" id="cost-plus-percent" name="costPlus1">
-                <label for="cost-plus-percent">Cost Plus Percentage</label>
+                <label for="cost-plus-percent">Cost Plus Percent</label>
               </div>
-              <div class=" input-field col s3">
+              <div class="input-field col s2">
                   <input type="checkbox" id="percent-total" name="percentTotal1">
-                  <label for="percent-total">Percent of Total?</label>
+                  <label for="percent-total">Percent of Total</label>
               </div>
-              <div class="input-field col s9">
+              <div class="input-field col s2">
                 <input type="text" id="percent-total-percentage" name="percentTotalPercentage1">
-                <label for="percent-total-percentage">Percent of Total Percentage</label>
+                <label for="percent-total-percentage">Percent of Total Percent</label>
               </div>
-              <div class=" input-field col s3">
+              <div class="input-field col s4">
+                <input type="text" id="effective-number" name="effectiveNumber1" value="{{effectiveNumber1}}">
+                <label for="effective-number" class="active">Effective Target Number</label>
+              </div>
+              {{!-- <div class="input-field col s2">
+                  <input type="checkbox" id="factor" name="factor1" {{factorDisabled}}>
+                  <label for="factor">Factor</label>
+              </div>
+              <div class="input-field col s2">
+                <input {{factorDisabled}} type="text" id="factor-number" name="factorNumber1">
+                <label for="factor-number">Factor Number</label>
+              </div> --}}
+              {{!-- <div class=" input-field col s3">
                   <input type="checkbox" id="is-client" name="isClient1">
-                  <label for="is-client">Is there a client?</label>
+                  <label for="is-client">Is there a client</label>
               </div>
               <div class="input-field col s9">
                 <input type="text" id="client-percentage" name="clientPercentage1">
                 <label for="client-percentage">Client Percentage</label>
-              </div>
+              </div> --}}
               <div class="col s4">
                 <blockquote>
-                  If no box is checked, this will be a Contracted Spend Deal.
+                  Enter Price and Percent Total to View Effective Target Number
                 </blockquote>
               </div>
 
@@ -275,38 +287,50 @@
                 <label class="active">Deal Type</label>
               </div>
 
-              <div class="input-field col s3">
+              <div class="input-field col s4">
                 <input type="text" id="start-date2" name="startDate2">
                 <label for="start-date2">Start Date</label>
               </div>
-              <div class="input-field col s3">
+              <div class="input-field col s4">
                 <input type="text" id="end-date2" name="endDate2">
                 <label for="end-date2">End Date</label>
               </div>
-              <div class=" input-field col s3">
+              <div class=" input-field col s2">
                   <input type="checkbox" id="cost_plus2" name="costplus2">
-                  <label for="cost_plus2">Cost Plus?</label>
+                  <label for="cost_plus2">Cost Plus</label>
               </div>
-              <div class="input-field col s9">
+              <div class="input-field col s2">
                 <input type="text" id="cost-plus-percent2" name="costPlus2">
-                <label for="cost-plus-percent2">Cost Plus Percentage</label>
+                <label for="cost-plus-percent2">Cost Plus Percent</label>
               </div>
-              <div class=" input-field col s3">
+              <div class=" input-field col s2">
                   <input type="checkbox" id="percent-total2" name="percentTotal2">
-                  <label for="percent-total2">Percent of Total?</label>
+                  <label for="percent-total2">Percent of Total</label>
               </div>
-              <div class="input-field col s9">
+              <div class="input-field col s2">
                 <input type="text" id="percent-total-percentage2" name="percentTotalPercentage2">
-                <label for="percent-total-percentage2">Percent of Total Percentage</label>
+                <label for="percent-total-percentage2">Percent of Total Percent</label>
               </div>
-              <div class=" input-field col s3">
+              <div class="input-field col s4">
+                <input type="text" id="effective-number2" name="effectiveNumber2" value="{{effectiveNumber2}}">
+                <label for="effective-number2" class="active">Effective Target Number</label>
+              </div>
+              {{!-- <div class="input-field col s2">
+                  <input type="checkbox" id="factor2" name="factor2" {{factorDisabled2}}>
+                  <label for="factor2">Factor</label>
+              </div>
+              <div class="input-field col s2">
+                <input {{factorDisabled2}} type="text" id="factor-number2" name="factorNumber2">
+                <label for="factor-number2">Factor Number</label>
+              </div> --}}
+              {{!-- <div class=" input-field col s3">
                   <input type="checkbox" id="is-client2" name="isClient2">
                   <label for="is-client2">Is there a client?</label>
               </div>
               <div class="input-field col s9">
                 <input type="text" id="client-percentage2" name="clientPercentage2">
                 <label for="client-percentage2">Client Percentage</label>
-              </div>
+              </div> --}}
               <div class="col s4">
                 <blockquote>
                   If no box is checked, this will be a Contracted Spend Deal.
@@ -388,38 +412,50 @@
                 </select>
                 <label class="active">Deal Type</label>
               </div>
-              <div class="input-field col s3">
+              <div class="input-field col s4">
                 <input type="text" id="start-date3" name="startDate3">
                 <label for="start-date3">Start Date</label>
               </div>
-              <div class="input-field col s3">
+              <div class="input-field col s4">
                 <input type="text" id="end-date3" name="endDate3">
                 <label for="end-date3">End Date</label>
               </div>
-              <div class=" input-field col s3">
+              <div class=" input-field col s2">
                   <input type="checkbox" id="cost_plus3" name="costplus3">
-                  <label for="cost_plus3">Cost Plus?</label>
+                  <label for="cost_plus3">Cost Plus</label>
               </div>
-              <div class="input-field col s9">
+              <div class="input-field col s2">
                 <input type="text" id="cost-plus-percent3" name="costPlus3">
-                <label for="cost-plus-percent3">Cost Plus Percentage</label>
+                <label for="cost-plus-percent3">Cost Plus Percent</label>
               </div>
-              <div class=" input-field col s3">
+              <div class=" input-field col s2">
                   <input type="checkbox" id="percent-total3" name="percentTotal3">
-                  <label for="percent-total3">Percent of Total?</label>
+                  <label for="percent-total3">Percent of Total</label>
               </div>
-              <div class="input-field col s9">
+              <div class="input-field col s2">
                 <input type="text" id="percent-total-percentage3" name="percentTotalPercentage3">
-                <label for="percent-total-percentage3">Percent of Total Percentage</label>
+                <label for="percent-total-percentage3">Percent of Total Percent</label>
               </div>
-              <div class=" input-field col s3">
+              <div class="input-field col s4">
+                <input type="text" id="effective-number3" name="effectiveNumber3" value="{{effectiveNumber3}}">
+                <label for="effective-number3" class="active">Effective Target Number</label>
+              </div>
+              {{!-- <div class="input-field col s2">
+                  <input type="checkbox" id="factor3" name="factor3" {{factorDisabled3}}>
+                  <label for="factor3">Factor</label>
+              </div>
+              <div class="input-field col s2">
+                <input {{factorDisabled3}} type="text" id="factor-number3" name="factorNumber3">
+                <label for="factor-number3">Factor Number</label>
+              </div> --}}
+              {{!-- <div class=" input-field col s3">
                   <input type="checkbox" id="is-client3" name="isClient3">
                   <label for="is-client3">Is there a client?</label>
               </div>
               <div class="input-field col s9">
                 <input type="text" id="client-percentage3" name="clientPercentage3">
                 <label for="client-percentage3">Client Percentage</label>
-              </div>
+              </div> --}}
               <div class="col s4">
                 <blockquote>
                   If no box is checked, this will be a Contracted Spend Deal.
@@ -501,38 +537,50 @@
                 </select>
                 <label class="active">Deal Type</label>
               </div>
-              <div class="input-field col s3">
+              <div class="input-field col s4">
                 <input type="text" id="start-date4" name="startDate4">
                 <label for="start-date4">Start Date</label>
               </div>
-              <div class="input-field col s3">
+              <div class="input-field col s4">
                 <input type="text" id="end-date4" name="endDate4">
                 <label for="end-date4">End Date</label>
               </div>
-              <div class=" input-field col s3">
+              <div class=" input-field col s2">
                   <input type="checkbox" id="cost_plus4" name="costplus4">
-                  <label for="cost_plus4">Cost Plus?</label>
+                  <label for="cost_plus4">Cost Plus</label>
               </div>
-              <div class="input-field col s9">
+              <div class="input-field col s2">
                 <input type="text" id="cost-plus-percent4" name="costPlus4">
-                <label for="cost-plus-percent4">Cost Plus Percentage</label>
+                <label for="cost-plus-percent4">Cost Plus Percent</label>
               </div>
-              <div class=" input-field col s3">
+              <div class=" input-field col s2">
                   <input type="checkbox" id="percent-total4" name="percentTotal4">
-                  <label for="percent-total4">Percent of Total?</label>
+                  <label for="percent-total4">Percent of Total</label>
               </div>
-              <div class="input-field col s9">
+              <div class="input-field col s2">
                 <input type="text" id="percent-total-percentage4" name="percentTotalPercentage4">
-                <label for="percent-total-percentage4">Percent of Total Percentage</label>
+                <label for="percent-total-percentage4">Percent of Total Percent</label>
               </div>
-              <div class=" input-field col s3">
+              <div class="input-field col s4">
+                <input type="text" id="effective-number4" name="effectiveNumber4" value="{{effectiveNumber4}}">
+                <label for="effective-number4" class="active">Effective Target Number</label>
+              </div>
+              {{!-- <div class="input-field col s2">
+                  <input type="checkbox" id="factor4" name="factor4" {{factorDisabled4}}>
+                  <label for="factor4">Factor</label>
+              </div>
+              <div class="input-field col s2">
+                <input {{factorDisabled4}} type="text" id="factor-number4" name="factorNumber4">
+                <label for="factor-number4">Factor Number</label>
+              </div> --}}
+              {{!-- <div class=" input-field col s3">
                   <input type="checkbox" id="is-client4" name="isClient4">
                   <label for="is-client4">Is there a client?</label>
               </div>
               <div class="input-field col s9">
                 <input type="text" id="client-percentage4" name="clientPercentage4">
                 <label for="client-percentage4">Client Percentage</label>
-              </div>
+              </div> --}}
               <div class="col s4">
                 <blockquote>
                   If no box is checked, this will be a Contracted Spend Deal.
@@ -614,38 +662,50 @@
                 </select>
                 <label class="active">Deal Type</label>
               </div>
-              <div class="input-field col s3">
+              <div class="input-field col s4">
                 <input type="text" id="start-date5" name="startDate5">
                 <label for="start-date5">Start Date</label>
               </div>
-              <div class="input-field col s3">
+              <div class="input-field col s4">
                 <input type="text" id="end-date5" name="endDate5">
                 <label for="end-date5">End Date</label>
               </div>
-              <div class=" input-field col s3">
+              <div class=" input-field col s2">
                   <input type="checkbox" id="cost_plus5" name="costplus5">
-                  <label for="cost_plus5">Cost Plus?</label>
+                  <label for="cost_plus5">Cost Plus</label>
               </div>
-              <div class="input-field col s9">
+              <div class="input-field col s2">
                 <input type="text" id="cost-plus-percent5" name="costPlus5">
-                <label for="cost-plus-percent5">Cost Plus Percentage</label>
+                <label for="cost-plus-percent5">Cost Plus Percent</label>
               </div>
-              <div class=" input-field col s3">
+              <div class=" input-field col s2">
                   <input type="checkbox" id="percent-total5" name="percentTotal5">
-                  <label for="percent-total5">Percent of Total?</label>
+                  <label for="percent-total5">Percent of Total</label>
               </div>
-              <div class="input-field col s9">
+              <div class="input-field col s2">
                 <input type="text" id="percent-total-percentage5" name="percentTotalPercentage5">
-                <label for="percent-total-percentage5">Percent of Total Percentage</label>
+                <label for="percent-total-percentage5">Percent of Total Percent</label>
               </div>
-              <div class=" input-field col s3">
+              <div class="input-field col s4">
+                <input type="text" id="effective-number5" name="effectiveNumber5" value="{{effectiveNumber5}}">
+                <label for="effective-number5" class="active">Effective Target Number</label>
+              </div>
+              {{!-- <div class="input-field col s2">
+                  <input type="checkbox" id="factor5" name="factor5" {{factorDisabled5}}>
+                  <label for="factor5">Factor</label>
+              </div>
+              <div class="input-field col s2">
+                <input {{factorDisabled5}} type="text" id="factor-number5" name="factorNumber5">
+                <label for="factor-number5">Factor Number</label>
+              </div> --}}
+              {{!-- <div class=" input-field col s3">
                   <input type="checkbox" id="is-client5" name="isClient5">
                   <label for="is-client5">Is there a client?</label>
               </div>
               <div class="input-field col s9">
                 <input type="text" id="client-percentage5" name="clientPercentage5">
                 <label for="client-percentage5">Client Percentage</label>
-              </div>
+              </div> --}}
               <div class="col s4">
                 <blockquote>
                   If no box is checked, this will be a Contracted Spend Deal.
@@ -668,7 +728,7 @@
           </div>
         </li>
 
-        <li>
+        {{!-- <li>
           <div class="collapsible-header">
             Line Item #6
           </div>
@@ -1005,7 +1065,7 @@
               </div>
             </div>
           </div>
-        </li>
+        </li> --}}
 
       </ul>
       <div class="row">

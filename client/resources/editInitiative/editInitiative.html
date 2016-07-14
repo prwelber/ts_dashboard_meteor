@@ -156,49 +156,61 @@
                     </select>
                     <label class="active">Deal Type</label>
                   </div>
-                  <div class="input-field col s3">
+                  <div class="input-field col s4">
                     <input type="text" id="start-date{{addOne @index}}" name="startDate{{addOne @index}}" value={{dateFormatter startDate}}>
                     <label for="start-date{{addOne @index}}" class="active">Start Date</label>
                   </div>
-                  <div class="input-field col s3">
+                  <div class="input-field col s4">
                     <input type="text" id="end-date{{addOne @index}}" name="endDate{{addOne @index}}" value={{dateFormatter endDate}}>
                     <label for="end-date{{addOne @index}}" class="active">End Date</label>
                   </div>
-                  <div class=" input-field col s3">
+                  <div class=" input-field col s2">
                       <input type="checkbox" id="cost_plus{{addOne @index}}" name="costplus{{addOne @index}}" checked="{{costPlusChecked @index}}">
-                      <label for="cost_plus{{addOne @index}}">Cost Plus?</label>
+                      <label for="cost_plus{{addOne @index}}">Cost Plus</label>
                   </div>
-                  <div class="input-field col s9">
+                  <div class="input-field col s2">
                     <input type="text" id="cost-plus-percent" name="costPlus{{addOne @index}}" value="{{costPlusPercent}}">
                     <label for="cost-plus-percent{{addOne @index}}" class="active">Cost Plus Percentage</label>
                   </div>
-                  <div class=" input-field col s3">
+                  <div class=" input-field col s2">
                       <input type="checkbox" id="percent-total{{addOne @index}}" name="percentTotal{{addOne @index}}" checked="{{percentTotalChecked @index}}">
-                      <label for="percent-total{{addOne @index}}">Percent of Total?</label>
+                      <label for="percent-total{{addOne @index}}">Percent of Total</label>
                   </div>
-                  <div class="input-field col s9">
+                  <div class="input-field col s2">
                     <input type="text" id="percent-total-percentage{{addOne @index}}" name="percentTotalPercentage{{addOne @index}}" value="{{percentTotalPercent}}">
                     <label for="percent-total-percentage{{addOne @index}}" class="active">Percent of Total Percentage</label>
                   </div>
-                  <div class=" input-field col s3">
+                  <div class="input-field col s4">
+                    <input type="text" id="effective-number" name="effectiveNumber{{addOne @index}}" value="{{effectiveNumber @index}}">
+                    <label for="effective-number" class="active">Effective Target Number</label>
+                  </div>
+                  {{!-- <div class="input-field col s2">
+                      <input type="checkbox" id="factor{{addOne @index}}" name="factor{{addOne @index}}" checked="{{factorChecked @index}}">
+                      <label for="factor{{addOne @index}}">Factor</label>
+                  </div>
+                  <div class="input-field col s2">
+                    <input type="text" id="factor-number{{addOne @index}}" name="factorNumber{{addOne @index}}" value="{{factorNumber}}">
+                    <label for="factor-number{{addOne @index}}" class="active">Factor Number</label>
+                  </div> --}}
+                  {{!-- <div class=" input-field col s3">
                       <input type="checkbox" id="is-client{{addOne @index}}" name="isClient{{addOne @index}}" checked="{{isClientChecked @index}}">
                       <label for="is-client{{addOne @index}}">Is there a client?</label>
                   </div>
                   <div class="input-field col s9">
                     <input type="text" id="client-percentage{{addOne @index}}" name="clientPercentage{{addOne @index}}" value="{{isClientPercent}}">
                     <label for="client-percentage{{addOne @index}}" class="active">Client Percentage</label>
-                  </div>
-                  <div class="col s4">
+                  </div> --}}
+                  {{!-- <div class="col s4">
                     <blockquote>
                       If no box is checked, this will be a Contracted Spend Deal.
                     </blockquote>
-                  </div>
+                  </div> --}}
 
-                  <div class="input-field col s2">
+                  <div class="input-field col s4">
                     <input type="text" id="price-input{{addOne @index}}" name="price{{addOne @index}}" value="{{price}}">
                     <label for="price-input{{addOne @index}}" class="active">Per Unit Price</label>
                   </div>
-                  <div class="input-field col s2">
+                  <div class="input-field col s4">
                     <input type="text" id="quantity-input{{addOne @index}}" name="quantity{{addOne @index}}" value="{{quantity}}">
                     <label for="quantity-input{{addOne @index}}" class="active">Quantity</label>
                   </div>

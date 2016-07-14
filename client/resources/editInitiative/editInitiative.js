@@ -7,6 +7,9 @@ import Initiatives from '/collections/Initiatives';
 import CampaignBasics from '/collections/CampaignBasics';
 
 
+Template.editInitiative.onCreated(function () {
+  this.templateDict = new ReactiveDict();
+});
 
 Template.editInitiative.onRendered(function () {
   $('.collapsible').collapsible({
@@ -14,6 +17,7 @@ Template.editInitiative.onRendered(function () {
   });
   $('.tooltipped').tooltip({delay: 50});
   Session.set('counter', 8);
+  // Session.set('effective1', parseFloat(Template.instance().$("input[name=percentTotalPercentage1]").val().toFixed(2) / 100) * Template.instance().$("#price-input1").val());
 });
 
 Template.editInitiative.helpers({
@@ -23,9 +27,10 @@ Template.editInitiative.helpers({
     };
   },
   'getInitiative': function () {
-    let init =  Initiatives.findOne({_id: FlowRouter.getParam('_id')});
-    init.startDate = mastFunc.time(init.startDate);
-    init.endDate = mastFunc.time(init.endDate);
+    let init = Initiatives.findOne({_id: FlowRouter.getParam('_id')});
+    // init.lineItems[0].startDate = mastFunc.time(init.lineItems[0].startDate);
+    // init.lineItems[0].endDate = mastFunc.time(init.lineItems[0].endDate);
+    Template.instance().templateDict.set('init', init);
     return init;
   },
   'getBrands': function () {
@@ -48,6 +53,12 @@ Template.editInitiative.helpers({
   'percentTotalChecked': (num) => {
     const init =  Initiatives.findOne({_id: FlowRouter.getParam('_id')});
     if (init.lineItems[num].percent_total === true) {
+      return "checked";
+    }
+  },
+  factorChecked: (num) => {
+    const init =  Initiatives.findOne({_id: FlowRouter.getParam('_id')});
+    if (init.lineItems[num].factor === true) {
       return "checked";
     }
   },
@@ -79,6 +90,10 @@ Template.editInitiative.helpers({
     if (init.dupObjectives) {
       return "checked";
     }
+  },
+  effectiveNumber: (num) => {
+    const init = Template.instance().templateDict.get('init');
+    return init.lineItems[num].effectiveNum;
   }
 });
 
@@ -102,7 +117,7 @@ Template.editInitiative.events({
         finalObj['owner']     = event.target.owner.value;
         finalObj['tags']      = [];
 
-        for (let i = 1; i <= 8; i++) {
+        for (let i = 1; i <= 5; i++) {
           let testObj = {};
           testObj['name'] = "Line Item " + i;
           testObj['platform']  = event.target['platform' + i].value;
@@ -117,8 +132,11 @@ Template.editInitiative.events({
           testObj['cost_plus'] = event.target['costplus' + i].checked;
           testObj['percent_total'] = event.target['percentTotal' + i].checked;
           testObj['percentTotalPercent'] = event.target['percentTotalPercentage' + i].value;
-          testObj['is_client'] = event.target['isClient' + i].checked;
-          testObj['isClientPercent'] = event.target['clientPercentage' + i].value;
+          testObj['effectiveNum'] = event.target['effectiveNumber' + i].value;
+          // testObj['factor'] = event.target['factor' + i].checked;
+          // testObj['factorNumber'] = event.target['factorNumber' + i].value;
+          // testObj['is_client'] = event.target['isClient' + i].checked;
+          // testObj['isClientPercent'] = event.target['clientPercentage' + i].value;
           lineItemArray.push(testObj);
         }
         lineItemArray.forEach(el => {
@@ -160,5 +178,35 @@ Template.editInitiative.events({
           }
         });
       }
+    },
+    'keyup #price-input': (event, instance) => {
+      Session.set('price1', event.target.value);
+    },
+    'keyup #percent-total-percentage': (event, instance) => {
+      Session.set('percent1', event.target.value / 100);
+    },
+    'keyup #price-input2': (event, instance) => {
+      Session.set('price2', event.target.value);
+    },
+    'keyup #percent-total-percentage2': (event, instance) => {
+      Session.set('percent2', event.target.value / 100);
+    },
+    'keyup #price-input3': (event, instance) => {
+      Session.set('price3', event.target.value);
+    },
+    'keyup #percent-total-percentage3': (event, instance) => {
+      Session.set('percent3', event.target.value / 100);
+    },
+    'keyup #price-input4': (event, instance) => {
+      Session.set('price4', event.target.value);
+    },
+    'keyup #percent-total-percentage4': (event, instance) => {
+      Session.set('percent4', event.target.value / 100);
+    },
+    'keyup #price-input5': (event, instance) => {
+      Session.set('price5', event.target.value);
+    },
+    'keyup #percent-total-percentage5': (event, instance) => {
+      Session.set('percent5', event.target.value / 100);
     }
 });

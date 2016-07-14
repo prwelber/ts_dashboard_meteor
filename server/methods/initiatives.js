@@ -14,15 +14,15 @@ Meteor.methods({
     let lastThreeMonths = false;
     const now = moment();
     // if now is after startDate AND now isBefore endDate active = true
-    if (now.isAfter(moment(data.lineItems[0].startDate, moment.ISO_8601)) && now.isBefore(moment(data.lineItems[0].endDate, moment.ISO_8601))) {
-      active = true;
-    }
-    if (now.diff(moment(data.lineItems[0].endDate, moment.ISO_8601), "days") <= 31) {
-      recentlyEnded = true;
-    }
-    if (now.diff(moment(data.lineItems[0].endDate, moment.ISO_8601), "days") <= 90) {
-      lastThreeMonths = true;
-    }
+    // if (now.isAfter(moment(data.lineItems[0].startDate, moment.ISO_8601)) && now.isBefore(moment(data.lineItems[0].endDate, moment.ISO_8601))) {
+    //   active = true;
+    // }
+    // if (now.diff(moment(data.lineItems[0].endDate, moment.ISO_8601), "days") <= 31) {
+    //   recentlyEnded = true;
+    // }
+    // if (now.diff(moment(data.lineItems[0].endDate, moment.ISO_8601), "days") <= 90) {
+    //   lastThreeMonths = true;
+    // }
 
     Initiatives.insert({
       inserted_date: moment().toISOString(),
@@ -38,10 +38,10 @@ Meteor.methods({
       tags: data.tags,
       lineItems: data.lineItems,
       campaign_ids: campArray,
-      campaign_names: campNameArray,
-      active: active,
-      recentlyEnded: recentlyEnded,
-      lastThreeMonths: lastThreeMonths
+      campaign_names: campNameArray
+      // active: active,
+      // recentlyEnded: recentlyEnded,
+      // lastThreeMonths: lastThreeMonths
     });
 
     const startDate = moment(data.lineItems[0].startDate, moment.ISO_8601).format("MM-DD-YYYY");
