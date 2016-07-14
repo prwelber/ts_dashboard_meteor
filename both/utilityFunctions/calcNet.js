@@ -1,6 +1,8 @@
 import Initiatives from '/collections/Initiatives';
 
 
+// ---------------------------- FUNCTIONS ---------------------------- //
+
 const stringToCostPlusPercentage = function stringToCostPlusPercentage (num) {
   num = num.toString().split('');
   num.unshift(".");
@@ -15,6 +17,49 @@ const stringToPercentTotal = function stringToPercentTotal (num) {
   // num = 1 / num;
   return num;
 }
+
+const defineAction = function defineAction (init) {
+  let action;
+  init.lineItems[0].dealType === "CPC" ? action = "clicks" : '';
+  init.lineItems[0].dealType === "CPM" ? action = "impressions" : '';
+  init.lineItems[0].dealType === "CPL" ? action = "like" : '';
+  return action;
+}
+
+const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, campaignData, init) {
+  if (dealType === "percent_total") {
+    let action = defineAction(init);
+    let effectiveNum = init.lineItems[0].effectiveNum;
+    let percentage = (parseFloat(init.lineItems[0].percentTotalPercent) / 100);
+    if (action === "impressions") {
+      let cpm = accounting.unformat(campaignData.cpm);
+      if (cpm / percentage <= effectiveNum) {
+        effectiveNum = cpm / percentage;
+        return (campaignData[action] / 1000) * effectiveNum;
+      } else if ((cpm / percentage) > effectiveNum && (cpm / percentage) < quotedPrice || cpm / percentage >= quotedPrice) {
+        return (campaignData[action] / 1000) * quotedPrice;
+      }
+    } else if (action === "clicks") {
+      let cpc = accounting.unformat(campaignData.cpc);
+      if (cpc / percentage <= effectiveNum) {
+        effectiveNum = cpc / percentage;
+        return (campaignData[action]) * effectiveNum;
+      } else if ((cpc / percentage) > effectiveNum && (cpc / percentage) < quotedPrice || (cpc / percentage) >= quotedPrice) {
+        return (campaignData[action]) * quotedPrice;
+      }
+    } else if (action === "like") {
+      let cpl = accounting.unformat(campaignData.cpl);
+      if (cpl / percentage <= effectiveNum) {
+        effectiveNum = cpl / percentage;
+        return (campaignData[action]) * effectiveNum;
+      } else if ((cpl / percentage) > effectiveNum && (cpl / percentage) < quotedPrice || (cpl / percentage) >= quotedPrice) {
+        return (campaignData[action]) * quotedPrice;
+      }
+    }
+  }
+}
+
+// --------------------------- END FUNCTIONS --------------------------- //
 
 export const calcNet = {
   calculateNetNumbers: (name) => {
@@ -72,7 +117,6 @@ export const calcNet = {
         // if percent total deal
         if (item.percent_total) {
           let dataToSet = {};
-          // const dealType = item.dealType;
           let quotedPrice = item.price;
           let action;
           item.dealType === "CPC" ? action = "clicks" : '';

@@ -5,6 +5,68 @@ import range from 'moment-range';
 import moment from 'moment';
 const Promise = require('bluebird');
 
+// --------------------------- FUNCTIONS ---------------------------- //
+
+const defineAction = function defineAction (init) {
+  let action;
+  init.lineItems[0].dealType === "CPC" ? action = "clicks" : '';
+  init.lineItems[0].dealType === "CPM" ? action = "impressions" : '';
+  init.lineItems[0].dealType === "CPL" ? action = "like" : '';
+  return action;
+}
+
+const percentTotalSpend = function percentTotalSpend (campaignData, init, index) {
+  let dealType = init.lineItems[index].percent_total;
+  let quotedPrice = init.lineItems[index].price;
+  if (dealType === true) {
+    let action = defineAction(init);
+    let effectiveNum = init.lineItems[index].effectiveNum;
+    let percentage = (parseFloat(init.lineItems[index].percentTotalPercent) / 100);
+    if (action === "impressions") {
+      let cpm = accounting.unformat(campaignData.cpm);
+      if (cpm / percentage <= effectiveNum) {
+        effectiveNum = cpm / percentage;
+        return (campaignData[action] / 1000) * effectiveNum;
+      } else if ((cpm / percentage) > effectiveNum && (cpm / percentage) < quotedPrice || cpm / percentage >= quotedPrice) {
+        return (campaignData[action] / 1000) * quotedPrice;
+      }
+    } else if (action === "clicks") {
+      let cpc = accounting.unformat(campaignData.cpc);
+      if (cpc / percentage <= effectiveNum) {
+        effectiveNum = cpc / percentage;
+        return (campaignData[action]) * effectiveNum;
+      } else if ((cpc / percentage) > effectiveNum && (cpc / percentage) < quotedPrice || (cpc / percentage) >= quotedPrice) {
+        return (campaignData[action]) * quotedPrice;
+      }
+    } else if (action === "like") {
+      let cpl = accounting.unformat(campaignData.cpl);
+      if (cpl / percentage <= effectiveNum) {
+        effectiveNum = cpl / percentage;
+        return (campaignData[action]) * effectiveNum;
+      } else if ((cpl / percentage) > effectiveNum && (cpl / percentage) < quotedPrice || (cpl / percentage) >= quotedPrice) {
+        return (campaignData[action]) * quotedPrice;
+      }
+    }
+  }
+}
+
+const clientNumbers = function clientNumbers (clientSpend, campData, init, dealType) {
+  let clientNumbs = {};
+  if (dealType === false) {
+    clientNumbs["cpm"] =  clientSpend / (campData.impressions / 1000);
+    clientNumbs["cpc"] = clientSpend / campData.clicks;
+    clientNumbs["cpl"] = clientSpend / campData.like;
+    clientNumbs["cpvv"] = clientSpend / campData.video_view;
+    return clientNumbs;
+  } else {
+    clientNumbs["cpm"] =  clientSpend / (campData.impressions / 1000);
+    clientNumbs["cpc"] = clientSpend / campData.clicks;
+    clientNumbs["cpl"] = clientSpend / campData.like;
+    clientNumbs["cpvv"] = clientSpend / campData.video_view;
+    return clientNumbs;
+  }
+}
+
 const deliveryTypeChecker = function deliveryTypeChecker (init, index) {
   if (init.lineItems[index].dealType === "CPM") {
     return "impressions";
@@ -16,7 +78,7 @@ const deliveryTypeChecker = function deliveryTypeChecker (init, index) {
     return "video_view"
   }
 }
-
+// ------------------------- END FUNCTIONS ------------------------- //
 
 export const initiativeHomepageFunctions = {
   calcNet: (num, init) => {
@@ -74,12 +136,12 @@ export const initiativeHomepageFunctions = {
       const daysDiff = moment(init.lineItems[index]['endDate'], moment.ISO_8601).diff(moment(init.lineItems[index]['startDate'], moment.ISO_8601), 'days');
       let insights;
       const type = deliveryTypeChecker(init, index);
-
+      let camp;
       if (objective) {
         // loop over the campaign names in the initiative
         init.campaign_names.forEach(el => {
           // check each campaignInsight for the objective
-          let camp = CampaignInsights.findOne({'data.campaign_name': el});
+          camp = CampaignInsights.findOne({'data.campaign_name': el});
           if (camp) {
             if (camp.data.objective === objective && camp) {
               // once I have the campaign, pull all the daily insights for that
@@ -89,6 +151,11 @@ export const initiativeHomepageFunctions = {
             }
           }
         });
+
+        // get campaign factorSpend for use later
+        const factorSpend = percentTotalSpend(camp.data, init, index);
+        let dealType = init.lineItems[index].percent_total;
+        const clientNumbs = clientNumbers(factorSpend, camp.data, init, dealType)
 
         // make array of x axis dates, delivery numbers and spending
         const xAxisArray = [];
@@ -126,13 +193,17 @@ export const initiativeHomepageFunctions = {
           init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
           init.lineItems[index].dealType === "CPL" ? action = "like" : '';
 
+          const dealType = init.lineItems[index].dealType;
+          const quotedPrice = init.lineItems[index].price;
+
+          const deal = init.lineItems[index].dealType.toLowerCase();
           spendCount = 0;
           spendArray = [];
           insights.forEach(day => {
             if (action === "impressions") {
-              spendCount = spendCount + ((day['data'][action] / 1000) * quotedPrice);
+              spendCount = spendCount + ((day['data'][action] / 1000) * clientNumbs[deal]);
             } else {
-              spendCount = spendCount + (day['data'][action] * quotedPrice);
+              spendCount = spendCount + (day['data'][action] * clientNumbs[deal]);
             }
             spendArray.push(parseFloat(spendCount.toFixed(2)));
           });

@@ -93,7 +93,7 @@ Template.initiativeHomepage.helpers({
     const init = Template.instance().templateDict.get('initiative');
     // substract 1 because line item number does not perfectly map
     // to array indexes
-    if (! init.lineItems[num - 1].dealType) {
+    if (! init.lineItems[num].dealType) {
       return "disabled";
     }
   },

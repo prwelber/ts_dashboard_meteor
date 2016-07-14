@@ -1,3 +1,4 @@
+// -------------------------- FUNCTIONS -------------------------- //
 const stringToPercentTotal = function stringToPercentTotal (num) {
   num = num.split('')
   num.unshift(".");
@@ -20,6 +21,49 @@ const defineAction = function defineAction (init) {
   init.lineItems[0].dealType === "CPL" ? action = "like" : '';
   return action;
 }
+
+/*
+* this percentTotalSpend function is invoked if the dealType is percent_total
+* it goes gets the action type (impressions, clicks, likes) and checks the real number
+* against the effective number. if the real metric / factor percent is <= to
+* the effective num,  we return the effective num times the metric amount, etc..
+* if cpm / factor amount is greater than effectiveNum && is less than quoted price,
+* we return the quotedPrice times the metric amount-------
+*/
+const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, campaignData, init) {
+  if (dealType === "percent_total") {
+    let action = defineAction(init);
+    let effectiveNum = init.lineItems[0].effectiveNum;
+    let percentage = (parseFloat(init.lineItems[0].percentTotalPercent) / 100);
+    if (action === "impressions") {
+      let cpm = accounting.unformat(campaignData.cpm);
+      if (cpm / percentage <= effectiveNum) {
+        effectiveNum = cpm / percentage;
+        return (campaignData[action] / 1000) * effectiveNum;
+      } else if ((cpm / percentage) > effectiveNum && (cpm / percentage) < quotedPrice || cpm / percentage >= quotedPrice) {
+        return (campaignData[action] / 1000) * quotedPrice;
+      }
+    } else if (action === "clicks") {
+      let cpc = accounting.unformat(campaignData.cpc);
+      if (cpc / percentage <= effectiveNum) {
+        effectiveNum = cpc / percentage;
+        return (campaignData[action]) * effectiveNum;
+      } else if ((cpc / percentage) > effectiveNum && (cpc / percentage) < quotedPrice || (cpc / percentage) >= quotedPrice) {
+        return (campaignData[action]) * quotedPrice;
+      }
+    } else if (action === "like") {
+      let cpl = accounting.unformat(campaignData.cpl);
+      if (cpl / percentage <= effectiveNum) {
+        effectiveNum = cpl / percentage;
+        return (campaignData[action]) * effectiveNum;
+      } else if ((cpl / percentage) > effectiveNum && (cpl / percentage) < quotedPrice || (cpl / percentage) >= quotedPrice) {
+        return (campaignData[action]) * quotedPrice;
+      }
+    }
+  }
+}
+
+// --------------------------- END FUNCTIONS --------------------------- //
 
 export const campaignDashboardFunctionObject = {
   netInsights: (init, camp) => {
@@ -61,12 +105,7 @@ export const campaignDashboardFunctionObject = {
         return number * percent;
       }
     } else if (dealType === "percent_total") {
-      let action = defineAction(init);
-      if (action === "impressions") {
-        return (campData[action] / 1000) * quotedPrice;
-      } else {
-        return campData[action] * quotedPrice;
-      }
+      return percentTotalSpend(dealType, quotedPrice, campData, init);
     }
   },
   clientNumbers: (clientSpend, campData, init, item, quotedPrice, dealType) => {
