@@ -124,15 +124,27 @@ export const calcNet = {
           item.dealType === "CPL" ? action = "likes" : '';
           try {
             numbs['deal'] = "percentTotal";
+
+
+            // grab objective and then get that object from init object
+            // const objective = item.objective.toUpperCase().replace(/ /g, "_");
+            // this makes (for example) "Link Clicks" into "LINK_CLICKS"
+
+            const campaignStats = init[objective];
+            const dealType = "percent_total";
+
+            numbs['client_spend'] = percentTotalSpend(dealType, quotedPrice, campaignStats, init);
+            console.log('client spend from calcNet', numbs.client_spend, init.name);
+
             // - running stringToPercentTotal func may not be necessary - //
             numbs['percentage'] = item.percentTotalPercent;
-            percentTotalPercent = stringToPercentTotal(item.percentTotalPercent)
+            // percentTotalPercent = stringToPercentTotal(item.percentTotalPercent)
             numbs['budget'] = parseFloat(totalBudget.toFixed(2));
-            if (action === "impressions") {
-              numbs['client_spend'] = (init[objective]['impressions'] / 1000) * quotedPrice;
-            } else {
-              numbs['client_spend'] = init[objective][action] * quotedPrice;
-            }
+            // if (action === "impressions") {
+            //   numbs['client_spend'] = (init[objective]['impressions'] / 1000) * quotedPrice;
+            // } else {
+            //   numbs['client_spend'] = init[objective][action] * quotedPrice;
+            // }
             numbs['spendPercent'] = parseFloat((numbs['client_spend'] / numbs['budget']) * 100);
             numbs['client_cpc'] = numbs.client_spend / init[objective]['clicks'];
             numbs['client_cpl'] = numbs.client_spend / init[objective]['likes'];

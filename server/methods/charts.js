@@ -553,12 +553,21 @@ Meteor.methods({
       line.dealType === "CPM" ? action = "impressions" : '';
       line.dealType === "CPL" ? action = "like" : '';
       spend = 0;
+
+      const objective = line.objective.toUpperCase().replace(/ /g, "_");
+      console.log('objective', objective);
+      const clientData = initiative[objective].net;
+      console.log('clientData', clientData)
+
+
       deliverySpend = [];
       combinedArray.forEach((day) => {
         if (action === "impressions") {
-          spend = spend + ((day[action] / 1000) * quotedPrice);
-        } else {
-          spend = spend + (day[action] * quotedPrice);
+          spend = spend + ((day[action] / 1000) * clientData.client_cpm);
+        } else if (action === "clicks") {
+          spend = spend + (day[action] * clientData.client_cpc);
+        } else if (action === "like") {
+          spend = spend + (day[action] * clientData.client_cpl);
         }
         deliverySpend.push(spend);
       });

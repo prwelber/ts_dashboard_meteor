@@ -56,8 +56,15 @@ Template.report.helpers({
     const performance = template.choices.get('performance');
     const init = template.templateDict.get('initiative');
     const lineItem = template.choices.get('lineItem');
+
     try {
-      return reportFunctions.handleData(data, actions, performance, init, lineItem);
+      if (Array.isArray(data)) {
+        template.report.set('data', reportFunctions.handleDaily(data, actions, performance, init, lineItem))
+        return reportFunctions.handleDaily(data, actions, performance, init, lineItem);
+      } else if (typeof data === "object") {
+        return reportFunctions.handleData(data, actions, performance, init, lineItem);
+      }
+
     } catch(e) {
       if (e instanceof TypeError) {
         alert('There was an issue with your request. Make sure you have selected a line item and/or no date or both dates. Click reset and try again.');
@@ -90,6 +97,47 @@ Template.report.helpers({
     const id = FlowRouter.getParam('campaign_id');
     const camp = CampaignInsights.findOne({'data.campaign_id': id});
     return camp.data.campaign_name;
+  },
+  daily: () => {
+    return Session.get('daily');
+  },
+  shorten: (num) => {
+    if (num) {
+      return num.toFixed(3)
+    } else {
+      return '';
+    }
+  },
+  // headers: () => {
+  //   var template = Template.instance();
+  //   var headers = template.choices.get('performance').concat(template.choices.get('actions'));
+  //   headers.unshift('date_start');
+  //   template.headers.set('headers', headers);
+  //   console.log('headers', headers);
+  // },
+  headerTest: (word) => {
+    var template = Template.instance();
+    var headers = template.choices.get('performance').concat(template.choices.get('actions'));
+    word === "CPC" ? headers.unshift("cpc") : '';
+    word === "CPL" ? headers.unshift("cpl") : '';
+    var lower = word.toLowerCase().replace(/ /g, "_");
+    console.log("headers", headers)
+    if (headers.indexOf(lower) >= 0) {
+      console.log('return html', lower);
+      return "<th style='padding-bottom: 8px; font-size: 16px;'>"+word+"</th>";
+    }
+  },
+  dataTest: (word, date) => {
+    var template = Template.instance();
+    var data = template.report.get('data');
+    var found = _.findWhere(data, {date_start: date});
+    var newWord = word.toLowerCase().replace(/ /g, "_");
+    if (found[newWord]) {
+      console.log('return data as html', newWord);
+      return "<td style='padding-top: 8px; padding-bottom: 8px; font-size: 12px;'>"+found[newWord]+"</td>"
+    } else {
+      return "<td style='padding-top: 8px; padding-bottom: 8px; font-size: 12px;'></td>"
+    }
   }
 });
 
@@ -98,6 +146,7 @@ Template.report.events({
     // document.querySelectorAll('input:checked');
     const start = template.$('#report-start-date').val();
     const end = template.$('#report-end-date').val();
+    const daily = template.$('#daily')[0].checked;
     var perform = template.$('.performance input:checked');
     var act = template.$('.actions input:checked');
     const campNum = FlowRouter.getParam('campaign_id');
@@ -116,8 +165,11 @@ Template.report.events({
     template.choices.set('lineItem', lineItem);
 
     var call = Promise.promisify(Meteor.call);
-
-    call('createReport', start, end, performance, actions, campNum, lineItem)
+    console.log('daily', daily);
+    if (daily) {
+      Session.set('daily', true);
+    }
+    call('createReport', start, end, performance, actions, campNum, lineItem, daily)
     .then(function (result) {
       template.report.set('report', result);
     }).catch(function (error) {
@@ -126,11 +178,13 @@ Template.report.events({
   },
   "click #report-reset-button": (event, template) => {
     Session.set('checkboxes', true);
+    Session.set('daily', false);
     template.report.set('report', null);
   }
 });
 
 Template.report.onDestroyed( function () {
   Session.set('checkboxes', null);
+  Session.set('daily', false);
   this.report.set('report', null);
 });
