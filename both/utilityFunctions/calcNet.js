@@ -32,7 +32,6 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
     let effectiveNum = init.lineItems[0].effectiveNum;
     let percentage = (parseFloat(init.lineItems[0].percentTotalPercent) / 100);
     if (action === "impressions") {
-      console.log('if action is impressions', init.name, cpm, percentage, effectiveNum, quotedPrice)
       let cpm = accounting.unformat(campaignData.cpm);
       if (cpm / percentage <= effectiveNum) {
         effectiveNum = cpm / percentage;
@@ -135,7 +134,6 @@ export const calcNet = {
             const dealType = "percent_total";
 
             numbs['client_spend'] = percentTotalSpend(dealType, quotedPrice, campaignStats, init);
-            console.log('client spend from calcNet', numbs.client_spend, init.name);
 
             // - running stringToPercentTotal func may not be necessary - //
             numbs['percentage'] = item.percentTotalPercent;

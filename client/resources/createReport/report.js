@@ -123,7 +123,6 @@ Template.report.helpers({
     var lower = word.toLowerCase().replace(/ /g, "_");
     console.log("headers", headers)
     if (headers.indexOf(lower) >= 0) {
-      console.log('return html', lower);
       return "<th style='padding-bottom: 8px; font-size: 16px;'>"+word+"</th>";
     }
   },
