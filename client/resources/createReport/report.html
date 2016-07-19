@@ -65,45 +65,45 @@
           </div>
         </div>
         <div class="col s12">
-          <h4 class="center-align" style="margin: 1em 0 1em 0;">Engagement: Actions & Cost per Action Type</h4>
+          <h4 class="center-align" style="margin: 1em 0 1em 0;">Actions</h4>
         </div>
         <div class="actions">
           <div class="col s6 m4 l3">
             <p><input type="checkbox" id="clicks" checked="checked" disabled="disabled"/><label for="clicks">Clicks</label></p>
           </div>
-          <div class="col s6 m4 l3">
+          {{!-- <div class="col s6 m4 l3">
             <p><input type="checkbox" id="page_like" /><label for="page_like">Page Likes</label></p>
-          </div>
+          </div> --}}
           <div class="col s6 m4 l3">
             <p><input type="checkbox" id="post_like" /><label for="post_like">Post Likes</label></p>
           </div>
-          <div class="col s6 m4 l3">
+          {{!-- <div class="col s6 m4 l3">
             <p><input type="checkbox" id="like" /><label for="like">Likes</label></p>
-          </div>
+          </div> --}}
           <div class="col s6 m4 l3">
             <p><input type="checkbox" id="page_engagement" /><label for="page_engagement">Page Engagement</label></p>
           </div>
           <div class="col s6 m4 l3">
             <p><input type="checkbox" id="post_engagement" /><label for="post_engagement">Post Engagement</label></p>
           </div>
-          <div class="col s6 m4 l3">
+          {{!-- <div class="col s6 m4 l3">
             <p><input type="checkbox" id="post_comment" /><label for="post_comment">Post Comments</label></p>
-          </div>
+          </div> --}}
           <div class="col s6 m4 l3">
             <p><input type="checkbox" id="comment" /><label for="comment">Comments</label></p>
           </div>
-          <div class="col s6 m4 l3">
+          {{!-- <div class="col s6 m4 l3">
             <p><input type="checkbox" id="post_share" /><label for="post_share">Post Shares</label></p>
-          </div>
+          </div> --}}
           <div class="col s6 m4 l3">
             <p><input type="checkbox" id="photo_view" /><label for="photo_view">Photo Views</label></p>
           </div>
           <div class="col s6 m4 l3">
             <p><input type="checkbox" id="link_click" /><label for="link_click">Link Clicks</label></p>
           </div>
-          <div class="col s6 m4 l3">
+          {{!-- <div class="col s6 m4 l3">
             <p><input type="checkbox" id="post_shares" /><label for="post_shares">Post Shares</label></p>
-          </div>
+          </div> --}}
           <div class="col s6 m4 l3">
             <p><input type="checkbox" id="website_clicks" /><label for="website_clicks">Website Clicks</label></p>
           </div>
@@ -175,21 +175,31 @@
       {{#if showReport}}
         {{#if daily}}
           <h2>Daily Results</h2>
-          <table class="bordered highlight">
+          <table class="bordered highlight centered">
             <thead>
               <tr>
                 <th style="padding-bottom: 8px; font-size: 16px;">Date</th>
                 <th style="padding-bottom: 8px; font-size: 16px;">Spend</th>
-                <th style="padding-bottom: 8px; font-size: 16px;" title="Impressions">Imps</th>
-                <th style="padding-bottom: 8px; font-size: 16px;">CPM</th>
+                <th style="padding-bottom: 8px; font-size: 16px;">Impressions</th>
                 {{{headerTest "Clicks"}}}
-                {{{headerTest "CPC"}}}
-                {{{headerTest "Like"}}}
-                {{!-- {{{headerTest "CPL"}}} --}}
-                {{{headerTest "Reach"}}}
-                {{{headerTest "Video View"}}}
                 {{{headerTest "Page Engagement"}}}
+                {{{headerTest "Post Engagement"}}}
                 {{{headerTest "Total Actions"}}}
+                {{{headerTest "Link Click"}}}
+                {{{headerTest "Website Clicks"}}}
+                {{!-- {{{headerTest "Like"}}} --}}
+                {{{headerTest "Reach"}}}
+                {{{headerTest "Frequency"}}}
+                {{{headerTest "CTR"}}}
+                {{{headerTest "Post Like"}}}
+                {{{headerTest "Comment"}}}
+                {{{headerTest "Photo View"}}}
+                {{!-- {{{headerTest "Page Like"}}} --}}
+                {{{headerTest "Video View"}}}
+                {{{headerTest "Video 10 Sec Watched Actions"}}}
+                {{{headerTest "Video 30 Sec Watched Actions"}}}
+                {{{headerTest "Video Avg Pct Watched Actions"}}}
+                {{{headerTest "Video Play"}}}
                 {{!-- {{{headerTest "cost_per_video_view"}}} --}}
                 {{!-- <th style="padding-bottom: 8px; font-size: 16px;">CPVV</th>
                 <th style="padding-bottom: 8px; font-size: 16px;" title="Frequency">Freq</th>
@@ -204,15 +214,25 @@
                   <td style="padding-top: 8px; padding-bottom: 8px; font-size: 12px;">{{day.date_start}}</td>
                   <td style="padding-top: 8px; padding-bottom: 8px; font-size: 12px;">{{day.spend}}</td>
                   <td style="padding-top: 8px; padding-bottom: 8px; font-size: 12px;">{{day.impressions}}</td>
-                  <td style="padding-top: 8px; padding-bottom: 8px; font-size: 12px;">{{day.cpm}}</td>
                   {{{dataTest "Clicks" day.date_start}}}
-                  {{{dataTest "cpc" day.date_start}}}
-                  {{{dataTest "Like" day.date_start}}}
-                  {{!-- {{{dataTest "Cost Per Like" day.date_start}}} --}}
-                  {{{dataTest "Reach" day.date_start}}}
-                  {{{dataTest "Video View" day.date_start}}}
                   {{{dataTest "Page Engagement" day.date_start}}}
+                  {{{dataTest "Post Engagement" day.date_start}}}
                   {{{dataTest "Total Actions" day.date_start}}}
+                  {{{dataTest "Link Click" day.date_start}}}
+                  {{{dataTest "Website Clicks" day.date_start}}}
+                  {{!-- {{{dataTest "Like" day.date_start}}} --}}
+                  {{{dataTest "Reach" day.date_start}}}
+                  {{{dataTest "Frequency" day.date_start}}}
+                  {{{dataTest "ctr" day.date_start}}}
+                  {{{dataTest "Post Like" day.date_start}}}
+                  {{{dataTest "Comment" day.date_start}}}
+                  {{{dataTest "Photo View" day.date_start}}}
+                  {{!-- {{{dataTest "Page Like" day.date_start}}} --}}
+                  {{{dataTest "Video View" day.date_start}}}
+                  {{{dataTest "Video 10 Sec Watched Actions" day.date_start}}}
+                  {{{dataTest "Video 30 Sec Watched Actions" day.date_start}}}
+                  {{{dataTest "Video Avg Pct Watched Actions" day.date_start}}}
+                  {{{dataTest "Video Play" day.date_start}}}
                   {{!-- {{{dataTest "Cost Per Video View" day.date_start}}} --}}
                   {{!-- <td style="padding-top: 8px; padding-bottom: 8px; font-size: 12px;">{{day.cost_per_video_view}}</td> --}}
                   {{!-- <td style="padding-top: 8px; padding-bottom: 8px; font-size: 12px;">{{shorten day.frequency}}</td>

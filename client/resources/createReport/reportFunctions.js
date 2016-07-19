@@ -153,10 +153,10 @@ const makeSpend = function makeSpend (data, init, itemNumber, lineItemName) {
   return spend;
 }
 
-const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, campaignData, init) {
+const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, campaignData, init, itemNum) {
   if (dealType === "percent_total") {
-    let action = defineAction(init);
-    let effectiveNum = init.lineItems[0].effectiveNum;
+    let action = defineAction(init, itemNum);
+    let effectiveNum = parseFloat(init.lineItems[0].effectiveNum);
     let percentage = (parseFloat(init.lineItems[0].percentTotalPercent) / 100);
     if (action === "impressions") {
       let cpm = accounting.unformat(campaignData.cpm);
@@ -199,10 +199,18 @@ export const reportFunctions = {
   handleData: (data, actions, performance, init, lineItemName) => {
     const numbers = flattenData([data]); // numbers will be an object
     // get line item number
-    const itemNumber = lineItemName.substring(lineItemName.length - 1, lineItemName.length);
+    let itemNumber = parseInt(lineItemName.substring(lineItemName.length - 1, lineItemName.length) - 1);
 
     // determine dealType and adjust spend
-    const clientSpend = makeSpend(data, init, itemNumber, lineItemName);
+    let clientSpend = 0;
+    if (init.lineItems[itemNumber].cost_plus) {
+      clientSpend = makeSpend(data, init, itemNumber, lineItemName);
+    } else if (init.lineItems[itemNumber].percent_total) {
+      const deal = "percent_total";
+      const quotedPrice = init.lineItems[itemNumber].price;
+      clientSpend = percentTotalSpend (deal, quotedPrice, numbers, init, itemNumber);
+    }
+
 
     // go through actions and performance and pull out from api response
     // what user wants
@@ -229,23 +237,23 @@ export const reportFunctions = {
     // format numbers and create client numbers
     for (let i in clientData) {
       if (i === "clicks") {
-        clientData.cpc = money(clientSpend / clientData.clicks);
+        // clientData.cpc = money(clientSpend / clientData.clicks);
         clientData['clicks'] = num(clientData.clicks);
       } else if (i === "video_avg_pct_watched_actions") {
         clientData[i] = clientData[i] + "%";
       } else if (i === "reach" || i === "total_actions") {
         clientData[i] = num(clientData[i])
       } else if (i === "impressions") {
-        clientData.cpm = money(clientSpend / (parseFloat(clientData.impressions) / 1000));
+        // clientData.cpm = money(clientSpend / (parseFloat(clientData.impressions) / 1000));
         clientData['impressions'] = num(clientData.impressions);
       } else if (i === "reach" || i === "frequency" || i === "clientSpend" || i === "cpm" || i === "cpc" || i === "ctr") {
         continue;
       } else if (i === "total_actions") {
-        clientData["cost_per_"+i] = money(clientSpend / clientData[i]);
+        // clientData["cost_per_"+i] = money(clientSpend / clientData[i]);
         clientData[i] = num(clientData[i])
       } else {
         if (actions.indexOf(i) >= 0) {
-          clientData["cost_per_"+i] = money(clientSpend / clientData[i]);
+          // clientData["cost_per_"+i] = money(clientSpend / clientData[i]);
           clientData[i] = num(clientData[i]);
         }
       }
@@ -315,7 +323,7 @@ export const reportFunctions = {
 
 
         if (i === "clicks") {
-          clientData.cpc = money(daySpend / day.clicks);
+          // clientData.cpc = money(daySpend / day.clicks);
           clientData['clicks'] = num(day.clicks);
         } else if (i === "date_start") {
           clientData['date_start'] = day.date_start;
@@ -324,16 +332,20 @@ export const reportFunctions = {
         } else if (i === "reach" || i === "total_actions") {
           clientData[i] = num(day[i])
         } else if (i === "impressions") {
-          clientData.cpm = money(daySpend / (parseFloat(day.impressions) / 1000));
+          // clientData.cpm = money(daySpend / (parseFloat(day.impressions) / 1000));
           clientData['impressions'] = num(day.impressions);
         } else if (i === "reach" || i === "frequency" || i === "clientSpend" || i === "cpm" || i === "cpc" || i === "ctr") {
-          continue;
+          if (i === "ctr" || i === "frequency") {
+            clientData[i] = day[i].toFixed(4);
+          } else {
+            continue;
+          }
         } else if (i === "total_actions") {
-          clientData["cost_per_"+i] = money(daySpend / day[i]);
+          // clientData["cost_per_"+i] = money(daySpend / day[i]);
           clientData[i] = num(day[i])
         } else {
           if (actions.indexOf(i) >= 0) {
-            clientData["cost_per_"+i] = money(daySpend / day[i]);
+            // clientData["cost_per_"+i] = money(daySpend / day[i]);
             clientData[i] = num(day[i]);
           }
         }
@@ -341,21 +353,6 @@ export const reportFunctions = {
       numbersArray.push(clientData);
     });
     console.log('numbersArray', numbersArray);
-
-    // const returnArray = [];
-    // numbersArray.forEach(day => {
-    //   for (let i in day) {
-    //     let empty = {
-    //       name: i,
-    //       amount: day[i]
-    //     }
-    //     returnArray.push(empty)
-    //   }
-    // })
-    // return returnArray;
     return numbersArray;
   } // end of daily function
-
-
-
 } // end of exported object

@@ -75,7 +75,7 @@ const deliveryTypeChecker = function deliveryTypeChecker (init, index) {
   } else if (init.lineItems[index].dealType === "CPL") {
     return "like";
   } else if (init.lineItems[index].dealType === "CPVV") {
-    return "video_view"
+    return "video_view";
   }
 }
 // ------------------------- END FUNCTIONS ------------------------- //
@@ -178,6 +178,7 @@ export const initiativeHomepageFunctions = {
           init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
           init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
           init.lineItems[index].dealType === "CPL" ? action = "like" : '';
+          init.lineItems[index].dealType === "CPVV" ? action = "video_view" : '';
           let percent = init.lineItems[index].costPlusPercent.split('');
           percent.unshift(".");
           percent = 1 + parseFloat(percent.join(''));
@@ -192,6 +193,7 @@ export const initiativeHomepageFunctions = {
           init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
           init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
           init.lineItems[index].dealType === "CPL" ? action = "like" : '';
+          init.lineItems[index].dealType === "CPVV" ? action = "video_view" : '';
 
           const dealType = init.lineItems[index].dealType;
           const quotedPrice = init.lineItems[index].price;

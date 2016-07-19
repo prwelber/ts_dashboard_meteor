@@ -17,7 +17,7 @@ const buildQuery = function buildQuery (start, end, performance, actions, campai
   }
 
   if (actions[0]) {
-    query += 'actions,cost_per_action_type,clicks,cpc,website_clicks,'
+    query += 'actions,cost_per_action_type,clicks,cpc,cpm,website_clicks,'
   }
 
   if (actions.indexOf('video_10_sec_watched_actions') >= 0) {
@@ -72,6 +72,7 @@ const createQuery = function createQuery (query, time, campNum, accessToken) {
 Meteor.methods({
   createReport: (start, end, performance, actions, campNum, lineItem, daily) => {
     let data = buildQuery(start, end, performance, actions, campNum, lineItem, daily);
+
     if (daily) {
       return data;
     } else {
