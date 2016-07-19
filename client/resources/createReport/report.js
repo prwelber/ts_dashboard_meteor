@@ -117,14 +117,18 @@ Template.report.helpers({
   // },
   headerTest: (word) => {
     var template = Template.instance();
-    var headers = template.choices.get('performance').concat(template.choices.get('actions'));
-    word === "CPC" ? headers.unshift("cpc") : '';
-    word === "CPL" ? headers.unshift("cpl") : '';
-    var lower = word.toLowerCase().replace(/ /g, "_");
-    console.log("headers", headers)
-    if (headers.indexOf(lower) >= 0) {
-      console.log('return html', lower);
-      return "<th style='padding-bottom: 8px; font-size: 16px;'>"+word+"</th>";
+    var data = template.report.get('data');
+    if (data) {
+      var headers = template.choices.get('performance').concat(template.choices.get('actions'));
+      word === "CPC" ? headers.unshift("cpc") : '';
+      // word === "CPL" ? headers.unshift("cpl") : '';
+      var lower = word.toLowerCase().replace(/ /g, "_");
+      console.log("headers", headers)
+      console.log('data[0]', data[0])
+      if (headers.indexOf(lower) >= 0 && data[0][lower]) {
+        console.log('return html', lower);
+        return "<th style='padding-bottom: 8px; font-size: 16px;'>"+word+"</th>";
+      }
     }
   },
   dataTest: (word, date) => {
@@ -133,11 +137,11 @@ Template.report.helpers({
     var found = _.findWhere(data, {date_start: date});
     var newWord = word.toLowerCase().replace(/ /g, "_");
     if (found[newWord]) {
-      console.log('return data as html', newWord);
       return "<td style='padding-top: 8px; padding-bottom: 8px; font-size: 12px;'>"+found[newWord]+"</td>"
-    } else {
-      return "<td style='padding-top: 8px; padding-bottom: 8px; font-size: 12px;'></td>"
     }
+    // } else {
+    //   return "<td style='padding-top: 8px; padding-bottom: 8px; font-size: 12px;'></td>"
+    // }
   }
 });
 

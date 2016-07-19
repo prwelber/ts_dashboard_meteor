@@ -37,26 +37,26 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
     let percentage = (parseFloat(init.lineItems[0].percentTotalPercent) / 100);
     if (action === "impressions") {
       let cpm = accounting.unformat(campaignData.cpm);
-      if (cpm / percentage <= effectiveNum) {
+      if (cpm <= effectiveNum) {
         effectiveNum = cpm / percentage;
         return (campaignData[action] / 1000) * effectiveNum;
-      } else if ((cpm / percentage) > effectiveNum && (cpm / percentage) < quotedPrice || cpm / percentage >= quotedPrice) {
+      } else if ((cpm > effectiveNum && cpm < quotedPrice) || cpm >= quotedPrice) {
         return (campaignData[action] / 1000) * quotedPrice;
       }
     } else if (action === "clicks") {
       let cpc = accounting.unformat(campaignData.cpc);
-      if (cpc / percentage <= effectiveNum) {
+      if (cpc <= effectiveNum) {
         effectiveNum = cpc / percentage;
         return (campaignData[action]) * effectiveNum;
-      } else if ((cpc / percentage) > effectiveNum && (cpc / percentage) < quotedPrice || (cpc / percentage) >= quotedPrice) {
+      } else if ((cpc > effectiveNum && cpc < quotedPrice) || cpc >= quotedPrice) {
         return (campaignData[action]) * quotedPrice;
       }
     } else if (action === "like") {
       let cpl = accounting.unformat(campaignData.cpl);
-      if (cpl / percentage <= effectiveNum) {
+      if (cpl <= effectiveNum) {
         effectiveNum = cpl / percentage;
         return (campaignData[action]) * effectiveNum;
-      } else if ((cpl / percentage) > effectiveNum && (cpl / percentage) < quotedPrice || (cpl / percentage) >= quotedPrice) {
+      } else if ((cpl > effectiveNum && cpl < quotedPrice) || cpl >= quotedPrice) {
         return (campaignData[action]) * quotedPrice;
       }
     }
