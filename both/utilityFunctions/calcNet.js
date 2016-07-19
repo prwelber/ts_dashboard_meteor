@@ -27,10 +27,12 @@ const defineAction = function defineAction (init) {
 }
 
 const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, campaignData, init) {
+  console.log('from within calcNet percentTotalSpend Function', dealType, quotedPrice, campaignData, init.name);
   if (dealType === "percent_total") {
     let action = defineAction(init);
     let effectiveNum = init.lineItems[0].effectiveNum;
     let percentage = (parseFloat(init.lineItems[0].percentTotalPercent) / 100);
+    console.log('line 35 in calcNet', action, effectiveNum, percentage);
     if (action === "impressions") {
       let cpm = accounting.unformat(campaignData.cpm);
       if (cpm / percentage <= effectiveNum) {
