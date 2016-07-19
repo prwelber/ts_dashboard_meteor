@@ -35,6 +35,7 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
     let action = defineAction(init);
     let effectiveNum = init.lineItems[0].effectiveNum;
     let percentage = (parseFloat(init.lineItems[0].percentTotalPercent) / 100);
+    console.log('from campaign Dashboard percentTotalSpend func', percentage, effectiveNum, action, quotedPrice)
     if (action === "impressions") {
       let cpm = accounting.unformat(campaignData.cpm);
       if (cpm / percentage <= effectiveNum) {

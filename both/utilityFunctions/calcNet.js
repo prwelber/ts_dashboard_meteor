@@ -32,7 +32,7 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
     let effectiveNum = init.lineItems[0].effectiveNum;
     let percentage = (parseFloat(init.lineItems[0].percentTotalPercent) / 100);
     if (action === "impressions") {
-      console.log('if action is impressions', init.name, cpm, percentage, effectiveNum, quotedprice)
+      console.log('if action is impressions', init.name, cpm, percentage, effectiveNum, quotedPrice)
       let cpm = accounting.unformat(campaignData.cpm);
       if (cpm / percentage <= effectiveNum) {
         effectiveNum = cpm / percentage;
