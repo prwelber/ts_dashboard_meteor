@@ -105,6 +105,7 @@ export const campaignDashboardFunctionObject = {
         return number * percent;
       }
     } else if (dealType === "percent_total") {
+      console.log('clientSpend from campaignDashboard', percentTotalSpend(dealType, quotedPrice, campData, init))
       return percentTotalSpend(dealType, quotedPrice, campData, init);
     }
   },
