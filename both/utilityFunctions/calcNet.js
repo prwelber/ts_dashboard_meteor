@@ -34,7 +34,7 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
     if (action === "impressions") {
       let cpm = accounting.unformat(campaignData.cpm);
       if (cpm <= effectiveNum) {
-        effectiveNum = cpm / percentage;
+        effectiveNum = parseFloat((cpm / percentage).toFixed(2));
         return (campaignData[action] / 1000) * effectiveNum;
       } else if ((cpm > effectiveNum && cpm < quotedPrice) || cpm >= quotedPrice) {
         return (campaignData[action] / 1000) * quotedPrice;
@@ -42,7 +42,7 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
     } else if (action === "clicks") {
       let cpc = accounting.unformat(campaignData.cpc);
       if (cpc <= effectiveNum) {
-        effectiveNum = cpc / percentage;
+        effectiveNum = parseFloat((cpc / percentage).toFixed(2));
         return (campaignData[action]) * effectiveNum;
       } else if ((cpc > effectiveNum && cpc < quotedPrice) || cpc >= quotedPrice) {
         return (campaignData[action]) * quotedPrice;
@@ -50,9 +50,17 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
     } else if (action === "like") {
       let cpl = accounting.unformat(campaignData.cpl);
       if (cpl <= effectiveNum) {
-        effectiveNum = cpl / percentage;
+        effectiveNum = parseFloat((cpl / percentage).toFixed(2));
         return (campaignData[action]) * effectiveNum;
       } else if ((cpl > effectiveNum && cpl < quotedPrice) || cpl >= quotedPrice) {
+        return (campaignData[action]) * quotedPrice;
+      }
+    } else if (action === "video_view") {
+      let cpvv = accounting.unformat(campaignData['cost_per_video_view']);
+      if (cpvv <= effectiveNum) {
+        effectiveNum = parseFloat((cpvv / percentage).toFixed(2));
+        return (campaignData[action]) * effectiveNum;
+      } else if ((cpvv > effectiveNum && cpvv < quotedPrice) || cpvv >= quotedPrice) {
         return (campaignData[action]) * quotedPrice;
       }
     }
@@ -96,10 +104,10 @@ export const calcNet = {
             numbs['client_spend'] = parseFloat((init[objective]['spend'] * costPlusPercent).toFixed(2));
             numbs['budget'] = parseFloat(totalBudget.toFixed(2));
             numbs['spendPercent'] = parseFloat((numbs['client_spend'] / numbs['budget']) * 100);
-            numbs['client_cpc'] = numbs.client_spend / init[objective]['clicks'];
+            numbs['client_cpc'] = parseFloat((numbs.client_spend / init[objective]['clicks']).toFixed(2));
             numbs['client_cpl'] = numbs.client_spend / init[objective]['likes'];
-            numbs['client_cpm'] = numbs.client_spend / (init[objective]['impressions'] / 1000);
-            numbs['client_cpvv'] = numbs.client_spend / init[objective]['videoViews'];
+            numbs['client_cpm'] = parseFloat((numbs.client_spend / (init[objective]['impressions'] / 1000)).toFixed(2));
+            numbs['client_cpvv'] = parseFloat((numbs.client_spend / init[objective]['videoViews']).toFixed(2));
             dataToSet[objective+".net"] = numbs;
           } catch(e) {
             console.log("Error in both/utilityFunctions/calcNet", e);
@@ -134,22 +142,15 @@ export const calcNet = {
             const dealType = "percent_total";
 
             numbs['client_spend'] = percentTotalSpend(dealType, quotedPrice, campaignStats, init);
-            console.log('client spend from calcNet', numbs.client_spend, init.name);
 
             // - running stringToPercentTotal func may not be necessary - //
             numbs['percentage'] = item.percentTotalPercent;
-            // percentTotalPercent = stringToPercentTotal(item.percentTotalPercent)
             numbs['budget'] = parseFloat(totalBudget.toFixed(2));
-            // if (action === "impressions") {
-            //   numbs['client_spend'] = (init[objective]['impressions'] / 1000) * quotedPrice;
-            // } else {
-            //   numbs['client_spend'] = init[objective][action] * quotedPrice;
-            // }
             numbs['spendPercent'] = parseFloat((numbs['client_spend'] / numbs['budget']) * 100);
-            numbs['client_cpc'] = numbs.client_spend / init[objective]['clicks'];
+            numbs['client_cpc'] = parseFloat((numbs.client_spend / init[objective]['clicks']).toFixed(2));
             numbs['client_cpl'] = numbs.client_spend / init[objective]['likes'];
-            numbs['client_cpm'] = numbs.client_spend / (init[objective]['impressions'] / 1000);
-            numbs['client_cpvv'] = numbs.client_spend / init[objective]['videoViews'];
+            numbs['client_cpm'] = parseFloat((numbs.client_spend / (init[objective]['impressions'] / 1000)).toFixed(2));
+            numbs['client_cpvv'] = parseFloat((numbs.client_spend / init[objective]['videoViews']).toFixed(2));
 
             dataToSet[objective+".net"] = numbs;
           } catch(e) {

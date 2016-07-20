@@ -12,113 +12,133 @@
     <div class="divider" style="margin: 1em 0 1em 0;"></div>
   </div>
   {{#if isReady "AdSetsList"}}
-    {{#each getAdSets}}
-    <div class="container">
-    <div class="col s12">
-      <h3>{{data.name}}</h3>
-      <p>AdSet runtime: {{data.start_time}} -- {{data.end_time}}</p>
-      <p>Data Updated: {{timing data.inserted}}</p>
+    {{#if isInRole "admin"}}
+      {{#each getAdSets}}
+      <div class="container">
+      <div class="col s12">
+        <h3>{{data.name}}</h3>
+        <p>AdSet runtime: {{data.start_time}} -- {{data.end_time}}</p>
+        <p>Data Updated: {{timing data.inserted}}</p>
 
-      <ul class="collection with-header">
-        <li class="collection-header"><h3>Targeting</h3></li>
-        <li class="collection-item">Optimization Goal: {{data.optimization_goal}}</li>
-        {{#if data.interests}}<li class="collection-item">Interests: {{data.interests}}</li>{{/if}}
-        {{#if data.age_range}}<li class="collection-item">Age Range: {{data.age_range}}</li>{{/if}}
-        {{#if data.behaviors}}<li class="collection-item">Behaviors: {{data.behaviors}}</li>{{/if}}
-        {{#if data.location}}<li class="collection-item">Location: {{data.location}}</li>{{/if}}
-        {{#if data.locations}}<li class="collection-item">Locations: {{data.locations}}</li>{{/if}}
-        {{#if data.location_living_in}}<li class="collection-item">Location- Living In: {{data.location_living_in}}</li>{{/if}}
-        {{#if data.placements}}<li class="collection-item">Placements: {{data.placements}}</li>{{/if}}
-        {{#if data.connections}}<li class="collection-item">Connections: {{data.connections}}</li>{{/if}}
-        {{#if data.match}}<li class="collection-item">People Who Match: {{data.match}}</li>{{/if}}
-        {{#if data.also_match}}<li class="collection-item">And Who Also Match: {{data.also_match}}</li>{{/if}}
-      </ul>
+        <ul class="collection with-header">
+          <li class="collection-header"><h3>Targeting</h3></li>
+          <li class="collection-item">Optimization Goal: {{data.optimization_goal}}</li>
+          {{#if data.interests}}<li class="collection-item">Interests: {{data.interests}}</li>{{/if}}
+          {{#if data.age_range}}<li class="collection-item">Age Range: {{data.age_range}}</li>{{/if}}
+          {{#if data.behaviors}}<li class="collection-item">Behaviors: {{data.behaviors}}</li>{{/if}}
+          {{#if data.location}}<li class="collection-item">Location: {{data.location}}</li>{{/if}}
+          {{#if data.locations}}<li class="collection-item">Locations: {{data.locations}}</li>{{/if}}
+          {{#if data.location_living_in}}<li class="collection-item">Location- Living In: {{data.location_living_in}}</li>{{/if}}
+          {{#if data.placements}}<li class="collection-item">Placements: {{data.placements}}</li>{{/if}}
+          {{#if data.connections}}<li class="collection-item">Connections: {{data.connections}}</li>{{/if}}
+          {{#if data.match}}<li class="collection-item">People Who Match: {{data.match}}</li>{{/if}}
+          {{#if data.also_match}}<li class="collection-item">And Who Also Match: {{data.also_match}}</li>{{/if}}
+        </ul>
 
-      <h4>Spend: {{money data.spend}}</h4>
-      {{!-- <p>CPP: {{money data.cpp}}</p> --}}
-      <table class="striped centered">
-        <thead>
-          <tr>
-            <th>Clicks</th>
-            <th>CPC</th>
-            <th>Impressions</th>
-            <th>CPM</th>
-            <th>Likes</th>
-            <th>CPL</th>
-            <th>Reach</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{{number data.clicks}}</td>
-            <td>{{money data.cpc}}</td>
-            <td>{{number data.impressions}}</td>
-            <td>{{money data.cpm}}</td>
-            <td>{{number data.like}}</td>
-            <td>{{money data.cpl}}</td>
-            <td>{{number data.reach}}</td>
-          </tr>
-        </tbody>
-        <thead>
-          <tr>
-            <th>Link Click</th>
-            <th>CP Link Click</th>
-            <th>Page Engagement</th>
-            <th>CP Page Eng</th>
-            <th>Website Click</th>
-            <th>CP Website Click</th>
-            <th>CTR</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{{number data.link_click}}</td>
-            <td>{{money data.cost_per_link_click}}</td>
-            <td>{{number data.post_engagement}}</td>
-            <td>{{money data.cost_per_post_engagement}}</td>
-            <td>{{number data.website_clicks}}</td>
-            <td>{{money data.cost_per_website_clicks}}</td>
-            <td>{{twoDecimals data.ctr}}</td>
-          </tr>
-        </tbody>
-      </table>
-      {{!-- {{#if data.video_play}}
-        <table class="centered">
+        <h4>Spend: {{money data.spend}}</h4>
+        {{!-- <p>CPP: {{money data.cpp}}</p> --}}
+        <table class="striped centered">
           <thead>
             <tr>
-              <th>Video Plays</th>
-              <th>Video View</th>
-              <th>Cost Per Video Play</th>
-              <th>Cost Per Video View</th>
-              <th>Video 10 Sec View</th>
-              <th>Cost Per 10 Sec View</th>
-              <th>15 Sec View</th>
-              <th>Avg Percent Watched</th>
-              <th>Avg Seconds Watched</th>
-              <th>Completely Watched</th>
+              <th>Clicks</th>
+              <th>CPC</th>
+              <th>Impressions</th>
+              <th>CPM</th>
+              <th>Likes</th>
+              <th>CPL</th>
+              <th>Reach</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>{{number data.video_play}}</td>
-              <td>{{number data.video_view}}</td>
-              <td>{{data.cost_per_video_play}}</td>
-              <td>{{data.cost_per_video_view}}</td>
-              <td>{{data.tenSecondView}}</td>
-              <td>{{data.costPerTenSecondView}}</td>
-              <td>{{data.fifteenSecondView}}</td>
-              <td>{{data.avgPctWatched}}</td>
-              <td>{{data.avgSecWatched}}</td>
-              <td>{{data.completeWatched}}</td>
+              <td>{{number data.clicks}}</td>
+              <td>{{money data.cpc}}</td>
+              <td>{{number data.impressions}}</td>
+              <td>{{money data.cpm}}</td>
+              <td>{{number data.like}}</td>
+              <td>{{money data.cpl}}</td>
+              <td>{{number data.reach}}</td>
+            </tr>
+          </tbody>
+          <thead>
+            <tr>
+              <th>Link Click</th>
+              <th>CP Link Click</th>
+              <th>Page Engagement</th>
+              <th>CP Page Eng</th>
+              <th>Website Click</th>
+              <th>CP Website Click</th>
+              <th>CTR</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{number data.link_click}}</td>
+              <td>{{money data.cost_per_link_click}}</td>
+              <td>{{number data.post_engagement}}</td>
+              <td>{{money data.cost_per_post_engagement}}</td>
+              <td>{{number data.website_clicks}}</td>
+              <td>{{money data.cost_per_website_clicks}}</td>
+              <td>{{twoDecimals data.ctr}}</td>
             </tr>
           </tbody>
         </table>
-      {{/if}} --}}
-    </div>
-    </div>
+      </div>
+      </div>
+      {{else}}
+        <p>No AdSets</p>
+      {{/each}}
     {{else}}
-      <p>No AdSets</p>
-    {{/each}}
+      {{!--------- CLIENTS WILL SEE THIS ---------}}
+      {{#each getAdSets}}
+        <div class="container">
+          <div class="col s12">
+            <h3>{{data.name}}</h3>
+            <p>AdSet runtime: {{data.start_time}} -- {{data.end_time}}</p>
+            <p>Data Updated: {{timing data.inserted}}</p>
+
+            <h4>Spend: {{money data.spend}}</h4>
+            {{!-- <p>CPP: {{money data.cpp}}</p> --}}
+            <table class="centered">
+              <thead>
+                <tr>
+                  <th>Clicks</th>
+                  <th>Impressions</th>
+                  <th>Likes</th>
+                  <th>Link Clicks</th>
+                  <th>Post Engagements</th>
+                  <th>Website Clicks</th>
+                  <th>Video Views</th>
+                  <th>Total Actions</th>
+                  <th>Post Likes</th>
+                  <th>Reach</th>
+                  <th>Frequency</th>
+                  <th>CTR</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{number data.clicks}}</td>
+                  <td>{{number data.impressions}}</td>
+                  <td>{{number data.like}}</td>
+                  <td>{{number data.link_click}}</td>
+                  <td>{{number data.post_engagement}}</td>
+                  <td>{{number data.website_clicks}}</td>
+                  <td>{{number data.video_view}}</td>
+                  <td>{{number data.total_actions}}</td>
+                  <td>{{number data.post_like}}</td>
+                  <td>{{number data.reach}}</td>
+                  <td>{{threeDigits data.frequency}}</td>
+                  <td>{{threeDigits data.ctr}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      {{else}}
+        <p>No AdSets</p>
+      {{/each}}
+    {{/if}}
   {{else}}
     <p>Loading...</p>
   {{/if}}

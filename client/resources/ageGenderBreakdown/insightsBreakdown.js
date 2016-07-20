@@ -22,6 +22,13 @@ const defineAction = function defineAction (init) {
   return action;
 }
 
+Template.insightsBreakdown.onCreated(function () {
+  this.templateDict = new ReactiveDict();
+  const initiative = Initiatives.findOne(
+    {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
+  });
+  this.templateDict.set( 'initiative', initiative );
+});
 
 Template.insightsBreakdown.onRendered( function () {
   $('.tooltipped').tooltip({delay: 25});
@@ -73,6 +80,7 @@ Template.insightsBreakdown.helpers({
             insight.data.cost_per_post_like = insightSpend / insight.data.post_like;
             insight.data.cost_per_link_click = insightSpend / insight.data.link_click;
           });
+          console.log(ageGenderInsights)
           return ageGenderInsights;
 
         } else if (init.lineItems[0].percent_total === true) {
@@ -127,6 +135,428 @@ Template.insightsBreakdown.helpers({
   },
   number: (num) => {
     return formatters.num(num);
+  },
+  ageGenderImpressions: () => {
+    const initiative = Template.instance().templateDict.get('initiative');
+    var call = Promise.promisify(Meteor.call);
+    const dealType = initiative.lineItems[0].dealType;
+
+    call('ageGenderChart', initiative)
+    .then(function (ageGenderData) {
+      Session.set('maleData', ageGenderData.male);
+      Session.set('femaleData', ageGenderData.female);
+    })
+    .catch(function (err) {
+      console.log('boooo error', err)
+      throw new Meteor.Error('this is a Meteor Error!!!!');
+    });
+
+    let action = "impressions";
+
+    const maleData = [];
+    const femaleData = [];
+    // set maleData
+    if (Session.get('maleData') && Session.get('maleData')[0].spend) {
+      for (let i = 0; i < 6; i++ ) {
+        maleData.push(Session.get('maleData')[i][action]);
+      }
+    }
+
+    if (Session.get('femaleData') && Session.get('femaleData')[0].spend) {
+      for (let i = 0; i < 6; i++ ) {
+        femaleData.push(Session.get('femaleData')[i][action] * -1);
+      }
+    }
+
+    // Age categories
+    var categories = ['18-24', '25-34', '35-44', '45-54',
+            '55-64', '65+'];
+
+    return {
+
+      chart: {
+          type: 'bar'
+      },
+      title: {
+          text: 'Impressions'
+      },
+      xAxis: [{
+          categories: categories,
+          reversed: false,
+          labels: {
+              step: 1
+          }
+      }, { // mirror axis on right side
+          opposite: true,
+          reversed: false,
+          categories: categories,
+          linkedTo: 0,
+          labels: {
+              step: 1
+          }
+      }],
+      yAxis: {
+          title: {
+              text: action
+          },
+          labels: {
+
+            }
+      },
+
+      plotOptions: {
+          series: {
+              stacking: 'normal'
+          }
+      },
+
+      tooltip: {
+          formatter: function () {
+              return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
+                  action+ " " + Highcharts.numberFormat(Math.abs(this.point.y), 0);
+          }
+      },
+
+      series: [{
+          name: 'Female',
+          data: femaleData
+      }, {
+          name: 'Male',
+          data: maleData
+      }]
+    }
+  },
+  'ageGenderClicks': function () {
+    const initiative = Template.instance().templateDict.get('initiative');
+    var call = Promise.promisify(Meteor.call);
+    const dealType = initiative.lineItems[0].dealType;
+
+    // call('ageGenderChart', initiative)
+    // .then(function (ageGenderData) {
+    //   Session.set('maleData', ageGenderData.male);
+    //   Session.set('femaleData', ageGenderData.female);
+    // })
+    // .catch(function (err) {
+    //   console.log('boooo error', err)
+    //   throw new Meteor.Error('this is a Meteor Error!!!!');
+    // });
+
+    let action = "clicks";
+
+    const maleData = [];
+    const femaleData = [];
+    // set maleData
+    if (Session.get('maleData') && Session.get('maleData')[0].spend) {
+      for (let i = 0; i < 6; i++ ) {
+        maleData.push(Session.get('maleData')[i][action]);
+      }
+    }
+
+    if (Session.get('femaleData') && Session.get('femaleData')[0].spend) {
+      for (let i = 0; i < 6; i++ ) {
+        femaleData.push(Session.get('femaleData')[i][action] * -1);
+      }
+    }
+
+    // Age categories
+    var categories = ['18-24', '25-34', '35-44', '45-54',
+            '55-64', '65+'];
+
+    return {
+
+      chart: {
+          type: 'bar'
+      },
+      title: {
+          text: 'Clicks'
+      },
+      xAxis: [{
+          categories: categories,
+          reversed: false,
+          labels: {
+              step: 1
+          }
+      }, { // mirror axis on right side
+          opposite: true,
+          reversed: false,
+          categories: categories,
+          linkedTo: 0,
+          labels: {
+              step: 1
+          }
+      }],
+      yAxis: {
+          title: {
+              text: action
+          },
+          labels: {
+
+            }
+      },
+
+      plotOptions: {
+          series: {
+              stacking: 'normal'
+          }
+      },
+
+      tooltip: {
+          formatter: function () {
+              return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
+                  action+ " " + Highcharts.numberFormat(Math.abs(this.point.y), 0);
+          }
+      },
+
+      series: [{
+          name: 'Female',
+          data: femaleData
+      }, {
+          name: 'Male',
+          data: maleData
+      }]
+    }
+  },
+  'ageGenderPostEngagement': function () {
+    const initiative = Template.instance().templateDict.get('initiative');
+    var call = Promise.promisify(Meteor.call);
+
+    let action = "postEng";
+
+    const maleData = [];
+    const femaleData = [];
+    // set maleData
+    if (Session.get('maleData') && Session.get('maleData')[0].spend) {
+      for (let i = 0; i < 6; i++ ) {
+        maleData.push(Session.get('maleData')[i][action]);
+      }
+    }
+
+    if (Session.get('femaleData') && Session.get('femaleData')[0].spend) {
+      for (let i = 0; i < 6; i++ ) {
+        femaleData.push(Session.get('femaleData')[i][action] * -1);
+      }
+    }
+
+    // Age categories
+    var categories = ['18-24', '25-34', '35-44', '45-54',
+            '55-64', '65+'];
+
+    return {
+
+      chart: {
+          type: 'bar'
+      },
+      title: {
+          text: 'Post Engagement'
+      },
+      xAxis: [{
+          categories: categories,
+          reversed: false,
+          labels: {
+              step: 1
+          }
+      }, { // mirror axis on right side
+          opposite: true,
+          reversed: false,
+          categories: categories,
+          linkedTo: 0,
+          labels: {
+              step: 1
+          }
+      }],
+      yAxis: {
+          title: {
+              text: "Post Engagement"
+          },
+          labels: {
+
+            }
+      },
+
+      plotOptions: {
+          series: {
+              stacking: 'normal'
+          }
+      },
+
+      tooltip: {
+          formatter: function () {
+              return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
+                  "Post Engagements:"+ " " + Highcharts.numberFormat(Math.abs(this.point.y), 0);
+          }
+      },
+
+      series: [{
+          name: 'Female',
+          data: femaleData
+      }, {
+          name: 'Male',
+          data: maleData
+      }]
+    }
+  },
+  'ageGenderVideoView': function () {
+    const initiative = Template.instance().templateDict.get('initiative');
+    var call = Promise.promisify(Meteor.call);
+
+    let action = "videoView";
+
+    const maleData = [];
+    const femaleData = [];
+    // set maleData
+    if (Session.get('maleData') && Session.get('maleData')[0].spend) {
+      for (let i = 0; i < 6; i++ ) {
+        maleData.push(Session.get('maleData')[i][action]);
+      }
+    }
+
+    if (Session.get('femaleData') && Session.get('femaleData')[0].spend) {
+      for (let i = 0; i < 6; i++ ) {
+        femaleData.push(Session.get('femaleData')[i][action] * -1);
+      }
+    }
+
+    // Age categories
+    var categories = ['18-24', '25-34', '35-44', '45-54',
+            '55-64', '65+'];
+
+    return {
+
+      chart: {
+          type: 'bar'
+      },
+      title: {
+          text: 'Video Views'
+      },
+      xAxis: [{
+          categories: categories,
+          reversed: false,
+          labels: {
+              step: 1
+          }
+      }, { // mirror axis on right side
+          opposite: true,
+          reversed: false,
+          categories: categories,
+          linkedTo: 0,
+          labels: {
+              step: 1
+          }
+      }],
+      yAxis: {
+          title: {
+              text: "Video Views"
+          },
+          labels: {
+
+            }
+      },
+
+      plotOptions: {
+          series: {
+              stacking: 'normal'
+          }
+      },
+
+      tooltip: {
+          formatter: function () {
+              return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
+                  "Post Engagements:"+ " " + Highcharts.numberFormat(Math.abs(this.point.y), 0);
+          }
+      },
+
+      series: [{
+          name: 'Female',
+          data: femaleData
+      }, {
+          name: 'Male',
+          data: maleData
+      }]
+    }
+  },
+  'ageGenderReach': function () {
+    const initiative = Template.instance().templateDict.get('initiative');
+    var call = Promise.promisify(Meteor.call);
+
+    let action = "reach";
+
+    const maleData = [];
+    const femaleData = [];
+    // set maleData
+    if (Session.get('maleData') && Session.get('maleData')[0].spend) {
+      for (let i = 0; i < 6; i++ ) {
+        maleData.push(Session.get('maleData')[i][action]);
+      }
+    }
+
+    if (Session.get('femaleData') && Session.get('femaleData')[0].spend) {
+      for (let i = 0; i < 6; i++ ) {
+        femaleData.push(Session.get('femaleData')[i][action] * -1);
+      }
+    }
+
+    // Age categories
+    var categories = ['18-24', '25-34', '35-44', '45-54',
+            '55-64', '65+'];
+
+    return {
+
+      chart: {
+          type: 'bar'
+      },
+      title: {
+          text: 'Reach'
+      },
+      xAxis: [{
+          categories: categories,
+          reversed: false,
+          labels: {
+              step: 1
+          }
+      }, { // mirror axis on right side
+          opposite: true,
+          reversed: false,
+          categories: categories,
+          linkedTo: 0,
+          labels: {
+              step: 1
+          }
+      }],
+      yAxis: {
+          title: {
+              text: "Reach"
+          },
+          labels: {
+
+            }
+      },
+
+      plotOptions: {
+          series: {
+              stacking: 'normal'
+          }
+      },
+
+      tooltip: {
+          formatter: function () {
+              return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
+                  "Post Engagements:"+ " " + Highcharts.numberFormat(Math.abs(this.point.y), 0);
+          }
+      },
+
+      series: [{
+          name: 'Female',
+          data: femaleData
+      }, {
+          name: 'Male',
+          data: maleData
+      }]
+    }
+  },
+  updated: () => {
+    if (Session.get('maleData')) {
+      return moment(Session.get('maleData')[0].inserted, moment.ISO_8601).format('MM-DD-YYYY');
+    }
   }
 });
 
@@ -139,5 +569,6 @@ Template.insightsBreakdown.events({
 
 
 Template.insightsBreakdown.onDestroyed(function () {
-
+  // Session.set('maleData', null);
+  // Session.set('femaleData', null);
 });

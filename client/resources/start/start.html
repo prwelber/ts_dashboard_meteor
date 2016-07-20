@@ -121,19 +121,19 @@
                 {{#if isInRole 'admin'}}
                   <div class="switch col s3">
                     <label>
-                      Not Updating
+                      Not Live
                       <input type="checkbox" {{activeUpdates _id}} data-id="{{_id}}">
                       <span class="lever"></span>
-                      Updating
+                      Live
                     </label>
                   </div>
                 {{else}}
                   <div class="switch col s3">
                     <label>
-                      Not Updating
+                      Not Live
                       <input disabled type="checkbox" {{activeUpdates _id}} data-id="{{_id}}">
                       <span class="lever"></span>
-                      Updating
+                      Live
                     </label>
                   </div>
                 {{/if}}
@@ -157,7 +157,7 @@
                 </div>
               </div>
               {{/if}}
-              {{#if isInRole 'admin'}}
+              {{!-- {{#if isInRole 'admin'}} --}}
                 <div class="row" style="margin-bottom: 10px;">
                   <div class="col s4 offset-s3">
                     <span class="percent-circle-header">Spend</span>
@@ -201,13 +201,13 @@
                     {{/if}}
                   {{/each}}
                 </div>
-                {{else}}
-                  <div class="row">
+                {{!-- {{else}} --}}
+                  {{!-- <div class="row">
                     <div class="col s12">
                       <p class="right-align {{isActiveClass}}">{{isActiveInitiative}}</p>
                     </div>
-                  </div>
-                {{/if}}
+                  </div> --}}
+                {{!-- {{/if}} --}}
             </li>
           {{/each}}
         </ul>

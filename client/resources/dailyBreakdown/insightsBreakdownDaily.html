@@ -7,6 +7,7 @@
       {{/if}}
   </div>
   {{#if isReady "Initiatives" "insightsBreakdownByDaysList"}}
+    {{#if isInRole "admin"}}
     <div class="row">
       <div class="col s12 center-align">
         <button id="refresh-daily" class="btn-large waves-effect waves-light tooltipped" data-position="right" data-tooltip="Retrieve Live Data">
@@ -69,6 +70,9 @@
         </table>
       </div>
     {{/each}}
+    {{else}}
+      <p class="report-link">For a day by day breakdown, go <a href="{{reportLink}}">here</a> to create a report</p>
+    {{/if}}
   {{else}}
     <p>Loading....</p>
   {{/if}}

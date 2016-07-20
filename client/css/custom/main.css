@@ -207,7 +207,11 @@ a:hover {
 }
 
 .insight-h2 {
-  padding-bottom: 1em;
+  padding-bottom: .5em;
+}
+
+.report-link {
+  font-size: 1.5em;
 }
 
 /****************************************************************

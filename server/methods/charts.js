@@ -334,23 +334,23 @@ Meteor.methods({
       array.forEach(el => {
         el.data.impressions = parseInt(el.data.impressions);
         el.data.spend = accounting.unformat(el.data.spend);
-        el.data.cost_per_post_engagement = accounting.unformat(el.data.cost_per_post_engagement);
         el.data.video_view === undefined ? el.data.video_view = 0 : '';
         el.data.post_like === undefined ? el.data.post_like = 0 : '';
         let newEl = {
           spend: el.data.spend,
           impressions: el.data.impressions,
-          cpm: (el.data.impressions / el.data.spend),
-          likes: el.data.post_like,
-          cpl: (el.data.post_like / el.data.spend),
+          // cpm: (el.data.impressions / el.data.spend),
+          // likes: el.data.post_like,
+          // cpl: (el.data.post_like / el.data.spend),
           clicks: el.data.clicks,
-          cpc: (el.data.clicks / el.data.spend),
+          // cpc: (el.data.clicks / el.data.spend),
           reach: el.data.reach,
-          postEng: el.data.cost_per_post_engagement,
+          postEng: el.data.post_engagement,
           videoView: el.data.video_view,
-          costVideoView: el.data.cost_per_video_view,
+          // costVideoView: el.data.cost_per_video_view,
           age: el.data.age,
-          gender: el.data.gender
+          gender: el.data.gender,
+          inserted: el.data.inserted
         }
 
         cleanedArray.push(newEl);
@@ -361,11 +361,12 @@ Meteor.methods({
     var cleanedMaleArray = makeClean(maleArray);
     var cleanedFemaleArray = makeClean(femaleArray);
 
+    // ----------- FUNCTION USED BELOW ----------- //
     const sumAge = function sumAge (array, ageRange) {
       var temp = {
         impressions: 0,
         clicks: 0,
-        likes: 0,
+        // likes: 0,
         spend: 0,
         postEng: 0,
         reach: 0,
@@ -376,10 +377,11 @@ Meteor.methods({
       array.forEach(el => {
         if (el.age === ageRange) {
           temp['age'] = ageRange;
+          temp['inserted'] = el.inserted;
           temp['gender'] = el.gender;
           temp.impressions += el.impressions;
           temp.clicks += el.clicks;
-          temp.likes += el.likes;
+          // temp.likes += el.likes;
           temp.reach += el.reach;
           temp.videoView += el.videoView;
           temp.postEng += el.postEng;

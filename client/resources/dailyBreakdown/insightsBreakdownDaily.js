@@ -70,7 +70,10 @@ Template.insightsBreakdownDaily.helpers({
   'getDailyBreakdown': () => {
       const campaignNumber = FlowRouter.getParam('campaign_id');
       let dailyBreakdown = InsightsBreakdownsByDays.findOne({'data.campaign_id': campaignNumber});
-      const init = Initiatives.findOne({name: dailyBreakdown.data.initiative});
+      let init;
+      if (dailyBreakdown.data) {
+        init = Initiatives.findOne({name: dailyBreakdown.data.initiative});
+      }
       const objective = dailyBreakdown.data.objective;
       Template.instance().templateDict.set('initiative', init);
       if (dailyBreakdown) {
@@ -153,6 +156,11 @@ Template.insightsBreakdownDaily.helpers({
   },
   number: (num) => {
     return formatters.num(num);
+  },
+  reportLink: () => {
+    const route = FlowRouter.current().path;
+    return route.substring(0,24) + 'report';
+
   }
 });
 

@@ -179,6 +179,11 @@ Template.adsets.helpers({
     } else {
       return moment(time, "MM-DD-YYYY hh:mm a").format("MM-DD-YYYY hh:mm a");
     }
+  },
+  threeDigits: (number) => {
+    if (number) {
+      return number.toFixed(3);
+    }
   }
 });
 

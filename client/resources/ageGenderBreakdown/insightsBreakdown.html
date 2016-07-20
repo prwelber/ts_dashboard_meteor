@@ -1,6 +1,7 @@
 <template name="insightsBreakdown">
   <div class="container">
     {{#if isReady "insightsBreakdownList" "Initiatives"}}
+    {{#if isInRole "admin"}}
     <div class="row">
       <div class="col s12 center-align">
         <h2 class="insight-h2">Insights Breakdown by Age + Gender</h2>
@@ -84,7 +85,65 @@
         </div>
       {{/each}}
     </div>
+    <div class="row">
+      <div id="ageGenderImpressions" class="col s12">
+        {{> highchartsHelper chartId="ageGenderImpressions" chartWidth="100%" chartHeight="100%" chartObject=ageGenderImpressions}}
+      </div>
+    </div>
+    <div class="row">
+      <div id="ageGenderClicks" class="col s12">
+        {{> highchartsHelper chartId="ageGenderClicks" chartWidth="100%" chartHeight="100%" chartObject=ageGenderClicks}}
+      </div>
+    </div>
+    <div class="row">
+      <div id="ageGenderPostEngagement" class="col s12">
+        {{> highchartsHelper chartId="ageGenderPostEngagement" chartWidth="100%" chartHeight="100%" chartObject=ageGenderPostEngagement}}
+      </div>
+    </div>
+    <div class="col s12 center-align">
+      <h2>Below is what the client will see</h2>
+    </div>
 
+    {{else}}
+    {{!-- BELOW IS WHAT CLIENT WILL SEE --}}
+      <div class="row">
+        <div class="col s12 center-align">
+          <h2>Age & Gender Charts</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 center-align">
+          <button id="refresh-age-gender" class="btn-large waves-effect waves-light tooltipped" data-position="right" data-tooltip="Retrieve Live Data">
+            <h4>REFRESH DATA</h4>
+          </button>
+        </div>
+        <div class="col s12 center-align">
+        <p>Last Update: {{updated}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div id="ageGenderImpressions" class="col s6">
+          {{> highchartsHelper chartId="ageGenderImpressions" chartWidth="100%" chartHeight="100%" chartObject=ageGenderImpressions}}
+        </div>
+        <div id="ageGenderClicks" class="col s6">
+          {{> highchartsHelper chartId="ageGenderClicks" chartWidth="100%" chartHeight="100%" chartObject=ageGenderClicks}}
+        </div>
+      </div>
+      <div class="row">
+        <div id="ageGenderPostEngagement" class="col s6">
+          {{> highchartsHelper chartId="ageGenderPostEngagement" chartWidth="100%" chartHeight="100%" chartObject=ageGenderPostEngagement}}
+        </div>
+        <div id="ageGenderReach" class="col s6">
+          {{> highchartsHelper chartId="ageGenderReach" chartWidth="100%" chartHeight="100%" chartObject=ageGenderReach}}
+        </div>
+      </div>
+      <div class="row">
+        <div id="ageGenderVideoView" class="col s12">
+          {{> highchartsHelper chartId="ageGenderVideoView" chartWidth="100%" chartHeight="100%" chartObject=ageGenderVideoView}}
+        </div>
+      </div>
+    {{/if}}
+    {{!-- ^ end of if isInRole "admin" --}}
     {{/if}}
     {{!-- ^ end of isReady --}}
   </div>
