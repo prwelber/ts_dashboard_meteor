@@ -18,19 +18,20 @@ const stringToPercentTotal = function stringToPercentTotal (num) {
   return num;
 }
 
-const defineAction = function defineAction (init) {
+const defineAction = function defineAction (init, index) {
   let action;
-  init.lineItems[0].dealType === "CPC" ? action = "clicks" : '';
-  init.lineItems[0].dealType === "CPM" ? action = "impressions" : '';
-  init.lineItems[0].dealType === "CPL" ? action = "like" : '';
+  init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
+  init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
+  init.lineItems[index].dealType === "CPL" ? action = "like" : '';
+  init.lineItems[index].dealType === "CPVV" ? action = "video_view" : '';
   return action;
 }
 
-const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, campaignData, init) {
+const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, campaignData, init, index) {
   if (dealType === "percent_total") {
-    let action = defineAction(init);
-    let effectiveNum = init.lineItems[0].effectiveNum;
-    let percentage = (parseFloat(init.lineItems[0].percentTotalPercent) / 100);
+    let action = defineAction(init, index);
+    let effectiveNum = init.lineItems[index].effectiveNum;
+    let percentage = (parseFloat(init.lineItems[index].percentTotalPercent) / 100);
     if (action === "impressions") {
       let cpm = accounting.unformat(campaignData.cpm);
       if (cpm <= effectiveNum) {
@@ -56,12 +57,12 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
         return (campaignData[action]) * quotedPrice;
       }
     } else if (action === "video_view") {
-      let cpvv = accounting.unformat(campaignData['cost_per_video_view']);
+      let cpvv = accounting.unformat(campaignData['cpvv']);
       if (cpvv <= effectiveNum) {
         effectiveNum = parseFloat((cpvv / percentage).toFixed(2));
-        return (campaignData[action]) * effectiveNum;
+        return (campaignData['videoViews']) * effectiveNum;
       } else if ((cpvv > effectiveNum && cpvv < quotedPrice) || cpvv >= quotedPrice) {
-        return (campaignData[action]) * quotedPrice;
+        return (campaignData['videoViews']) * quotedPrice;
       }
     }
   }
@@ -92,7 +93,6 @@ export const calcNet = {
 
       init.lineItems.forEach((item, index) => {
         const objective = item.objective.split(' ').join('_').toUpperCase();
-
         // if cost plus deal
         if (item.cost_plus) {
           let dataToSet = {};
@@ -130,9 +130,9 @@ export const calcNet = {
           item.dealType === "CPC" ? action = "clicks" : '';
           item.dealType === "CPM" ? action = "impressions" : '';
           item.dealType === "CPL" ? action = "likes" : '';
+          item.dealType === "CPVV" ? action = "video_view" : '';
           try {
             numbs['deal'] = "percentTotal";
-
 
             // grab objective and then get that object from init object
             // const objective = item.objective.toUpperCase().replace(/ /g, "_");
@@ -141,7 +141,7 @@ export const calcNet = {
             const campaignStats = init[objective];
             const dealType = "percent_total";
 
-            numbs['client_spend'] = percentTotalSpend(dealType, quotedPrice, campaignStats, init);
+            numbs['client_spend'] = percentTotalSpend(dealType, quotedPrice, campaignStats, init, index);
 
             // - running stringToPercentTotal func may not be necessary - //
             numbs['percentage'] = item.percentTotalPercent;

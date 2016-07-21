@@ -6,12 +6,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router'
 import Promise from 'bluebird'
 import moment from 'moment';
 import { formatters } from '/both/utilityFunctions/formatters';
-
-// Tracker.autorun(function () {
-//   if (FlowRouter.subsReady('insightsBreakdownByDaysList')) {
-//     console.log('insightsBreakdownByDays subs ready!');
-//   }
-// });
+import { calcFactorSpend } from '/both/utilityFunctions/factorSpendFunction';
 
 const stringToCostPlusPercentage = function stringToCostPlusPercentage (num) {
   num = num.toString().split('');
@@ -25,7 +20,20 @@ const defineAction = function defineAction (init) {
   init.lineItems[0].dealType === "CPC" ? action = "clicks" : '';
   init.lineItems[0].dealType === "CPM" ? action = "impressions" : '';
   init.lineItems[0].dealType === "CPL" ? action = "like" : '';
+  init.lineItems[0].dealType === "CPVV" ? action = "video_view" : '';
   return action;
+}
+
+const capitalize = function capitalize (objective) {
+  let word = objective[0].toUpperCase();
+  for (let i = 1; i < objective.length; i++) {
+    if (objective[i - 1] === " ") {
+      word += objective[i].toUpperCase();
+    } else {
+      word += objective[i];
+    }
+  }
+  return word;
 }
 
 
@@ -74,14 +82,18 @@ Template.insightsBreakdownDaily.helpers({
       if (dailyBreakdown.data) {
         init = Initiatives.findOne({name: dailyBreakdown.data.initiative});
       }
-      const objective = dailyBreakdown.data.objective;
+      // need to get index of line item
+      // match objective to lineItem objective
+      const objective = dailyBreakdown.data.objective.toLowerCase().replace(/_/g, " ");
+
+      const word = capitalize(objective);
+      const item = _.where(init.lineItems, {objective: word});
+      const index = parseInt(item[0].name.substring(item[0].name.length, item[0].name.length - 1)) - 1; // minus 1 to adjust for zero index on lineItems array
       Template.instance().templateDict.set('initiative', init);
       if (dailyBreakdown) {
         let days = InsightsBreakdownsByDays.find({'data.campaign_id': campaignNumber}, {sort: {'data.date_start': -1}}).fetch();
 
-
-
-        if (init.lineItems[0].cost_plus === true) {
+        if (init.lineItems[index].cost_plus === true) {
           // run cost plus calculations
           const costPlusPercent = stringToCostPlusPercentage(init.lineItems[0].costPlusPercent);
           let daySpend = 0;
@@ -99,19 +111,15 @@ Template.insightsBreakdownDaily.helpers({
           });
           return days;
 
-        } else if (init.lineItems[0].percent_total === true) {
+        } else if (init.lineItems[index].percent_total === true) {
           // run cost plus calculations
           let daySpend = 0;
-          let quotedPrice = init.lineItems[0].price;
+          let quotedPrice = init.lineItems[index].price;
           let action = defineAction(init)
 
           days.forEach((day) => {
             // need to get day spend according to the quotedPrice on IO
-            if (action === "impressions") {
-              daySpend = (day.data.impressions / 1000) * quotedPrice;
-            } else {
-              daySpend = day.data[action] * quotedPrice;
-            }
+            daySpend = calcFactorSpend.calcFactorSpend(quotedPrice, day.data, init, index);
             day.data.spend = daySpend;
             day.data.cpm = daySpend / (day.data.impressions / 1000);
             day.data.cpc = daySpend / day.data.clicks;

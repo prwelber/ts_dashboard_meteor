@@ -43,7 +43,7 @@ SyncedCron.add({
 SyncedCron.add({
   name: "Objective Aggregator",
   schedule: (parser) => {
-    return parser.text('every 11 minutes');
+    return parser.text('every 11 minutes every weekday');
     // return parser.text('at 1:39pm')
   },
   job: () => {

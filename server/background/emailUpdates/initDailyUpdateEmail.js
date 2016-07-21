@@ -10,32 +10,50 @@ SyncedCron.config({
 });
 
 SyncedCron.add({
-  name: "Initiative Digest Emailer",
+  name: "Initiative Summary Emailer",
 
   schedule: (parser) => {
-    return parser.text('at 2:00pm');
+    if (Meteor.isProduction) {
+      return parser.text('at 1:30pm'); // should be 9:30am
+    } else {
+      return parser.text('at 7:00pm');
+    }
   },
   job: () => {
     // loop through and run initiativesFunctions
 
-    const inits = Initiatives.find({userActive: true}, {fields: {name: 1, lineItems: 1, aggregateData: 1, _id: 0}}).fetch();
+    const inits = Initiatives.find({userActive: true}).fetch();
 
     const percentages = [];
+    const objectives = ["LINK_CLICKS", "POST_ENGAGEMENT", "VIDEO_VIEWS", "PAGE_LIKES", "CONVERSIONS"];
+
     inits.forEach((init) => {
-      let data = {};
-      data['name'] = init.name;
-      data['spendPercent'] = formatters.twoDecimals(initiativesFunctionObject.calculateSpendPercent(init));
-      data['deliveryPercent'] = formatters.twoDecimals(initiativesFunctionObject.calculateDeliveryPercent(init));
-      data['flightPercent'] = formatters.twoDecimals(initiativesFunctionObject.calculateFlightPercentage(init));
-      percentages.push(data);
+      init.lineItems.forEach((item, index) => {
+        if (item.price) {
+          let data = {};
+          data['name'] = init.name;
+          data['dealType'] = item.dealType;
+          data['objective'] = item.objective;
+          const objective = item.objective.toUpperCase().replace(/ /g, "_");
+          data['spendPercent'] = parseFloat(init[objective]['net']['spendPercent'].toFixed(2));
+          data['deliveryPercent'] = formatters.twoDecimals(initiativesFunctionObject.calculateDeliveryPercent(init, index));
+          data['flightPercent'] = formatters.twoDecimals(initiativesFunctionObject.calculateFlightPercentage(init, index));
+          percentages.push(data);
+        }
+      });
+    });
+    let htmlString = '';
+    percentages.forEach(el => {
+      htmlString += "<br /><h4>"+el.name+"</h4><p>Deal Type: "+el.dealType+" | Objective: "+el.objective+"</p><p>Spend: "+el.spendPercent+"%</p><p>Delivery: "+el.deliveryPercent+"%</p><p>Flight: "+el.flightPercent+"%</p><br />";
     });
 
-    let htmlString = '<h3>As of '+moment().format("MM/DD/YYYY hh:mm a")+'</h3>';
-    percentages.forEach((el) => {
-      htmlString += "<br /><h4>"+el.name+"</h4><p>Spend: "+el.spendPercent+"%</p><p>Delivery: "+el.deliveryPercent+"%</p><p>Flight: "+el.flightPercent+"%</p><br />";
-    });
+    const emailList = ['kyu@targetedsocial.com', 'vguity@targetedsocial.com', 'pwelber@targetedsocial.com', 'cgottlieb@targetedsocial.com', 'selowsky@targetedsocial.com'];
 
-    email.sendEmail("prwelber@gmail.com", "Initiatives Digest", htmlString);
+    if (Meteor.isProduction) {
+      email.sendEmail(emailList, "Initiatives Summary", htmlString);
+    } else {
+      email.sendEmail("prwelber@gmail.com", "Initiatives Summary", htmlString);
+    }
 
   } // end of job
 }); // end of SyncedCron.add

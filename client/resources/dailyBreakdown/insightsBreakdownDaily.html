@@ -15,7 +15,7 @@
         </button>
       </div>
     </div>
-    {{#each getDailyBreakdown}}
+    {{!-- {{#each getDailyBreakdown}}
       <div class="row">
         <h3 class="center-align">{{prettyDate data.date_start}}</h3>
         <table class="striped centered">
@@ -69,7 +69,8 @@
           </tbody>
         </table>
       </div>
-    {{/each}}
+    {{/each}} --}}
+    <p class="report-link">For a day by day breakdown, go <a href="{{reportLink}}">here</a> to create a report</p>
     {{else}}
       <p class="report-link">For a day by day breakdown, go <a href="{{reportLink}}">here</a> to create a report</p>
     {{/if}}

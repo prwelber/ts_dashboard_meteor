@@ -8,29 +8,26 @@ import Initiatives from '/collections/Initiatives';
 import Promise from 'bluebird';
 // var Promise = require('bluebird');
 
-Tracker.autorun(function () {
-  if (FlowRouter.subsReady('campaignInsightList') && FlowRouter.subsReady('Initiatives')) {
-    // console.log('Insights and Initiatives subs are now ready!');
+const lower = function lower (objective) {
+  let word = objective[0]
+  for (let i = 1; i < objective.length; i++) {
+    if (objective[i - 1] === " ") {
+      word += objective[i].toUpperCase();
+    } else {
+      word += objective[i].toLowerCase();
+    }
   }
-});
+  return word;
+}
+
 
 Template.campaignDashboard.onCreated( function () {
   this.templateDict = new ReactiveDict();
-  // const initiative = Initiatives.findOne(
-  //   {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
-  // });
-  // this.templateDict.set('initiative', initiative);
 });
 
 Template.campaignDashboard.onRendered(function () {
     $(".dropdown-button").dropdown({hover: true});
     $(".button-collapse").sideNav();
-
-    // this.templateDict = new ReactiveDict();
-    // const initiative = Initiatives.findOne(
-    //   {"campaign_ids": {$in: [FlowRouter.current().params.campaign_id]}
-    // });
-    // this.templateDict.set('initiative', initiative);
 });
 
 Template.campaignDashboard.events({
@@ -165,14 +162,18 @@ Template.campaignDashboard.helpers({
   },
   clientStatsSpend: (num, type) => {
     const init = Template.instance().templateDict.get('initiative');
-    const item = init.lineItems[0];
-    const quotedPrice = item.price;
     const campData = Template.instance().templateDict.get('campData');
+
+    const objective = campData.objective.replace(/_/g, " ");
+    const word = lower(objective); // convert all caps objective to normal grammar
+    let realItem = _.where(init.lineItems, {objective: word}); // returns an array
+    const index = parseInt(realItem[0].name.substring(realItem[0].name.length, realItem[0].name.length - 1)) - 1; // minus 1 to account for zero indexing of lineItems array
+    const quotedPrice = realItem[0].price;
     let dealType;
-    item.cost_plus ? dealType = "cost_plus" : '';
-    item.percent_total ? dealType = "percent_total" : '';
-    Template.instance().templateDict.set('clientSpend', campaignDashboardFunctionObject.clientSpend(num, type, dealType, item, quotedPrice, campData, init))
-    return mastFunc.money(campaignDashboardFunctionObject.clientSpend(num, type, dealType, item, quotedPrice, campData, init))
+    realItem[0].cost_plus ? dealType = "cost_plus" : '';
+    realItem[0].percent_total ? dealType = "percent_total" : '';
+    Template.instance().templateDict.set('clientSpend', campaignDashboardFunctionObject.clientSpend(num, type, dealType, realItem[0], quotedPrice, campData, init, index));
+    return mastFunc.money(campaignDashboardFunctionObject.clientSpend(num, type, dealType, realItem[0], quotedPrice, campData, init, index));
 
   },
   clientStats: () => {

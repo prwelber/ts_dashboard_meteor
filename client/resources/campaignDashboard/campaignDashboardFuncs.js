@@ -14,11 +14,12 @@ const stringToCostPlusPercentage = function stringToCostPlusPercentage (num) {
   return num;
 }
 
-const defineAction = function defineAction (init) {
+const defineAction = function defineAction (init, index) {
   let action;
-  init.lineItems[0].dealType === "CPC" ? action = "clicks" : '';
-  init.lineItems[0].dealType === "CPM" ? action = "impressions" : '';
-  init.lineItems[0].dealType === "CPL" ? action = "like" : '';
+  init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
+  init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
+  init.lineItems[index].dealType === "CPL" ? action = "like" : '';
+  init.lineItems[index].dealType === "CPVV" ? action = "video_view" : '';
   return action;
 }
 
@@ -30,11 +31,11 @@ const defineAction = function defineAction (init) {
 * if cpm / factor amount is greater than effectiveNum && is less than quoted price,
 * we return the quotedPrice times the metric amount-------
 */
-const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, campaignData, init) {
+const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, campaignData, init, index) {
   if (dealType === "percent_total") {
-    let action = defineAction(init);
-    let effectiveNum = init.lineItems[0].effectiveNum;
-    let percentage = (parseFloat(init.lineItems[0].percentTotalPercent) / 100);
+    let action = defineAction(init, index);
+    let effectiveNum = init.lineItems[index].effectiveNum;
+    let percentage = (parseFloat(init.lineItems[index].percentTotalPercent) / 100);
     if (action === "impressions") {
       let cpm = accounting.unformat(campaignData.cpm);
       if (cpm <= effectiveNum) {
@@ -106,14 +107,14 @@ export const campaignDashboardFunctionObject = {
       return init[objective].net;
     }
   },
-  clientSpend: (number, typeNumb, dealType, item, quotedPrice, campData, init) => {
+  clientSpend: (number, typeNumb, dealType, item, quotedPrice, campData, init, index) => {
     if (dealType === "cost_plus") {
       let percent = stringToCostPlusPercentage(item.costPlusPercent);
       if (typeNumb === "spend") {
         return number * percent;
       }
     } else if (dealType === "percent_total") {
-      return percentTotalSpend(dealType, quotedPrice, campData, init);
+      return percentTotalSpend(dealType, quotedPrice, campData, init, index);
     }
   },
   clientNumbers: (clientSpend, campData, init, item, quotedPrice, dealType) => {

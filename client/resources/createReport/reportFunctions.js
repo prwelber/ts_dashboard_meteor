@@ -16,6 +16,7 @@ const defineAction = function defineAction (init, index) {
   init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
   init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
   init.lineItems[index].dealType === "CPL" ? action = "like" : '';
+  init.lineItems[index].dealType === "CPVV" ? action = "video_view" : '';
   return action;
 }
 const flattenDaily = function flattenDaily (array) {
@@ -156,8 +157,8 @@ const makeSpend = function makeSpend (data, init, itemNumber, lineItemName) {
 const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, campaignData, init, itemNum) {
   if (dealType === "percent_total") {
     let action = defineAction(init, itemNum);
-    let effectiveNum = parseFloat(init.lineItems[0].effectiveNum);
-    let percentage = (parseFloat(init.lineItems[0].percentTotalPercent) / 100);
+    let effectiveNum = parseFloat(init.lineItems[itemNum].effectiveNum);
+    let percentage = (parseFloat(init.lineItems[itemNum].percentTotalPercent) / 100);
     if (action === "impressions") {
       let cpm = accounting.unformat(campaignData.cpm);
       if (cpm <= effectiveNum) {
@@ -181,6 +182,14 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
         return (campaignData[action]) * effectiveNum;
       } else if ((cpl > effectiveNum && cpl < quotedPrice) || (cpl) >= quotedPrice) {
         return (campaignData[action]) * quotedPrice;
+      }
+    } else if (action === "video_view") {
+      let cpvv = accounting.unformat(campaignData['cost_per_video_view']);
+      if (cpvv <= effectiveNum) {
+        effectiveNum = parseFloat((cpvv / percentage).toFixed(2));
+        return (campaignData['video_view']) * effectiveNum;
+      } else if ((cpvv > effectiveNum && cpvv < quotedPrice) || cpvv >= quotedPrice) {
+        return (campaignData['video_view']) * quotedPrice;
       }
     }
   }
@@ -291,6 +300,7 @@ export const reportFunctions = {
     const dealType = init.lineItems[itemNumber - 1].dealType.toLowerCase();
 
     const costPer = init[objective].net['client_' + dealType];
+    console.log('costPer', costPer)
     numbersArray = [];
     numbers.forEach(day => {
       // need to: only keep what user requestd, adjust cost per and spend
@@ -318,6 +328,8 @@ export const reportFunctions = {
           daySpend = day.clicks * costPer;
         } else if (action === "like") {
           daySpend = day.like * costPer;
+        } else if (action === "video_view") {
+          daySpend = day.video_view * costPer;
         }
         clientData['spend'] = money(daySpend)
 
