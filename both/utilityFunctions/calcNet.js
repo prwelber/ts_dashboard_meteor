@@ -84,15 +84,16 @@ export const calcNet = {
       let numbs = {};
       numbs['name'] = init.name;
       // get total budget
-      let totalBudget = 0;
-      init.lineItems.forEach((item) => {
-        if (item.budget !== "" || parseFloat(item.budget) > 0) {
-          totalBudget += parseFloat(item.budget);
-        }
-      });
+      
+      // init.lineItems.forEach((item) => {
+      //   if (item.budget !== "" || parseFloat(item.budget) > 0) {
+      //     totalBudget += parseFloat(item.budget);
+      //   }
+      // });
 
       init.lineItems.forEach((item, index) => {
         const objective = item.objective.split(' ').join('_').toUpperCase();
+        const totalBudget = parseFloat(item.budget);
         // if cost plus deal
         if (item.cost_plus) {
           let dataToSet = {};
@@ -102,7 +103,7 @@ export const calcNet = {
             numbs['percentage'] = item.costPlusPercent;
             costPlusPercent = stringToCostPlusPercentage(item.costPlusPercent);
             numbs['client_spend'] = parseFloat((init[objective]['spend'] * costPlusPercent).toFixed(2));
-            numbs['budget'] = parseFloat(totalBudget.toFixed(2));
+            numbs['budget'] = totalBudget;
             numbs['spendPercent'] = parseFloat((numbs['client_spend'] / numbs['budget']) * 100);
             numbs['client_cpc'] = parseFloat((numbs.client_spend / init[objective]['clicks']).toFixed(2));
             numbs['client_cpl'] = numbs.client_spend / init[objective]['likes'];
@@ -145,7 +146,7 @@ export const calcNet = {
 
             // - running stringToPercentTotal func may not be necessary - //
             numbs['percentage'] = item.percentTotalPercent;
-            numbs['budget'] = parseFloat(totalBudget.toFixed(2));
+            numbs['budget'] = totalBudget;
             numbs['spendPercent'] = parseFloat((numbs['client_spend'] / numbs['budget']) * 100);
             numbs['client_cpc'] = parseFloat((numbs.client_spend / init[objective]['clicks']).toFixed(2));
             numbs['client_cpl'] = numbs.client_spend / init[objective]['likes'];
