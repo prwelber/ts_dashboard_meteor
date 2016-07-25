@@ -54,8 +54,9 @@ SyncedCron.add({
             if (costPer >= eightyPercent) {
               const subject = "Initiative Cost Per Action Warning";
               const htmlString = "<p>In the initiative: " +init.name+ ", the " +dealType+ " is at or above 80% of the IO price of "+price+". It is currently " +accounting.formatMoney(costPer)+"</p>";
-
-              email.sendEmail("prwelber@gmail.com", subject, htmlString);
+              if (! Meteor.isProduction) {
+                email.sendEmail("prwelber@gmail.com", subject, htmlString);
+              }
             }
           }
         }

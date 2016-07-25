@@ -385,14 +385,29 @@ FlowRouter.route('/terms', {
 
 FlowRouter.route('/admin/spending', {
     subscriptions: function () {
-        const params = {"spending": "spending"};
+        const params = {'spending': 'spending'};
         this.register('campaignBasicsList', Meteor.subscribe('campaignBasicsList', params));
         // this.register('campaignInsightList', Meteor.subscribe('campaignInsightList', params));
         // this.register('insightsBreakdownByDaysList', Meteor.subscribe('insightsBreakdownByDaysList', params));
     },
-    name: "spending",
+    name: 'spending',
     action: () => {
         Session.set("route", "admin");
         BlazeLayout.render("index", {main: "spending"});
+    }
+});
+
+// ----------------- PDF ------------------------ //
+
+
+FlowRouter.route('/admin/pdf', {
+    subscriptions: function () {
+        const params = {'spending': 'spending'};
+        this.register('Initiatives', Meteor.subscribe('Initiatives', params));
+    },
+    name: 'pdf',
+    action: () => {
+        Session.set('route', 'admin');
+        BlazeLayout.render('index', {main: 'pdf'});
     }
 });

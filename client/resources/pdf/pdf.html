@@ -1,0 +1,27 @@
+<template name="pdf">
+  {{#if isReady "Initiatives"}}
+    <div class="container">
+      <div class="row">
+        <div class="input-field col s3">
+          <select name="pdf-select" id="pdf-select" class="browser-default">
+            <option value="" disabled selected>Choose Initiative</option>
+            {{#each init in getInits}}
+              <option value="{{init.name}}">{{init.name}}</option>
+            {{/each}}
+          </select>
+          <label class="active">Initiatives</label>
+        </div>
+        <div class="col s12">
+          <input type="text" id="pdf-client-name" placeholder="Client Name" value={{clientName}}>
+          <input type="text" id="pdf-advertiser-name" placeholder="Advertiser or Brand Name" value={{advertiserName}}>
+          <input type="text" id="pdf-initiative-name" placeholder="Initiative Name" value={{initiativeName}}>
+          <input type="text" id="pdf-send-invoice" placeholder="Send Invoice To">
+          <textarea id="pdf-notes" rows="4" cols="50" placeholder="Enter any notes to be included on IO"></textarea>
+          <button id="pdf-submit">Generate PDF</button>
+        </div>
+      </div>
+    </div>
+  {{else}}
+    <p>One moment...</p>
+  {{/if}}
+</template>

@@ -1,0 +1,134 @@
+{{{getDocType}}}
+<html lang="en">
+<head>
+    <style type="text/css">
+            {{css}}
+    </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row" style="margin-bottom: 1px;">
+    <img src="{{absoluteURL "public/images/TSLOGO.jpeg"}}" alt="" style="height: 100px; width: 100px; opacity: 0.2; position: absolute;">
+      <div class="col s12" style="margin-bottom: 1px;">
+        <h6 class="center-align" style="margin-bottom: 5px; margin-top: 0px; z-index: -5;">Targeted Social Insertion Order Form</h6>
+      </div>
+    </div>
+    <div class="row" style="margin-bottom: 1px;">
+      <div class="col s12 center-align" style="font-size: 10px;">
+        <span><b>Client:</b> {{info.client}} | <b>Advertiser/Brand:</b> {{info.advertiser}} | <span><b>Campaign Name:</b> {{info.initiative}}</span></span>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 3px;">
+      <div class="col s12">
+        <table class="centered" style="font-size: 10px;">
+          <thead>
+            <tr>
+              <th style="padding-bottom: 2px;">Platform</th>
+              <th style="padding-bottom: 2px;">Dates</th>
+              <th style="padding-bottom: 2px;">Deal Type</th>
+              <th style="padding-bottom: 2px;">Price</th>
+              <th style="padding-bottom: 2px;">Delivery</th>
+              <th style="padding-bottom: 2px;">Total Cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each item in init}}
+              {{#if item.price}}
+                <tr style="padding-top: 1px; padding-bottom: 1px;">
+                  <td style="padding-top: 1px; padding-bottom: 1px;">{{item.platform}}</td>
+                  <td style="padding-top: 1px; padding-bottom: 1px;">{{time item.startDate}} - {{time item.endDate}}</td>
+                  <td style="padding-top: 1px; padding-bottom: 1px;">{{item.dealType}}</td>
+                  <td style="padding-top: 1px; padding-bottom: 1px;">{{money item.price}}</td>
+                  <td style="padding-top: 1px; padding-bottom: 1px;">{{num item.quantity}}</td>
+                  <td style="padding-top: 1px; padding-bottom: 1px;">{{money item.budget}}</td>
+                </tr>
+              {{/if}}
+            {{/each}}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td style="border-top: 1px solid black; color: blue; padding-top: 1px;">{{money total}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      {{!-- <div class="col s1 offset-s10">
+         <span style="font-size: 10px; background-color: yellow; margin-right: 5px;">{{money total}}</span>
+      </div> --}}
+      <div class="col s12" style="font-size: 8px;">
+        {{notes}}
+      </div>
+    </div>
+    <div class="row" style="margin-bottom: 1px;">
+      <div class="col s12">
+        <span style="font-size: 12px;">Terms, Instructions and Conditions</span>
+        <br>
+        <span style="font-size: 10px;"><b>General Terms</b></span>
+        <br>
+      </div>
+      <div class="col s2" style="font-size: 8px;">
+        <span>Payment Terms:</span>
+      </div>
+      <div class="col s10" style="font-size: 8px;">
+        <span class="left-align">Net 30 Days</span>
+      </div>
+      <div class="col s2" style="font-size: 8px;">
+        <span>Ad Creative:</span>
+      </div>
+      <div class="col s10" style="font-size: 8px;">
+        <span class="left-align">All Creative must be approved by Client</span>
+      </div>
+      <div class="col s2" style="font-size: 8px;">
+        <span>Out Clause (days):</span>
+      </div>
+      <div class="col s10" style="font-size: 8px;">
+        <span class="left-align">Either Party can cancel with written notice. In the event of cancellation, Client will be billed for costs incurred up to the date of cancellation</span>
+      </div>
+      <div class="col s12">
+        <span style="font-size: 10px;"><b>Legal Terms</b></span>
+      </div>
+      <div class="col s12">
+        <article style="font-size: 8px; padding: 0px; margin: 0px; line-height: 14px;">
+          Unless otherwise noted herein, this Insertion Order (IO) will be governed by the AAAA's Standard Terms & Conditions for Internet Advertising for Media Buy's One Year or Less, Version 2.0. Client shall make payments to Targeted Social set forth herein, based upon actual delivery, as measured by Facebook's ad servers. In the case of under-delivery Client may or may not chose to roll inventory over to the next calender month. In the case of over-delivery, only contracted inventory will be billed. This IO shall be governed by the state laws of New York and all claims, legal proceedings or litigation arising in connection with the IO (including the terms and conditions) will be brought solely in New York, NY and the parties consent to the jurisdiction of such courts.
+        </article>
+      </div>
+      <div class="col s12">
+        <span style="font-size: 10px;"><b>Payment Instruction & Terms</b></span>
+      </div>
+      <div class="col s12">
+        <article style="font-size: 8px; padding: 0px; margin: 0px; line-height: 14px;">
+          All payments to be paid (if by check) to Targeted Social LLC., 11 Northwood Court, Woodbury, NY 11797 Wire instructions to be furnished upon request.
+        </article>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 1px; margin-bottom: 0px;">
+      <div class="col s12" style="margin-top: 1px; margin-bottom: 1px;">
+        <span style="font-size: 10px;"><b>Agreed to by:</b></span>
+      </div>
+      <div class="col s6" style="margin-top: -5px;">
+        <span style="font-size: 8px;">{{info.client}}</span>
+        <br>
+        <div style="height: 30px; width: 175px; border-bottom: 1px solid black;">
+
+        </div>
+        <span style="font-size: 8px;">Name:</span>
+        <br>
+        <span style="font-size: 8px;">Title:</span>
+      </div>
+      <div class="col s6" style="margin-top: -5px;">
+        <span style="font-size: 8px;">Targeted Social</span>
+        <br>
+        <div style="height: 30px; width: 175px; border-bottom: 1px solid black;">
+
+        </div>
+        <span style="font-size: 8px;">Name: Corey Gottlieb</span>
+        <br>
+        <span style="font-size: 8px;">Title: Managing Partner</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

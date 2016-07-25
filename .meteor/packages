@@ -49,6 +49,12 @@ practicalmeteor:mocha
 useraccounts:materialize
 tomi:upload-server
 tomi:upload-jquery
-
 service-configuration
 accounts-base
+
+meteorhacks:ssr
+dfischer:phantomjs
+meteorhacks:npm
+
+
+npm-container
