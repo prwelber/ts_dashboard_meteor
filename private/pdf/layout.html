@@ -8,23 +8,32 @@
 <body>
   <div class="container">
     <div class="row" style="margin-bottom: 1px;">
-    <img src="{{absoluteURL "public/images/TSLOGO.png"}}" alt="Logo" style="height: 200px; width: 200px; opacity: 0.2; position: absolute; left: 35%; top: 25%;">
+    {{!-- <img src="{{absoluteURL "public/images/TSLOGO.png"}}" alt="Logo" style="height: 200px; width: 200px; opacity: 0.2; position: absolute; left: 35%; top: 25%;"> --}}
       <div class="col s12" style="margin-bottom: 1px;">
-        <h6 class="center-align" style="margin-bottom: 5px; margin-top: 0px; z-index: -5;">Targeted Social Insertion Order Form</h6>
+        <h5 class="center-align" style="margin-bottom: 5px; margin-top: 0px; z-index: -5;">Targeted Social Insertion Order</h5>
       </div>
     </div>
-    <div class="row" style="margin-bottom: 1px;">
-      <div class="col s12 center-align" style="font-size: 10px;">
-        <span><b>Client:</b> {{info.client}} | <b>Advertiser/Brand:</b> {{info.advertiser}} | <span><b>Campaign Name:</b> {{info.initiative}}</span></span>
+    <div class="row" style="margin-bottom: 10px;">
+      <div class="col s12 center-align" style="font-size: 12px;">
+        <span><b>Client:</b> {{info.client}} | <b>Advertiser/Brand:</b> {{info.advertiser}} | <b>Campaign Name:</b> {{info.initiative}}</span>
+      </div>
+      <div class="col s6 right-align" style="font-size: 12px;">
+          <span><b>Send Invoice To: </b>{{info.sendInvoice}}</span>
+      </div>
+      <div class="col s6 left-align" style="font-size: 12px;">
+          <span><b>Total Contracted Spend: </b>{{money total}}</span>
       </div>
     </div>
-    <div class="row" style="margin-top: 3px;">
+    <div class="divider" style="height: 4px; background-color: navy;"></div>
+    <div class="row" style="margin-top: 3px; margin-bottom: 10px;">
       <div class="col s12">
-        <table class="centered" style="font-size: 10px;">
-          <thead>
+        <table class="centered" style="font-size: 12px;">
+          <thead style="border-bottom-width: 0px; border-bottom-style: none;">
             <tr>
               <th style="padding-bottom: 2px;">Platform</th>
               <th style="padding-bottom: 2px;">Dates</th>
+              <th style="padding-bottom: 2px;">Placement</th>
+              <th style="padding-bottom: 2px;">Media URL</th>
               <th style="padding-bottom: 2px;">Deal Type</th>
               <th style="padding-bottom: 2px;">Price</th>
               <th style="padding-bottom: 2px;">Delivery</th>
@@ -37,6 +46,8 @@
                 <tr style="padding-top: 1px; padding-bottom: 1px;">
                   <td style="padding-top: 1px; padding-bottom: 1px;">{{item.platform}}</td>
                   <td style="padding-top: 1px; padding-bottom: 1px;">{{time item.startDate}} - {{time item.endDate}}</td>
+                  <td style="padding-top: 1px; padding-bottom: 1px;">{{placement @index}}</td>
+                  <td style="padding-top: 1px; padding-bottom: 1px; max-width: 175px; word-wrap: break-word;">{{URL @index}}</td>
                   <td style="padding-top: 1px; padding-bottom: 1px;">{{item.dealType}}</td>
                   <td style="padding-top: 1px; padding-bottom: 1px;">{{money item.price}}</td>
                   <td style="padding-top: 1px; padding-bottom: 1px;">{{num item.quantity}}</td>
@@ -50,21 +61,24 @@
               <td></td>
               <td></td>
               <td></td>
+              <td></td>
+              <td></td>
               <td style="border-top: 1px solid black; color: blue; padding-top: 1px;">{{money total}}</td>
             </tr>
           </tbody>
         </table>
       </div>
-      {{!-- <div class="col s1 offset-s10">
-         <span style="font-size: 10px; background-color: yellow; margin-right: 5px;">{{money total}}</span>
-      </div> --}}
+      <div class="col s12" style="font-size: 8px;">
+        {{targeting}}
+      </div>
       <div class="col s12" style="font-size: 8px;">
         {{notes}}
       </div>
     </div>
+    <div class="divider" style="height: 4px; background-color: navy;"></div>
     <div class="row" style="margin-bottom: 1px;">
       <div class="col s12">
-        <span style="font-size: 12px;">Terms, Instructions and Conditions</span>
+        <span style="font-size: 12px;">Terms and Conditions</span>
         <br>
         <span style="font-size: 10px;"><b>General Terms</b></span>
         <br>
@@ -73,7 +87,7 @@
         <span>Payment Terms:</span>
       </div>
       <div class="col s10" style="font-size: 8px;">
-        <span class="left-align">Net 30 Days</span>
+        <span class="left-align">{{info.paymentTerms}}</span>
       </div>
       <div class="col s2" style="font-size: 8px;">
         <span>Ad Creative:</span>
@@ -114,9 +128,9 @@
         <div style="height: 30px; width: 175px; border-bottom: 1px solid black;">
 
         </div>
-        <span style="font-size: 8px;">Name:</span>
+        <span style="font-size: 8px;">Name: {{info.clientName}}</span>
         <br>
-        <span style="font-size: 8px;">Title:</span>
+        <span style="font-size: 8px;">Title: {{info.clientTitle}}</span>
       </div>
       <div class="col s6" style="margin-top: -5px;">
         <span style="font-size: 8px;">Targeted Social</span>
@@ -124,9 +138,9 @@
         <div style="height: 30px; width: 175px; border-bottom: 1px solid black;">
 
         </div>
-        <span style="font-size: 8px;">Name: Corey Gottlieb</span>
+        <span style="font-size: 8px;">Name: {{info.tsName}}</span>
         <br>
-        <span style="font-size: 8px;">Title: Managing Partner</span>
+        <span style="font-size: 8px;">Title: {{info.tsTitle}}</span>
       </div>
     </div>
   </div>

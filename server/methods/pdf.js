@@ -41,6 +41,17 @@ Meteor.methods({
           return "Notes: " + info.notes;
         }
       },
+      placement: (num) => {
+        return info.itemObject[num].select;
+      },
+      URL: (num) => {
+        return info.itemObject[num].url;
+      },
+      targeting: function () {
+        if (info.targeting) {
+          return "Targeting: " + info.targeting;
+        }
+      },
       total: function () {
         const items = init.lineItems;
         let total = 0;
@@ -71,7 +82,7 @@ Meteor.methods({
       // data: data
     });
 
-    console.log("THIS IS AN HTML_STRING", html_string);
+    // console.log("THIS IS AN HTML_STRING", html_string);
 
     // Setup Webshot options
     var options = {

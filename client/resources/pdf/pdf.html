@@ -2,7 +2,7 @@
   {{#if isReady "Initiatives"}}
     <div class="container">
       <div class="row">
-        <div class="input-field col s3">
+        <div class="input-field col s4">
           <select name="pdf-select" id="pdf-select" class="browser-default">
             <option value="" disabled selected>Choose Initiative</option>
             {{#each init in getInits}}
@@ -11,15 +11,99 @@
           </select>
           <label class="active">Initiatives</label>
         </div>
-        <div class="col s12">
-          <input type="text" id="pdf-client-name" placeholder="Client Name" value={{clientName}}>
-          <input type="text" id="pdf-advertiser-name" placeholder="Advertiser or Brand Name" value={{advertiserName}}>
-          <input type="text" id="pdf-initiative-name" placeholder="Initiative Name" value={{initiativeName}}>
-          <input type="text" id="pdf-send-invoice" placeholder="Send Invoice To">
-          <textarea id="pdf-notes" rows="4" cols="50" placeholder="Enter any notes to be included on IO"></textarea>
-          <button id="pdf-submit">Generate PDF</button>
+      </div>
+      <div class="row">
+        <div class="col s4">
+          <input type="text" id="pdf-client" value={{clientName}}>
+          <label for="pdf-client" class="active">Client</label>
+        </div>
+        <div class="col s4">
+          <input type="text" id="pdf-advertiser-name" value={{advertiserName}}>
+          <label for="pdf-advertiser-name" class="active">Advertiser/Brand Name</label>
+        </div>
+        <div class="col s4">
+          <input type="text" id="pdf-initiative-name" value={{initiativeName}}>
+          <label for="pdf-initiative-name-name" class="active">Initiative Name</label>
+        </div>
+        <div class="col s6">
+          <input type="text" id="pdf-client-name">
+          <label for="pdf-client-name">Client Signer Name</label>
+        </div>
+        <div class="col s6">
+          <input type="text" id="pdf-client-title">
+          <label for="pdf-client-title">Client Signer Title</label>
+        </div>
+        <div class="col s6">
+          <input type="text" id="pdf-ts-name" value="Corey Gottlieb">
+          <label for="pdf-ts-name">Targeted Social Signer</label>
+        </div>
+        <div class="col s6">
+          <input type="text" id="pdf-ts-title" value="Managing Partner">
+          <label for="pdf-ts-title">Targeted Social Signer Title</label>
         </div>
       </div>
+      <div class="row">
+        <div class="col s6">
+          <input type="text" id="pdf-payment-terms" placeholder="Payment Terms" value="Net 30 Days">
+          <label for="pdf-client-title">Payment Terms</label>
+        </div>
+        <div class="col s6">
+          <input type="text" id="pdf-send-invoice">
+          <label for="pdf-send-invoice">Send Invoice To</label>
+        </div>
+ {{!--        <div class="col s7">
+          <textarea id="pdf-targeting" rows="4" cols="50" placeholder="Targeting" style="margin-top: 20px;"></textarea>
+          <label for="pdf-targeting">Targeting</label>
+        </div> --}}
+        <div class="col s7">
+          <textarea id="pdf-notes" rows="4" cols="50" placeholder="Enter any notes to be included on IO" style="margin-top: 20px;"></textarea>
+          <label for="pdf-notes">Notes</label>
+        </div>
+      </div>
+    </div>
+    {{#if initSelected}}
+      <div class="row" style="margin: 10px 15px 10px 15px;">
+        {{#each item in lineItems}}
+          <table class="centered">
+            <thead>
+              <tr>
+                <th>Platform</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Deal Type</th>
+                <th>Price</th>
+                <th>Delivery</th>
+                <th>Placement</th>
+                <th>URL</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{item.platform}}</td>
+                <td>{{time item.startDate}}</td>
+                <td>{{time item.endDate}}</td>
+                <td>{{item.dealType}}</td>
+                <td>{{item.price}}</td>
+                <td>{{item.quantity}}</td>
+                <td>
+                  <select name="pdf-select{{@index}}" id="pdf-select{{@index}}" class="browser-default">
+                    <option value="" disabled selected>Choose Placement Option</option>
+                    <option value="Like Ads">Like Ads</option>
+                    <option value="Sponsored Stories Page Likes">Sponsored Stories Page Likes</option>
+                    <option value="Like Ads & Sponsored Stories Page Likes">Like Ads & Sponsored Stories Page Likes</option>
+                  </select>
+                </td>
+                <td>
+                  <input type="text" id="pdf-url{{@index}}" placeholder="URL">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        {{/each}}
+      </div>
+    {{/if}}
+    <div class="row">
+      <button id="pdf-submit">Generate PDF</button>
     </div>
   {{else}}
     <p>One moment...</p>
