@@ -57,18 +57,18 @@ Meteor.methods({
       }
     });
 
-    SSR.compileTemplate('test_io', Assets.getText('pdf/io.html'));
+    // SSR.compileTemplate('test_io', Assets.getText('pdf/io.html'));
 
     // PREPARE DATA
-    var inits = Initiatives.findOne({name: "Woodbridge DLX FY '17"});
-    var data = {
-      init: inits
-    }
+    // var inits = Initiatives.findOne({name: "Woodbridge DLX FY '17"});
+    // var data = {
+    //   init: inits
+    // }
 
     var html_string = SSR.render('layout', {
       css: css,
-      template: "test_io",
-      data: data
+      template: "layout",
+      // data: data
     });
 
     console.log("THIS IS AN HTML_STRING", html_string);
@@ -76,11 +76,12 @@ Meteor.methods({
     // Setup Webshot options
     var options = {
       "paperSize": {
-         "format": "Letter",
+         "format": "A4",
          "orientation": "landscape",
          "margin": "1cm"
        },
-       siteType: 'html'
+       siteType: 'html',
+       renderDelay: 100
     };
 
     webshot(html_string, fileName, options, function(err) {
