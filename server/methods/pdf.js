@@ -52,6 +52,7 @@ Meteor.methods({
         return total;
       },
       absoluteURL: function (url) {
+        console.log("URL", Meteor.absoluteUrl(url));
         return Meteor.absoluteUrl(url);
       }
     });
