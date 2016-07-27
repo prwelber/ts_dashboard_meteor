@@ -7,11 +7,12 @@ const Promise = require('bluebird');
 
 // --------------------------- FUNCTIONS ---------------------------- //
 
-const defineAction = function defineAction (init) {
+const defineAction = function defineAction (init, index) {
   let action;
-  init.lineItems[0].dealType === "CPC" ? action = "clicks" : '';
-  init.lineItems[0].dealType === "CPM" ? action = "impressions" : '';
-  init.lineItems[0].dealType === "CPL" ? action = "like" : '';
+  init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
+  init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
+  init.lineItems[index].dealType === "CPL" ? action = "like" : '';
+  init.lineItems[index].dealType === "CPVV" ? action = "video_view" : '';
   return action;
 }
 
@@ -19,7 +20,7 @@ const percentTotalSpend = function percentTotalSpend (campaignData, init, index)
   let dealType = init.lineItems[index].percent_total;
   let quotedPrice = init.lineItems[index].price;
   if (dealType === true) {
-    let action = defineAction(init);
+    let action = defineAction(init, index);
     let effectiveNum = init.lineItems[index].effectiveNum;
     let percentage = (parseFloat(init.lineItems[index].percentTotalPercent) / 100);
     if (action === "impressions") {
@@ -145,20 +146,56 @@ export const initiativeHomepageFunctions = {
       let insights;
       const type = deliveryTypeChecker(init, index);
       let camp;
+
+      // need to match objective with campaign that has that objective, which is in
+      // the campaign_names array
+
       if (objective) {
-        // loop over the campaign names in the initiative
-        init.campaign_names.forEach(el => {
-          // check each campaignInsight for the objective
-          camp = CampaignInsights.findOne({'data.campaign_name': el});
-          if (camp) {
-            if (camp.data.objective === objective && camp) {
-              // once I have the campaign, pull all the daily insights for that
-              insights = InsightsBreakdownsByDays.find({'data.campaign_name': camp.data.campaign_name}, {sort: {'data.date_start': 1}}).fetch();
-            } else {
-              null;
-            }
+
+      const getDaysBreakdown = function getDaysBreakdown (init, index, objective) {
+        for (let i = 0; i < init.campaign_names.length; i++) {
+          camp = CampaignInsights.findOne({'data.campaign_name': init.campaign_names[i]})
+          if (camp.data.objective === objective) {
+            return InsightsBreakdownsByDays.find({'data.campaign_name': camp.data.campaign_name}, {sort: {'data.date_start': 1}}).fetch();
           }
-        });
+        }
+      }
+
+      insights = getDaysBreakdown(init, index, objective);
+
+      // if (objective) {
+      //   camp = CampaignInsights.findOne({'data.campaign_name': init.campaign_names[index]});
+      //   if (camp) {
+      //     if ((camp.data.objective === objective) && camp) {
+      //       insights = InsightsBreakdownsByDays.find({'data.campaign_name': camp.data.campaign_name}, {sort: {'data.date_start': 1}}).fetch();
+      //     } else {
+      //       return;
+      //     }
+      //   }
+
+      // if (objective) {
+      //   // loop over the campaign names in the initiative
+      //   init.campaign_names.forEach(el => {
+      //     // check each campaignInsight for the objective
+      //     camp = CampaignInsights.findOne({'data.campaign_name': el});
+      //     console.log('CAMP.DATA.OBJECTIVE', camp.data.objective);
+      //     if (camp) {
+      //       if ((camp.data.objective === objective) && camp) {
+      //         console.log('RUNNING!', camp.data.objective, objective)
+      //         console.log('CAMP.DATA', camp.data)
+      //         // once I have the campaign, pull all the daily insights for that
+      //         insights = InsightsBreakdownsByDays.find({'data.campaign_name': camp.data.campaign_name}, {sort: {'data.date_start': 1}}).fetch();
+      //       } else {
+      //         return;
+      //       }
+      //     }
+      //   });
+
+
+
+
+
+
 
         // get campaign factorSpend for use later
         const factorSpend = percentTotalSpend(camp.data, init, index);

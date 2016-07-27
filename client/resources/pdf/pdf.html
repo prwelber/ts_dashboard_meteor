@@ -51,13 +51,68 @@
           <input type="text" id="pdf-send-invoice">
           <label for="pdf-send-invoice">Send Invoice To</label>
         </div>
+        <div class="input-field col s3">
+          <input type="checkbox" id="pdf-max-price">
+          <label for="pdf-max-price">Max Price Column Header</label>
+        </div>
+        <div class="col s9 left-align" style="margin-top: 28px;">
+          <p style="margin-bottom: 0px;">Check to change IO column header from 'Price' to 'Max price'</p>
+        </div>
+        <div class="input-field col s3">
+          <input type="checkbox" id="pdf-fee-included">
+          <label for="pdf-fee-included">Cost Includes Fee</label>
+        </div>
+        <div class="col s4 left-align" style="margin-top: 28px;">
+          <p style="margin-bottom: 0px;">Check to include Fee Notice</p>
+        </div>
+        <div class="col s2" style="margin-top: 15px; margin-left: -50px;">
+          <input type="text" id="pdf-fee" placeholder="15" style="margin-bottom: 5px;">
+          <label for="pdf-fee">Fee Percentage</label>
+        </div>
+
  {{!--        <div class="col s7">
           <textarea id="pdf-targeting" rows="4" cols="50" placeholder="Targeting" style="margin-top: 20px;"></textarea>
           <label for="pdf-targeting">Targeting</label>
         </div> --}}
-        <div class="col s7">
+        <div class="col s12">
           <textarea id="pdf-notes" rows="4" cols="50" placeholder="Enter any notes to be included on IO" style="margin-top: 20px;"></textarea>
           <label for="pdf-notes">Notes</label>
+        </div>
+        <div class="row">
+          <div class="col s12 center-align">
+            <h3>Manually Add Line Item</h3>
+          </div>
+          <div class="col s2">
+            <input type="text" id="pdf-item-platform" placeholder="Facebook">
+            <label for="pdf-item-platform">Platform</label>
+          </div>
+          <div class="col s1">
+            <input type="text" id="pdf-item-start" placeholder="01/01/2016">
+            <label for="pdf-item-start">Start Date</label>
+          </div>
+          <div class="col s1">
+            <input type="text" id="pdf-item-end" placeholder="12/31/2016">
+            <label for="pdf-item-end">End Date</label>
+          </div>
+          <div class="col s1">
+            <input type="text" id="pdf-item-dealType" placeholder="CPC">
+            <label for="pdf-item-dealType">Deal Type</label>
+          </div>
+          <div class="col s1">
+            <input type="text" id="pdf-item-price" placeholder="ex. 1.23">
+            <label for="pdf-item-price">Price</label>
+          </div>
+          <div class="col s2">
+            <input type="text" id="pdf-item-delivery" placeholder="ex. 12345">
+            <label for="pdf-item-delivery">Delivery</label>
+          </div>
+          <div class="col s2">
+            <input type="text" id="pdf-item-budget" placeholder="ex. 12345.00">
+            <label for="pdf-item-budget">Budget</label>
+          </div>
+          <div class="col s2">
+            <button id="pdf-add-item">Add Line Item</button>
+          </div>
         </div>
       </div>
     </div>
@@ -73,8 +128,7 @@
                 <th>Deal Type</th>
                 <th>Price</th>
                 <th>Delivery</th>
-                <th>Placement</th>
-                <th>URL</th>
+                <th>Total Cost</th>
               </tr>
             </thead>
             <tbody>
@@ -85,17 +139,7 @@
                 <td>{{item.dealType}}</td>
                 <td>{{item.price}}</td>
                 <td>{{item.quantity}}</td>
-                <td>
-                  <select name="pdf-select{{@index}}" id="pdf-select{{@index}}" class="browser-default">
-                    <option value="" disabled selected>Choose Placement Option</option>
-                    <option value="Like Ads">Like Ads</option>
-                    <option value="Sponsored Stories Page Likes">Sponsored Stories Page Likes</option>
-                    <option value="Like Ads & Sponsored Stories Page Likes">Like Ads & Sponsored Stories Page Likes</option>
-                  </select>
-                </td>
-                <td>
-                  <input type="text" id="pdf-url{{@index}}" placeholder="URL">
-                </td>
+                <td>{{item.budget}}</td>
               </tr>
             </tbody>
           </table>

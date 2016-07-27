@@ -41,12 +41,6 @@ Meteor.methods({
           return "Notes: " + info.notes;
         }
       },
-      placement: (num) => {
-        return info.itemObject[num].select;
-      },
-      URL: (num) => {
-        return info.itemObject[num].url;
-      },
       targeting: function () {
         if (info.targeting) {
           return "Targeting: " + info.targeting;
@@ -65,6 +59,23 @@ Meteor.methods({
       absoluteURL: function (url) {
         console.log("URL", Meteor.absoluteUrl(url));
         return Meteor.absoluteUrl(url);
+      },
+      maxPrice: function () {
+        if (info.maxPrice === true) {
+          return 'Max Price';
+        } else {
+          return 'Price';
+        }
+      },
+      feeIncluded: function () {
+        if (info.feeIncluded === true) {
+          return true;
+        }
+      },
+      feeStar: function () {
+        if (info.feeIncluded === true) {
+          return "*"
+        }
       }
     });
 

@@ -32,12 +32,10 @@
             <tr>
               <th style="padding-bottom: 2px;">Platform</th>
               <th style="padding-bottom: 2px;">Dates</th>
-              <th style="padding-bottom: 2px;">Placement</th>
-              <th style="padding-bottom: 2px;">Media URL</th>
               <th style="padding-bottom: 2px;">Deal Type</th>
-              <th style="padding-bottom: 2px;">Price</th>
+              <th style="padding-bottom: 2px;">{{maxPrice}}</th>
               <th style="padding-bottom: 2px;">Delivery</th>
-              <th style="padding-bottom: 2px;">Total Cost</th>
+              <th style="padding-bottom: 2px;">Total Cost{{feeStar}}</th>
             </tr>
           </thead>
           <tbody>
@@ -46,8 +44,6 @@
                 <tr style="padding-top: 1px; padding-bottom: 1px;">
                   <td style="padding-top: 1px; padding-bottom: 1px;">{{item.platform}}</td>
                   <td style="padding-top: 1px; padding-bottom: 1px;">{{time item.startDate}} - {{time item.endDate}}</td>
-                  <td style="padding-top: 1px; padding-bottom: 1px;">{{placement @index}}</td>
-                  <td style="padding-top: 1px; padding-bottom: 1px; max-width: 175px; word-wrap: break-word;">{{URL @index}}</td>
                   <td style="padding-top: 1px; padding-bottom: 1px;">{{item.dealType}}</td>
                   <td style="padding-top: 1px; padding-bottom: 1px;">{{money item.price}}</td>
                   <td style="padding-top: 1px; padding-bottom: 1px;">{{num item.quantity}}</td>
@@ -56,8 +52,6 @@
               {{/if}}
             {{/each}}
             <tr>
-              <td></td>
-              <td></td>
               <td></td>
               <td></td>
               <td></td>
@@ -83,6 +77,14 @@
         <span style="font-size: 10px;"><b>General Terms</b></span>
         <br>
       </div>
+      {{#if feeIncluded}}
+        <div class="col s2" style="font-size: 8px;">
+          <span>* Total Client Costs:</span>
+        </div>
+        <div class="col s10" style="font-size: 8px;">
+          <span class="left-align">Includes a {{info.fee}}% fee to Targeted Social</span>
+        </div>
+      {{/if}}
       <div class="col s2" style="font-size: 8px;">
         <span>Payment Terms:</span>
       </div>

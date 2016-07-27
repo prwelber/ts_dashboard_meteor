@@ -5,7 +5,7 @@ import moment from 'moment-timezone';
 
 Template.pdf.onCreated(function () {
   this.lineItems = new ReactiveDict();
-  this.lineItems.set('lineItems', null);
+  this.lineItems.set('lineItems', []);
 });
 
 Template.pdf.helpers({
@@ -62,26 +62,30 @@ Template.pdf.events({
     var paymentTerms = $("#pdf-payment-terms").val();
     var notes = $("#pdf-notes").val();
     var sendInvoice = $("#pdf-send-invoice").val();
-    var itemObject = {
-      0: {},
-      1: {},
-      2: {},
-      3: {},
-      4: {}
-    };
-    let itemLength;
+    var maxPrice = $("#pdf-max-price").is(":checked");
+    var feeIncluded = $("#pdf-fee-included").is(":checked");
+    var fee = $("#pdf-fee").val();
+    // var itemObject = {
+    //   0: {},
+    //   1: {},
+    //   2: {},
+    //   3: {},
+    //   4: {},
+    //   5: {}
+    // };
+    // let itemLength;
 
     // var targeting = $("#pdf-targeting").val();
 
-    for (let i = 0; i <= 4; i++) {
-      var URL = instance.$("#pdf-url" + i).val();
+    // for (let i = 0; i <= 5; i++) {
+    //   var URL = instance.$("#pdf-url" + i).val();
 
-      if (URL) {
-        var select = instance.$("#pdf-select" + i).val();
-        itemObject[i]['select'] = select;
-        itemObject[i]['url'] = URL;
-      }
-    }
+    //   if (URL) {
+    //     var select = instance.$("#pdf-select" + i).val();
+    //     itemObject[i]['select'] = select;
+    //     itemObject[i]['url'] = URL;
+    //   }
+    // }
 
     var info = {
       client: client,
@@ -93,12 +97,18 @@ Template.pdf.events({
       tsTitle: tsTitle,
       paymentTerms: paymentTerms,
       notes: notes,
-      itemObject: itemObject,
-      sendInvoice: sendInvoice
+      sendInvoice: sendInvoice,
+      maxPrice: maxPrice,
+      feeIncluded: feeIncluded,
+      fee: fee
+      // itemObject: itemObject,
       // targeting: targeting
     }
+
     const selected = $("#pdf-select").val();
     const init = Initiatives.findOne({name: selected});
+    // add manually entered to initiative
+    init.lineItems = instance.lineItems.get('lineItems');
 
     Meteor.call('generatePDF', info, init, function(err, res) {
       if (err) {
@@ -114,6 +124,39 @@ Template.pdf.events({
     Session.set('clientName', init.agency);
     Session.set('advertiserName', init.brand);
     instance.lineItems.set('lineItems', init.lineItems);
+  },
+  'click #pdf-add-item': (event, instance) => {
+    const platform = instance.$('#pdf-item-platform').val();
+    let startDate = instance.$('#pdf-item-start').val();
+    let endDate = instance.$('#pdf-item-end').val();
+    const dealType = instance.$('#pdf-item-dealType').val();
+    const price = instance.$('#pdf-item-price').val();
+    const quantity = instance.$('#pdf-item-delivery').val();
+    const budget = instance.$('#pdf-item-budget').val();
+    // ---- CONVERT TIMES ----- //
+    startDate = moment(startDate, "MM/DD/YYYY").toISOString();
+    endDate = moment(endDate, "MM/DD/YYYY").toISOString();
+    // ------------------------ //
+    const addItem = {
+      platform: platform,
+      startDate: startDate,
+      endDate: endDate,
+      dealType: dealType,
+      price: price,
+      quantity: quantity,
+      budget: budget
+    }
+
+    const items = instance.lineItems.get('lineItems');
+    items.unshift(addItem);
+    instance.lineItems.set('lineItems', items);
+
+    const itemArray = ['platform', 'start', 'end', 'dealType', 'price', 'delivery', 'budget'];
+
+    for (let i = 0; i < itemArray.length; i++) {
+      instance.$('#pdf-item-' + itemArray[i]).val("");
+    }
+
   }
 });
 
