@@ -167,7 +167,12 @@ Template.campaignDashboard.helpers({
     const objective = campData.objective.replace(/_/g, " ");
     const word = lower(objective); // convert all caps objective to normal grammar
     let realItem = _.where(init.lineItems, {objective: word}); // returns an array
-    const index = parseInt(realItem[0].name.substring(realItem[0].name.length, realItem[0].name.length - 1)) - 1; // minus 1 to account for zero indexing of lineItems array
+    let index;
+    if (realItem[0] === undefined) {
+      index = 0;
+      realItem = init.lineItems;
+    }
+    index = parseInt(realItem[0].name.substring(realItem[0].name.length, realItem[0].name.length - 1)) - 1; // minus 1 to account for zero indexing of lineItems array
     const quotedPrice = realItem[0].price;
     let dealType;
     realItem[0].cost_plus ? dealType = "cost_plus" : '';

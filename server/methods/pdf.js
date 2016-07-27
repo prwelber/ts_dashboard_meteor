@@ -7,7 +7,6 @@ import { formatters } from '/both/utilityFunctions/formatters';
 
 Meteor.methods({
   'generatePDF': (info, init) => {
-    console.log("INFO", info)
     var fut = new Future();
 
     var fileName = info.initiative + "_IO.pdf";
@@ -57,7 +56,6 @@ Meteor.methods({
         return total;
       },
       absoluteURL: function (url) {
-        console.log("URL", Meteor.absoluteUrl(url));
         return Meteor.absoluteUrl(url);
       },
       maxPrice: function () {
