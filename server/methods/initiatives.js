@@ -12,8 +12,8 @@ Meteor.methods({
     const campNameArray = [];
     // create unique ID to be shown on IO
     const counter = Counter.findOne({'counter': 1});
-
-    let uniqueID = 'TS-' + moment().format('YYYY') + ''
+    const unique = `TS-${moment().format('YYYY')}-${counter.number}`;
+    // format should be TS-2016-3000
 
     Initiatives.insert({
       inserted_date: moment().toISOString(),
@@ -29,8 +29,14 @@ Meteor.methods({
       tags: data.tags,
       lineItems: data.lineItems,
       campaign_ids: campArray,
-      campaign_names: campNameArray
+      campaign_names: campNameArray,
+      ioID: unique
     });
+
+    Counter.update(
+      {'counter': 1},
+      {$inc: {'number': 1}}
+    );
 
     const startDate = moment(data.lineItems[0].startDate, moment.ISO_8601).format("MM-DD-YYYY");
     const endDate = moment(data.lineItems[0].endDate, moment.ISO_8601).format("MM-DD-YYYY")

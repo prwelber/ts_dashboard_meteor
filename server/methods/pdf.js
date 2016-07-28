@@ -74,6 +74,9 @@ Meteor.methods({
         if (info.feeIncluded === true) {
           return "*"
         }
+      },
+      ioNumber: function () {
+        return init.ioID;
       }
     });
 
