@@ -21,6 +21,11 @@ Template.newInitiative.onRendered(function () {
     Session.set('factor3', false);
     Session.set('factor4', false);
     Session.set('factor5', false);
+    Session.set('quantity1', false);
+    Session.set('quantity2', false);
+    Session.set('quantity3', false);
+    Session.set('quantity4', false);
+    Session.set('quantity5', false);
 });
 
 Template.newInitiative.helpers({
@@ -79,6 +84,21 @@ Template.newInitiative.helpers({
     },
     effectiveNumber5: () => {
         return parseFloat((Session.get('price5') * Session.get('percent5')).toFixed(2));
+    },
+    budget1: () => {
+        return parseFloat((Session.get('price1') * Session.get('quantity1')).toFixed(2));
+    },
+    budget2: () => {
+        return parseFloat((Session.get('price2') * Session.get('quantity2')).toFixed(2));
+    },
+    budget3: () => {
+        return parseFloat((Session.get('price3') * Session.get('quantity3')).toFixed(2));
+    },
+    budget4: () => {
+        return parseFloat((Session.get('price4') * Session.get('quantity4')).toFixed(2));
+    },
+    budget5: () => {
+        return parseFloat((Session.get('price5') * Session.get('quantity5')).toFixed(2));
     }
 });
 
@@ -203,6 +223,41 @@ Template.newInitiative.events({
     },
     'click #percent-total5': (event, instance) => {
         Session.set('factor5', !Session.get('factor5'));
+    },
+    'keyup #quantity-input': (event, instance) => {
+        if (instance.$('#dealType-dropdown').val() === 'CPM') {
+            Session.set('quantity1', event.target.value / 1000);
+        } else {
+            Session.set('quantity1', event.target.value);
+        }
+    },
+    'keyup #quantity-input2': (event, instance) => {
+        if (instance.$('#dealType-dropdown2').val() === 'CPM') {
+            Session.set('quantity2', event.target.value / 1000);
+        } else {
+            Session.set('quantity2', event.target.value);
+        }
+    },
+    'keyup #quantity-input3': (event, instance) => {
+        if (instance.$('#dealType-dropdown3').val() === 'CPM') {
+            Session.set('quantity3', event.target.value / 1000);
+        } else {
+            Session.set('quantity3', event.target.value);
+        }
+    },
+    'keyup #quantity-input4': (event, instance) => {
+        if (instance.$('#dealType-dropdown4').val() === 'CPM') {
+            Session.set('quantity4', event.target.value / 1000);
+        } else {
+            Session.set('quantity4', event.target.value);
+        }
+    },
+    'keyup #quantity-input5': (event, instance) => {
+        if (instance.$('#dealType-dropdown5').val() === 'CPM') {
+            Session.set('quantity5', event.target.value / 1000);
+        } else {
+            Session.set('quantity5', event.target.value);
+        }
     }
 });
 
@@ -210,4 +265,5 @@ Template.newInitiative.onDestroyed(() => {
     $('.tooltipped').tooltip('remove');
     Session.set('price1', null);
     Session.set('percent1', null);
+    Session.set('quantity1', null)
 });

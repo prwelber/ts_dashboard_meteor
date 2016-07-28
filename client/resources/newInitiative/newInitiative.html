@@ -188,7 +188,7 @@
               </div>
               <div class="input-field col s3">
                 <input type="text" id="effective-number" name="effectiveNumber1" value="{{effectiveNumber1}}">
-                <label for="effective-number" class="active">Effective Target Number</label>
+                <label for="effective-number" class="active">Effective Target Price</label>
               </div>
               {{!-- <div class="input-field col s2">
                   <input type="checkbox" id="factor" name="factor1" {{factorDisabled}}>
@@ -221,8 +221,8 @@
                 <label for="quantity-input">Quantity</label>
               </div>
               <div class="input-field col s4">
-                <input type="text" id="budget-input" name="budget1">
-                <label for="budget-input">Budget (no commas, ex: 1000.00)</label>
+                <input type="text" id="budget-input" name="budget1" value={{budget1}}>
+                <label for="budget-input" class="active">Budget (no commas, ex: 1000.00)</label>
               </div>
             </div>
           </div>
@@ -331,23 +331,23 @@
                 <input type="text" id="client-percentage2" name="clientPercentage2">
                 <label for="client-percentage2">Client Percentage</label>
               </div> --}}
-              <div class="col s4">
+              {{!-- <div class="col s4">
                 <blockquote>
                   If no box is checked, this will be a Contracted Spend Deal.
                 </blockquote>
-              </div>
+              </div> --}}
 
-              <div class="input-field col s2">
+              <div class="input-field col s4">
                 <input type="text" id="price-input2" name="price2">
                 <label for="price-input2">Per Unit Price</label>
               </div>
-              <div class="input-field col s2">
+              <div class="input-field col s4">
                 <input type="text" id="quantity-input2" name="quantity2">
                 <label for="quantity-input2">Quantity</label>
               </div>
               <div class="input-field col s4">
-                <input type="text" id="budget-input2" name="budget2">
-                <label for="budget-input2">Budget (no commas, ex: 1000.00)</label>
+                <input type="text" id="budget-input2" name="budget2" value={{budget2}}>
+                <label for="budget-input2" class="active">Budget (no commas, ex: 1000.00)</label>
               </div>
 
             </div>
@@ -471,8 +471,8 @@
                 <label for="quantity-input3">Quantity</label>
               </div>
               <div class="input-field col s4">
-                <input type="text" id="budget-input3" name="budget3">
-                <label for="budget-input3">Budget (no commas, ex: 1000.00)</label>
+                <input type="text" id="budget-input3" name="budget3" value={{budget3}}>
+                <label for="budget-input3" class="active">Budget (no commas, ex: 1000.00)</label>
               </div>
 
             </div>
@@ -596,8 +596,8 @@
                 <label for="quantity-input4">Quantity</label>
               </div>
               <div class="input-field col s4">
-                <input type="text" id="budget-input4" name="budget4">
-                <label for="budget-input4">Budget (no commas, ex: 1000.00)</label>
+                <input type="text" id="budget-input4" name="budget4" value={{budget4}}>
+                <label for="budget-input4" class="active">Budget (no commas, ex: 1000.00)</label>
               </div>
 
             </div>
@@ -721,8 +721,8 @@
                 <label for="quantity-input5">Quantity</label>
               </div>
               <div class="input-field col s4">
-                <input type="text" id="budget-input5" name="budget5">
-                <label for="budget-input5">Budget (no commas, ex: 1000.00)</label>
+                <input type="text" id="budget-input5" name="budget5" value={{budget5}}>
+                <label for="budget-input5" class="active">Budget (no commas, ex: 1000.00)</label>
               </div>
             </div>
           </div>

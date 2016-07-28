@@ -14,41 +14,41 @@
       </div>
       <div class="row">
         <div class="col s4">
-          <input type="text" id="pdf-client" value={{clientName}}>
+          <input type="text" id="pdf-client" value={{clientName}} class="pdf-input" style="margin-bottom: 0px; margin-top: 15px;">
           <label for="pdf-client" class="active">Client</label>
         </div>
         <div class="col s4">
-          <input type="text" id="pdf-advertiser-name" value={{advertiserName}}>
+          <input type="text" id="pdf-advertiser-name" value={{advertiserName}} style="margin-bottom: 0px; margin-top: 15px;">
           <label for="pdf-advertiser-name" class="active">Advertiser/Brand Name</label>
         </div>
         <div class="col s4">
-          <input type="text" id="pdf-initiative-name" value={{initiativeName}}>
+          <input type="text" id="pdf-initiative-name" value={{initiativeName}} style="margin-bottom: 0px; margin-top: 15px;">
           <label for="pdf-initiative-name-name" class="active">Initiative Name</label>
         </div>
         <div class="col s6">
-          <input type="text" id="pdf-client-name">
+          <input type="text" id="pdf-client-name" style="margin-bottom: 0px; margin-top: 15px;">
           <label for="pdf-client-name">Client Signer Name</label>
         </div>
         <div class="col s6">
-          <input type="text" id="pdf-client-title">
+          <input type="text" id="pdf-client-title" style="margin-bottom: 0px; margin-top: 15px;">
           <label for="pdf-client-title">Client Signer Title</label>
         </div>
         <div class="col s6">
-          <input type="text" id="pdf-ts-name" value="Corey Gottlieb">
+          <input type="text" id="pdf-ts-name" value="Corey Gottlieb" style="margin-bottom: 0px; margin-top: 15px;">
           <label for="pdf-ts-name">Targeted Social Signer</label>
         </div>
         <div class="col s6">
-          <input type="text" id="pdf-ts-title" value="Managing Partner">
+          <input type="text" id="pdf-ts-title" value="Managing Partner" style="margin-bottom: 0px; margin-top: 15px;">
           <label for="pdf-ts-title">Targeted Social Signer Title</label>
         </div>
       </div>
       <div class="row">
         <div class="col s6">
-          <input type="text" id="pdf-payment-terms" placeholder="Payment Terms" value="Net 30 Days">
+          <input type="text" id="pdf-payment-terms" placeholder="Payment Terms" value="Net 30 Days" style="margin-bottom: 0px;">
           <label for="pdf-client-title">Payment Terms</label>
         </div>
         <div class="col s6">
-          <input type="text" id="pdf-send-invoice">
+          <input type="text" id="pdf-send-invoice" style="margin-bottom: 0px;">
           <label for="pdf-send-invoice">Send Invoice To</label>
         </div>
         <div class="input-field col s3">
@@ -56,7 +56,7 @@
           <label for="pdf-max-price">Max Price Column Header</label>
         </div>
         <div class="col s9 left-align" style="margin-top: 28px;">
-          <p style="margin-bottom: 0px;">Check to change IO column header from 'Price' to 'Max price'</p>
+          <p style="margin-bottom: 0px;">Check to change IO column header from 'Estimated Price' to 'Max price'</p>
         </div>
         <div class="input-field col s3">
           <input type="checkbox" id="pdf-fee-included">
@@ -83,31 +83,31 @@
             <h3>Manually Add Line Item</h3>
           </div>
           <div class="col s2">
-            <input type="text" id="pdf-item-platform" placeholder="Facebook">
+            <input type="text" id="pdf-item-platform" placeholder="Facebook" style="margin-bottom: 0px;">
             <label for="pdf-item-platform">Platform</label>
           </div>
           <div class="col s1">
-            <input type="text" id="pdf-item-start" placeholder="01/01/2016">
+            <input type="text" id="pdf-item-start" placeholder="01/01/2016" style="margin-bottom: 0px;">
             <label for="pdf-item-start">Start Date</label>
           </div>
           <div class="col s1">
-            <input type="text" id="pdf-item-end" placeholder="12/31/2016">
+            <input type="text" id="pdf-item-end" placeholder="12/31/2016" style="margin-bottom: 0px;">
             <label for="pdf-item-end">End Date</label>
           </div>
           <div class="col s1">
-            <input type="text" id="pdf-item-dealType" placeholder="CPC">
+            <input type="text" id="pdf-item-dealType" placeholder="CPC" style="margin-bottom: 0px;">
             <label for="pdf-item-dealType">Deal Type</label>
           </div>
           <div class="col s1">
-            <input type="text" id="pdf-item-price" placeholder="ex. 1.23">
-            <label for="pdf-item-price">Price</label>
+            <input type="text" id="pdf-item-price" placeholder="ex. 1.23" style="margin-bottom: 0px;">
+            <label for="pdf-item-price">Est/Max Price</label>
           </div>
           <div class="col s2">
-            <input type="text" id="pdf-item-delivery" placeholder="ex. 12345">
+            <input type="text" id="pdf-item-delivery" placeholder="ex. 12345" style="margin-bottom: 0px;">
             <label for="pdf-item-delivery">Delivery</label>
           </div>
           <div class="col s2">
-            <input type="text" id="pdf-item-budget" placeholder="ex. 12345.00">
+            <input type="text" id="pdf-item-budget" placeholder="ex. 12345.00" style="margin-bottom: 0px;">
             <label for="pdf-item-budget">Budget</label>
           </div>
           <div class="col s2">
@@ -126,7 +126,7 @@
                 <th>Start</th>
                 <th>End</th>
                 <th>Deal Type</th>
-                <th>Price</th>
+                <th>Est/Max Price</th>
                 <th>Delivery</th>
                 <th>Total Cost</th>
               </tr>

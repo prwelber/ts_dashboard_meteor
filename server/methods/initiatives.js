@@ -4,25 +4,16 @@ import { email } from '../sendgrid/email';
 import CampaignInsights from '/collections/CampaignInsights';
 import Initiatives from '/collections/Initiatives';
 import CampaignBasics from '/collections/CampaignBasics';
+import Counter from '/collections/Counter';
 
 Meteor.methods({
   'insertNewInitiative': function (data) {
     const campArray = [];
     const campNameArray = [];
-    let active = false;
-    let recentlyEnded = false;
-    let lastThreeMonths = false;
-    const now = moment();
-    // if now is after startDate AND now isBefore endDate active = true
-    // if (now.isAfter(moment(data.lineItems[0].startDate, moment.ISO_8601)) && now.isBefore(moment(data.lineItems[0].endDate, moment.ISO_8601))) {
-    //   active = true;
-    // }
-    // if (now.diff(moment(data.lineItems[0].endDate, moment.ISO_8601), "days") <= 31) {
-    //   recentlyEnded = true;
-    // }
-    // if (now.diff(moment(data.lineItems[0].endDate, moment.ISO_8601), "days") <= 90) {
-    //   lastThreeMonths = true;
-    // }
+    // create unique ID to be shown on IO
+    const counter = Counter.findOne({'counter': 1});
+
+    let uniqueID = 'TS-' + moment().format('YYYY') + ''
 
     Initiatives.insert({
       inserted_date: moment().toISOString(),
@@ -39,9 +30,6 @@ Meteor.methods({
       lineItems: data.lineItems,
       campaign_ids: campArray,
       campaign_names: campNameArray
-      // active: active,
-      // recentlyEnded: recentlyEnded,
-      // lastThreeMonths: lastThreeMonths
     });
 
     const startDate = moment(data.lineItems[0].startDate, moment.ISO_8601).format("MM-DD-YYYY");
@@ -50,7 +38,11 @@ Meteor.methods({
     const emailHTML = "<p>Name: "+data.name+"</p><p>Owner: "+data.owner+"</p><p>Brand: "+data.brand+"</p><p>Agency: "+data.agency+"</p><p>Dates: "+startDate+" - "+endDate+"</p>";
     const toList = ['kyu@targetedsocial.com', 'vguity@targetedsocial.com', 'pwelber@targetedsocial.com', 'cgottlieb@targetedsocial.com', 'selowsky@targetedsocial.com'];
 
-    email.sendEmail(toList, data.name +" Initiative Created", emailHTML);
+    if (Meteor.isProduction) {
+      email.sendEmail(toList, data.name +" Initiative Created", emailHTML);
+    } else {
+      email.sendEmail('prwelber@gmail.com', data.name + ' Initiative Created', emailHTML);
+    }
 
     return "success";
   },

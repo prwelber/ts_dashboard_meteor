@@ -101,16 +101,22 @@
             <span class="">CPC</span>
           </div>
         </div>
-        <div class="col s6 m4 l3 card {{likesObjective}}">
-          <div class="card-content ">
-            <span class="center-align dash-data">{{money cpl}}</span><br>
-            <span class="">CPL</span>
-          </div>
-        </div>
         <div class="col s6 m4 l3 card {{videoObjective}}">
           <div class="card-content ">
             <span class="center-align dash-data">{{money cost_per_video_view}}</span><br>
             <span class="">CPVV</span>
+          </div>
+        </div>
+       {{!--  <div class="col s6 m4 l3 card {{likesObjective}}">
+          <div class="card-content ">
+            <span class="center-align dash-data">{{money cpl}}</span><br>
+            <span class="">CPL</span>
+          </div>
+        </div> --}}
+        <div class="col s6 m4 l3 card grey lighten-5">
+          <div class="card-content ">
+            <span class="center-align dash-data">{{number offsite_conversion_fb_pixel_complete_registration}}</span><br>
+            <span class="">Conversions</span>
           </div>
         </div>
       {{else}}
@@ -133,16 +139,16 @@
             <span class="">CPC</span>
           </div>
         </div>
-        <div class="col s6 m4 l3 card {{likesObjective}}">
-          <div class="card-content ">
-            <span class="center-align dash-data">{{money clientStats.cpl}}</span><br>
-            <span class="">CPL</span>
-          </div>
-        </div>
         <div class="col s6 m4 l3 card {{videoObjective}}">
           <div class="card-content ">
             <span class="center-align dash-data">{{money clientStats.cpvv}}</span><br>
             <span class="">CPVV</span>
+          </div>
+        </div>
+        <div class="col s6 m4 l3 card {{likesObjective}}">
+          <div class="card-content ">
+            <span class="center-align dash-data">{{money clientStats.cpl}}</span><br>
+            <span class="">CPL</span>
           </div>
         </div>
       {{/if}}

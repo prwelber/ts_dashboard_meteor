@@ -214,6 +214,9 @@ a:hover {
   font-size: 1.5em;
 }
 
+.pdf-input {
+  margin-bottom: 5px;
+}
 /****************************************************************
  *
  * CSS Percentage Circle

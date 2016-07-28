@@ -62,7 +62,7 @@ Meteor.methods({
         if (info.maxPrice === true) {
           return 'Max Price';
         } else {
-          return 'Price';
+          return 'Estimated Price';
         }
       },
       feeIncluded: function () {
