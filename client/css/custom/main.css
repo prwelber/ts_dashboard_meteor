@@ -217,6 +217,14 @@ a:hover {
 .pdf-input {
   margin-bottom: 5px;
 }
+
+#cl-table tbody tr td {
+  border-radius: 0px;
+}
+
+#cl-table tbody tr td select {
+  height: 25px;
+}
 /****************************************************************
  *
  * CSS Percentage Circle

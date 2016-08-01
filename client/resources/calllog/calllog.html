@@ -1,0 +1,78 @@
+<template name="calllog">
+  <h1>This is the new call log!</h1>
+
+  {{#if isReady "Initiatives"}}
+    <table id="cl-table" class="bordered">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Owner</th>
+          <th>RFP</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Agency</th>
+          <th>Brand</th>
+          <th>Platform</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>Notes</th>
+          <th>Q1</th>
+          <th>Q2</th>
+          <th>Q3</th>
+          <th>Q4</th>
+          <th>Total</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each init in showInits}}
+          <tr class="cl-row" data-_id="{{init._id}}" style="{{statusBackground init._id}}">
+            <td contenteditable="true" data-attr="name">{{init.name}}</td>
+            <td contenteditable="true" data-attr="owner">{{init.owner}}</td>
+            <td contenteditable="true" data-attr="cl.rfp">{{init.cl_rfp}}</td>
+            <td contenteditable="true" data-attr="cl.firstName">{{init.cl_firstName}}</td>
+            <td contenteditable="true" data-attr="cl.lastName">{{init.cl_lastname}}</td>
+            <td contenteditable="true" data-attr="agency">{{init.agency}}</td>
+            <td contenteditable="true" data-attr="brand">{{init.brand}}</td>
+            <td contenteditable="true" data-attr="lineItems[0].platform">{{init.lineItems.[0].platform}}</td>
+            <td contenteditable="true" data-attr="lineItems[0].startDate">{{time init.lineItems.[0].startDate}}</td>
+            <td contenteditable="true" data-attr="lineItems[0].endDate">{{time init.lineItems.[0].endDate}}</td>
+            <td contenteditable="true" data-attr="notes">{{notes}}</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>
+              <select name="" id="" class="browser-default cl-status">
+                {{#if status init._id}}
+                  <option value="{{init.cl_status}}" selected>{{init.cl_status}}</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Dead Pool">Dead Pool</option>
+                  <option value="Ordered">Ordered</option>
+                  <option value="Pending">Pending</option>
+                {{else}}
+                  <option value="" selected>Select Status</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Dead Pool">Dead Pool</option>
+                  <option value="Ordered">Ordered</option>
+                  <option value="Pending">Pending</option>
+                {{/if}}
+              </select>
+            </td>
+          </tr>
+        {{/each}}
+
+      </tbody>
+    </table>
+
+
+
+
+
+
+  {{else}}
+    <p>Loading Call Log..</p>
+  {{/if}}
+
+</template>

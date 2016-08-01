@@ -411,3 +411,17 @@ FlowRouter.route('/admin/pdf', {
         BlazeLayout.render('index', {main: 'pdf'});
     }
 });
+
+// ----------------- CALL LOG ------------------------ //
+
+
+FlowRouter.route('/admin/calllog', {
+    subscriptions: function () {
+        this.register('Initiatives', Meteor.subscribe('Initiatives'));
+    },
+    name: 'calllog',
+    action: () => {
+        Session.set('route', 'calllog');
+        BlazeLayout.render('index', {main: 'calllog'});
+    }
+})
