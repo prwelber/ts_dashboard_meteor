@@ -1,14 +1,21 @@
 import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import Initiatives from '/collections/Initiatives';
+import Uploads from '/collections/Uploads';
 import moment from 'moment-timezone';
+import mastFunc from '../masterFunctions';
 
 Template.calllog.onCreated(() => {
 
 });
 
 Template.calllog.onRendered(() => {
-
+  $('.modal-trigger').leanModal({
+    dismissible: true,
+    opacity: .8,
+    in_duration: 400,
+    out_duration: 300
+  });
 });
 
 Template.calllog.helpers({
@@ -38,7 +45,41 @@ Template.calllog.helpers({
     } else if (init.cl_status === 'Dead Pool') {
       return 'background-color: #ffe6e6';
     }
-  }
+  },
+  change: (_id) => {
+    if (Session.get('_id') === _id) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  getUploads: () => {
+    const initName = Session.get('modal');
+    return Uploads.find({initiative: initName});
+  },
+  modalName: () => {
+    return Session.get('modal');
+  },
+  fileType: (type) => {
+    if (/(spreadsheet|sheet)/g.test(type)) {
+      return "fa-file-excel-o";
+    } else if (/pdf/.test(type)) {
+      return "fa-file-pdf-o";
+    } else if (/plain/.test(type)) {
+      return "fa-file-text-o";
+    } else if (/png/.test(type)) {
+      return "fa-file-image-o";
+    } else if (/(javascript|html)/g.test(type)) {
+      return "fa-file-code-o";
+    } else if (/(word|processing)/g.test(type)) {
+      return "fa-file-word-o";
+    } else {
+      return "fa-file-o";
+    }
+  },
+  'money': (num) => {
+    return mastFunc.money(num);
+  },
 });
 
 
@@ -48,16 +89,11 @@ Template.calllog.events({
     const _id = event.target.parentNode.dataset._id;
     const attr = event.target.dataset.attr;
     const val = event.target.textContent;
-    console.log(attr, val)
-    var setObj = {};
-    setObj[attr] = val
-    console.log(setObj)
-
-    // Initiatives.update(
-    //   {_id: _id},
-    //   {$set: {attr: val}}
-    // )
-
+    var setObj = {
+      [attr]: val
+    };
+    Session.set('_id', _id);
+    Session.set('setObj', setObj);
   },
   'change .cl-status': (e, instance) => {
     // console.log(event.target.value);
@@ -67,9 +103,26 @@ Template.calllog.events({
       {_id: _id},
       {$set: {'cl_status': e.target.value}}
     )
+  },
+  'click .cl-change-button': (e, instance) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const _id = Session.get('_id');
+    const setObj = Session.get('setObj');
+    Initiatives.update(
+      {_id: _id},
+      {$set: setObj}
+    )
+    Session.set('_id', null);
+    Session.set('setObj', null);
+  },
+  'click .modal-trigger': (e, instance) => {
+    Session.set('modal', e.target.getAttribute('id'));
+    $('#cl-modal').openModal();
   }
 });
 
 Template.calllog.onDestroyed(() => {
-
+  Session.set('_id', null);
+  Session.set('setObj', null);
 });

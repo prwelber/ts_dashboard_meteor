@@ -417,7 +417,9 @@ FlowRouter.route('/admin/pdf', {
 
 FlowRouter.route('/admin/calllog', {
     subscriptions: function () {
+        const params = 'all';
         this.register('Initiatives', Meteor.subscribe('Initiatives'));
+        this.register('Uploads', Meteor.subscribe('Uploads', params));
     },
     name: 'calllog',
     action: () => {

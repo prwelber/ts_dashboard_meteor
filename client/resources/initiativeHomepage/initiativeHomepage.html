@@ -175,8 +175,66 @@
             </tbody>
           </table>
           {{/each}}
+          <div class="row">
+            <h5>Client IO Stats</h5>
+            {{#with clientAggregate}}
+              <table class="centered">
+                <thead>
+                  <tr>
+                    <th class="insights-table-header">Spend</th>
+                    <th class="insights-table-header">Clicks</th>
+                    <th class="insights-table-header">CPC</th>
+                    <th class="insights-table-header">Impressions</th>
+                    <th class="insights-table-header">CPM</th>
+                    <th class="insights-table-header">Likes</th>
+                    <th class="insights-table-header">CPL</th>
+                    <th class="insights-table-header">Video Views</th>
+                    <th class="insights-table-header">CPVV</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="insights-table-data">{{formatMoney spend}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            {{/with}}
+          </div>
         </div>
         {{else}}
+          {{#with clientAggregate}}
+            <h5>Client IO Stats</h5>
+            <table class="centered">
+              <thead>
+                <tr>
+                  <th class="insights-table-header">Spend</th>
+                  <th class="insights-table-header">Clicks</th>
+                  <th class="insights-table-header">CPC</th>
+                  <th class="insights-table-header">Impressions</th>
+                  <th class="insights-table-header">CPM</th>
+                  <th class="insights-table-header">Likes</th>
+                  <th class="insights-table-header">CPL</th>
+                  <th class="insights-table-header">Video Views</th>
+                  <th class="insights-table-header">CPVV</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="insights-table-data">{{formatMoney num.net.client_spend}}</td>
+                  <td class="insights-table-data">{{formatNumber num.clicks}}</td>
+                  <td class="insights-table-data">{{formatMoney num.net.client_cpc}}</td>
+                  <td class="insights-table-data">{{formatNumber num.impressions}}</td>
+                  <td class="insights-table-data">{{formatMoney num.net.client_cpm}}</td>
+                  <td class="insights-table-data">{{formatNumber num.likes}}</td>
+                  <td class="insights-table-data">{{formatMoney num.net.client_cpl}}</td>
+                  <td class="insights-table-data">{{formatNumber num.videoViews}}</td>
+                  <td class="insights-table-data">{{formatMoney num.net.client_cpvv}}</td>
+                </tr>
+              </tbody>
+            </table>
+
+
+          {{/with}}
           {{#each num in getClientNumbers}}
           <h5>Stats for Objective: {{num._id}}</h5>
           <table class="centered">

@@ -23,5 +23,10 @@ Meteor.methods({
 
 Meteor.publish('Uploads', function (options) {
   const init = Initiatives.findOne({_id: options._id})
-  return Uploads.find({initiative: init.name});
+
+  if (options === 'all') {
+    return Uploads.find()
+  } else {
+    return Uploads.find({initiative: init.name});
+  }
 });

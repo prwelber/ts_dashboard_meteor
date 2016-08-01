@@ -1,5 +1,44 @@
 <template name="calllog">
-  <h1>This is the new call log!</h1>
+
+  {{!------------------------------------  ------------------------------------}}
+  {{!------------------------------- File Modal -------------------------------}}
+  {{!------------------------------------  ------------------------------------}}
+
+  <div id="cl-modal" class="modal" style="width: 65%;">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col s12">
+          <ul class="collection with-header">
+            <li class="collection-header"><h3>Files for {{modalName}}</h3></li>
+            {{#each upload in getUploads}}
+              <li class="collection-item">
+                <div>
+                  <i class="fa {{fileType upload.type}}" aria-hidden="true"></i> {{upload.name}}
+                  <a target="_blank" href="{{upload.url}}" class="secondary-content" style="margin-left: 10px;">
+                    <i class="fa fa-link fa-2x" aria-hidden="true"></i>
+                  </a>
+                  <a target="_blank" href="{{upload.url}}" class="secondary-content" download style="margin-left: 10px;">
+                    <i class="fa fa-cloud-download fa-2x" aria-hidden="true"></i>
+                  </a>
+                  <a href="{{upload._id}}" class="secondary-content" id="delete-file" style="margin-left: 10px;">
+                    <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{{!------------------------------------  ------------------------------------}}
+{{!------------------------------ End File Modal ----------------------------}}
+{{!------------------------------------  ------------------------------------}}
+
+
+
+  <h1>This is the call log remix</h1>
 
   {{#if isReady "Initiatives"}}
     <table id="cl-table" class="bordered">
@@ -12,15 +51,15 @@
           <th>Last Name</th>
           <th>Agency</th>
           <th>Brand</th>
-          <th>Platform</th>
-          <th>Start</th>
-          <th>End</th>
+          <th>LI#1 Start</th>
+          <th>LI#1 End</th>
           <th>Notes</th>
           <th>Q1</th>
           <th>Q2</th>
           <th>Q3</th>
           <th>Q4</th>
           <th>Total</th>
+          <th>Files</th>
           <th>Status</th>
         </tr>
       </thead>
@@ -29,20 +68,22 @@
           <tr class="cl-row" data-_id="{{init._id}}" style="{{statusBackground init._id}}">
             <td contenteditable="true" data-attr="name">{{init.name}}</td>
             <td contenteditable="true" data-attr="owner">{{init.owner}}</td>
-            <td contenteditable="true" data-attr="cl.rfp">{{init.cl_rfp}}</td>
-            <td contenteditable="true" data-attr="cl.firstName">{{init.cl_firstName}}</td>
-            <td contenteditable="true" data-attr="cl.lastName">{{init.cl_lastname}}</td>
-            <td contenteditable="true" data-attr="agency">{{init.agency}}</td>
-            <td contenteditable="true" data-attr="brand">{{init.brand}}</td>
-            <td contenteditable="true" data-attr="lineItems[0].platform">{{init.lineItems.[0].platform}}</td>
-            <td contenteditable="true" data-attr="lineItems[0].startDate">{{time init.lineItems.[0].startDate}}</td>
-            <td contenteditable="true" data-attr="lineItems[0].endDate">{{time init.lineItems.[0].endDate}}</td>
+            <td contenteditable="true" data-attr="cl_rfp">{{init.cl_rfp}}</td>
+            <td contenteditable="true" data-attr="cl_firstName">{{init.cl_firstName}}</td>
+            <td contenteditable="true" data-attr="cl_lastName">{{init.cl_lastName}}</td>
+            <td data-attr="agency">{{init.agency}}</td>
+            <td data-attr="brand">{{init.brand}}</td>
+            <td data-attr="lineItems.0.startDate">{{time init.lineItems.[0].startDate}}</td>
+            <td data-attr="lineItems.0.endDate">{{time init.lineItems.[0].endDate}}</td>
             <td contenteditable="true" data-attr="notes">{{notes}}</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
+            <td contenteditable="true" data-attr="cl_q1">{{init.cl_q1}}</td>
+            <td contenteditable="true" data-attr="cl_q2">{{init.cl_q2}}</td>
+            <td contenteditable="true" data-attr="cl_q3">{{init.cl_q3}}</td>
+            <td contenteditable="true" data-attr="cl_q4">{{init.cl_q4}}</td>
+            <td contenteditable="true" data-attr="cl_total">{{init.cl_total}}</td>
+            <td>
+              <a id="{{init.name}}" class="modal-trigger" href="#cl-modal">Files</a>
+            </td>
             <td>
               <select name="" id="" class="browser-default cl-status">
                 {{#if status init._id}}
@@ -60,6 +101,12 @@
                 {{/if}}
               </select>
             </td>
+
+            {{#if change init._id}}
+              <td>
+                <button class="cl-change-button">Submit</button>
+              </td>
+            {{/if}}
           </tr>
         {{/each}}
 

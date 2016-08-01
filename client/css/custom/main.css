@@ -224,6 +224,11 @@ a:hover {
 
 #cl-table tbody tr td select {
   height: 25px;
+  width: 125px;
+}
+
+#cl-table {
+  font-size: 12px;
 }
 /****************************************************************
  *

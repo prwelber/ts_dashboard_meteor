@@ -13,6 +13,13 @@ var range = require('moment-range');
 var Promise = require('bluebird');
 // import Chart from "chart.js"
 
+const stringToCostPlusPercentage = function stringToCostPlusPercentage (num) {
+  num = num.toString().split('');
+  num.unshift(".");
+  num = 1 + parseFloat(num.join(''));
+  return num;
+}
+
 Tracker.autorun(function () {
   if (FlowRouter.subsReady('campaignInsightList') && FlowRouter.subsReady('Initiatives')) {
     // console.log('Insights and Initiatives subs are now ready!');
@@ -582,7 +589,17 @@ Template.initiativeHomepage.helpers({
     } else {
       return "fa-file-o";
     }
-
+  },
+  clientAggregate: () => {
+    console.log('running')
+    const init = Template.instance().templateDict.get('initiative');
+    if (init.lineItems[0].cost_plus) {
+      const percent = stringToCostPlusPercentage(init.lineItems[0].costPlusPercent);
+      console.log('percent', percent);
+      init.aggregateData.spend = init.aggregateData.spend * percent;
+      init.aggregateData.cpm = init.aggregateData.cpm * percent;
+      init.aggregateData.cpc = init.aggregateData.cpc * percent;
+    }
   }
 });
 

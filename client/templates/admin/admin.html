@@ -1,43 +1,25 @@
 <template name="admin">
   {{#if isInRole 'admin' }}
   <div id="admin-home-row" class="row">
-    <div class="col s6 m6 l6">
+  <div class="col s6 m4 l3">
       <div class="card z-depth-3">
         <div class="card-content">
-          <span class="card-title">Brands</span>
-          <p><a href="/admin/brands">Brand List</a></p>
-          <a href="/admin/brands/new">New Brand</a>
+          <span class="card-title">Call Log</span>
+          <p><a href="/admin/calllog">Call Log</a></p>
+          <a href="#">Other</a>
         </div>
       </div>
     </div>
-    <div class="col s6 m6 l6">
+    <div class="col s6 m4 l3">
       <div class="card z-depth-3">
         <div class="card-content">
-          <span class="card-title">Users</span>
-          <p><a href="/admin/users/">User List</a></p>
-          <a href="/admin/users/create">Create User</a>
+          <span class="card-title">PDF / IO Generator</span>
+          <p><a href="/admin/pdf">Create IO</a></p>
+          <a href="#">Other</a>
         </div>
       </div>
     </div>
-    <div class="col s6 m6 l6">
-      <div class="card z-depth-3">
-        <div class="card-content">
-          <span class="card-title">Agencies</span>
-          <p><a href="/admin/agencies/">Agency List</a></p>
-          <a href="/admin/agencies/new">New Agency</a>
-        </div>
-      </div>
-    </div>
-    <div class="col s6 m6 l6">
-      <div class="card z-depth-3">
-        <div class="card-content">
-          <span class="card-title">Initiatives</span>
-          <p><a href="/admin/initiatives">Initiative List</a></p>
-          <a href="/initiatives/new">New Initiative</a>
-        </div>
-      </div>
-    </div>
-    <div class="col s6 m6 l6">
+    <div class="col s6 m4 l3">
       <div class="card z-depth-3">
         <div class="card-content">
           <span class="card-title"> Spending / Aggregations</span>
@@ -46,7 +28,7 @@
         </div>
       </div>
     </div>
-    <div class="col s6 m6 l6">
+    <div class="col s6 m4 l3">
       <div class="card z-depth-3">
         <div class="card-content">
           <span class="card-title">Campaigns</span>
@@ -55,12 +37,39 @@
         </div>
       </div>
     </div>
-    <div class="col s6 m6 l6">
+    <div class="col s6 m4 l3">
       <div class="card z-depth-3">
         <div class="card-content">
-          <span class="card-title">PDF / IO Generator</span>
-          <p><a href="/admin/pdf">Create IO</a></p>
-          <a href="#">Other</a>
+          <span class="card-title">Brands</span>
+          <p><a href="/admin/brands">Brand List</a></p>
+          <a href="/admin/brands/new">New Brand</a>
+        </div>
+      </div>
+    </div>
+    <div class="col s6 m4 l3">
+      <div class="card z-depth-3">
+        <div class="card-content">
+          <span class="card-title">Users</span>
+          <p><a href="/admin/users/">User List</a></p>
+          <a href="/admin/users/create">Create User</a>
+        </div>
+      </div>
+    </div>
+    <div class="col s6 m4 l3">
+      <div class="card z-depth-3">
+        <div class="card-content">
+          <span class="card-title">Agencies</span>
+          <p><a href="/admin/agencies/">Agency List</a></p>
+          <a href="/admin/agencies/new">New Agency</a>
+        </div>
+      </div>
+    </div>
+    <div class="col s6 m4 l3">
+      <div class="card z-depth-3">
+        <div class="card-content">
+          <span class="card-title">Initiatives</span>
+          <p><a href="/admin/initiatives">Initiative List</a></p>
+          <a href="/initiatives/new">New Initiative</a>
         </div>
       </div>
     </div>
