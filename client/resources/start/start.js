@@ -155,7 +155,6 @@ Template.initiativesHome.helpers({
     return moment(date, moment.ISO_8601).format("MM-DD-YYYY");
   },
   'assignAgency': () => {
-    console.log('this', this);
     return this.agency;
   },
   'assignBrand': () => {
@@ -168,7 +167,6 @@ Template.initiativesHome.helpers({
     return this.owner;
   },
   calcSpend: (objective, _id, state) => {
-    console.log(Meteor.user())
     const init = Initiatives.findOne({_id: _id});
     const allCapsObjective = objective.split(' ').join('_').toUpperCase();
     for (let key in init) {
@@ -181,8 +179,9 @@ Template.initiativesHome.helpers({
           } else if (parseFloat(init[key]['net']['spendPercent']) >= 100 && state === "number") {
             if (Meteor.user().admin === false) {
               return "100"
+            } else {
+              return numeral(init[key]['net']['spendPercent']).format("00");
             }
-            // return numeral(init[key]['net']['spendPercent']).format("00");
           } else {
             return numeral(init[key]['net']['spendPercent']).format("00");
           }

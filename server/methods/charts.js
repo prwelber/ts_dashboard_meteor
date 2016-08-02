@@ -557,10 +557,7 @@ Meteor.methods({
       spend = 0;
 
       const objective = line.objective.toUpperCase().replace(/ /g, "_");
-      console.log('objective', objective);
       const clientData = initiative[objective].net;
-      console.log('clientData', clientData)
-
 
       deliverySpend = [];
       combinedArray.forEach((day) => {

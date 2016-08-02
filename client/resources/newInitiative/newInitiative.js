@@ -86,19 +86,39 @@ Template.newInitiative.helpers({
         return parseFloat((Session.get('price5') * Session.get('percent5')).toFixed(2));
     },
     budget1: () => {
-        return parseFloat((Session.get('price1') * Session.get('quantity1')).toFixed(2));
+        if (parseFloat((Session.get('price1') * Session.get('quantity1')).toFixed(2))) {
+            return parseFloat((Session.get('price1') * Session.get('quantity1')).toFixed(2));
+        } else {
+            return "";
+        }
     },
     budget2: () => {
-        return parseFloat((Session.get('price2') * Session.get('quantity2')).toFixed(2));
+        if (parseFloat((Session.get('price2') * Session.get('quantity2')).toFixed(2))) {
+            return parseFloat((Session.get('price2') * Session.get('quantity2')).toFixed(2));
+        } else {
+            return "";
+        }
     },
     budget3: () => {
-        return parseFloat((Session.get('price3') * Session.get('quantity3')).toFixed(2));
+        if (parseFloat((Session.get('price3') * Session.get('quantity3')).toFixed(2))) {
+            return parseFloat((Session.get('price3') * Session.get('quantity3')).toFixed(2));
+        } else {
+            return "";
+        }
     },
     budget4: () => {
-        return parseFloat((Session.get('price4') * Session.get('quantity4')).toFixed(2));
+        if (parseFloat((Session.get('price4') * Session.get('quantity4')).toFixed(2))) {
+            return parseFloat((Session.get('price4') * Session.get('quantity4')).toFixed(2));
+        } else {
+            return "";
+        }
     },
     budget5: () => {
-        return parseFloat((Session.get('price5') * Session.get('quantity5')).toFixed(2));
+        if (parseFloat((Session.get('price5') * Session.get('quantity5')).toFixed(2))) {
+            return parseFloat((Session.get('price5') * Session.get('quantity5')).toFixed(2));
+        } else {
+            return "";
+        }
     }
 });
 
@@ -263,7 +283,5 @@ Template.newInitiative.events({
 
 Template.newInitiative.onDestroyed(() => {
     $('.tooltipped').tooltip('remove');
-    Session.set('price1', null);
-    Session.set('percent1', null);
-    Session.set('quantity1', null)
+    Session.keys = {};
 });

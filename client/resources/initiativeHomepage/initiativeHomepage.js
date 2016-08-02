@@ -20,12 +20,6 @@ const stringToCostPlusPercentage = function stringToCostPlusPercentage (num) {
   return num;
 }
 
-Tracker.autorun(function () {
-  if (FlowRouter.subsReady('campaignInsightList') && FlowRouter.subsReady('Initiatives')) {
-    // console.log('Insights and Initiatives subs are now ready!');
-  }
-});
-
 const whichObjectives = function whichObjectives (initiative) {
   const arr = [];
   initiative.VIDEO_VIEWS ? arr.push(initiative.VIDEO_VIEWS) : '';
@@ -42,7 +36,7 @@ const whichObjectives = function whichObjectives (initiative) {
 
 Template.initiativeHomepage.onCreated(function () {
   this.templateDict = new ReactiveDict();
-  const initiative = Initiatives.findOne({_id: FlowRouter.current().params._id});
+  const initiative = Initiatives.findOne({_id: FlowRouter.getParam('_id')});
   this.templateDict.set('initiative', initiative);
 
   const campaigns = CampaignInsights.find({'data.initiative': initiative.name}).fetch();
@@ -64,7 +58,7 @@ Template.initiativeHomepage.onRendered(function () {
   });
 
 
-  const initiative = Initiatives.findOne({_id: FlowRouter.getParam("_id")});
+  const initiative = Initiatives.findOne({_id: FlowRouter.getParam('_id')});
   Meteor.call('getAggregate', initiative.name);
   // Meteor.call('aggregateObjective', initiative.name);
 
@@ -591,14 +585,42 @@ Template.initiativeHomepage.helpers({
     }
   },
   clientAggregate: () => {
-    console.log('running')
     const init = Template.instance().templateDict.get('initiative');
     if (init.lineItems[0].cost_plus) {
       const percent = stringToCostPlusPercentage(init.lineItems[0].costPlusPercent);
-      console.log('percent', percent);
-      init.aggregateData.spend = init.aggregateData.spend * percent;
-      init.aggregateData.cpm = init.aggregateData.cpm * percent;
-      init.aggregateData.cpc = init.aggregateData.cpc * percent;
+      const returnArr = [{
+        spend: init.aggregateData.spend * percent,
+        cpm: init.aggregateData.cpm * percent,
+        cpc: init.aggregateData.cpc * percent,
+        cpl: init.aggregateData.cpc * percent,
+        cpvv: init.aggregateData.cpvv * percent,
+        impressions: init.aggregateData.impressions,
+        clicks: init.aggregateData.clicks,
+        likes: init.aggregateData.likes,
+        videoViews: init.aggregateData.videoViews
+      }];
+      return returnArr[0];
+    } else if (init.lineItems[0].percent_total === true) {
+      const returnObj = {
+        spend: 0,
+        impressions: 0,
+        clicks: 0,
+        videoViews: 0,
+        likes: 0
+      };
+      const objArr = whichObjectives(init);
+      objArr.forEach(obj => {
+        returnObj['spend'] += obj.net.client_spend;
+        returnObj['clicks'] += obj.clicks;
+        returnObj['impressions'] += obj.impressions;
+        returnObj['likes'] += obj.likes;
+        returnObj['videoViews'] += obj.videoViews;
+      });
+      returnObj['cpm'] = returnObj.spend / (returnObj.impressions / 1000);
+      returnObj['cpc'] = returnObj.spend / returnObj.clicks;
+      returnObj['cpl'] = returnObj.spend / returnObj.likes;
+      returnObj['cpvv'] = returnObj.spend / returnObj.videoViews;
+      return returnObj;
     }
   }
 });

@@ -25,7 +25,27 @@ Template.calllog.helpers({
     }
   },
   showInits: () => {
-    return Initiatives.find({}, {sort: {'cl_status': -1}});
+    const sort = Session.get('cl-sort');
+    const sortBy = Session.get('cl-sort-by');
+    if (! sort) {
+      return Initiatives.find({}, {sort: {'cl_status': -1}});
+    } else {
+      if (sort === "Name") {
+        return Initiatives.find({}, {sort: {'cl_status': -1, name: sortBy}});
+      } else if (sort === "Owner") {
+        return Initiatives.find({}, {sort: {'cl_status': -1, owner: sortBy}});
+      } else if (sort === "Agency") {
+        return Initiatives.find({}, {sort: {'cl_status': -1, agency: sortBy}});
+      } else if (sort === "Brand") {
+        return Initiatives.find({}, {sort: {'cl_status': -1, brand: sortBy}})
+      } else if (sort === "LI#1 Start") {
+        return Initiatives.find({}, {sort: {'cl_status': -1, 'lineItems.0.startDate': sortBy}});
+      } else if (sort === "LI#1 End") {
+        return Initiatives.find({}, {sort: {'cl_status': -1, 'lineItems.0.endDate': sortBy}});
+      } else if (sort === "Total Budget") {
+        return Initiatives.find({}, {sort: {'cl_status': -1, 'aggregateData.totalBudget': sortBy}});
+      }
+    }
   },
   time: (timeString) => {
     return moment(timeString, moment.ISO_8601).format('MM/DD/YYYY');
@@ -80,7 +100,58 @@ Template.calllog.helpers({
   'money': (num) => {
     return mastFunc.money(num);
   },
+  total: (_id) => {
+    const init = Initiatives.findOne({_id: _id});
+    let total = 0;
+    const arr = ['cl_q1', 'cl_q2', 'cl_q3', 'cl_q4'];
+
+    for (let i = 0; i < arr.length; i++) {
+      if (init) {
+        if (init[arr[i]]) {
+          total += parseFloat(init[arr[i]])
+        }
+      }
+    }
+    return total;
+  },
+  num: (num) => {
+    return mastFunc.twoDecimals(num);
+  },
+  quarterStats: () => {
+    const inits = Initiatives.find().fetch();
+
+    let ordered = {
+      q1: 0,
+      q2: 0,
+      q3: 0,
+      q4: 0,
+      tb: 0 // total budget
+    };
+
+    inits.forEach(init => {
+
+      if (init.cl_q1 && (init.cl_status === "Ordered" || init.cl_status === "Completed")) {
+        ordered.q1 += parseFloat(init.cl_q1);
+        ordered.tb += parseFloat(init.cl_q1)
+      }
+      if (init.cl_q2 && (init.cl_status === "Ordered" || init.cl_status === "Completed")) {
+        ordered.q2 += parseFloat(init.cl_q2);
+        ordered.tb += parseFloat(init.cl_q2)
+      }
+      if (init.cl_q3 && (init.cl_status === "Ordered" || init.cl_status === "Completed")) {
+        ordered.q3 += parseFloat(init.cl_q3);
+        ordered.tb += parseFloat(init.cl_q3)
+      }
+      if (init.cl_q4 && (init.cl_status === "Ordered" || init.cl_status === "Completed")) {
+        ordered.q4 += parseFloat(init.cl_q4);
+        ordered.tb += parseFloat(init.cl_q4)
+      }
+    });
+    return ordered;
+  }
 });
+
+// ---------------------------- EVENTS ---------------------------- //
 
 
 Template.calllog.events({
@@ -119,10 +190,17 @@ Template.calllog.events({
   'click .modal-trigger': (e, instance) => {
     Session.set('modal', e.target.getAttribute('id'));
     $('#cl-modal').openModal();
+  },
+  'click .cl-header': (e, instance) => {
+    Session.set('cl-sort', e.target.textContent);
+    if (Session.get('cl-sort-by')) {
+      Session.set('cl-sort-by', Session.get('cl-sort-by') * -1);
+    } else {
+      Session.set('cl-sort-by', 1);
+    }
   }
 });
 
 Template.calllog.onDestroyed(() => {
-  Session.set('_id', null);
-  Session.set('setObj', null);
+  Session.keys = {};
 });

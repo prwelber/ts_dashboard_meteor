@@ -36,23 +36,51 @@
 {{!------------------------------ End File Modal ----------------------------}}
 {{!------------------------------------  ------------------------------------}}
 
-
-
-  <h1>This is the call log remix</h1>
-
   {{#if isReady "Initiatives"}}
+    <div class="row">
+      <div class="col s5 offset-s6">
+      {{#with quarterStats}}
+        <table>
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Q1</th>
+              <th>Q2</th>
+              <th>Q3</th>
+              <th>Q4</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Ordered/Completed</td>
+              <td>{{money q1}}</td>
+              <td>{{money q2}}</td>
+              <td>{{money q3}}</td>
+              <td>{{money q4}}</td>
+              <td>{{money tb}}</td>
+            </tr>
+            <tr>
+              <td>Pending</td>
+            </tr>
+          </tbody>
+        </table>
+      {{/with}}
+      </div>
+    </div>
     <table id="cl-table" class="bordered">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Owner</th>
+          <th class="cl-header"><i class="fa fa-sort fa-2" style="font-size: 14px;" aria-hidden="true">Name</i></th>
+          <th class="cl-header"><i class="fa fa-sort fa-2" style="font-size: 14px;" aria-hidden="true">Owner</i></th>
           <th>RFP</th>
           <th>First Name</th>
           <th>Last Name</th>
-          <th>Agency</th>
-          <th>Brand</th>
-          <th>LI#1 Start</th>
-          <th>LI#1 End</th>
+          <th class="cl-header"><i class="fa fa-sort fa-2" style="font-size: 14px;" aria-hidden="true">Agency</i></th>
+          <th class="cl-header"><i class="fa fa-sort fa-2" style="font-size: 14px;" aria-hidden="true">Brand</i></th>
+          <th class="cl-header"><i class="fa fa-sort fa-2" style="font-size: 14px;" aria-hidden="true">LI#1 Start</i></th>
+          <th class="cl-header"><i class="fa fa-sort fa-2" style="font-size: 14px;" aria-hidden="true">LI#1 End</i></th>
+          <th class="cl-header"><i class="fa fa-sort fa-2" style="font-size: 14px;" aria-hidden="true">Total Budget</i></th>
           <th>Notes</th>
           <th>Q1</th>
           <th>Q2</th>
@@ -66,21 +94,22 @@
       <tbody>
         {{#each init in showInits}}
           <tr class="cl-row" data-_id="{{init._id}}" style="{{statusBackground init._id}}">
-            <td contenteditable="true" data-attr="name">{{init.name}}</td>
-            <td contenteditable="true" data-attr="owner">{{init.owner}}</td>
+            <td><a href="/initiatives/{{init._id}}/homepage">{{init.name}}</a></td>
+            <td>{{init.owner}}</td>
             <td contenteditable="true" data-attr="cl_rfp">{{init.cl_rfp}}</td>
             <td contenteditable="true" data-attr="cl_firstName">{{init.cl_firstName}}</td>
             <td contenteditable="true" data-attr="cl_lastName">{{init.cl_lastName}}</td>
-            <td data-attr="agency">{{init.agency}}</td>
-            <td data-attr="brand">{{init.brand}}</td>
-            <td data-attr="lineItems.0.startDate">{{time init.lineItems.[0].startDate}}</td>
-            <td data-attr="lineItems.0.endDate">{{time init.lineItems.[0].endDate}}</td>
+            <td>{{init.agency}}</td>
+            <td>{{init.brand}}</td>
+            <td>{{time init.lineItems.[0].startDate}}</td>
+            <td>{{time init.lineItems.[0].endDate}}</td>
+            <td contenteditable="true" data-attr="aggregateData.totalBudget">{{money init.aggregateData.totalBudget}}</td>
             <td contenteditable="true" data-attr="notes">{{notes}}</td>
-            <td contenteditable="true" data-attr="cl_q1">{{init.cl_q1}}</td>
-            <td contenteditable="true" data-attr="cl_q2">{{init.cl_q2}}</td>
-            <td contenteditable="true" data-attr="cl_q3">{{init.cl_q3}}</td>
-            <td contenteditable="true" data-attr="cl_q4">{{init.cl_q4}}</td>
-            <td contenteditable="true" data-attr="cl_total">{{init.cl_total}}</td>
+            <td contenteditable="true" data-attr="cl_q1">{{num init.cl_q1}}</td>
+            <td contenteditable="true" data-attr="cl_q2">{{num init.cl_q2}}</td>
+            <td contenteditable="true" data-attr="cl_q3">{{num init.cl_q3}}</td>
+            <td contenteditable="true" data-attr="cl_q4">{{num init.cl_q4}}</td>
+            <td contenteditable="true" data-attr="cl_total">{{money (total init._id)}}</td>
             <td>
               <a id="{{init.name}}" class="modal-trigger" href="#cl-modal">Files</a>
             </td>

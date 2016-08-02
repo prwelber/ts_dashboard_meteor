@@ -136,6 +136,15 @@ Meteor.methods({
       console.log('Error adding date to aggregate in initiatives.js and logging result', e, name, result[0]);
 
     }
+    let totalBudget = 0;
+    const init = Initiatives.findOne({name: name});
+    init.lineItems.forEach(item => {
+      if (item.budget) {
+        totalBudget += parseFloat(item.budget);
+      }
+    });
+
+    result[0]['totalBudget'] = totalBudget;
 
     Initiatives.update(
       {name: name},
