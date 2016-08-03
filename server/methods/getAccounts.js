@@ -12,6 +12,10 @@ Meteor.methods({
 })
 
 Meteor.methods({
+    addBrand: () => {
+        // adds brand as a master account
+        console.log('adds brand')
+    },
     'refreshAccountList': function () {
         console.log('refreshing account list')
         // delete all accounts and then refresh them

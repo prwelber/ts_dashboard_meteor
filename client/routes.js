@@ -202,6 +202,9 @@ FlowRouter.route('/admin/aggregations', {
 // ------------------------- AGENCIES --------------------- //
 
 FlowRouter.route('/admin/agencies/new', {
+    subscriptions: function () {
+        this.register("Agencies", Meteor.subscribe("Agencies"));
+    },
     name: 'newAgency',
     action: function (params) {
         Session.set("route", "admin");
@@ -236,6 +239,9 @@ FlowRouter.route('/admin/brands/new', {
 });
 
 FlowRouter.route('/admin/brands/', {
+    subscriptions: function () {
+        this.register("Brands", Meteor.subscribe("Brands"));
+    },
     name: "brands",
     action: function () {
         Session.set("route", "admin");
@@ -367,6 +373,7 @@ FlowRouter.route('/admin/initiatives/:_id/aggregate', {
 FlowRouter.route('/initiatives/new', {
     subscriptions: function () {
         this.register('Initiatives', Meteor.subscribe('Initiatives'));
+        this.register('Brands', Meteor.subscribe('Brands'));
     },
     name: 'newInitiative',
     action: function (params) {

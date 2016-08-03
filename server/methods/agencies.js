@@ -1,3 +1,6 @@
+import { Meteor } from 'meteor/meteor';
+import Agencies from '/collections/Agencies';
+
 Meteor.methods({
     'insertNewAgency': function (d) {
         Agencies.insert({
@@ -40,6 +43,6 @@ Meteor.methods({
 
 
 
-Meteor.publish('agenciesList', function () {
+Meteor.publish('Agencies', function () {
     return Agencies.find( {} );
 });

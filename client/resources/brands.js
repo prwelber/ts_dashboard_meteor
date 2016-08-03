@@ -1,4 +1,5 @@
-Meteor.subscribe("BrandsList");
+import { Meteor } from 'meteor/meteor'
+import Brands from '/collections/Brands';
 
 Template.newBrand.helpers({
     'getAgencies': function () {

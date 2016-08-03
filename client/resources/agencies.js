@@ -1,4 +1,4 @@
-Meteor.subscribe('agenciesList')
+import Agencies from '/collections/Agencies'
 
 Template.agencies.helpers({
     'getAgencies': function () {

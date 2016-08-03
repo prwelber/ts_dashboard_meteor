@@ -1,3 +1,6 @@
+import { Meteor } from 'meteor/meteor';
+import Brands from '/collections/Brands';
+
 Meteor.methods({
     'insertNewBrand': function (data) {
         Brands.insert({
@@ -54,6 +57,6 @@ Meteor.methods({
 });
 
 
-Meteor.publish('BrandsList', function () {
+Meteor.publish('Brands', function () {
     return Brands.find( {} );
 });
