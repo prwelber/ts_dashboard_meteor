@@ -72,6 +72,9 @@
             <option value="SapientNitro">SapientNitro</option>
             <option value="True Media">True Media</option>
             <option value="Uniworld">Uniworld</option>
+            {{#each getAgencies}}
+              <option value="{{name}}">{{name}}</option>
+            {{/each}}
           </select>
           <label class="active">Agency</label>
         </div>

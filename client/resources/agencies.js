@@ -20,17 +20,9 @@ Template.agencies.events({
 });
 
 Template.newAgency.helpers({
-    'getBrands': function () {
-        return MasterAccounts.find()
-    }
+
 });
 
-// for testing exporting:
-let person = {
-    name: 'phil',
-    age: 30,
-    dogs: ['cooper', 'nelly']
-};
 
 Template.newAgency.events({
     "submit .new-agency-form": function (event, template) {
@@ -39,20 +31,24 @@ Template.newAgency.events({
         let location = event.target.location.value;
         // on submit, find all DOM elements of type "input checkbox" that are
         // checked and then create new array of just the defaultValues
-        let selected = template.findAll("input[type=checkbox]:checked");
-        let brands = _.map(selected, function(item) {
-            return item.value;
-        });
+        // let selected = template.findAll("input[type=checkbox]:checked");
+        // let brands = _.map(selected, function(item) {
+        //     return item.value;
+        // });
         let inserted = moment().format("MM-DD-YYYY hh:mm a");
 
-        let d = {};
-        d.name = name;
-        d.location = location;
-        d.inserted = inserted;
-        d.brands = brands;
+        let d = {
+            name: name,
+            location: location,
+            inserted: inserted
+        };
+        // d.name = name;
+        // d.location = location;
+        // d.inserted = inserted;
+        // d.brands = brands;
         Meteor.call('insertNewAgency', d, function (error, result) {
             if (result) {
-                $("#message-box").append("Agency has been created!")
+                console.log('success')
             }
         });
     }
@@ -88,9 +84,6 @@ Template.updateAgency.events({
 });
 
 Template.newAgency.onDestroyed(function () {
-    $("#message-box").text("");
 });
 Template.updateAgency.onDestroyed(function () {
-    $("#message-box").text("");
 });
-export {person};

@@ -5,6 +5,8 @@ import { Materialize } from 'meteor/materialize:materialize';
 import MasterAccounts from '/collections/MasterAccounts';
 import Initiatives from '/collections/Initiatives';
 import CampaignBasics from '/collections/CampaignBasics';
+import Brands from '/collections/Brands';
+import Agencies from '/collections/Agencies';
 
 
 Template.editInitiative.onCreated(function () {
@@ -34,7 +36,12 @@ Template.editInitiative.helpers({
     return init;
   },
   'getBrands': function () {
-    return MasterAccounts.find({}, {sort: {name: 1}});
+    const masters =  MasterAccounts.find({}, {sort: {name: 1}}).fetch();
+    const brands = Brands.find({}).fetch();
+    return masters.concat(brands);
+  },
+  getAgencies: function () {
+    return Agencies.find({}, {sort: {name: 1}}).fetch();
   },
   'getCampaigns': function () {
     const init =  Initiatives.findOne({_id: FlowRouter.getParam('_id')});

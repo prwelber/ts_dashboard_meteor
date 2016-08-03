@@ -7,7 +7,7 @@ Meteor.methods({
             name: d.name,
             location: d.location,
             inserted: d.inserted,
-            brands: d.brands
+            // brands: d.brands
         });
         console.log('new agency inserted into DB');
         return "success!";
@@ -30,17 +30,6 @@ Meteor.methods({
         return "success!";
     }
 })
-
-
-
-
-
-
-
-
-
-
-
 
 
 Meteor.publish('Agencies', function () {

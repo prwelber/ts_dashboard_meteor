@@ -339,6 +339,8 @@ FlowRouter.route('/admin/initiatives/:_id/edit', {
         }
         this.register('Initiatives', Meteor.subscribe('Initiatives'));
         this.register('campaignBasicsList', Meteor.subscribe('campaignBasicsList', params));
+        this.register('Brands', Meteor.subscribe('Brands'));
+        this.register('Agencies', Meteor.subscribe('Agencies'));
     },
     name: "editInitiative",
     action: function () {
@@ -374,6 +376,7 @@ FlowRouter.route('/initiatives/new', {
     subscriptions: function () {
         this.register('Initiatives', Meteor.subscribe('Initiatives'));
         this.register('Brands', Meteor.subscribe('Brands'));
+        this.register("Agencies", Meteor.subscribe("Agencies"));
     },
     name: 'newInitiative',
     action: function (params) {

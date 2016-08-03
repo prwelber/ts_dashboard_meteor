@@ -3,6 +3,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router'
 import { Materialize } from 'meteor/materialize:materialize'
 import MasterAccounts from '/collections/MasterAccounts';
 import Brands from '/collections/Brands';
+import Agencies from '/collections/Agencies';
 
 Tracker.autorun(function () {
     if (FlowRouter.subsReady('Initiatives') && FlowRouter.subsReady('campaignInsightList')) {
@@ -34,6 +35,9 @@ Template.newInitiative.helpers({
         const masters =  MasterAccounts.find({}, {sort: {name: 1}}).fetch();
         const brands = Brands.find({}).fetch();
         return masters.concat(brands);
+    },
+    getAgencies: function () {
+        return Agencies.find().fetch();
     },
     'getTargetedUsers': function () {
         return Meteor.users.find({});

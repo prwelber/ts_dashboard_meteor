@@ -41,7 +41,7 @@ Template.newBrand.events({
             if (err) {
                 console.log(err);
             } else {
-                alert(result+' has been inserted into the DB. You will be redirected to home.')
+                alert(result+' has been created. You will be redirected to home.')
                 FlowRouter.go('/')
             }
         });
