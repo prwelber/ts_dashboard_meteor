@@ -86,9 +86,13 @@ Accounts.onLogin(() => {
         lastLogin: now,
         firstName: user.services.facebook.first_name,
         lastName: user.services.facebook.last_name,
-        email: user.services.facebook.email
+        email: user.services.facebook.email,
+        agency: ['Constellation'],
+        admin: false
+        // roles: {agency: ['Constellation']}
       }
     });
+    Roles.addUsersToRoles(user._id, ['Constellation'], 'agency');
   } else {
     Meteor.users.update(
       {_id: user._id},

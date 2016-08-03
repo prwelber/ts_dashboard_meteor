@@ -709,7 +709,7 @@ Meteor.methods({
             likesChartObj,
             videoViewsChartObj,
             {
-              name: 'Client Spend',
+              name: 'Actual Spend',
               data: deliverySpend,
               color: '#388e3c',
               tooltip: {
@@ -718,7 +718,7 @@ Meteor.methods({
                 valueDecimals: 2
               }
             }, {
-              name: 'Ideal Spend',
+              name: 'Pacing Spend',
               data: idealSpendArray,
               color: '#a5d6a7',
               tooltip: {
@@ -727,7 +727,7 @@ Meteor.methods({
                 valueDecimals: 2
               }
             }, {
-              name: 'Ideal Delivery',
+              name: 'Pacing Delivery',
               data: idealDeliveryArray,
               color: '#90caf9'
             }

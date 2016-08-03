@@ -117,20 +117,12 @@ export const campaignDashboardFunctionObject = {
       return percentTotalSpend(dealType, quotedPrice, campData, init, index);
     }
   },
-  clientNumbers: (clientSpend, campData, init, item, quotedPrice, dealType) => {
+  clientNumbers: (clientSpend, campData) => {
     let clientNumbers = {};
-    if (dealType === "cost_plus") {
       clientNumbers["cpm"] =  clientSpend / (campData.impressions / 1000);
       clientNumbers["cpc"] = clientSpend / campData.clicks;
       clientNumbers["cpl"] = clientSpend / campData.like;
       clientNumbers["cpvv"] = clientSpend / campData.video_view;
       return clientNumbers;
-    } else if (dealType === "percent_total") {
-      clientNumbers["cpm"] =  clientSpend / (campData.impressions / 1000);
-      clientNumbers["cpc"] = clientSpend / campData.clicks;
-      clientNumbers["cpl"] = clientSpend / campData.like;
-      clientNumbers["cpvv"] = clientSpend / campData.video_view;
-      return clientNumbers;
-    }
   }
 };

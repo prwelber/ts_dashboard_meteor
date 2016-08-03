@@ -144,7 +144,12 @@ Meteor.methods({
       }
     });
 
-    result[0]['totalBudget'] = totalBudget;
+    try {
+      result[0]['totalBudget'] = totalBudget;
+    } catch(e) {
+      console.log('Error setting totalBudget in Initiatives.getAggregate', e);
+    }
+
 
     Initiatives.update(
       {name: name},

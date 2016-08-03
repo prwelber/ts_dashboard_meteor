@@ -315,15 +315,15 @@ export const initiativeHomepageFunctions = {
             }
           },
           series: [{
-            name: 'Ideal Delivery',
+            name: 'Pacing Delivery',
             data: avgDeliveryArray,
             color: '#90caf9'
           }, {
-            name: 'Real Delivery',
+            name: 'Actual Delivery',
             data: typeArray,
             color: '#0d47a1'
           }, {
-            name: 'Client Spend',
+            name: 'Actual Spend',
             data: spendArray,
             color: '#b71c1c',
             tooltip: {
@@ -331,7 +331,7 @@ export const initiativeHomepageFunctions = {
               valuePrefix: '$'
             }
           }, {
-            name: 'Ideal Spend',
+            name: 'Pacing Spend',
             data: avgSpendArray,
             color: '#ef9a9a',
             tooltip: {
@@ -618,15 +618,15 @@ export const initiativeHomepageFunctions = {
       },
 
       series: [{
-        name: 'Ideal Delivery',
+        name: 'Pacing Delivery',
         data: avgDeliveryArray,
         color: '#90caf9'
       }, {
-        name: 'Real Delivery',
+        name: 'Actual Delivery',
         data: typeArray,
         color: '#0d47a1'
       }, {
-        name: 'Client Spend',
+        name: 'Actual Spend',
         data: spendArray,
         color: '#b71c1c',
         tooltip: {
@@ -634,7 +634,7 @@ export const initiativeHomepageFunctions = {
           valuePrefix: '$'
         }
       }, {
-        name: 'Ideal Spend',
+        name: 'Pacing Spend',
         data: avgSpendArray,
         color: '#ef9a9a',
         tooltip: {

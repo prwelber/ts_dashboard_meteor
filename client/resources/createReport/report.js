@@ -124,14 +124,12 @@ Template.report.helpers({
       // word === "CPL" ? headers.unshift("cpl") : '';
       var lower = word.toLowerCase().replace(/ /g, "_");
       console.log("headers", headers)
-      console.log('data[0]', data[0])
       if (headers.indexOf(lower) >= 0 && (data[0][lower] || data[data.length - 1][lower])) {
         if (/Watched Actions/.test(word)) {
           const num = word.indexOf("Watched Actions") + 8;
           const shorter = word.substring(0, num - 3);
           return "<th style='padding-bottom: 8px; font-size: 16px;'>"+shorter+"</th>";
         }
-        console.log('return html', lower);
         return "<th style='padding-bottom: 8px; font-size: 16px;'>"+word+"</th>";
       }
     }

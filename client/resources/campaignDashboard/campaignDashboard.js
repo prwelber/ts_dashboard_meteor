@@ -177,20 +177,24 @@ Template.campaignDashboard.helpers({
     let dealType;
     realItem[0].cost_plus ? dealType = "cost_plus" : '';
     realItem[0].percent_total ? dealType = "percent_total" : '';
-    Template.instance().templateDict.set('clientSpend', campaignDashboardFunctionObject.clientSpend(num, type, dealType, realItem[0], quotedPrice, campData, init, index));
-    return mastFunc.money(campaignDashboardFunctionObject.clientSpend(num, type, dealType, realItem[0], quotedPrice, campData, init, index));
 
+    const clientSpend = campaignDashboardFunctionObject.clientSpend(num, type, dealType, realItem[0], quotedPrice, campData, init, index);
+    // make sure client spend does not go over budget
+    if (clientSpend > parseFloat(realItem[0].budget)) {
+
+      // make client spend equal budgeted amount and change
+      Template.instance().templateDict.set('clientSpend', realItem[0].budget);
+      return mastFunc.money(realItem[0].budget);
+
+    } else {
+      Template.instance().templateDict.set('clientSpend', clientSpend);
+      return mastFunc.money(clientSpend);
+    }
   },
   clientStats: () => {
     const clientSpend = Template.instance().templateDict.get('clientSpend');
     const campData = Template.instance().templateDict.get('campData');
-    const init = Template.instance().templateDict.get('initiative');
-    const item = init.lineItems[0];
-    const quotedPrice = item.price;
-    let dealType;
-    item.cost_plus ? dealType = "cost_plus" : '';
-    item.percent_total ? dealType = "percent_total" : '';
-    return campaignDashboardFunctionObject.clientNumbers(clientSpend, campData, init, item, quotedPrice, dealType)
+    return campaignDashboardFunctionObject.clientNumbers(clientSpend, campData)
   },
   money: (num) => {
     return mastFunc.money(num);

@@ -80,7 +80,6 @@ Template.insightsBreakdown.helpers({
             insight.data.cost_per_post_like = insightSpend / insight.data.post_like;
             insight.data.cost_per_link_click = insightSpend / insight.data.link_click;
           });
-          console.log(ageGenderInsights)
           return ageGenderInsights;
 
         } else if (init.lineItems[0].percent_total === true) {
@@ -156,13 +155,13 @@ Template.insightsBreakdown.helpers({
     const maleData = [];
     const femaleData = [];
     // set maleData
-    if (Session.get('maleData') && Session.get('maleData')[0].spend) {
+    if (Session.get('maleData') && Session.get('maleData')[1].spend) {
       for (let i = 0; i < 6; i++ ) {
         maleData.push(Session.get('maleData')[i][action]);
       }
     }
 
-    if (Session.get('femaleData') && Session.get('femaleData')[0].spend) {
+    if (Session.get('femaleData') && Session.get('femaleData')[1].spend) {
       for (let i = 0; i < 6; i++ ) {
         femaleData.push(Session.get('femaleData')[i][action] * -1);
       }
@@ -200,8 +199,10 @@ Template.insightsBreakdown.helpers({
               text: action
           },
           labels: {
-
+            formatter: function () {
+              return formatters.num(Math.abs(this.value));
             }
+          }
       },
 
       plotOptions: {
@@ -246,13 +247,13 @@ Template.insightsBreakdown.helpers({
     const maleData = [];
     const femaleData = [];
     // set maleData
-    if (Session.get('maleData') && Session.get('maleData')[0].spend) {
+    if (Session.get('maleData') && Session.get('maleData')[1].spend) {
       for (let i = 0; i < 6; i++ ) {
         maleData.push(Session.get('maleData')[i][action]);
       }
     }
 
-    if (Session.get('femaleData') && Session.get('femaleData')[0].spend) {
+    if (Session.get('femaleData') && Session.get('femaleData')[1].spend) {
       for (let i = 0; i < 6; i++ ) {
         femaleData.push(Session.get('femaleData')[i][action] * -1);
       }
@@ -286,12 +287,14 @@ Template.insightsBreakdown.helpers({
           }
       }],
       yAxis: {
-          title: {
-              text: action
-          },
-          labels: {
-
-            }
+        title: {
+            text: action
+        },
+        labels: {
+          formatter: function () {
+            return formatters.num(Math.abs(this.value));
+          }
+        }
       },
 
       plotOptions: {
@@ -325,13 +328,13 @@ Template.insightsBreakdown.helpers({
     const maleData = [];
     const femaleData = [];
     // set maleData
-    if (Session.get('maleData') && Session.get('maleData')[0].spend) {
+    if (Session.get('maleData') && Session.get('maleData')[1].spend) {
       for (let i = 0; i < 6; i++ ) {
         maleData.push(Session.get('maleData')[i][action]);
       }
     }
 
-    if (Session.get('femaleData') && Session.get('femaleData')[0].spend) {
+    if (Session.get('femaleData') && Session.get('femaleData')[1].spend) {
       for (let i = 0; i < 6; i++ ) {
         femaleData.push(Session.get('femaleData')[i][action] * -1);
       }
@@ -365,12 +368,14 @@ Template.insightsBreakdown.helpers({
           }
       }],
       yAxis: {
-          title: {
-              text: "Post Engagement"
-          },
-          labels: {
-
-            }
+        title: {
+            text: "Post Engagement"
+        },
+        labels: {
+          formatter: function () {
+            return formatters.num(Math.abs(this.value));
+          }
+        }
       },
 
       plotOptions: {
@@ -404,13 +409,13 @@ Template.insightsBreakdown.helpers({
     const maleData = [];
     const femaleData = [];
     // set maleData
-    if (Session.get('maleData') && Session.get('maleData')[0].spend) {
+    if (Session.get('maleData') && Session.get('maleData')[1].spend) {
       for (let i = 0; i < 6; i++ ) {
         maleData.push(Session.get('maleData')[i][action]);
       }
     }
 
-    if (Session.get('femaleData') && Session.get('femaleData')[0].spend) {
+    if (Session.get('femaleData') && Session.get('femaleData')[1].spend) {
       for (let i = 0; i < 6; i++ ) {
         femaleData.push(Session.get('femaleData')[i][action] * -1);
       }
@@ -444,12 +449,14 @@ Template.insightsBreakdown.helpers({
           }
       }],
       yAxis: {
-          title: {
-              text: "Video Views"
-          },
-          labels: {
-
-            }
+        title: {
+            text: "Video Views"
+        },
+        labels: {
+          formatter: function () {
+            return formatters.num(Math.abs(this.value));
+          }
+        }
       },
 
       plotOptions: {
@@ -461,7 +468,7 @@ Template.insightsBreakdown.helpers({
       tooltip: {
           formatter: function () {
               return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
-                  "Post Engagements:"+ " " + Highcharts.numberFormat(Math.abs(this.point.y), 0);
+                  "Video Views:"+ " " + Highcharts.numberFormat(Math.abs(this.point.y), 0);
           }
       },
 
@@ -483,13 +490,13 @@ Template.insightsBreakdown.helpers({
     const maleData = [];
     const femaleData = [];
     // set maleData
-    if (Session.get('maleData') && Session.get('maleData')[0].spend) {
+    if (Session.get('maleData') && Session.get('maleData')[1].spend) {
       for (let i = 0; i < 6; i++ ) {
         maleData.push(Session.get('maleData')[i][action]);
       }
     }
 
-    if (Session.get('femaleData') && Session.get('femaleData')[0].spend) {
+    if (Session.get('femaleData') && Session.get('femaleData')[1].spend) {
       for (let i = 0; i < 6; i++ ) {
         femaleData.push(Session.get('femaleData')[i][action] * -1);
       }
@@ -523,12 +530,14 @@ Template.insightsBreakdown.helpers({
           }
       }],
       yAxis: {
-          title: {
-              text: "Reach"
-          },
-          labels: {
-
-            }
+        title: {
+            text: "Reach"
+        },
+        labels: {
+          formatter: function () {
+            return formatters.num(Math.abs(this.value));
+          }
+        }
       },
 
       plotOptions: {
@@ -540,7 +549,7 @@ Template.insightsBreakdown.helpers({
       tooltip: {
           formatter: function () {
               return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
-                  "Post Engagements:"+ " " + Highcharts.numberFormat(Math.abs(this.point.y), 0);
+                  "Reach:"+ " " + Highcharts.numberFormat(Math.abs(this.point.y), 0);
           }
       },
 

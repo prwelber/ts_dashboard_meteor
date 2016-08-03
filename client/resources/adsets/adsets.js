@@ -3,8 +3,8 @@ import CampaignInsights from '/collections/CampaignInsights'
 import Initiatives from '/collections/Initiatives'
 import AdSets from '/collections/AdSets'
 import mastFunc from '../masterFunctions'
-import { FlowRouter } from 'meteor/kadira:flow-router'
-
+import { FlowRouter } from 'meteor/kadira:flow-router';
+import { calcFactorSpend } from '/both/utilityFunctions/factorSpendFunction';
 var Promise = require('bluebird');
 
 // -------------- FUNCTIONS -------------- //
@@ -21,6 +21,18 @@ const defineAction = function defineAction (init) {
   init.lineItems[0].dealType === "CPM" ? action = "impressions" : '';
   init.lineItems[0].dealType === "CPL" ? action = "like" : '';
   return action;
+}
+
+const lower = function lower (objective) {
+  let word = objective[0]
+  for (let i = 1; i < objective.length; i++) {
+    if (objective[i - 1] === " ") {
+      word += objective[i].toUpperCase();
+    } else {
+      word += objective[i].toLowerCase();
+    }
+  }
+  return word;
 }
 
 // ------------ END FUNCTIONS -------------- //
@@ -102,16 +114,29 @@ Template.adsets.helpers({
         return adsets;
       } else if (init.lineItems[0].percent_total === true) {
 
-        let adSetSpend = 0;
-        let quotedPrice = init.lineItems[0].price;
-        let action = defineAction(init);
+        const campData = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
+        const objective = campData.data.objective.replace(/_/g, " ");
+        const word = lower(objective); // convert all caps objective to lowercase
+        let realItem = _.where(init.lineItems, {objective: word}); // returns an array
+        let index;
+        if (realItem[0] === undefined) {
+          index = 0;
+          realItem = init.lineItems;
+        }
+        index = parseInt(realItem[0].name.substring(realItem[0].name.length, realItem[0].name.length - 1)) - 1; // minus 1 to account for zero indexing of lineItems array
+        const quotedPrice = realItem[0].price;
+        let dealType;
+        realItem[0].cost_plus ? dealType = "cost_plus" : '';
+        realItem[0].percent_total ? dealType = "percent_total" : '';
 
+        let action = defineAction(init);
+        let adSetSpend = 0;
+
+
+        console.log(quotedPrice, index)
         adsets.forEach((adset) => {
-          if (action === "impressions") {
-            adSetSpend = (adset.data.impressions / 1000) * quotedPrice;
-          } else {
-            adSetSpend = adset.data[action] * quotedPrice;
-          }
+          adSetSpend = calcFactorSpend.calcFactorSpend(quotedPrice, adset.data, init, index);
+          console.log(adSetSpend, adset.data.name)
           adset.data.spend = adSetSpend;
           adset.data.cpm = adSetSpend / (adset.data.impressions / 1000);
           adset.data.cpc = adSetSpend / adset.data.clicks;

@@ -280,6 +280,8 @@ export const reportFunctions = {
     return returnArray;
   },
   handleDaily: (data, actions, performance, init, lineItemName) => {
+    console.log("actions and performance", actions.concat(performance))
+    const choices = actions.concat(performance);
     const dateStart = data[0].date_start;
     const dateStop = data[data.length - 1].date_stop;
     const numbers = flattenDaily(data);
@@ -365,6 +367,29 @@ export const reportFunctions = {
       numbersArray.push(clientData);
     });
     console.log('numbersArray', numbersArray);
+
+    // create totals using reduce in a loop
+
+    // ["clicks", "post_like", "post_engagement", "link_click", "website_clicks", "reach", "impressions", "total_actions", "spend"]
+
+    let totals = {
+      date_start: "Totals"
+    };
+    let total;
+    for (let i = 0; i < choices.length; i++) {
+      if (choices[i] === "spend") {
+        totals[choices[i]] = money(numbersArray.reduce((prev, curr) => {
+          return prev + accounting.unformat(curr[choices[i]]);
+        }, 0));
+      } else {
+        totals[choices[i]] = num(numbersArray.reduce((prev, curr) => {
+          return prev + accounting.unformat(curr[choices[i]]);
+        }, 0));
+      }
+    }
+
+    console.log('totals', totals);
+    numbersArray.push(totals)
     return numbersArray;
   } // end of daily function
 } // end of exported object
