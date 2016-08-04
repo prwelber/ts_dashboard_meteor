@@ -52,21 +52,21 @@
           <label for="pdf-send-invoice">Send Invoice To</label>
         </div>
         <div class="input-field col s3">
-          <input type="checkbox" id="pdf-max-price">
+          <input type="checkbox" id="pdf-max-price" {{maxPrice}}>
           <label for="pdf-max-price">Max Price Column Header</label>
         </div>
         <div class="col s9 left-align" style="margin-top: 28px;">
           <p style="margin-bottom: 0px;">Check to change IO column header from 'Estimated Price' to 'Max price'</p>
         </div>
         <div class="input-field col s3">
-          <input type="checkbox" id="pdf-fee-included">
+          <input type="checkbox" id="pdf-fee-included" {{costPlus.checked}}>
           <label for="pdf-fee-included">Cost Includes Fee</label>
         </div>
         <div class="col s4 left-align" style="margin-top: 28px;">
           <p style="margin-bottom: 0px;">Check to include Fee Notice</p>
         </div>
         <div class="col s2" style="margin-top: 15px; margin-left: -50px;">
-          <input type="text" id="pdf-fee" placeholder="15" style="margin-bottom: 5px;">
+          <input type="text" id="pdf-fee" placeholder="15" style="margin-bottom: 5px;" value={{costPlus.percent}}>
           <label for="pdf-fee">Fee Percentage</label>
         </div>
 

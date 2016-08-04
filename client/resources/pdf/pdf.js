@@ -47,8 +47,36 @@ Template.pdf.helpers({
   },
   time: (date) => {
     return moment(date, moment.ISO_8601).format("MM/DD/YYYY");
+  },
+  costPlus: () => {
+    const items = Template.instance().lineItems.get('lineItems');
+    returnObj = {
+      checked: '',
+      percent: ''
+    }
+
+    if (items[0].cost_plus === true) {
+      returnObj.checked = 'checked';
+    } else {
+      returnObj.checked = '';
+    }
+
+    if (items[0].costPlusPercent) {
+      returnObj.percent = items[0].costPlusPercent;
+    } else {
+      returnObj.percent = '';
+    }
+    return returnObj;
+  },
+  maxPrice: () => {
+    const items = Template.instance().lineItems.get('lineItems');
+    if (items[0].percent_total === true) {
+      return 'checked';
+    }
   }
 });
+
+// --------------------- EVENTS --------------------- //
 
 Template.pdf.events({
   'click #pdf-submit': (event, instance) => {
@@ -65,27 +93,6 @@ Template.pdf.events({
     var maxPrice = $("#pdf-max-price").is(":checked");
     var feeIncluded = $("#pdf-fee-included").is(":checked");
     var fee = $("#pdf-fee").val();
-    // var itemObject = {
-    //   0: {},
-    //   1: {},
-    //   2: {},
-    //   3: {},
-    //   4: {},
-    //   5: {}
-    // };
-    // let itemLength;
-
-    // var targeting = $("#pdf-targeting").val();
-
-    // for (let i = 0; i <= 5; i++) {
-    //   var URL = instance.$("#pdf-url" + i).val();
-
-    //   if (URL) {
-    //     var select = instance.$("#pdf-select" + i).val();
-    //     itemObject[i]['select'] = select;
-    //     itemObject[i]['url'] = URL;
-    //   }
-    // }
 
     var info = {
       client: client,

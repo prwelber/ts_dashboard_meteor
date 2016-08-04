@@ -35,7 +35,7 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
     if (action === "impressions") {
       let cpm = accounting.unformat(campaignData.cpm);
       if (cpm <= effectiveNum) {
-        effectiveNum = parseFloat((cpm / percentage).toFixed(2));
+        effectiveNum = parseFloat(cpm / percentage);
         return (campaignData[action] / 1000) * effectiveNum;
       } else if ((cpm > effectiveNum && cpm < quotedPrice) || cpm >= quotedPrice) {
         return (campaignData[action] / 1000) * quotedPrice;
@@ -43,7 +43,7 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
     } else if (action === "clicks") {
       let cpc = accounting.unformat(campaignData.cpc);
       if (cpc <= effectiveNum) {
-        effectiveNum = parseFloat((cpc / percentage).toFixed(2));
+        effectiveNum = parseFloat(cpc / percentage);
         return (campaignData[action]) * effectiveNum;
       } else if ((cpc > effectiveNum && cpc < quotedPrice) || cpc >= quotedPrice) {
         return (campaignData[action]) * quotedPrice;
@@ -51,7 +51,7 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
     } else if (action === "like") {
       let cpl = accounting.unformat(campaignData.cpl);
       if (cpl <= effectiveNum) {
-        effectiveNum = parseFloat((cpl / percentage).toFixed(2));
+        effectiveNum = parseFloat(cpl / percentage);
         return (campaignData[action]) * effectiveNum;
       } else if ((cpl > effectiveNum && cpl < quotedPrice) || cpl >= quotedPrice) {
         return (campaignData[action]) * quotedPrice;
@@ -59,7 +59,7 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
     } else if (action === "video_view") {
       let cpvv = accounting.unformat(campaignData['cpvv']);
       if (cpvv <= effectiveNum) {
-        effectiveNum = parseFloat((cpvv / percentage).toFixed(2));
+        effectiveNum = parseFloat(cpvv / percentage);
         return (campaignData['videoViews']) * effectiveNum;
       } else if ((cpvv > effectiveNum && cpvv < quotedPrice) || cpvv >= quotedPrice) {
         return (campaignData['videoViews']) * quotedPrice;
@@ -84,7 +84,7 @@ export const calcNet = {
       let numbs = {};
       numbs['name'] = init.name;
       // get total budget
-      
+
       // init.lineItems.forEach((item) => {
       //   if (item.budget !== "" || parseFloat(item.budget) > 0) {
       //     totalBudget += parseFloat(item.budget);
@@ -143,7 +143,6 @@ export const calcNet = {
             const dealType = "percent_total";
 
             numbs['client_spend'] = percentTotalSpend(dealType, quotedPrice, campaignStats, init, index);
-
             // - running stringToPercentTotal func may not be necessary - //
             numbs['percentage'] = item.percentTotalPercent;
             numbs['budget'] = totalBudget;
@@ -168,27 +167,27 @@ export const calcNet = {
         }
 
         // if no percent total or no cost plus
-        if ((!item.percent_total && !item.cost_plus) && (item.budget && item.quantity)) {
-          numbs['deal'] = "Contracted Spend";
-          numbs['percentage'] = null;
-          numbs['spend'] = parseFloat((init[objective]['spend']).toFixed(2));
-          numbs['budget'] = parseFloat((totalBudget).toFixed(2));
-          numbs['spendPercent'] = parseFloat((numbs['spend'] / numbs['budget']) * 100);
-          numbs['net_cpc'] = numbs.spend / init[objective]['clicks'];
-          numbs['net_cpl'] = numbs.spend / init[objective]['likes'];
-          numbs['net_cpm'] = numbs.spend / (init[objective]['impressions'] / 1000);
-          numbs['net_cpvv'] = numbs.spend / init[objective]['videoViews'];
-          const dataToSet = {};
-          dataToSet[objective+".net"] = numbs;
-          try {
-            Initiatives.update(
-              {name: init.name},
-              {$set: dataToSet}
-            );
-          } catch(e) {
-            console.log(e);
-          }
-        }
+        // if ((!item.percent_total && !item.cost_plus) && (item.budget && item.quantity)) {
+        //   numbs['deal'] = "Contracted Spend";
+        //   numbs['percentage'] = null;
+        //   numbs['spend'] = parseFloat((init[objective]['spend']).toFixed(2));
+        //   numbs['budget'] = parseFloat((totalBudget).toFixed(2));
+        //   numbs['spendPercent'] = parseFloat((numbs['spend'] / numbs['budget']) * 100);
+        //   numbs['net_cpc'] = numbs.spend / init[objective]['clicks'];
+        //   numbs['net_cpl'] = numbs.spend / init[objective]['likes'];
+        //   numbs['net_cpm'] = numbs.spend / (init[objective]['impressions'] / 1000);
+        //   numbs['net_cpvv'] = numbs.spend / init[objective]['videoViews'];
+        //   const dataToSet = {};
+        //   dataToSet[objective+".net"] = numbs;
+        //   try {
+        //     Initiatives.update(
+        //       {name: init.name},
+        //       {$set: dataToSet}
+        //     );
+        //   } catch(e) {
+        //     console.log(e);
+        //   }
+        // }
       }); // end of init.lineItems.forEach((item))
     }); // end of inits.forEach((init))
   }

@@ -208,10 +208,10 @@ Meteor.methods({
       // console.log('result[0] from aggregateObjective', result[0])
       try {
         result[0]['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
-        result[0]['cpc'] = result[0].spend / result[0].clicks;
-        result[0]['cpm'] = result[0].spend / (result[0].impressions / 1000);
-        result[0]['cpl'] = result[0].spend / result[0].likes;
-        result[0]['cpvv'] = result[0].spend / result[0].videoViews;
+        result[0]['cpc'] = parseFloat(result[0].spend / result[0].clicks).toFixed(2)
+        result[0]['cpm'] = parseFloat(result[0].spend / (result[0].impressions / 1000)).toFixed(2);
+        result[0]['cpl'] = parseFloat(result[0].spend / result[0].likes).toFixed(2)
+        result[0]['cpvv'] = parseFloat(result[0].spend / result[0].videoViews).toFixed(2);
         result[0]['net'] = {
           name: name,
           objective: objective,
