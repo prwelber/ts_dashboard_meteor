@@ -105,7 +105,6 @@ Template.projections.helpers({
     const campData = Template.instance().templateDict.get('campData');
 
     const lineItem = getLineItem(campData, init);
-    console.log(lineItem)
     const daysLeft = moment(lineItem.endDate, moment.ISO_8601).diff(moment(), 'd');
     const quotedPrice = lineItem.price;
 
@@ -113,7 +112,6 @@ Template.projections.helpers({
       lineItem: lineItem,
       daysLeft: daysLeft
     };
-
   },
   projectFactorSpend: () => {
     const init = Template.instance().templateDict.get('initiative');
@@ -143,7 +141,6 @@ Template.projections.helpers({
       projectedSpend =  (((campData[dealType] / inputFactor) * estTotalActions) * 100).toFixed(2);
     }
     const spendTarget = lineItem.budget * .985;
-    console.log('daysIn and daysLeft', daysIn, daysLeft)
     console.log('estTotalActs, projectedSpend, spendTarget, inputFactor', estTotalActions, projectedSpend, spendTarget, inputFactor);
 
 

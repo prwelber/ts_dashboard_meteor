@@ -20,6 +20,20 @@ const lower = function lower (objective) {
   return word;
 }
 
+// get the correct line item if I have the campaignInsight and initiative
+const getLineItem = function getLineItem(campaignData, initiative) {
+  const objective = campaignData.objective.replace(/_/g, " ");
+  const word = lower(objective);
+  let lineItem = _.where(initiative.lineItems, {objective: word})[0]; // returns an array
+  let index;
+  if (lineItem === undefined) {
+    index = 0;
+    lineItem = initiative.lineItems;
+  }
+  index = parseInt(lineItem.name.substring(lineItem.name.length, lineItem.name.length - 1)) - 1; // minus 1 to account for zero indexing of lineItems array
+  return initiative.lineItems[index];
+}
+
 
 Template.campaignDashboard.onCreated( function () {
   this.templateDict = new ReactiveDict();
@@ -242,33 +256,12 @@ Template.campaignDashboard.helpers({
     // }
     return init[objective]['net'];
   },
-  impressionsObjective: () => {
+  highlight: (action) => {
+    const init = Template.instance().templateDict.get('initiative');
     const camp = CampaignInsights.findOne({'data.campaign_id': FlowRouter.getParam('campaign_id')});
-    if (camp.data.objective === "POST_ENGAGEMENT") {
-      return "amber lighten-5";
-    } else {
-      return "grey lighten-5";
-    }
-  },
-  clicksObjective: () => {
-    const camp = CampaignInsights.findOne({'data.campaign_id': FlowRouter.getParam('campaign_id')});
-    if (camp.data.objective === "LINK_CLICKS") {
-      return "amber lighten-5";
-    } else {
-      return "grey lighten-5";
-    }
-  },
-  likesObjective: () => {
-    const camp = CampaignInsights.findOne({'data.campaign_id': FlowRouter.getParam('campaign_id')});
-    if (camp.data.objective === "PAGE_LIKES") {
-      return "amber lighten-5";
-    } else {
-      return "grey lighten-5";
-    }
-  },
-  videoObjective: () => {
-    const camp = CampaignInsights.findOne({'data.campaign_id': FlowRouter.getParam('campaign_id')});
-    if (camp.data.objective === "VIDEO_VIEWS") {
+
+    const lineItem = getLineItem(camp.data, init);
+    if (lineItem.dealType === action) {
       return "amber lighten-5";
     } else {
       return "grey lighten-5";
