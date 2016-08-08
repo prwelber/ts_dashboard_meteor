@@ -60,6 +60,9 @@ Template.campaignDashboard.events({
       $("#dashboard-insights-button").popup({
         on: 'click'
       });
+    },
+    'scroll .campaign-dashboard-wrapper': (event, instance) => {
+      console.log('scrolling')
     }
 });
 

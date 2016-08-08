@@ -114,7 +114,7 @@ export function insightUpdate(array) {
             insightData = filterData(insightsArray)
             masterArray.push(insightData);
         } catch(e) {
-          console.log("error pulling campaign insight", e);
+          console.log("error pulling campaign insight in background function", e);
         }
 
         // where we search initiatives looking for the one that matches

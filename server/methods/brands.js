@@ -53,6 +53,9 @@ Meteor.methods({
             }
         ); // end of update
         return "success!";
+    },
+    deleteBrand: (_id) => {
+        Brands.remove(_id);
     }
 });
 

@@ -1,0 +1,46 @@
+<template name="agencies">
+  <h2>All Agencies</h2>
+  <div class="container">
+    {{#each agency in getAgencies}}
+      <div class="row">
+        <div class="col s4">
+          <h4>{{agency.name}}</h4>
+        </div>
+        <div class="col s2">
+          <p>{{agency.location}}</p>
+        </div>
+        <div class="col s2">
+          <p>{{agency.inserted}}</p>
+        </div>
+        <div class="col s4">
+          {{!-- <a href="/admin/agencies/{{agency._id}}/update">Update Agency</a> --}}
+          <a class="delete-agency" data-identifier="{{agency._id}}" href="">Delete Agency</a>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+
+</template>
+
+<template name="newAgency">
+  <h2>Create New Agency</h2>
+  <form class="new-agency-form">
+    <p>Name</p><input type="text" name="name" placeholder="Name">
+    <p>Location</p><input type="text" name="location" placeholder="Location"><br><br>
+    <p>Brands</p>
+    <input type="submit" value="Create Agency">
+  </form>
+</template>
+
+<template name="updateAgency">
+  <h2>Update Agency</h2>
+  <form class="update-agency-form">
+    <p>Name</p><input type="text" name="name" value="{{getAgency.name}}">
+    <p>Location</p><input type="text" name="location" value="{{getAgency.location}}"><br><br>
+    <p>Brands</p>
+    {{#each getBrands}}
+        <input type="checkbox" name="brand" value={{name}}>{{name}} <br />
+    {{/each}}
+    <input type="submit" value="Update Agency">
+  </form>
+</template>

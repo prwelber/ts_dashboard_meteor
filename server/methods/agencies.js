@@ -9,7 +9,6 @@ Meteor.methods({
             inserted: d.inserted,
             // brands: d.brands
         });
-        console.log('new agency inserted into DB');
         return "success!";
     },
     'updateAgency': function (d) {

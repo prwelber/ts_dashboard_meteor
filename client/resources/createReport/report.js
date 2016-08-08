@@ -123,7 +123,7 @@ Template.report.helpers({
       // word === "CPC" ? headers.unshift("cpc") : '';
       // word === "CPL" ? headers.unshift("cpl") : '';
       var lower = word.toLowerCase().replace(/ /g, "_");
-      console.log("headers", headers)
+      // console.log("headers", headers)
       if (headers.indexOf(lower) >= 0 && (data[0][lower] || data[data.length - 1][lower])) {
         if (/Watched Actions/.test(word)) {
           const num = word.indexOf("Watched Actions") + 8;
@@ -173,7 +173,7 @@ Template.report.events({
     template.choices.set('lineItem', lineItem);
 
     var call = Promise.promisify(Meteor.call);
-    console.log('daily', daily);
+    // console.log('daily', daily);
     if (daily) {
       Session.set('daily', true);
     }

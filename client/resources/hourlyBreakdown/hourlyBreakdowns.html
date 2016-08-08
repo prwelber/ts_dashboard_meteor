@@ -1,12 +1,5 @@
 <template name="hourlyBreakdowns">
 
-    <h2>Hourly Stats Aggregated by Audience Time Zone Breakdown</h2>
-    <a href="/accounts/{{campaignInfo.campaign_id}}/insights">Back to Campaign Insights</a>
-    <h3>Campaign: {{campaignInfo.campaign_name}}</h3>
-    <h5>Campaign Objective: {{campaignInfo.objective}}</h5>
-    <br /><br />
-    <h3>Pie Chart</h3>
-    {{!-- {{> highchartsHelper chartId="hourlyPieChart" chartWidth="100%" chartHeight="70%" chartObject=hourlyPieChart}} --}}
     {{#if isReady "hourlyBreakdownsList"}}
         {{#each getHourlyBreakdown}}
             <h3>Hour: {{data.hourly_stats_aggregated_by_audience_time_zone}}</h3>
@@ -39,6 +32,9 @@
             {{#if data.cost_per_offsite_conversion}} <p>CP Offsite Conversion: {{data.cost_per_offsite_conversion}}</p>{{/if}}
             {{#if data.cost_per_offsite_conversion_registration}} <p>CP Offsite Conversion Registration: {{data.cost_per_offsite_conversion_registration}}</p>{{/if}}
         {{/each}}
+        <div class="col s12 center-align">
+          {{> highchartsHelper chartId="hourlyChart" chartWidth="90%" chartHeight="90%" chartObject=hourlyChart}}
+        </div>
     {{else}}
         <p>Loading...</p>
     {{/if}}

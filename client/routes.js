@@ -5,7 +5,6 @@ FlowRouter.route('/', {
     name: 'landing',
     action: () => {
         FlowRouter.go('/home');
-        // BlazeLayout.render('landing')
     }
 });
 
@@ -40,7 +39,6 @@ FlowRouter.route('/initiatives/:_id/homepage', {
     },
     name: 'initiativeHomepage',
     action: function () {
-
         Session.set("route", "initiativeHomepage");
         BlazeLayout.render('index', {main: 'initiativeHomepage', tasks: 'taskTracker'})
     }
@@ -123,7 +121,8 @@ FlowRouter.route('/accounts/:campaign_id/breakdowns', {
     name: 'insightsBreakdown',
     action: function (params) {
         Session.set("route", "breakdowns");
-        BlazeLayout.render('index', {main: 'campaignDashboard', dash: 'insightsBreakdown'});
+        // BlazeLayout.render('index', {main: 'campaignDashboard', dash: 'insightsBreakdown'});
+        BlazeLayout.render('index', {main: 'insightsBreakdown'})
     }
 });
 
@@ -149,7 +148,7 @@ FlowRouter.route('/accounts/:campaign_id/hourlybreakdowns', {
     name: 'hourlyBreakdowns',
     action: function (params) {
         Session.set("route", "hourlyBreakdowns");
-        BlazeLayout.render('index', {main: 'campaignDashboard', dash: 'hourlyBreakdowns'});
+        BlazeLayout.render('index', {main: 'hourlyBreakdowns'});
     }
 });
 
@@ -221,6 +220,9 @@ FlowRouter.route('/admin/agencies/:_id/update', {
 });
 
 FlowRouter.route('/admin/agencies', {
+    subscriptions: function () {
+        this.register("Agencies", Meteor.subscribe("Agencies"));
+    },
     name: 'agencies',
     action: function () {
         Session.set("route", "admin");
@@ -231,6 +233,10 @@ FlowRouter.route('/admin/agencies', {
 // --------------------- BRANDS ----------------------- //
 
 FlowRouter.route('/admin/brands/new', {
+    subscriptions: function () {
+        this.register("Brands", Meteor.subscribe("Brands"));
+        this.register("Agencies", Meteor.subscribe("Agencies"));
+    },
     name: "newBrand",
     action: function () {
         Session.set("route", "admin");
@@ -241,6 +247,7 @@ FlowRouter.route('/admin/brands/new', {
 FlowRouter.route('/admin/brands/', {
     subscriptions: function () {
         this.register("Brands", Meteor.subscribe("Brands"));
+        this.register("Agencies", Meteor.subscribe("Agencies"));
     },
     name: "brands",
     action: function () {

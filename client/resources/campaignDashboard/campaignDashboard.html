@@ -61,6 +61,7 @@
       </table>
     </div>
     <br>
+
   <div class="container">
     <div class="row">
       {{#with fetchInsights}}
@@ -196,19 +197,6 @@
           <span class="">Post Engagement</span>
         </div>
       </div>
-      {{!-- <div class="col s6 m4 l3 card grey lighten-5">
-        <div class="card-content ">
-          <span class="center-align dash-data">{{number reach}}</span><br>
-          <span class="">Reach</span>
-        </div>
-      </div>
-      <div class="col s6 m4 l3 card grey lighten-5">
-        <div class="card-content ">
-          <span class="center-align dash-data">{{twoDecimals frequency}}</span><br>
-          <span class="">Frequency</span>
-        </div>
-      </div> --}}
-
     {{!-- Show client stats --}}
     {{#if isInRole "admin"}}
       <div class="col s12">
@@ -250,22 +238,9 @@
   {{/with}}
   </div> {{!-- end of row --}}
   </div>
-  <div class="row">
-    {{!-- <h3 class="center-align">Campaign Stats - Net</h3> --}}
-
-  </div>
-    {{!-- </div>  end of row --}}
-    {{#if isInRole "admin"}}
-      {{> Template.dynamic template=projection}}
-    {{/if}}
-      {{> Template.dynamic template=dash}}
-    {{getAggregate}}
+  {{getAggregate}}
   {{else}}
     <p>Loading...</p>
   {{/if}}
-
-
-
-    {{!-- {{> Template.dynamic template=tasks}} --}}
 
 </template>

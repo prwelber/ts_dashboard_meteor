@@ -185,8 +185,7 @@ Template.newInitiative.events({
         // where we run the function
         const newInitiative = makeInitObject(event);
 
-
-        if (newInitiative.name === null || newInitiative.search_text === null) {
+        if (! newInitiative.name || ! newInitiative.search_text) {
           Materialize.toast('Error: name, search text or both is empty.', 5000);
         } else {
           Meteor.call('insertNewInitiative', newInitiative, function (error, result) {

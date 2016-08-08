@@ -15,9 +15,8 @@ SyncedCron.add({
 
   schedule: (parser) => {
     // return parser.text('at 5:44pm');
-    return parser.text('every 10 minutes');
+    return parser.text('every 10 minutes every weekday');
   },
-
   job: (time) => {
     const inits = Initiatives.find({userActive: true}).fetch();
 

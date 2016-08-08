@@ -75,6 +75,14 @@ Template.insightsBreakdownDaily.helpers({
       return true;
     }
   },
+  getDailyUpdatedDate: () => {
+    const campaignNumber = FlowRouter.getParam('campaign_id');
+    let dailyBreakdown = InsightsBreakdownsByDays.findOne({'data.campaign_id': campaignNumber});
+    if (dailyBreakdown) {
+      let days = InsightsBreakdownsByDays.find({'data.campaign_id': campaignNumber}, {sort: {'data.date_start': -1}}).fetch();
+      return days[0].data.inserted;
+    }
+  },
   'getDailyBreakdown': () => {
       const campaignNumber = FlowRouter.getParam('campaign_id');
       let dailyBreakdown = InsightsBreakdownsByDays.findOne({'data.campaign_id': campaignNumber});

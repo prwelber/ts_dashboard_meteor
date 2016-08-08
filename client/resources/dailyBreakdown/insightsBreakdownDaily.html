@@ -2,9 +2,9 @@
   <div class="container">
   <div class="row">
       <h2 class="center-align insight-h2">Day by Day Insights</h2>
-      {{#if isInRole "admin"}}
+      {{!-- {{#if isInRole "admin"}}
         <p class="center-align">***The below are all client numbers.***</p>
-      {{/if}}
+      {{/if}} --}}
   </div>
   {{#if isReady "Initiatives" "insightsBreakdownByDaysList"}}
     {{#if isInRole "admin"}}
@@ -13,6 +13,7 @@
         <button id="refresh-daily" class="btn-large waves-effect waves-light tooltipped" data-position="right" data-tooltip="Retrieve Live Data">
           <h4>REFRESH DATA</h4>
         </button>
+         <p>Last Updated: {{getDailyUpdatedDate}}</p>
       </div>
     </div>
     {{!-- {{#each getDailyBreakdown}}

@@ -38,10 +38,18 @@ Template.hourlyBreakdowns.helpers({
       }
     },
     'getHourlyBreakdown': function () {
-      const campaignNumber = FlowRouter.current().params.campaign_id;
 
+
+      // if (HourlyBreakdowns.find({'data.campaign_id': campaignNumber}).count() > 1) {
+      //   const hours = HourlyBreakdowns.find({'data.campaign_id': campaignNumber}, {sort: {'data.hourly_stats_aggregated_by_audience_time_zone': 1}}).fetch();
+      //   hourlyBreakdownsFunction.lineChart(hours);
+      // }
+    },
+    hourlyChart: () => {
+      const campaignNumber = FlowRouter.current().params.campaign_id;
       if (HourlyBreakdowns.find({'data.campaign_id': campaignNumber}).count() > 1) {
-        return HourlyBreakdowns.find({'data.campaign_id': campaignNumber}, {sort: {'data.hourly_stats_aggregated_by_audience_time_zone': 1}});
+        const hours = HourlyBreakdowns.find({'data.campaign_id': campaignNumber}, {sort: {'data.hourly_stats_aggregated_by_audience_time_zone': 1}}).fetch();
+        return hourlyBreakdownsFunction.lineChart(hours);
       }
     },
     'campaignInfo': function () {

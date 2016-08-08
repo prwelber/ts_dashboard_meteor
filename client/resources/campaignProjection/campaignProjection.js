@@ -163,7 +163,6 @@ Template.projections.helpers({
         }
 
         if (moment(lineItem.endDate, moment.ISO_8601).diff(moment(), 'd') <= 0) {
-          Materialize.toast('No factor calculated, campaign is over.')
           break;
         }
 
@@ -173,11 +172,12 @@ Template.projections.helpers({
         }
 
         if (count >= 500) {
-          console.log('count got too high')
           Materialize.toast('Could not calculate best factor. Adjust factor Percent.', 2000);
           break;
         }
 
+        // if projectedSpend >= spendTarget then adjust new factor (nf) by a little
+        // and re run
         if (projectedSpend >= spendTarget) {
           nf = nf + (nf / 100);
           if (action === 'impressions') {
@@ -190,7 +190,7 @@ Template.projections.helpers({
         }
 
         if (projectedSpend >= spendTarget && projectedSpend <= lineItem.budget) {
-          console.log('GOAL HIT');
+          // this means success
           break;
         }
 

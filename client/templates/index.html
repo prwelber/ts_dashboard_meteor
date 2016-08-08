@@ -69,17 +69,18 @@
             </div>
           </nav>
 
+          <div id="spinner-div"></div>
 
-
-          <div id="spinner-div">
+          <div id="container">
+              {{> Template.dynamic template=main}}
+              {{#if isInRole "admin"}}
+                {{> Template.dynamic template=projection}}
+              {{/if}}
+              {{> Template.dynamic template=dash}}
           </div>
-
-            <div id="container">
-                {{> Template.dynamic template=main}}
-            </div>
-            <div>
-              {{> Template.dynamic template=other2}}
-            </div>
+          <div>
+            {{> Template.dynamic template=other2}}
+          </div>
         </main>
       {{else}}
         {{> login}}
@@ -89,9 +90,7 @@
         <div class="container">
           <div class="row">
             <div class="col l6 s12">
-              <h5 class="white-text">Footer Content Here</h5>
               <p class="white-text">Today is {{getDate}}</p>
-              <p class="white-text">More Footer Content</p>
             </div>
             <div class="col l4 offset-12 s12">
               <h5 class="white-text">Links</h5>

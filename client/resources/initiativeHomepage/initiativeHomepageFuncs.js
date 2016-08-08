@@ -61,19 +61,11 @@ const percentTotalSpend = function percentTotalSpend (campaignData, init, index)
 
 const clientNumbers = function clientNumbers (clientSpend, campData, init, dealType) {
   let clientNumbs = {};
-  if (dealType === false) {
-    clientNumbs["cpm"] =  clientSpend / (campData.impressions / 1000);
-    clientNumbs["cpc"] = clientSpend / campData.clicks;
-    clientNumbs["cpl"] = clientSpend / campData.like;
-    clientNumbs["cpvv"] = clientSpend / campData.video_view;
-    return clientNumbs;
-  } else {
-    clientNumbs["cpm"] =  clientSpend / (campData.impressions / 1000);
-    clientNumbs["cpc"] = clientSpend / campData.clicks;
-    clientNumbs["cpl"] = clientSpend / campData.like;
-    clientNumbs["cpvv"] = clientSpend / campData.video_view;
-    return clientNumbs;
-  }
+  clientNumbs["cpm"] =  parseFloat((clientSpend / (campData.impressions / 1000)).toFixed(2));
+  clientNumbs["cpc"] = parseFloat((clientSpend / campData.clicks).toFixed(2));
+  clientNumbs["cpl"] = parseFloat((clientSpend / campData.like).toFixed(2));
+  clientNumbs["cpvv"] = parseFloat((clientSpend / campData.video_view).toFixed(2));
+  return clientNumbs;
 }
 
 const deliveryTypeChecker = function deliveryTypeChecker (init, index) {
@@ -163,115 +155,82 @@ export const initiativeHomepageFunctions = {
 
       insights = getDaysBreakdown(init, index, objective);
 
-      // if (objective) {
-      //   camp = CampaignInsights.findOne({'data.campaign_name': init.campaign_names[index]});
-      //   if (camp) {
-      //     if ((camp.data.objective === objective) && camp) {
-      //       insights = InsightsBreakdownsByDays.find({'data.campaign_name': camp.data.campaign_name}, {sort: {'data.date_start': 1}}).fetch();
-      //     } else {
-      //       return;
-      //     }
-      //   }
+      // get campaign factorSpend for use later
+      const factorSpend = percentTotalSpend(camp.data, init, index);
+      let dealType = init.lineItems[index].percent_total;
+      const clientNumbs = clientNumbers(factorSpend, camp.data, init, dealType)
 
-      // if (objective) {
-      //   // loop over the campaign names in the initiative
-      //   init.campaign_names.forEach(el => {
-      //     // check each campaignInsight for the objective
-      //     camp = CampaignInsights.findOne({'data.campaign_name': el});
-      //     console.log('CAMP.DATA.OBJECTIVE', camp.data.objective);
-      //     if (camp) {
-      //       if ((camp.data.objective === objective) && camp) {
-      //         console.log('RUNNING!', camp.data.objective, objective)
-      //         console.log('CAMP.DATA', camp.data)
-      //         // once I have the campaign, pull all the daily insights for that
-      //         insights = InsightsBreakdownsByDays.find({'data.campaign_name': camp.data.campaign_name}, {sort: {'data.date_start': 1}}).fetch();
-      //       } else {
-      //         return;
-      //       }
-      //     }
-      //   });
+      // make array of x axis dates, delivery numbers and spending
+      const xAxisArray = [];
+      const typeArray = [];
+      let spendArray = [];
+      let spendCount = 0;
+      let typeCount = parseFloat(insights[0].data[type]);
+      insights.forEach(el => {
+        xAxisArray.push(moment(el.data.date_start, moment.ISO_8601).format("MM-DD"));
+        typeArray.push(parseFloat(typeCount.toFixed(2)));
+        typeCount += parseFloat(el.data[type]);
+        spendArray.push(parseFloat(spendCount.toFixed(2)));
+        spendCount += accounting.unformat(el.data.spend);
+      });
 
+      // -------------- Adjust spend to reflect dealtype ----------- //
 
-
-
-
-
-
-        // get campaign factorSpend for use later
-        const factorSpend = percentTotalSpend(camp.data, init, index);
-        let dealType = init.lineItems[index].percent_total;
-        const clientNumbs = clientNumbers(factorSpend, camp.data, init, dealType)
-
-        // make array of x axis dates, delivery numbers and spending
-        const xAxisArray = [];
-        const typeArray = [];
-        let spendArray = [];
-        let spendCount = 0;
-        let typeCount = parseFloat(insights[0].data[type]);
-        insights.forEach(el => {
-          xAxisArray.push(moment(el.data.date_start, moment.ISO_8601).format("MM-DD"));
-          typeArray.push(parseFloat(typeCount.toFixed(2)));
-          typeCount += parseFloat(el.data[type]);
-          spendArray.push(parseFloat(spendCount.toFixed(2)));
-          spendCount += accounting.unformat(el.data.spend);
+      let action;
+      if (init.lineItems[index].cost_plus === true) {
+        init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
+        init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
+        init.lineItems[index].dealType === "CPL" ? action = "like" : '';
+        init.lineItems[index].dealType === "CPVV" ? action = "video_view" : '';
+        let percent = init.lineItems[index].costPlusPercent.split('');
+        percent.unshift(".");
+        percent = 1 + parseFloat(percent.join(''));
+        // need to MULTIPLY spend by 'percent' (should be 1.15 or similar)
+        spendArray = spendArray.map((num) => {
+          return num * percent;
         });
+      }
 
-        // -------------- Adjust spend to reflect dealtype ----------- //
+      if (init.lineItems[index].percent_total === true) {
 
-        let action;
-        if (init.lineItems[index].cost_plus === true) {
-          init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
-          init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
-          init.lineItems[index].dealType === "CPL" ? action = "like" : '';
-          init.lineItems[index].dealType === "CPVV" ? action = "video_view" : '';
-          let percent = init.lineItems[index].costPlusPercent.split('');
-          percent.unshift(".");
-          percent = 1 + parseFloat(percent.join(''));
-          // need to MULTIPLY spend by 'percent' (should be 1.15 or similar)
-          spendArray = spendArray.map((num) => {
-            return num * percent;
-          });
-        }
+        init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
+        init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
+        init.lineItems[index].dealType === "CPL" ? action = "like" : '';
+        init.lineItems[index].dealType === "CPVV" ? action = "video_view" : '';
 
-        if (init.lineItems[index].percent_total === true) {
+        const dealType = init.lineItems[index].dealType;
+        const quotedPrice = init.lineItems[index].price;
 
-          init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
-          init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
-          init.lineItems[index].dealType === "CPL" ? action = "like" : '';
-          init.lineItems[index].dealType === "CPVV" ? action = "video_view" : '';
-
-          const dealType = init.lineItems[index].dealType;
-          const quotedPrice = init.lineItems[index].price;
-
-          const deal = init.lineItems[index].dealType.toLowerCase();
-          spendCount = 0;
-          spendArray = [];
-          insights.forEach(day => {
-            if (action === "impressions") {
-              spendCount = spendCount + ((day['data'][action] / 1000) * clientNumbs[deal]);
-            } else {
-              spendCount = spendCount + (day['data'][action] * clientNumbs[deal]);
-            }
-            spendArray.push(parseFloat(spendCount.toFixed(2)));
-          });
-        }
-        // --------------- End spend adjustment -------------------- //
+        const deal = init.lineItems[index].dealType.toLowerCase();
+        spendCount = 0;
+        spendArray = [];
+        insights.forEach(day => {
+          if (action === "impressions") {
+            spendCount = spendCount + ((day['data'][action] / 1000) * clientNumbs[deal]);
+          } else {
+            spendCount = spendCount + (day['data'][action] * clientNumbs[deal]);
+          }
+          spendArray.push(parseFloat(spendCount.toFixed(2)));
+        });
+        console.log(clientNumbs)
+      }
+      // --------------- End spend adjustment -------------------- //
 
 
-        // make ideal spend and delivery
-        const avg = parseFloat(init.lineItems[index].quantity) / daysDiff;
-        const spendAvg = parseFloat(init.lineItems[index].budget) / daysDiff;
-        const avgDeliveryArray = [];
-        const avgSpendArray = [];
+      // make ideal spend and delivery
+      const avg = parseFloat(init.lineItems[index].quantity) / daysDiff;
+      const spendAvg = parseFloat(init.lineItems[index].budget) / daysDiff;
+      const avgDeliveryArray = [];
+      const avgSpendArray = [];
 
-        let total = 0,
-            idealSpendTotal = 0;
-        for (let i = 0; i < daysDiff + 1; i++) {
-          total = total + avg;
-          idealSpendTotal = idealSpendTotal + spendAvg;
-          avgDeliveryArray.push(parseFloat(total.toFixed(2)));
-          avgSpendArray.push(parseFloat(idealSpendTotal.toFixed(2)));
-        }
+      let total = 0,
+          idealSpendTotal = 0;
+      for (let i = 0; i < daysDiff + 1; i++) {
+        total = total + avg;
+        idealSpendTotal = idealSpendTotal + spendAvg;
+        avgDeliveryArray.push(parseFloat(total.toFixed(2)));
+        avgSpendArray.push(parseFloat(idealSpendTotal.toFixed(2)));
+      }
 
         return {
           chart: {

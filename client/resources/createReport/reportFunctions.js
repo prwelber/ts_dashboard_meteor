@@ -162,7 +162,7 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
     if (action === "impressions") {
       let cpm = accounting.unformat(campaignData.cpm);
       if (cpm <= effectiveNum) {
-        effectiveNum = cpm / percentage;
+        effectiveNum = parseFloat((cpm / percentage).toFixed(2));
         return (campaignData[action] / 1000) * effectiveNum;
       } else if ((cpm > effectiveNum && cpm < quotedPrice) || cpm >= quotedPrice) {
         return (campaignData[action] / 1000) * quotedPrice;
@@ -170,7 +170,7 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
     } else if (action === "clicks") {
       let cpc = accounting.unformat(campaignData.cpc);
       if (cpc <= effectiveNum) {
-        effectiveNum = cpc / percentage;
+        effectiveNum = parseFloat((cpc / percentage).toFixed(2));
         return (campaignData[action]) * effectiveNum;
       } else if ((cpc > effectiveNum && cpc < quotedPrice) || cpc >= quotedPrice) {
         return (campaignData[action]) * quotedPrice;
@@ -178,7 +178,7 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
     } else if (action === "like") {
       let cpl = accounting.unformat(campaignData.cpl);
       if (cpl <= effectiveNum) {
-        effectiveNum = cpl / percentage;
+        effectiveNum = parseFloat((cpl / percentage).toFixed(2));
         return (campaignData[action]) * effectiveNum;
       } else if ((cpl > effectiveNum && cpl < quotedPrice) || (cpl) >= quotedPrice) {
         return (campaignData[action]) * quotedPrice;
@@ -280,7 +280,7 @@ export const reportFunctions = {
     return returnArray;
   },
   handleDaily: (data, actions, performance, init, lineItemName) => {
-    console.log("actions and performance", actions.concat(performance))
+    // console.log("actions and performance", actions.concat(performance))
     const choices = actions.concat(performance);
     const dateStart = data[0].date_start;
     const dateStop = data[data.length - 1].date_stop;
@@ -302,7 +302,7 @@ export const reportFunctions = {
     const dealType = init.lineItems[itemNumber - 1].dealType.toLowerCase();
 
     const costPer = init[objective].net['client_' + dealType];
-    console.log('costPer', costPer)
+    // console.log('costPer', costPer)
     numbersArray = [];
     numbers.forEach(day => {
       // need to: only keep what user requestd, adjust cost per and spend
@@ -366,7 +366,7 @@ export const reportFunctions = {
       }
       numbersArray.push(clientData);
     });
-    console.log('numbersArray', numbersArray);
+    // console.log('numbersArray', numbersArray);
 
     // create totals using reduce in a loop
 
@@ -388,7 +388,7 @@ export const reportFunctions = {
       }
     }
 
-    console.log('totals', totals);
+    // console.log('totals', totals);
     numbersArray.push(totals)
     return numbersArray;
   } // end of daily function
