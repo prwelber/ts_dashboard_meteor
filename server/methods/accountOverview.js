@@ -1,7 +1,9 @@
-import CampaignBasics from '/collections/CampaignBasics'
-import Initiatives from '/collections/Initiatives'
+import CampaignBasics from '/collections/CampaignBasics';
+import Initiatives from '/collections/Initiatives';
 import { apiVersion } from '/server/token/token';
+import { Meteor } from 'meteor/meteor';
 const token = require('/server/token/token.js');
+
 
 Meteor.startup(function () {
   CampaignBasics._ensureIndex({"data.campaign_id": 1}, {unique: 1});
@@ -88,6 +90,22 @@ Meteor.methods({
             });
         });
         return "success!";
+    },
+    deleteCampaignBasic: (camp_id, campName, initName, campaignID) => {
+        console.log(campaignID, campName)
+        CampaignBasics.remove({_id: camp_id});
+        const init = Initiatives.findOne({name: initName});
+
+        Initiatives.update(
+          {_id: init._id},
+          {$pull: {
+            campaign_names: campName,
+            campaign_ids: campaignID
+            }
+          }
+        );
+
+        return 'success';
     }
 });
 

@@ -173,8 +173,6 @@ Template.editInitiative.events({
     },
     "click .deleteCampaign": (event, instance) => {
       const init = Initiatives.findOne({_id: FlowRouter.getParam('_id')});
-      console.log(event.target);
-      console.log(event.target.dataset.name);
       const camp = CampaignBasics.findOne({'data.name': event.target.dataset.name});
 
       if (camp && init) {

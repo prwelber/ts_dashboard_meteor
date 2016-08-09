@@ -105,10 +105,16 @@ Template.initiativeHomepage.helpers({
     return moment(date, moment.ISO_8601).format("MM-DD-YYYY hh:mm a");
   },
   'formatMoney': (num) => {
+    if (num === Infinity) {
+      num = 0;
+    }
     return mastFunc.money(num);
   },
   'formatPercent': (num) => {
     return numeral(num).format("00.000") + "%";
+  },
+  twoDecimals: (num) => {
+    return parseFloat(num.toFixed(2));
   },
   formatNumber: (number) => {
     return numeral(number).format("0,0");

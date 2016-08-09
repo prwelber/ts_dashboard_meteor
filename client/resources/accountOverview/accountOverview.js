@@ -1,5 +1,6 @@
 import CampaignBasics from '/collections/CampaignBasics'
 import MasterAccounts from '/collections/MasterAccounts'
+import { Meteor } from 'meteor/meteor'
 
 Tracker.autorun(function () {
     if (FlowRouter.subsReady('campaignBasicsList')) {
@@ -56,7 +57,6 @@ Template.accountOverview.events({
     'click .insights-link': function (event, template) {
         Session.set("campaign_id", event.target.dataset.campaign);
         Session.set("end_date", event.target.dataset.stop);
-        console.log("dataset:", event.target.dataset)
     },
     'click #refreshCampaigns': function (event, template) {
         const accountNumber = FlowRouter.current().params.account_id;
@@ -65,6 +65,19 @@ Template.accountOverview.events({
         Meteor.call('getCampaigns', accountNumber, function (err, result) {
             if (result) {
                 Blaze.remove(spun);
+            }
+        });
+    },
+    'click .delete-campaign-basic': (event, instance) => {
+        console.log(event.target.dataset)
+        const _id = event.target.dataset.id;
+        const campName = event.target.dataset.name;
+        const initName = event.target.dataset.initiative;
+        const campaignID = event.target.dataset.campid;
+        console.log(campaignID, campName)
+        Meteor.call('deleteCampaignBasic', _id, campName, initName, campaignID, (err, result) => {
+            if (result) {
+                Materialize.toast('Successfully Deleted', 1500)
             }
         });
     }

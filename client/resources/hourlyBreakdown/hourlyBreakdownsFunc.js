@@ -3,37 +3,11 @@ import { Meteor } from 'meteor/meteor'
 
 export const hourlyBreakdownsFunction = {
 
-  lineChart: (data) => {
+  lineChart: (data, type, name, color) => {
 
-    const impressionsArray = data.map(hour => {
-      return hour.data.impressions;
+    const arr = data.map(hour => {
+      return hour.data[type];
     });
-
-    const clicksArray = data.map(hour => {
-      return hour.data.clicks;
-    });
-
-    const videoViewsArr = data.map(hour => {
-      return hour.data.video_view;
-    });
-
-    const postEngArr = data.map(hour => {
-      return hour.data.post_engagement;
-    });
-
-    const ctr = data.map(hour => {
-      return hour.data.ctr;
-    });
-
-    const postLike = data.map(hour => {
-      return hour.data.post_like;
-    });
-
-
-
-
-
-
 
     return {
       chart: {
@@ -41,7 +15,7 @@ export const hourlyBreakdownsFunction = {
       },
       // TODO FIX THIS
       title: {
-        text: 'Hourly Breakdown Aggregated by Audience Time Zone',
+        text: `${name} Breakdown`,
       },
 
       subtitle: {
@@ -77,36 +51,35 @@ export const hourlyBreakdownsFunction = {
         }
       },
       series: [{
-        name: 'Impressions',
-        data: impressionsArray,
-        color: '#90caf9'
-      }, {
-        name: 'Clicks',
-        data: clicksArray,
-        color: '#0d47a1'
-      }, {
-        name: 'Video Views',
-        data: videoViewsArr,
-        color: '#b71c1c',
-      }, {
-        name: 'Post Engagement',
-        data: postEngArr,
-        color: '#ef9a9a',
-        // tooltip: {
-        //   valueSuffix: ' USD',
-        //   valuePrefix: '$'
-        // }
-      }, {
-        name: 'CTR',
-        data: ctr,
-        color: '#8142A1'
-      }, {
-        name: 'Post Like',
-        data: postLike,
-        color: '#52d46a'
+        name: name,
+        data: arr,
+        color: color
       }]
+      // {
+      //   name: 'Clicks',
+      //   data: clicksArray,
+      //   color: '#0d47a1'
+      // }, {
+      //   name: 'Video Views',
+      //   data: videoViewsArr,
+      //   color: '#b71c1c',
+      // }, {
+      //   name: 'Post Engagement',
+      //   data: postEngArr,
+      //   color: '#ef9a9a',
+      //   // tooltip: {
+      //   //   valueSuffix: ' USD',
+      //   //   valuePrefix: '$'
+      //   // }
+      // }, {
+      //   name: 'CTR',
+      //   data: ctr,
+      //   color: '#8142A1'
+      // }, {
+      //   name: 'Post Like',
+      //   data: postLike,
+      //   color: '#52d46a'
+      // }]
     } // end of return
   }
-
-
 };

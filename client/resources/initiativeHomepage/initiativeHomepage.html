@@ -82,197 +82,137 @@
         <br>
         {{#if isInRole "admin"}}
         <div class="col s10">
-          {{#with initiativeStats}}
-          <h5>Targeted Social Numbers</h5>
-          <table class="centered">
+          <table class="centered highlight">
             <thead>
               <tr>
-                <th class="insights-table-header">Spend</th>
-                {{!-- <th class="insights-table-header">Spend %</th> --}}
-                <th class="insights-table-header">Clicks</th>
-                <th class="insights-table-header">CPC</th>
-                <th class="insights-table-header">Impressions</th>
-                <th class="insights-table-header">CPM</th>
-                <th class="insights-table-header">Likes</th>
-                <th class="insights-table-header">CPL</th>
-                <th class="insights-table-header">Reach</th>
+                <th>Actual / Client</th>
+                <th>Objective</th>
+                <th>Spend</th>
+                <th>Clicks</th>
+                <th>CPC</th>
+                <th>Impressions</th>
+                <th>CPM</th>
+                <th>Likes</th>
+                <th>CPL</th>
+                <th>Video Views</th>
+                <th>CPVV</th>
               </tr>
             </thead>
             <tbody>
+            {{#each objectiveAggregates}}
               <tr>
-                <td class="insights-table-data">{{spend}}</td>
-                {{!-- <td class="insights-table-data">{{spendPercent}}</td> --}}
-                <td class="insights-table-data">{{formatNumber clicks}}</td>
-                <td class="insights-table-data">{{cpc}}</td>
-                <td class="insights-table-data">{{impressions}}</td>
-                <td class="insights-table-data">{{cpm}}</td>
-                <td class="insights-table-data">{{likes}}</td>
-                <td class="insights-table-data">{{cpl}}</td>
-                <td class="insights-table-data">{{reach}}</td>
+                <td style="padding: 5px 0px;">Actual - Objective</td>
+                <td style="padding: 5px 0px;">{{_id}}</td>
+                <td style="padding: 5px 0px;">{{spend}}</td>
+                <td style="padding: 5px 0px;">{{formatNumber clicks}}</td>
+                <td style="padding: 5px 0px;">{{cpc}}</td>
+                <td style="padding: 5px 0px;">{{impressions}}</td>
+                <td style="padding: 5px 0px;">{{cpm}}</td>
+                <td style="padding: 5px 0px;">{{formatNumber likes}}</td>
+                <td style="padding: 5px 0px;">{{cpl}}</td>
+                <td style="padding: 5px 0px;">{{videoViews}}</td>
+                <td style="padding: 5px 0px;">{{cpvv}}</td>
               </tr>
-            </tbody>
-          </table>
-          {{/with}}
-          {{#each objectiveAggregates}}
-            <h5>Aggregate for Objective {{_id}}</h5>
-            <table class="centered">
-              <thead>
-                <tr>
-                  <th class="insights-table-header">Spend</th>
-                  <th class="insights-table-header">Clicks</th>
-                  <th class="insights-table-header">CPC</th>
-                  <th class="insights-table-header">Impressions</th>
-                  <th class="insights-table-header">CPM</th>
-                  <th class="insights-table-header">Likes</th>
-                  <th class="insights-table-header">CPL</th>
-                  <th class="insights-table-header">Video Views</th>
-                  <th class="insights-table-header">CPVV</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="insights-table-data">{{spend}}</td>
-                  <td class="insights-table-data">{{formatNumber clicks}}</td>
-                  <td class="insights-table-data">{{cpc}}</td>
-                  <td class="insights-table-data">{{impressions}}</td>
-                  <td class="insights-table-data">{{cpm}}</td>
-                  <td class="insights-table-data">{{formatNumber likes}}</td>
-                  <td class="insights-table-data">{{cpl}}</td>
-                  <td class="insights-table-data">{{videoViews}}</td>
-                  <td class="insights-table-data">{{cpvv}}</td>
-                </tr>
-              </tbody>
-            </table>
-          {{/each}}
-          {{#each num in getClientNumbers}}
-          <h5>Client Numbers for Objective: {{num._id}}</h5>
-          <table class="centered">
-            <thead>
+            {{/each}}
+            {{#with initiativeStats}}
               <tr>
-                <th class="insights-table-header">Spend</th>
-                <th class="insights-table-header">Clicks</th>
-                <th class="insights-table-header">CPC</th>
-                <th class="insights-table-header">Impressions</th>
-                <th class="insights-table-header">CPM</th>
-                <th class="insights-table-header">Likes</th>
-                <th class="insights-table-header">CPL</th>
-                <th class="insights-table-header">Video Views</th>
-                <th class="insights-table-header">CPVV</th>
+                <td style="padding: 5px 0px;"><strong>Actual</strong></td>
+                <td style="padding: 5px 0px;"><strong>Aggregate</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{spend}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatNumber clicks}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{cpc}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{impressions}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{cpm}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{likes}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{cpl}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatNumber videoViews}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatMoney cpvv}}</strong></td>
               </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="insights-table-data">{{formatMoney num.net.client_spend}}</td>
-                <td class="insights-table-data">{{formatNumber num.clicks}}</td>
-                <td class="insights-table-data">{{formatMoney num.net.client_cpc}}</td>
-                <td class="insights-table-data">{{formatNumber num.impressions}}</td>
-                <td class="insights-table-data">{{formatMoney num.net.client_cpm}}</td>
-                <td class="insights-table-data">{{formatNumber num.likes}}</td>
-                <td class="insights-table-data">{{formatMoney num.net.client_cpl}}</td>
-                <td class="insights-table-data">{{formatNumber num.videoViews}}</td>
-                <td class="insights-table-data">{{formatMoney num.net.client_cpvv}}</td>
-              </tr>
-            </tbody>
-          </table>
-          {{/each}}
-          <div class="row">
-            <h5>Client IO Stats</h5>
-            {{#with clientAggregate}}
-              <table class="centered">
-                <thead>
-                  <tr>
-                    <th class="insights-table-header">Spend</th>
-                    <th class="insights-table-header">Clicks</th>
-                    <th class="insights-table-header">CPC</th>
-                    <th class="insights-table-header">Impressions</th>
-                    <th class="insights-table-header">CPM</th>
-                    <th class="insights-table-header">Likes</th>
-                    <th class="insights-table-header">CPL</th>
-                    <th class="insights-table-header">Video Views</th>
-                    <th class="insights-table-header">CPVV</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="insights-table-data">{{formatMoney spend}}</td>
-                    <td class="insights-table-data">{{formatNumber clicks}}</td>
-                    <td class="insights-table-data">{{formatMoney cpc}}</td>
-                    <td class="insights-table-data">{{formatNumber impressions}}</td>
-                    <td class="insights-table-data">{{formatMoney cpm}}</td>
-                    <td class="insights-table-data">{{formatNumber likes}}</td>
-                    <td class="insights-table-data">{{formatMoney cpl}}</td>
-                    <td class="insights-table-data">{{formatNumber videoViews}}</td>
-                    <td class="insights-table-data">{{formatMoney cpvv}}</td>
-                  </tr>
-                </tbody>
-              </table>
             {{/with}}
-          </div>
+            {{#each num in getClientNumbers}}
+              <tr>
+                <td style="padding: 5px 0px;">Client - Objective</td>
+                <td style="padding: 5px 0px;">{{num._id}}</td>
+                <td style="padding: 5px 0px;">{{formatMoney num.net.client_spend}}</td>
+                <td style="padding: 5px 0px;">{{formatNumber num.clicks}}</td>
+                <td style="padding: 5px 0px;">{{formatMoney num.net.client_cpc}}</td>
+                <td style="padding: 5px 0px;">{{formatNumber num.impressions}}</td>
+                <td style="padding: 5px 0px;">{{formatMoney num.net.client_cpm}}</td>
+                <td style="padding: 5px 0px;">{{formatNumber num.likes}}</td>
+                <td style="padding: 5px 0px;">{{formatMoney num.net.client_cpl}}</td>
+                <td style="padding: 5px 0px;">{{formatNumber num.videoViews}}</td>
+                <td style="padding: 5px 0px;">{{formatMoney num.net.client_cpvv}}</td>
+              </tr>
+            {{/each}}
+            {{#with clientAggregate}}
+              <tr>
+                <td style="padding: 5px 0px;"><strong>Client</strong></td>
+                <td style="padding: 5px 0px;"><strong>Aggregate</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatMoney spend}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatNumber clicks}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatMoney cpc}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatNumber impressions}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatMoney cpm}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatNumber likes}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatMoney cpl}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatNumber videoViews}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatMoney cpvv}}</strong></td>
+              </tr>
+            {{/with}}
+            </tbody>
+          </table>
         </div>
         {{else}}
-          {{#with clientAggregate}}
-            <h5>IO Aggregate Stats</h5>
-            <table class="centered">
+
+            <table class="centered highlight">
               <thead>
                 <tr>
-                  <th class="insights-table-header">Spend</th>
-                  <th class="insights-table-header">Clicks</th>
-                  <th class="insights-table-header">CPC</th>
-                  <th class="insights-table-header">Impressions</th>
-                  <th class="insights-table-header">CPM</th>
-                  <th class="insights-table-header">Likes</th>
-                  <th class="insights-table-header">CPL</th>
-                  <th class="insights-table-header">Video Views</th>
-                  <th class="insights-table-header">CPVV</th>
+                  <th>Type</th>
+                  <th>Objective</th>
+                  <th>Spend</th>
+                  <th>Clicks</th>
+                  <th>CPC</th>
+                  <th>Impressions</th>
+                  <th>CPM</th>
+                  <th>Likes</th>
+                  <th>CPL</th>
+                  <th>Video Views</th>
+                  <th>CPVV</th>
                 </tr>
               </thead>
               <tbody>
+              {{#each num in getClientNumbers}}
                 <tr>
-                  <td class="insights-table-data">{{formatMoney spend}}</td>
-                  <td class="insights-table-data">{{formatNumber clicks}}</td>
-                  <td class="insights-table-data">{{formatMoney cpc}}</td>
-                  <td class="insights-table-data">{{formatNumber impressions}}</td>
-                  <td class="insights-table-data">{{formatMoney cpm}}</td>
-                  <td class="insights-table-data">{{formatNumber likes}}</td>
-                  <td class="insights-table-data">{{formatMoney cpl}}</td>
-                  <td class="insights-table-data">{{formatNumber videoViews}}</td>
-                  <td class="insights-table-data">{{formatMoney cpvv}}</td>
+                  <td style="padding: 5px 0px;">Campaign</td>
+                  <td style="padding: 5px 0px;">{{num._id}}</td>
+                  <td style="padding: 5px 0px;">{{formatMoney num.net.client_spend}}</td>
+                  <td style="padding: 5px 0px;">{{formatNumber num.clicks}}</td>
+                  <td style="padding: 5px 0px;">{{formatMoney num.net.client_cpc}}</td>
+                  <td style="padding: 5px 0px;">{{formatNumber num.impressions}}</td>
+                  <td style="padding: 5px 0px;">{{formatMoney num.net.client_cpm}}</td>
+                  <td style="padding: 5px 0px;">{{formatNumber num.likes}}</td>
+                  <td style="padding: 5px 0px;">{{formatMoney num.net.client_cpl}}</td>
+                  <td style="padding: 5px 0px;">{{formatNumber num.videoViews}}</td>
+                  <td style="padding: 5px 0px;">{{formatMoney num.net.client_cpvv}}</td>
                 </tr>
+              {{/each}}
+              {{#with clientAggregate}}
+                <tr>
+                  <td style="padding: 5px 0px;"><strong>Aggregate</strong></td>
+                  <td style="padding: 5px 0px;"><strong>Aggregate</strong></td>
+                  <td style="padding: 5px 0px;"><strong>{{formatMoney spend}}</strong></td>
+                  <td style="padding: 5px 0px;"><strong>{{formatNumber clicks}}</strong></td>
+                  <td style="padding: 5px 0px;"><strong>{{formatMoney cpc}}</strong></td>
+                  <td style="padding: 5px 0px;"><strong>{{formatNumber impressions}}</strong></td>
+                  <td style="padding: 5px 0px;"><strong>{{formatMoney cpm}}</strong></td>
+                  <td style="padding: 5px 0px;"><strong>{{formatNumber likes}}</strong></td>
+                  <td style="padding: 5px 0px;"><strong>{{formatMoney cpl}}</strong></td>
+                  <td style="padding: 5px 0px;"><strong>{{formatNumber videoViews}}</strong></td>
+                  <td style="padding: 5px 0px;"><strong>{{formatMoney cpvv}}</strong></td>
+                </tr>
+              {{/with}}
               </tbody>
             </table>
-          {{/with}}
-
-          {{#each num in getClientNumbers}}
-          <h5>Stats for Objective: {{num._id}}</h5>
-          <table class="centered">
-            <thead>
-              <tr>
-                <th class="insights-table-header">Spend</th>
-                <th class="insights-table-header">Clicks</th>
-                <th class="insights-table-header">CPC</th>
-                <th class="insights-table-header">Impressions</th>
-                <th class="insights-table-header">CPM</th>
-                <th class="insights-table-header">Likes</th>
-                <th class="insights-table-header">CPL</th>
-                <th class="insights-table-header">Video Views</th>
-                <th class="insights-table-header">CPVV</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="insights-table-data">{{formatMoney num.net.client_spend}}</td>
-                <td class="insights-table-data">{{formatNumber num.clicks}}</td>
-                <td class="insights-table-data">{{formatMoney num.net.client_cpc}}</td>
-                <td class="insights-table-data">{{formatNumber num.impressions}}</td>
-                <td class="insights-table-data">{{formatMoney num.net.client_cpm}}</td>
-                <td class="insights-table-data">{{formatNumber num.likes}}</td>
-                <td class="insights-table-data">{{formatMoney num.net.client_cpl}}</td>
-                <td class="insights-table-data">{{formatNumber num.videoViews}}</td>
-                <td class="insights-table-data">{{formatMoney num.net.client_cpvv}}</td>
-              </tr>
-            </tbody>
-          </table>
-          {{/each}}
         {{/if}}
       </div>
     </div>
@@ -282,7 +222,7 @@ include charting for each lineItem and definitely aggregations --}}
     {{#each initiative.lineItems}}
       {{!-- starts with Line Item 1 --}}
       <div id="lineItem{{addOne @index}}">
-        <table class="centered">
+        {{!-- <table class="centered">
           {{#with grabLineItem @index}}
             <thead>
               <tr>
@@ -315,10 +255,10 @@ include charting for each lineItem and definitely aggregations --}}
               </tr>
             </tbody>
           {{/with}}
-        </table>
+        </table> --}}
         <h5>Net Aggregate | Targeted Social Numbers</h5>
         {{!-- {{#with netCostPlusStats @index}} --}}
-        {{#with calcNet @index}}
+        {{!-- {{#with calcNet @index}}
           <table class="centered">
             <thead>
               <tr>
@@ -343,7 +283,7 @@ include charting for each lineItem and definitely aggregations --}}
               </tr>
             </tbody>
           </table>
-        {{/with}}
+        {{/with}} --}}
       </div>
     {{/each}}
   {{/if}}

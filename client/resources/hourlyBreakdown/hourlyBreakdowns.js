@@ -14,6 +14,7 @@ Template.hourlyBreakdowns.onCreated(function () {
   this.templateDict = new ReactiveDict();
   const camp = CampaignInsights.findOne({'data.campaign_id': FlowRouter.getParam('campaign_id')});
   this.templateDict.set('campData', camp);
+  this.templateDict.set('hours', null);
 });
 
 Template.hourlyBreakdowns.helpers({
@@ -34,23 +35,35 @@ Template.hourlyBreakdowns.helpers({
           console.log('uh no error', err)
         });
       } else {
+        const campaignNumber = FlowRouter.current().params.campaign_id;
+        const hours = HourlyBreakdowns.find({'data.campaign_id': campaignNumber}, {sort: {'data.hourly_stats_aggregated_by_audience_time_zone': 1}}).fetch();
+        Template.instance().templateDict.set('hours', hours);
         return true;
       }
     },
-    'getHourlyBreakdown': function () {
-
-
-      // if (HourlyBreakdowns.find({'data.campaign_id': campaignNumber}).count() > 1) {
-      //   const hours = HourlyBreakdowns.find({'data.campaign_id': campaignNumber}, {sort: {'data.hourly_stats_aggregated_by_audience_time_zone': 1}}).fetch();
-      //   hourlyBreakdownsFunction.lineChart(hours);
-      // }
+    'clicksChart': () => {
+      const hours = Template.instance().templateDict.get('hours');
+      return hourlyBreakdownsFunction.lineChart(hours, 'impressions', 'Impressions', '#f44336');
     },
-    hourlyChart: () => {
-      const campaignNumber = FlowRouter.current().params.campaign_id;
-      if (HourlyBreakdowns.find({'data.campaign_id': campaignNumber}).count() > 1) {
-        const hours = HourlyBreakdowns.find({'data.campaign_id': campaignNumber}, {sort: {'data.hourly_stats_aggregated_by_audience_time_zone': 1}}).fetch();
-        return hourlyBreakdownsFunction.lineChart(hours);
-      }
+    impressionsChart: () => {
+      const hours = Template.instance().templateDict.get('hours');
+      return hourlyBreakdownsFunction.lineChart(hours, 'clicks', 'Click', '#3f51b5');
+    },
+    videoViewChart: () => {
+      const hours = Template.instance().templateDict.get('hours');
+      return hourlyBreakdownsFunction.lineChart(hours, 'video_view', 'Video View', '#009688');
+    },
+    postEngagementChart: () => {
+      const hours = Template.instance().templateDict.get('hours');
+      return hourlyBreakdownsFunction.lineChart(hours, 'post_engagement', 'Post Engagement', '#4caf50');
+    },
+    ctrChart: () => {
+      const hours = Template.instance().templateDict.get('hours');
+      return hourlyBreakdownsFunction.lineChart(hours, 'ctr', 'CTR', '#ef6c00');
+    },
+    postLikeChart: () => {
+      const hours = Template.instance().templateDict.get('hours');
+      return hourlyBreakdownsFunction.lineChart(hours, 'post_like', 'Post Like', '#795548');
     },
     'campaignInfo': function () {
       const data = Template.instance().templateDict.get('campData');
@@ -58,12 +71,22 @@ Template.hourlyBreakdowns.helpers({
         return data.data;
       }
     },
-    hourlyPieChart: () => {
-      const campaign = Template.instance().templateDict.get('camptData');
-      return hourlyBreakdownsFunction.pieChart(campaign.data.campaign_id);
+    updated: () => {
+      try {
+        return Template.instance().templateDict.get('hours')[0].data.inserted;
+      } catch (e) {
+        console.log(e);
+      }
     }
 });
 
+
+Template.hourlyBreakdowns.events({
+  'click #refresh-hourly': (event, instance) => {
+    Meteor.call('refreshHourly', FlowRouter.getParam('campaign_id'));
+    $('.tooltipped').tooltip('remove');
+  }
+});
+
 Template.hourlyBreakdowns.onDestroyed(func => {
-    $("#message-box li").remove();
 });

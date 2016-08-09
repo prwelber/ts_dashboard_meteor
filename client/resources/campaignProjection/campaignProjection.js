@@ -119,6 +119,10 @@ Template.projections.helpers({
     const lineItem = getLineItem(campData, init);
     // gives days left between today and endDate
     const daysLeft = moment(lineItem.endDate, moment.ISO_8601).diff(moment(), 'd');
+    if (lineItem.cost_plus === true) {
+      console.log('cost plus deal');
+      return;
+    }
     if (daysLeft <= 0) {
       console.log('campaign is over');
       return;

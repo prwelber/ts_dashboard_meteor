@@ -15,6 +15,7 @@ export const calcFactorSpend = {
     if (action === "impressions") {
       let cpm = accounting.unformat(campaignData.cpm);
       if (cpm <= effectiveNum) {
+        cpm = parseFloat(cpm.toFixed(2));
         effectiveNum = parseFloat((cpm / percentage).toFixed(2));
         return (campaignData[action] / 1000) * effectiveNum;
       } else if ((cpm > effectiveNum && cpm < quotedPrice) || cpm >= quotedPrice) {
@@ -23,6 +24,7 @@ export const calcFactorSpend = {
     } else if (action === "clicks") {
       let cpc = accounting.unformat(campaignData.cpc);
       if (cpc <= effectiveNum) {
+        cpc = parseFloat(cpc.toFixed(2));
         effectiveNum = parseFloat((cpc / percentage).toFixed(2));
         return (campaignData[action]) * effectiveNum;
       } else if ((cpc > effectiveNum && cpc < quotedPrice) || cpc >= quotedPrice) {
@@ -31,6 +33,7 @@ export const calcFactorSpend = {
     } else if (action === "like") {
       let cpl = accounting.unformat(campaignData.cpl);
       if (cpl <= effectiveNum) {
+        cpl = parseFloat(cpl.toFixed(2));
         effectiveNum = parseFloat((cpl / percentage).toFixed(2));
         return (campaignData[action]) * effectiveNum;
       } else if ((cpl > effectiveNum && cpl < quotedPrice) || cpl >= quotedPrice) {
@@ -39,6 +42,7 @@ export const calcFactorSpend = {
     } else if (action === "video_view") {
       let cpvv = accounting.unformat(campaignData['cost_per_video_view']);
       if (cpvv <= effectiveNum) {
+        cpvv = parseFloat(cpvv.toFixed(2));
         effectiveNum = parseFloat((cpvv / percentage).toFixed(2));
         return (campaignData[action]) * effectiveNum;
       } else if ((cpvv > effectiveNum && cpvv < quotedPrice) || cpvv >= quotedPrice) {
