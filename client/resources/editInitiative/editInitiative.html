@@ -12,11 +12,11 @@
           <div class="input-field col s6">
             <input type="text" id="initiative-name" name="name" value="{{name}}">
             <label for="initiative-name" class="active">Initiative Name</label>
-            <p>Check when creating a new Initiative</p>
+            <p>This controls background updates - if the campaign is already running, you will want to check it, otherwise, come back and turn it on when the campaign starts.</p>
             <input type="checkbox" id="active" name="active" checked="{{activeChecked}}">
-            <label for="active">Active Initiative</label>
+            <label for="active">Background Updates On/Off</label>
             <div class="input-field col s12">
-              <p style="margin-bottom: 0px; margin-top: 10px;">If Initiative will have campaigns with duplicate objectives, check the box and make that campaign the first Line Item</p>
+              <p style="margin-bottom: 0px; margin-top: 10px;">If Initiative has multiple campaigns with duplicate objectives, check this box and make the campaign the first Line Item. This is most common for Page Post campaigns.</p>
               <input type="checkbox" id="dupObjectives" name="dupObjectives" checked="{{dupObjectivesChecked}}">
               <label for="dupObjectives">Duplicate Objectives</label>
             </div>

@@ -1,7 +1,7 @@
 <template name="insightsBreakdown">
+  {{#if isReady "insightsBreakdownList" "Initiatives"}}
+  {{#if isInRole "admin"}}
   <div class="container">
-    {{#if isReady "insightsBreakdownList" "Initiatives"}}
-    {{#if isInRole "admin"}}
     <div class="row">
       <div class="col s12 center-align">
         <h2 class="insight-h2">Insights Breakdown by Age + Gender</h2>
@@ -103,6 +103,7 @@
     <div class="col s12 center-align">
       <h2>Below is what the client will see</h2>
     </div>
+  </div>
 
     {{else}}
     {{!-- BELOW IS WHAT CLIENT WILL SEE --}}
@@ -138,13 +139,15 @@
         </div>
       </div>
       <div class="row">
-        <div id="ageGenderVideoView" class="col s12">
+        <div id="ageGenderVideoView" class="col s6">
           {{> highchartsHelper chartId="ageGenderVideoView" chartWidth="100%" chartHeight="100%" chartObject=ageGenderVideoView}}
+        </div>
+        <div id="ageGenderTotalActions" class="col s6">
+          {{> highchartsHelper chartId="ageGenderTotalActions" chartWidth="100%" chartHeight="100%" chartObject=ageGenderTotalActions}}
         </div>
       </div>
     {{/if}}
     {{!-- ^ end of if isInRole "admin" --}}
     {{/if}}
     {{!-- ^ end of isReady --}}
-  </div>
 </template>

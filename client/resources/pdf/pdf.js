@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import Initiatives from '/collections/Initiatives';
 import moment from 'moment-timezone';
+import { formatters } from '/both/utilityFunctions/formatters';
 
 Template.pdf.onCreated(function () {
   this.lineItems = new ReactiveDict();
@@ -73,6 +74,12 @@ Template.pdf.helpers({
     if (items[0].percent_total === true) {
       return 'checked';
     }
+  },
+  money: (num) => {
+    return formatters.money(num);
+  },
+  num: (number) => {
+    return formatters.num(number);
   }
 });
 

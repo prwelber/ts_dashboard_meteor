@@ -120,11 +120,9 @@ Template.projections.helpers({
     // gives days left between today and endDate
     const daysLeft = moment(lineItem.endDate, moment.ISO_8601).diff(moment(), 'd');
     if (lineItem.cost_plus === true) {
-      console.log('cost plus deal');
       return;
     }
     if (daysLeft <= 0) {
-      console.log('campaign is over');
       return;
     }
     const daysIn = Math.abs(moment(lineItem.startDate, moment.ISO_8601).diff(moment(), 'd'));
@@ -145,7 +143,7 @@ Template.projections.helpers({
       projectedSpend =  (((campData[dealType] / inputFactor) * estTotalActions) * 100).toFixed(2);
     }
     const spendTarget = lineItem.budget * .985;
-    console.log('estTotalActs, projectedSpend, spendTarget, inputFactor', estTotalActions, projectedSpend, spendTarget, inputFactor);
+    // console.log('estTotalActs, projectedSpend, spendTarget, inputFactor', estTotalActions, projectedSpend, spendTarget, inputFactor);
 
 
 

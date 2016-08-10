@@ -339,15 +339,11 @@ Meteor.methods({
         let newEl = {
           spend: el.data.spend,
           impressions: el.data.impressions,
-          // cpm: (el.data.impressions / el.data.spend),
-          // likes: el.data.post_like,
-          // cpl: (el.data.post_like / el.data.spend),
+          totalActions: el.data.total_actions,
           clicks: el.data.clicks,
-          // cpc: (el.data.clicks / el.data.spend),
           reach: el.data.reach,
           postEng: el.data.post_engagement,
           videoView: el.data.video_view,
-          // costVideoView: el.data.cost_per_video_view,
           age: el.data.age,
           gender: el.data.gender,
           inserted: el.data.inserted
@@ -366,7 +362,7 @@ Meteor.methods({
       var temp = {
         impressions: 0,
         clicks: 0,
-        // likes: 0,
+        totalActions: 0,
         spend: 0,
         postEng: 0,
         reach: 0,
@@ -381,9 +377,9 @@ Meteor.methods({
           temp['gender'] = el.gender;
           temp.impressions += el.impressions;
           temp.clicks += el.clicks;
-          // temp.likes += el.likes;
           temp.reach += el.reach;
           temp.videoView += el.videoView;
+          temp.totalActions += el.totalActions;
           temp.postEng += el.postEng;
           temp.spend += el.spend;
           count++;
@@ -405,6 +401,7 @@ Meteor.methods({
     const finalFemale = [];
     const finalMale = [];
 
+    // sumAge function is defined above
     for (let i = 0; i < ageRanges.length; i++) {
       var obj;
       obj = sumAge(cleanedFemaleArray, ageRanges[i]);
@@ -417,7 +414,6 @@ Meteor.methods({
       finalMale.push(obj);
     }
     return {male: finalMale, female: finalFemale};
-
   },
   campaignAggregatorChart: (idArray, initiative, lineItem) => {
 

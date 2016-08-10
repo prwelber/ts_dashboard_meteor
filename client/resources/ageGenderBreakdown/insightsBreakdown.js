@@ -562,9 +562,89 @@ Template.insightsBreakdown.helpers({
       }]
     }
   },
+  'ageGenderTotalActions': function () {
+    const initiative = Template.instance().templateDict.get('initiative');
+    var call = Promise.promisify(Meteor.call);
+
+    let action = "totalActions";
+
+    const maleData = [];
+    const femaleData = [];
+    // set maleData
+    if (Session.get('maleData') && Session.get('maleData')[1].spend) {
+      for (let i = 0; i < 6; i++ ) {
+        maleData.push(Session.get('maleData')[i][action]);
+      }
+    }
+
+    if (Session.get('femaleData') && Session.get('femaleData')[1].spend) {
+      for (let i = 0; i < 6; i++ ) {
+        femaleData.push(Session.get('femaleData')[i][action] * -1);
+      }
+    }
+    // Age categories
+    var categories = ['18-24', '25-34', '35-44', '45-54',
+            '55-64', '65+'];
+
+    return {
+
+      chart: {
+          type: 'bar'
+      },
+      title: {
+          text: 'Total Actions'
+      },
+      xAxis: [{
+          categories: categories,
+          reversed: false,
+          labels: {
+              step: 1
+          }
+      }, { // mirror axis on right side
+          opposite: true,
+          reversed: false,
+          categories: categories,
+          linkedTo: 0,
+          labels: {
+              step: 1
+          }
+      }],
+      yAxis: {
+        title: {
+            text: "Total Actions"
+        },
+        labels: {
+          formatter: function () {
+            return formatters.num(Math.abs(this.value));
+          }
+        }
+      },
+
+      plotOptions: {
+          series: {
+              stacking: 'normal'
+          }
+      },
+
+      tooltip: {
+          formatter: function () {
+              return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
+                  "Total Actions:"+ " " + Highcharts.numberFormat(Math.abs(this.point.y), 0);
+          }
+      },
+
+      series: [{
+          name: 'Female',
+          data: femaleData
+      }, {
+          name: 'Male',
+          data: maleData
+      }]
+    }
+  },
   updated: () => {
     if (Session.get('maleData')) {
-      return moment(Session.get('maleData')[0].inserted, moment.ISO_8601).format('MM-DD-YYYY');
+      return moment(Session.get('maleData')[1].inserted, moment.ISO_8601).format('MM-DD-YYYY');
     }
   }
 });

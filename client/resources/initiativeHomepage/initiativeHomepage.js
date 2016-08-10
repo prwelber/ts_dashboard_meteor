@@ -702,6 +702,9 @@ Template.initiativeHomepage.events({
     } else {
       return '';
     }
+  },
+  'click .close-modal-x': (event, instance) => {
+    $('#modal1').closeModal();
   }
 });
 

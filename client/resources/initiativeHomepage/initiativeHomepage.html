@@ -1,6 +1,9 @@
 <template name="initiativeHomepage">
 
   <div id="modal1" class="modal" style="width: 95%;">
+  <div class="row">
+      <div class="col s12 right-align close-modal-x" style="cursor: pointer; padding-right: 5px; font-size: 25px;">&times;</div>
+    </div>
     <div class="modal-content">
     {{!---------------------- Tabs --------------------}}
     <div class="row">
@@ -40,7 +43,7 @@
             <h4 class="center-align no-top-margin">{{initiative.product}}</h4>
           </div>
         </div>
-        <h5>Line Items</h5>
+        <h4>Line Items</h4>
         <table class="centered">
           {{#each initiative.lineItems}}
           <thead>
@@ -82,6 +85,7 @@
         <br>
         {{#if isInRole "admin"}}
         <div class="col s10">
+        <h5>Performance</h5>
           <table class="centered highlight">
             <thead>
               <tr>
@@ -163,56 +167,56 @@
           </table>
         </div>
         {{else}}
-
-            <table class="centered highlight">
-              <thead>
-                <tr>
-                  <th>Type</th>
-                  <th>Objective</th>
-                  <th>Spend</th>
-                  <th>Clicks</th>
-                  <th>CPC</th>
-                  <th>Impressions</th>
-                  <th>CPM</th>
-                  <th>Likes</th>
-                  <th>CPL</th>
-                  <th>Video Views</th>
-                  <th>CPVV</th>
-                </tr>
-              </thead>
-              <tbody>
-              {{#each num in getClientNumbers}}
-                <tr>
-                  <td style="padding: 5px 0px;">Campaign</td>
-                  <td style="padding: 5px 0px;">{{num._id}}</td>
-                  <td style="padding: 5px 0px;">{{formatMoney num.net.client_spend}}</td>
-                  <td style="padding: 5px 0px;">{{formatNumber num.clicks}}</td>
-                  <td style="padding: 5px 0px;">{{formatMoney num.net.client_cpc}}</td>
-                  <td style="padding: 5px 0px;">{{formatNumber num.impressions}}</td>
-                  <td style="padding: 5px 0px;">{{formatMoney num.net.client_cpm}}</td>
-                  <td style="padding: 5px 0px;">{{formatNumber num.likes}}</td>
-                  <td style="padding: 5px 0px;">{{formatMoney num.net.client_cpl}}</td>
-                  <td style="padding: 5px 0px;">{{formatNumber num.videoViews}}</td>
-                  <td style="padding: 5px 0px;">{{formatMoney num.net.client_cpvv}}</td>
-                </tr>
-              {{/each}}
-              {{#with clientAggregate}}
-                <tr>
-                  <td style="padding: 5px 0px;"><strong>Aggregate</strong></td>
-                  <td style="padding: 5px 0px;"><strong>Aggregate</strong></td>
-                  <td style="padding: 5px 0px;"><strong>{{formatMoney spend}}</strong></td>
-                  <td style="padding: 5px 0px;"><strong>{{formatNumber clicks}}</strong></td>
-                  <td style="padding: 5px 0px;"><strong>{{formatMoney cpc}}</strong></td>
-                  <td style="padding: 5px 0px;"><strong>{{formatNumber impressions}}</strong></td>
-                  <td style="padding: 5px 0px;"><strong>{{formatMoney cpm}}</strong></td>
-                  <td style="padding: 5px 0px;"><strong>{{formatNumber likes}}</strong></td>
-                  <td style="padding: 5px 0px;"><strong>{{formatMoney cpl}}</strong></td>
-                  <td style="padding: 5px 0px;"><strong>{{formatNumber videoViews}}</strong></td>
-                  <td style="padding: 5px 0px;"><strong>{{formatMoney cpvv}}</strong></td>
-                </tr>
-              {{/with}}
-              </tbody>
-            </table>
+          <h4>Performance</h4>
+          <table class="centered highlight">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Objective</th>
+                <th>Spend</th>
+                <th>Clicks</th>
+                <th>CPC</th>
+                <th>Impressions</th>
+                <th>CPM</th>
+                <th>Likes</th>
+                <th>CPL</th>
+                <th>Video Views</th>
+                <th>CPVV</th>
+              </tr>
+            </thead>
+            <tbody>
+            {{#each num in getClientNumbers}}
+              <tr>
+                <td style="padding: 5px 0px;">Campaign</td>
+                <td style="padding: 5px 0px;">{{num._id}}</td>
+                <td style="padding: 5px 0px;">{{formatMoney num.net.client_spend}}</td>
+                <td style="padding: 5px 0px;">{{formatNumber num.clicks}}</td>
+                <td style="padding: 5px 0px;">{{formatMoney num.net.client_cpc}}</td>
+                <td style="padding: 5px 0px;">{{formatNumber num.impressions}}</td>
+                <td style="padding: 5px 0px;">{{formatMoney num.net.client_cpm}}</td>
+                <td style="padding: 5px 0px;">{{formatNumber num.likes}}</td>
+                <td style="padding: 5px 0px;">{{formatMoney num.net.client_cpl}}</td>
+                <td style="padding: 5px 0px;">{{formatNumber num.videoViews}}</td>
+                <td style="padding: 5px 0px;">{{formatMoney num.net.client_cpvv}}</td>
+              </tr>
+            {{/each}}
+            {{#with clientAggregate}}
+              <tr>
+                <td style="padding: 5px 0px;"><strong>Aggregate</strong></td>
+                <td style="padding: 5px 0px;"><strong>Aggregate</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatMoney spend}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatNumber clicks}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatMoney cpc}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatNumber impressions}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatMoney cpm}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatNumber likes}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatMoney cpl}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatNumber videoViews}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatMoney cpvv}}</strong></td>
+              </tr>
+            {{/with}}
+            </tbody>
+          </table>
         {{/if}}
       </div>
     </div>
