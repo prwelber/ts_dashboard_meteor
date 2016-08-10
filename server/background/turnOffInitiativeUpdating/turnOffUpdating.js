@@ -13,6 +13,7 @@ SyncedCron.add({
 
   schedule: (parser) => {
     return parser.text('at 2:00am');
+    // return parser.text('at 2:35pm')
   },
 
   job: (time) => {
@@ -23,7 +24,7 @@ SyncedCron.add({
 
     for (let i = 0; i < inits.length; i++) {
       const endArray = [];
-      for (let j = 0; j < 7; j++) {
+      for (let j = 0; j < inits[i].lineItems.length; j++) {
         if (inits[i].lineItems[j].endDate !== null) {
           endArray.push(inits[i].lineItems[j].endDate);
         }
