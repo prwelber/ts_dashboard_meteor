@@ -129,6 +129,11 @@ Template.initiativesHome.helpers({
   },
   'isActiveInitiative': function () {
     const now = moment()
+
+    if (moment(this.lineItems[0].startDate, moment.ISO_8601).isAfter(now)) {
+      return "Pending";
+    }
+
     if (moment(this.lineItems[0].endDate, moment.ISO_8601).isAfter(now)) {
       return "Active";
     } else if (now.diff(moment(this.lineItems[0].endDate, moment.ISO_8601), 'd') === 0) {
@@ -141,6 +146,10 @@ Template.initiativesHome.helpers({
   },
   'isActiveClass': function () {
     const now = moment()
+    if (moment(this.lineItems[0].startDate, moment.ISO_8601).isAfter(now)) {
+      return "blue-text";
+    }
+
     if (moment(this.lineItems[0].endDate, moment.ISO_8601).isAfter(now)) {
       return "green-text";
     } else if (now.diff(moment(this.lineItems[0].endDate, moment.ISO_8601), 'd') === 0) {
