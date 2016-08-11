@@ -21,7 +21,7 @@ Meteor.methods({
     let masterArray = [];
     let carouselArray = [];
     let ads;
-    const query = '/ads?fields=adcreatives{object_story_id,image_url,object_id,body,title,template_url,name,thumbnail_url,url_tags,link_url},insights{clicks,actions,cost_per_action_type,total_actions,spend,objective,cpc,cpp,cpm,ctr,impressions,frequency,reach},account_id,adset_id,campaign_id,name,id&date_perset=lifetime&limit=75&access_token='
+    const query = '/ads?fields=adcreatives{object_story_id,image_url,object_id,body,title,template_url,name,thumbnail_url,url_tags,link_url},insights{clicks,actions,cost_per_action_type,total_actions,spend,objective,cpc,cpp,cpm,ctr,impressions,frequency,reach},campaign_id,name,keywordstats,id&date_preset=lifetime&limit=75&access_token='
     try {
         let result = HTTP.call('GET', 'https://graph.facebook.com/'+apiVersion+'/'+accountNumber+query+token.token+'', {});
         ads = result;
@@ -124,7 +124,12 @@ Meteor.methods({
               attachments['message'] = attachment.data.message;
               attachments['description'] = obj.description;
               attachments['url'] = obj.target.url;
-              attachments['picture'] = obj.media.image.src;
+              try {
+                attachments['picture'] = obj.media.image.src;
+              } catch(e) {
+                console.log('Error assigning picture key to attachments object', e);
+              }
+
               attachments['title'] = obj.title;
               el['attachments'] = attachments;
               delete el.adcreatives;
@@ -135,6 +140,9 @@ Meteor.methods({
 
         otherArray.forEach(el => {
           data = {};
+          // if (el.keywordstats) {
+          //   console.log('found keywordstats', el.keywordstats.data)
+          // }
           for (let key in el) {
             if (key === "insights") {
               el[key].data.forEach(el => {
@@ -185,6 +193,12 @@ Meteor.methods({
             data['carouselData'] = el.carouselData;
           }
           data['name'] = el.name;
+          try {
+            data['keywordstats'] = el.keywordstats.data;
+          } catch(e) {
+            console.log('Problem getting keywordstats', e);
+          }
+
           data['campaign_id'] = el.campaign_id;
           data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
           data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);

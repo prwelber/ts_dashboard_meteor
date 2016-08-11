@@ -9,129 +9,127 @@
     <div class="divider" style="margin: 1em 0 1em 0;"></div>
   </div>
   {{#if isReady "AdsList"}}
-    {{#each getAds}}
-    <div class="container">
-      <div class="col s12">
 
-        <h3>{{data.name}}</h3>
-        <p>Ad runtime: {{data.date_start}} -- {{data.date_stop}}</p>
-        <p>Data Updated: {{data.inserted}}</p>
-        {{#if data.carouselData}}
-          <h4>Carousel Creative</h4>
-          {{#each data.carouselData}}
-            <p>Title: {{name}}</p>
-            <p>Copy: {{description}}</p>
-            <p>Link Clicks: {{link_click}} | CTR: {{link_ctr}}</p>
-            <p><a target="blank" href="{{picture}}">Image Source</a></p>
-            <p><a target="blank" href="{{link}}">URL</a></p>
-          {{/each}}
-        {{else}}
-          <ul class="collection with-header">
-            <li class="collection-header"><h4>Creative</h4></li>
-            <li class="collection-item">Title: {{data.title}}</li>
-            {{#if data.description}}
-              <li class="collection-item">Copy: {{data.description}}</li>
-              <li class="collection-item">Message: {{data.message}}</li>
-            {{else}}
-            <li class="collection-item">Message: {{data.message}}</li>
-            {{/if}}
-            {{#if data.picture}}
-              <li class="collection-item"><a target="_blank" href="{{data.picture}}">Media Link (opens new tab)</a></li>
-              <li class="collection-item"><a target="_blank" href="{{data.url}}">Facebook Ad Link (opens new tab)</a></li>
-            {{/if}}
-          </ul>
-          {{/if}}
+    <table class="highlight">
+      <thead>
+        <tr>
+          <th>Ad Name</th>
+          <th>Runtime</th>
+          <th>Title</th>
+          <th>Message</th>
+          <th>Media</th>
+          <th>Ad Link</th>
+          <th>Impressions</th>
+          <th>Clicks</th>
+          <th>Likes</th>
+          <th>Video View</th>
+          <th>Actions</th>
+          <th>CTR</th>
+          <th>Spend</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each ad in getAds}}
+          <tr>
+            <td>{{ad.data.name}}</td>
+            <td>{{ad.data.date_start}} - {{ad.data.date_stop}}</td>
+            <td>{{ad.data.title}}</td>
+            <td title={{ad.data.message}}>{{shortenMessage ad.data.message}}</td>
+            <td><a target="_blank" href="{{ad.data.picture}}">Media</a></td>
+            <td><a target="_blank" href="{{ad.data.url}}">Link</a></td>
+            <td>{{number ad.data.impressions}}</td>
+            <td>{{number ad.data.clicks}}</td>
+            <td>{{number ad.data.post_like}}</td>
+            <td>{{number ad.data.video_view}}</td>
+            <td>{{number ad.data.total_actions}}</td>
+            <td>{{shortenCTR ad.data.ctr}}%</td>
+            <td>{{money ad.data.spend}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+
+    <table class="highlight">
+      <thead>
+        <tr>
+          <th>Media (hover for name)</th>
+          <th>Title</th>
+          <th>Copy</th>
+          <th>Message</th>
+          <th>Impressions</th>
+          <th>Post Engagement</th>
+          <th>Clicks</th>
+          <th>Link Clicks</th>
+          <th>Likes</th>
+          <th>Video View</th>
+          <th>Actions</th>
+          <th>CTR</th>
+          <th>Reach</th>
+          <th>Frequency</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each ad in getAds}}
+          <tr>
+            <td><img title="{{ad.data.name}}" src="{{ad.data.picture}}" style="height: 125px; width: 125px;"></td>
+            <td style="width: 150px;">{{ad.data.title}}</td>
+            <td style="width: 150px;">{{ad.data.description}}</td>
+            <td style="width: 350px;">{{ad.data.message}}</td>
+            <td>{{number ad.data.impressions}}</td>
+            <td>{{number ad.data.post_engagement}}</td>
+            <td>{{number ad.data.clicks}}</td>
+            <td>{{number ad.data.link_click}}</td>
+            <td>{{number ad.data.post_like}}</td>
+            <td>{{number ad.data.video_view}}</td>
+            <td>{{ad.data.total_actions}}</td>
+            <td>{{shortenCTR ad.data.ctr}}%</td>
+            <td>{{number ad.data.reach}}</td>
+            <td>{{shortenCTR ad.data.frequency}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
 
 
+    <div class="row">
+      {{> highchartsHelper chartId="adCreativeChart" chartWidth="100%" chartHeight="100%" chartObject=adCreativeChart}}
+    </div>
+    <div class="row">
+      {{> highchartsHelper chartId="adPerformanceChart" chartWidth="100%" chartHeight="100%" chartObject=adPerformanceChart}}
+    </div>
+    <div class="row">
+      {{> highchartsHelper chartId="keywordChart" chartWidth="100%" chartHeight="100%" chartObject=keywordChart}}
+    </div>
+    <div class="row">
+      {{> highchartsHelper chartId="keywordClicksChart" chartWidth="100%" chartHeight="100%" chartObject=keywordClicksChart}}
+    </div>
+    {{!-- {{keywordChart}} --}}
 
-          {{!-- <h4>Creative</h4>
-          <p>Title: {{data.title}}</p>
-          {{#if data.description}}
-            <p>Copy: {{data.description}}</p>
-            <p>Message: {{data.message}}</p>
-          {{else}}
-            <p>Message: {{data.message}}</p>
-          {{/if}}
-          {{#if data.picture}}<p><a target="_blank" href="{{data.picture}}">Media Link (opens new tab)</a></p>{{/if}}
-          <p><a target="_blank" href="{{data.url}}">Facebook Ad Link (opens new tab)</a></p>
-        {{/if}}  --}}
-
-
-        <h4>Spend: {{money data.spend}}</h4>
-        <h5>Objective: {{data.objective}}</h5>
-
-        <table class="striped centered">
+    {{!-- <div class="row"> --}}
+      <div class="keyword-wrapper">
+        <div class="keywordstats-header"><h3>Keyword Stats</h3></div>
+        <table class="highlight">
           <thead>
             <tr>
-              <th>Clicks</th>
-              <th>CPC</th>
+              <th>Ad Name</th>
+              <th>Keyword</th>
               <th>Impressions</th>
-              <th>CPM</th>
-              <th>Likes</th>
-              <th>CPL</th>
-              <th>Reach</th>
+              <th>Clicks</th>
             </tr>
           </thead>
           <tbody>
+          {{#each stat in getKeywordstats}}
             <tr>
-              <td>{{number data.clicks}}</td>
-              <td>{{money data.cpc}}</td>
-              <td>{{number data.impressions}}</td>
-              <td>{{money data.cpm}}</td>
-              <td>{{number data.post_like}}</td>
-              <td>{{money data.cost_per_post_like}}</td>
-              <td>{{number data.reach}}</td>
+              <td>{{stat.adName}}</td>
+              <td>{{stat.word}}</td>
+              <td>{{stat.impressions}}</td>
+              <td>{{stat.clicks}}</td>
             </tr>
-          </tbody>
-          <thead>
-            <tr>
-              <th>Link Click</th>
-              <th>CP Link Click</th>
-              <th>CP Page Eng</th>
-              <th>CP Post Eng</th>
-              <th>Website Click</th>
-              <th>CP Website Click</th>
-              <th>CTR</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{{data.link_click}}</td>
-              <td>{{money data.cost_per_link_click}}</td>
-              <td>{{money data.cost_per_page_engagement}}</td>
-              <td>{{money data.cost_per_post_engagement}}</td>
-              <td>{{number data.website_clicks}}</td>
-              <td>{{money data.cost_per_website_clicks}}</td>
-              <td>{{data.ctr}}</td>
-            </tr>
-          </tbody>
-          <thead>
-            <tr>
-              <th>Video Views</th>
-              <th>CP Video Views</th>
-              <th>CP Video Play</th>
-              <th>Total Actions</th>
-              <th>CP Total Action</th>
-              <th>Offsite Conv</th>
-              <th>CP Offsite Conv</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{{number data.video_view}}</td>
-              <td>{{money data.cost_per_video_view}}</td>
-              <td>{{money data.cost_per_video_play}}</td>
-              <td>{{number data.total_actions}}</td>
-              <td>{{money data.cost_per_total_actions}}</td>
-              <td>{{data.offsite_conversion}}</td>
-              <td>{{money data.cost_per_offsite_conversion}}</td>
-            </tr>
+          {{/each}}
           </tbody>
         </table>
-
       </div>
-    </div>
-    {{/each}}
+    {{!-- </div> --}}
   {{else}}
     <p>Loading....</p>
   {{/if}}

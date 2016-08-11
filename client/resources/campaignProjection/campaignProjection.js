@@ -8,20 +8,21 @@ import mastFunc from '../masterFunctions';
 import CampaignInsights from '/collections/CampaignInsights';
 import { calcFactorSpend } from '/both/utilityFunctions/factorSpendFunction';
 import { formatters } from '/both/utilityFunctions/formatters';
+import { getLineItem } from '/both/utilityFunctions/getLineItem';
 
 // ------------------------- FUNCTIONS -------------------------- //
 
-const lower = function lower (objective) {
-  let word = objective[0]
-  for (let i = 1; i < objective.length; i++) {
-    if (objective[i - 1] === " ") {
-      word += objective[i].toUpperCase();
-    } else {
-      word += objective[i].toLowerCase();
-    }
-  }
-  return word;
-}
+// const lower = function lower (objective) {
+//   let word = objective[0]
+//   for (let i = 1; i < objective.length; i++) {
+//     if (objective[i - 1] === " ") {
+//       word += objective[i].toUpperCase();
+//     } else {
+//       word += objective[i].toLowerCase();
+//     }
+//   }
+//   return word;
+// }
 
 const defineAction = function defineAction (lineItem) {
   let action;
@@ -32,19 +33,19 @@ const defineAction = function defineAction (lineItem) {
   return action;
 }
 
-// get the correct line item if I have the campaignInsight and initiative
-const getLineItem = function getLineItem(campaignData, initiative) {
-  const objective = campaignData.objective.replace(/_/g, " ");
-  const word = lower(objective);
-  let lineItem = _.where(initiative.lineItems, {objective: word})[0]; // returns an array
-  let index;
-  if (lineItem === undefined) {
-    index = 0;
-    lineItem = initiative.lineItems;
-  }
-  index = parseInt(lineItem.name.substring(lineItem.name.length, lineItem.name.length - 1)) - 1; // minus 1 to account for zero indexing of lineItems array
-  return initiative.lineItems[index];
-}
+// // get the correct line item if I have the campaignInsight and initiative
+// const getLineItem = function getLineItem(campaignData, initiative) {
+//   const objective = campaignData.objective.replace(/_/g, " ");
+//   const word = lower(objective);
+//   let lineItem = _.where(initiative.lineItems, {objective: word})[0]; // returns an array
+//   let index;
+//   if (lineItem === undefined) {
+//     index = 0;
+//     lineItem = initiative.lineItems;
+//   }
+//   index = parseInt(lineItem.name.substring(lineItem.name.length, lineItem.name.length - 1)) - 1; // minus 1 to account for zero indexing of lineItems array
+//   return initiative.lineItems[index];
+// }
 
 // ----------------------- END FUNCTIONS ----------------------- //
 
@@ -104,7 +105,7 @@ Template.projections.helpers({
     const init = Template.instance().templateDict.get('initiative');
     const campData = Template.instance().templateDict.get('campData');
 
-    const lineItem = getLineItem(campData, init);
+    const lineItem = getLineItem.getLineItem(campData, init);
     const daysLeft = moment(lineItem.endDate, moment.ISO_8601).diff(moment(), 'd');
     const quotedPrice = lineItem.price;
 
@@ -116,7 +117,7 @@ Template.projections.helpers({
   projectFactorSpend: () => {
     const init = Template.instance().templateDict.get('initiative');
     const campData = Template.instance().templateDict.get('campData');
-    const lineItem = getLineItem(campData, init);
+    const lineItem = getLineItem.getLineItem(campData, init);
     // gives days left between today and endDate
     const daysLeft = moment(lineItem.endDate, moment.ISO_8601).diff(moment(), 'd');
     if (lineItem.cost_plus === true) {

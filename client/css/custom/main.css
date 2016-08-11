@@ -230,6 +230,20 @@ a:hover {
 #cl-table {
   font-size: 12px;
 }
+
+.user-wrapper {
+  margin: 0 3% 0 3%;
+}
+
+.keyword-wrapper {
+  margin: 0 15% 0 15%;
+}
+
+.keywordstats-header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1em;
+}
 /****************************************************************
  *
  * CSS Percentage Circle

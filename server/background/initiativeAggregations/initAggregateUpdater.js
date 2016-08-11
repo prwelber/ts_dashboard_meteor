@@ -15,7 +15,8 @@ SyncedCron.add({
 
   schedule: (parser) => {
     // return parser.text('at 5:44pm');
-    return parser.text('every 10 minutes every weekday');
+    return parser.text('every 10 minutes every weekday after 7th hour and before 20th hour');
+    // every 10 minutes on Mon-Fri starting at 7am and ending at 10pm
   },
   job: (time) => {
     const inits = Initiatives.find({userActive: true}).fetch();
@@ -42,7 +43,8 @@ SyncedCron.add({
 SyncedCron.add({
   name: "Objective Aggregator",
   schedule: (parser) => {
-    return parser.text('every 11 minutes every weekday');
+    return parser.text('every 11 minutes every weekday after 7th hour and before 20th hour');
+    // every 11 minutes on Mon-Fri starting at 7am and ending at 10pm
     // return parser.text('at 1:39pm')
   },
   job: () => {
