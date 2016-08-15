@@ -174,7 +174,8 @@ FlowRouter.route('/accounts/:campaign_id/creative', {
     name: 'ads',
     action: function (params) {
         Session.set("route", "creative");
-        BlazeLayout.render('index', {main: 'campaignDashboard', dash: 'ads'});
+        // BlazeLayout.render('index', {main: 'campaignDashboard', dash: 'ads'});
+        BlazeLayout.render('index', {main: 'ads'});
     }
 });
 

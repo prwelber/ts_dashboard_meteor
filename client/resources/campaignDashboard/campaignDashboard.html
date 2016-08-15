@@ -114,12 +114,7 @@
             <span class="">CPL</span>
           </div>
         </div> --}}
-        <div class="col s6 m4 l3 card grey lighten-5">
-          <div class="card-content ">
-            <span class="center-align dash-data">{{number offsite_conversion_fb_pixel_complete_registration}}</span><br>
-            <span class="">Conversions</span>
-          </div>
-        </div>
+
       {{else}}
         {{!------------ BELOW IS WHAT CLIENT SEES ------------}}
         <div class="col s6 m4 l3 card grey lighten-5">
@@ -153,6 +148,7 @@
           </div>
         </div>
       {{/if}}
+
       <div class="col s6 m4 l3 card grey lighten-5">
         <div class="card-content ">
           <span class="center-align dash-data">{{number total_actions}}</span><br>
@@ -170,6 +166,13 @@
         <div class="card-content ">
           <span class="center-align dash-data">{{number clicks}}</span><br>
           <span class="">Clicks</span>
+        </div>
+      </div>
+
+      <div class="col s6 m4 l3 card grey lighten-5">
+        <div class="card-content ">
+          <span class="center-align dash-data">{{number link_click}}</span><br>
+          <span class="">Link Clicks</span>
         </div>
       </div>
 
@@ -197,6 +200,35 @@
           <span class="">Post Engagement</span>
         </div>
       </div>
+
+      {{#if offsite_conversion}}
+        <div class="col s6 m4 l3 card grey lighten-5">
+          <div class="card-content ">
+            <span class="center-align dash-data">{{number offsite_conversion}}</span><br>
+            <span class="">Offsite Conversions</span>
+          </div>
+        </div>
+        <div class="col s6 m4 l3 card grey lighten-5">
+          <div class="card-content ">
+            <span class="center-align dash-data">{{number offsite_conversion_fb_pixel_add_to_cart}}</span><br>
+            <span class="">Conv - Add to Cart</span>
+          </div>
+        </div>
+        <div class="col s6 m4 l3 card grey lighten-5">
+          <div class="card-content ">
+            <span class="center-align dash-data">{{number offsite_conversion_fb_pixel_view_content}}</span><br>
+            <span class="">Conv - View Content</span>
+          </div>
+        </div>
+        <div class="col s6 m4 l3 card grey lighten-5">
+          <div class="card-content ">
+            <span class="center-align dash-data">{{number offsite_conversion_fb_pixel_purchase}}</span><br>
+            <span class="">Conv - Purchase</span>
+          </div>
+        </div>
+      {{/if}}
+      {{!-- end of conversion stats --}}
+
     {{!-- Show client stats --}}
     {{#if isInRole "admin"}}
       <div class="col s12">

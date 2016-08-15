@@ -260,8 +260,11 @@ Meteor.publish('campaignInsightList', function (opts, searchValue) {
     } else if (/[a-z0-9]{16,18}/i.test(opts) === true) {
 
       const init = Initiatives.findOne({_id: opts});
-      return CampaignInsights.find({'data.initiative': init.name});
-
+      if (init) {
+        return CampaignInsights.find({'data.initiative': init.name});
+      } else {
+        return CampaignInsights.find({'data.campaign_id': opts});
+      }
     } else {
 
       return CampaignInsights.find({'data.campaign_id': opts});

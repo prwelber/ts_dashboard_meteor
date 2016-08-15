@@ -12,18 +12,6 @@ import { getLineItem } from '/both/utilityFunctions/getLineItem';
 
 // ------------------------- FUNCTIONS -------------------------- //
 
-// const lower = function lower (objective) {
-//   let word = objective[0]
-//   for (let i = 1; i < objective.length; i++) {
-//     if (objective[i - 1] === " ") {
-//       word += objective[i].toUpperCase();
-//     } else {
-//       word += objective[i].toLowerCase();
-//     }
-//   }
-//   return word;
-// }
-
 const defineAction = function defineAction (lineItem) {
   let action;
   lineItem.dealType === "CPC" ? action = "clicks" : '';
@@ -33,19 +21,6 @@ const defineAction = function defineAction (lineItem) {
   return action;
 }
 
-// // get the correct line item if I have the campaignInsight and initiative
-// const getLineItem = function getLineItem(campaignData, initiative) {
-//   const objective = campaignData.objective.replace(/_/g, " ");
-//   const word = lower(objective);
-//   let lineItem = _.where(initiative.lineItems, {objective: word})[0]; // returns an array
-//   let index;
-//   if (lineItem === undefined) {
-//     index = 0;
-//     lineItem = initiative.lineItems;
-//   }
-//   index = parseInt(lineItem.name.substring(lineItem.name.length, lineItem.name.length - 1)) - 1; // minus 1 to account for zero indexing of lineItems array
-//   return initiative.lineItems[index];
-// }
 
 // ----------------------- END FUNCTIONS ----------------------- //
 
@@ -101,6 +76,12 @@ Template.projections.helpers({
       return true;
     };
   },
+  insightPresent: () => {
+    const insight = Template.instance().templateDict.get('campData');
+    if (insight.spend) {
+      return true;
+    }
+  },
   lineItem: () => {
     const init = Template.instance().templateDict.get('initiative');
     const campData = Template.instance().templateDict.get('campData');
@@ -123,7 +104,13 @@ Template.projections.helpers({
     if (lineItem.cost_plus === true) {
       return;
     }
-    if (daysLeft <= 0) {
+    console.log('daysLeft', daysLeft)
+    if (daysLeft < 0) {
+      console.log('daysLeft <= 0', daysLeft)
+      return;
+    }
+    if (! campData) {
+      console.log('no campData')
       return;
     }
     const daysIn = Math.abs(moment(lineItem.startDate, moment.ISO_8601).diff(moment(), 'd'));
@@ -137,7 +124,6 @@ Template.projections.helpers({
     const inputFactor = Session.get('factor');
     let estTotalActions = (avgActionsPerDay * daysLeft) + campData[action];
 
-
     if (action === "impressions") {
       projectedSpend = (((campData[dealType] / inputFactor) * (estTotalActions / 1000)) * 100).toFixed(2);
     } else {
@@ -145,8 +131,6 @@ Template.projections.helpers({
     }
     const spendTarget = lineItem.budget * .985;
     // console.log('estTotalActs, projectedSpend, spendTarget, inputFactor', estTotalActions, projectedSpend, spendTarget, inputFactor);
-
-
 
     // here, we are calculating the best factor for each campaign
     // this while loop says essentially: if projectedSpend is >= spendTarget,
@@ -162,10 +146,6 @@ Template.projections.helpers({
       while (projectedSpend <= spendTarget || projectedSpend > lineItem.budget) {
 
         if (lineItem.cost_plus === true) {
-          break;
-        }
-
-        if (moment(lineItem.endDate, moment.ISO_8601).diff(moment(), 'd') <= 0) {
           break;
         }
 

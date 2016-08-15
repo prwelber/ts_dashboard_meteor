@@ -13,7 +13,7 @@
     <table class="highlight">
       <thead>
         <tr>
-          <th>Ad Name</th>
+          <th>Ad Name (click for detail)</th>
           <th>Runtime</th>
           <th>Title</th>
           <th>Message</th>
@@ -21,9 +21,9 @@
           <th>Ad Link</th>
           <th>Impressions</th>
           <th>Clicks</th>
-          <th>Likes</th>
-          <th>Video View</th>
-          <th>Actions</th>
+          {{!-- <th>Likes</th> --}}
+          {{!-- <th>Video View</th> --}}
+          {{!-- <th>Actions</th> --}}
           <th>CTR</th>
           <th>Spend</th>
         </tr>
@@ -31,7 +31,7 @@
       <tbody>
         {{#each ad in getAds}}
           <tr>
-            <td>{{ad.data.name}}</td>
+            <td><a href="#ad-modal" class="modal-trigger">{{ad.data.name}}</a></td>
             <td>{{ad.data.date_start}} - {{ad.data.date_stop}}</td>
             <td>{{ad.data.title}}</td>
             <td title={{ad.data.message}}>{{shortenMessage ad.data.message}}</td>
@@ -39,15 +39,135 @@
             <td><a target="_blank" href="{{ad.data.url}}">Link</a></td>
             <td>{{number ad.data.impressions}}</td>
             <td>{{number ad.data.clicks}}</td>
-            <td>{{number ad.data.post_like}}</td>
-            <td>{{number ad.data.video_view}}</td>
-            <td>{{number ad.data.total_actions}}</td>
+            {{!-- <td>{{number ad.data.post_like}}</td> --}}
+            {{!-- <td>{{number ad.data.video_view}}</td> --}}
+            {{!-- <td>{{number ad.data.total_actions}}</td> --}}
             <td>{{shortenCTR ad.data.ctr}}%</td>
             <td>{{money ad.data.spend}}</td>
           </tr>
         {{/each}}
       </tbody>
     </table>
+
+    <div id="ad-modal" class="modal" style="width: 85%;">
+      <div class="row">
+        <div class="col s12 right-align close-modal-x" style="cursor: pointer; padding-right: 5px; font-size: 25px;">&times;</div>
+      </div>
+      <div class="modal-content">
+        <div class="col s12 center-align">
+          <h3>{{adModal.name}}</h3>
+        </div>
+        <div class="col s12 center-align">
+          <span class="modal-title">Title: {{adModal.title}}</span>
+        </div>
+        <div class="col s12 center-align">
+          <span>Message: {{adModal.message}}</span>
+        </div>
+        <div class="col s12 center-align">
+          <span>Description: {{adModal.description}}</span>
+        </div>
+        <div class="row" style="margin-top: 2em;">
+          <div class="col s12 m8 l8">
+            <img src="{{adModal.picture}}" style="width: 90%;">
+          </div>
+          <div class="col s12 m4 l4">
+            <table>
+              <tr>
+                <th>Impressions</th>
+                <td>{{number adModal.impressions}}</td>
+              </tr>
+              <tr>
+                <th>Clicks</th>
+                <td>{{number adModal.clicks}}</td>
+              </tr>
+              <tr>
+                <th>Likes</th>
+                <td>{{number adModal.post_like}}</td>
+              </tr>
+              <tr>
+                <th>Link Click</th>
+                <td>{{number adModal.link_click}}</td>
+              </tr>
+              <tr>
+                <th>Reach</th>
+                <td>{{number adModal.reach}}</td>
+              </tr>
+              <tr>
+                <th>Frequency</th>
+                <td>{{shortenCTR adModal.frequency}}</td>
+              </tr>
+              <tr>
+                <th>Actions</th>
+                <td>{{number adModal.total_actions}}</td>
+              </tr>
+              <tr>
+                <th>Page Engagement</th>
+                <td>{{number adModal.page_engagement}}</td>
+              </tr>
+              <tr>
+                <th>Post Engagement</th>
+                <td>{{number adModal.post_engagement}}</td>
+              </tr>
+              <tr>
+                <th>Video View</th>
+                <td>{{number adModal.video_view}}</td>
+              </tr>
+              <tr>
+                <th>CTR</th>
+                <td>{{shortenCTR adModal.ctr}}%</td>
+              </tr>
+              {{#if adModal.offsite_conversion}}
+                <tr>
+                  <th>Offsite Conversion</th>
+                  <td>{{number adModal.offsite_conversion}}</td>
+                </tr>
+              {{/if}}
+              <tr>
+                <th>Spend</th>
+                <td>{{money adModal.spend}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+     {{!--    <table>
+          <thead>
+            <tr>
+              <th>Impressions</th>
+              <th>Clicks</th>
+              <th>Likes</th>
+              <th>Link Click</th>
+              <th>Reach</th>
+              <th>Frequency</th>
+              <th>Video View</th>
+              <th>Actions</th>
+              <th>CTR</th>
+
+                <th>Offsite Conversion</th>
+              {{/if}}
+              <th>Spend</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{number adModal.impressions}}</td>
+              <td>{{number adModal.clicks}}</td>
+              <td>{{number adModal.post_like}}</td>
+              <td>{{number adModal.link_click}}</td>
+              <td>{{number adModal.reach}}</td>
+              <td>{{shortenCTR adModal.frequency}}</td>
+              <td>{{number adModal.video_view}}</td>
+              <td>{{number adModal.total_actions}}</td>
+              <td>{{shortenCTR adModal.ctr}}%</td>
+              {{#if adModal.offsite_conversion}}
+                <td>{{number adModal.offsite_conversion}}</td>
+              {{/if}}
+              <td>{{money adModal.spend}}</td>
+            </tr>
+          </tbody>
+        </table> --}}
+      </div>
+    </div>
+
 
     <table class="highlight">
       <thead>
@@ -59,13 +179,13 @@
           <th>Impressions</th>
           <th>Post Engagement</th>
           <th>Clicks</th>
-          <th>Link Clicks</th>
-          <th>Likes</th>
-          <th>Video View</th>
-          <th>Actions</th>
+          {{!-- <th>Link Clicks</th> --}}
+          {{!-- <th>Likes</th> --}}
+          {{!-- <th>Video View</th> --}}
+          {{!-- <th>Actions</th> --}}
           <th>CTR</th>
-          <th>Reach</th>
-          <th>Frequency</th>
+          {{!-- <th>Reach</th>
+          <th>Frequency</th> --}}
         </tr>
       </thead>
       <tbody>
@@ -78,13 +198,13 @@
             <td>{{number ad.data.impressions}}</td>
             <td>{{number ad.data.post_engagement}}</td>
             <td>{{number ad.data.clicks}}</td>
-            <td>{{number ad.data.link_click}}</td>
-            <td>{{number ad.data.post_like}}</td>
-            <td>{{number ad.data.video_view}}</td>
-            <td>{{ad.data.total_actions}}</td>
+            {{!-- <td>{{number ad.data.link_click}}</td> --}}
+            {{!-- <td>{{number ad.data.post_like}}</td> --}}
+            {{!-- <td>{{number ad.data.video_view}}</td> --}}
+            {{!-- <td>{{ad.data.total_actions}}</td> --}}
             <td>{{shortenCTR ad.data.ctr}}%</td>
-            <td>{{number ad.data.reach}}</td>
-            <td>{{shortenCTR ad.data.frequency}}</td>
+            {{!-- <td>{{number ad.data.reach}}</td>
+            <td>{{shortenCTR ad.data.frequency}}</td> --}}
           </tr>
         {{/each}}
       </tbody>

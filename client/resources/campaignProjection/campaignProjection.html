@@ -82,36 +82,40 @@
       </div>
       {{/with}}
     </div>
-    <div class="row">
-      <h3 class="center-align">Factor Calculator</h3>
-      <div class="col s1">
-        <input type="text" id="factor-projection-percent" value={{lineItem.lineItem.percentTotalPercent}}>
-        <label for="factor-projection-percent">Current Factor</label>
+    {{!-- {{#if insightPresent}} --}}
+      <div class="row">
+        <h3 class="center-align">Factor Calculator</h3>
+        <div class="col s1">
+          <input type="text" id="factor-projection-percent" value={{lineItem.lineItem.percentTotalPercent}}>
+          <label for="factor-projection-percent">Current Factor</label>
+        </div>
+        <div class="col s1">
+          <input type="text" id="factor-projection-days-left" value={{lineItem.daysLeft}} disabled>
+          <label for="factor-projection-days-left">Days Left</label>
+        </div>
+        <div class="col s1">
+          <input type="text" id="factor-projection-budget" value={{money lineItem.lineItem.budget}}>
+          <label for="factor-projection-budget">Budget</label>
+        </div>
+        <div class="col s2">
+          <input type="text" id="factor-projection-delivery" value={{num projectedDelivery}}>
+          <label for="factor-projection-delivery">Projected Delivery</label>
+        </div>
+        <div class="col s2">
+          <input type="text" id="factor-projection-delivery" value={{money effectiveCostPer}}>
+          <label for="factor-projection-delivery">Effective Cost Per</label>
+        </div>
+        <div class="col s2">
+          <input type="text" id="factor-projection-nf" value={{newFactor}}>
+          <label for="factor-projection-nf">Suggested Factor</label>
+        </div>
+        <div class="col s2">
+          <h5>Projected Client Spend: {{money projectFactorSpend}}</h5>
+        </div>
       </div>
-      <div class="col s1">
-        <input type="text" id="factor-projection-days-left" value={{lineItem.daysLeft}} disabled>
-        <label for="factor-projection-days-left">Days Left</label>
-      </div>
-      <div class="col s1">
-        <input type="text" id="factor-projection-budget" value={{money lineItem.lineItem.budget}}>
-        <label for="factor-projection-budget">Budget</label>
-      </div>
-      <div class="col s2">
-        <input type="text" id="factor-projection-delivery" value={{num projectedDelivery}}>
-        <label for="factor-projection-delivery">Projected Delivery</label>
-      </div>
-      <div class="col s2">
-        <input type="text" id="factor-projection-delivery" value={{money effectiveCostPer}}>
-        <label for="factor-projection-delivery">Effective Cost Per</label>
-      </div>
-      <div class="col s2">
-        <input type="text" id="factor-projection-nf" value={{newFactor}}>
-        <label for="factor-projection-nf">Suggested Factor</label>
-      </div>
-      <div class="col s2">
-        <h5>Projected Client Spend: {{money projectFactorSpend}}</h5>
-      </div>
-    </div>
+    {{!-- {{else}}
+      <p>No data available, so Factor Calculator cannot run.</p>
+    {{/if}} --}}
   </div>
 
   {{else}}

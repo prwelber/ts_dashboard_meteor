@@ -37,6 +37,7 @@ Template.ads.onCreated(function () {
 
 Template.ads.onRendered(() => {
   $('.tooltipped').tooltip({delay: 50});
+  $('.modal-trigger').leanModal();
 });
 
 Template.ads.helpers({
@@ -575,6 +576,15 @@ Template.ads.helpers({
             }
         }]
     }
+  },
+  adModal: () => {
+    const ad = Template.instance().templateDict.get('modal');
+    if (ad) {
+      return ad.data;
+    } else {
+      return '';
+    }
+
   }
 });
 
@@ -582,6 +592,16 @@ Template.ads.events({
   'click #refresh-ads': (event, template) => {
     const campId = event.target.dataset.id;
     Meteor.call('refreshAds', campId);
+  },
+  'click .modal-trigger': (event, template) => {
+    console.log(event.target.textContent);
+    const adName = event.target.textContent;
+    $('#ad-modal').openModal();
+    const ad = Ads.findOne({'data.name': adName});
+    template.templateDict.set('modal', ad);
+  },
+  'click .close-modal-x': (event, instance) => {
+    $('#ad-modal').closeModal();
   }
 });
 

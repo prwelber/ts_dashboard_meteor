@@ -17,6 +17,10 @@ Template.hourlyBreakdowns.onCreated(function () {
   this.templateDict.set('hours', null);
 });
 
+Template.hourlyBreakdowns.onRendered(function () {
+  $('.carousel.carousel-slider').carousel({full_width: true});
+})
+
 Template.hourlyBreakdowns.helpers({
     isReady: function (sub) {
 

@@ -174,9 +174,8 @@ Template.insightsBreakdownDaily.helpers({
     return formatters.num(num);
   },
   reportLink: () => {
-    const route = FlowRouter.current().path;
-    return route.substring(0,24) + 'report';
-
+    const num = FlowRouter.getParam('campaign_id');
+    return `/accounts/${num}/report`;
   }
 });
 
