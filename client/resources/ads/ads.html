@@ -31,7 +31,7 @@
       <tbody>
         {{#each ad in getAds}}
           <tr>
-            <td><a href="#ad-modal" class="modal-trigger">{{ad.data.name}}</a></td>
+            <td><a href="#ad-modal" class="modal-trigger" data-spend="{{ad.data.spend}}">{{ad.data.name}}</a></td>
             <td>{{ad.data.date_start}} - {{ad.data.date_stop}}</td>
             <td>{{ad.data.title}}</td>
             <td title={{ad.data.message}}>{{shortenMessage ad.data.message}}</td>
@@ -217,33 +217,37 @@
     <div class="row">
       {{> highchartsHelper chartId="adPerformanceChart" chartWidth="100%" chartHeight="100%" chartObject=adPerformanceChart}}
     </div>
-    <div class="row">
+    {{!-- <div class="row">
       {{> highchartsHelper chartId="keywordChart" chartWidth="100%" chartHeight="100%" chartObject=keywordChart}}
     </div>
     <div class="row">
       {{> highchartsHelper chartId="keywordClicksChart" chartWidth="100%" chartHeight="100%" chartObject=keywordClicksChart}}
-    </div>
+    </div> --}}
     {{!-- {{keywordChart}} --}}
+
+    <div class="row">
+      {{> highchartsHelper chartId="keywordPerformanceChart" chartWidth="100%" chartHeight="100%" chartObject=keywordPerformanceChart}}
+    </div>
 
     {{!-- <div class="row"> --}}
       <div class="keyword-wrapper">
         <div class="keywordstats-header"><h3>Keyword Stats</h3></div>
-        <table class="highlight">
+        <table class="highlight" id="keyword-table">
           <thead>
             <tr>
-              <th>Ad Name</th>
               <th>Keyword</th>
-              <th>Impressions</th>
-              <th>Clicks</th>
+              <th class="keyword-table">Impressions<i data-name="impressions" class="fa fa-sort keyword-table-icon" aria-hidden="true"></i></th>
+              <th class="keyword-table">Clicks<i data-name="clicks" class="fa fa-sort keyword-table-icon" aria-hidden="true"></i></th>
+              <th class="keyword-table">CTR<i data-name="ctr" class="fa fa-sort keyword-table-icon" aria-hidden="true"></i></th>
             </tr>
           </thead>
           <tbody>
           {{#each stat in getKeywordstats}}
             <tr>
-              <td>{{stat.adName}}</td>
-              <td>{{stat.word}}</td>
-              <td>{{stat.impressions}}</td>
-              <td>{{stat.clicks}}</td>
+              <td>{{stat.keyword}}</td>
+              <td>{{number stat.impressions}}</td>
+              <td>{{number stat.clicks}}</td>
+              <td>{{keywordCTR stat.ctr}}%</td>
             </tr>
           {{/each}}
           </tbody>

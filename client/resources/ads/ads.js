@@ -33,6 +33,7 @@ Template.ads.onCreated(function () {
   this.templateDict.set('camp', campaign);
   this.templateDict.set('init', init);
   this.templateDict.set('ads', null);
+  Session.set('sessionSorter', 'ctr');
 });
 
 Template.ads.onRendered(() => {
@@ -108,15 +109,6 @@ Template.ads.helpers({
               adSpend = ad.data[action] * factorData['client_' + deal];
             }
             ad.data.spend = adSpend;
-            // ad.data.cpm = adSpend / (ad.data.impressions / 1000);
-            // ad.data.cpc = adSpend / ad.data.clicks;
-            // ad.data.cpl = adSpend / ad.data.like;
-            // ad.data['cost_per_total_action'] = adSpend / ad.data.total_actions;
-            // ad.data.cost_per_video_view = adSpend / ad.data.video_view;
-            // ad.data.cost_per_post_engagement = adSpend / ad.data.post_engagement;
-            // ad.data.cost_per_post_like = adSpend / ad.data.post_like;
-            // ad.data.cost_per_link_click = adSpend / ad.data.link_click;
-            // ad.data.cost_per_website_clicks = adSpend / ad.data.website_clicks;
           });
           return ads;
         } else {
@@ -154,213 +146,51 @@ Template.ads.helpers({
 
     if (ads) {
       const arr = [];
+      let keyObj = {};
       ads.forEach(ad => {
         let keyword = ad.data.keywordstats;
         // console.log(ad.data.keywordstats)
         for (let key in keyword) {
-          let keywordObj = {};
-          keywordObj = {
-            'adName': ad.data.name,
-            'word': key,
-            'impressions': keyword[key]['impressions'],
-            'clicks': keyword[key]['clicks']
+          if (!keyObj[key]) {
+            keyObj[key] = {};
+            keyObj[key]['impressions'] = keyword[key].impressions;
+            if (!keyword[key].clicks) {
+              keyObj[key]['clicks'] = 0;
+            } else {
+              keyObj[key]['clicks'] = keyword[key].clicks;
+            }
+
+            keyObj[key]['keyword'] = key;
+            keyObj[key]['ctr'] = keyObj[key].clicks / keyObj[key].impressions;
+          } else if (keyObj[key]) {
+            keyObj[key]['impressions'] += keyword[key].impressions;
+            if (!keyword[key].clicks) {
+              keyObj[key]['clicks'] += 0;
+            } else {
+              keyObj[key]['clicks'] += keyword[key].clicks;
+            }
+
+            keyObj[key]['ctr'] = keyObj[key].clicks / keyObj[key].impressions;
           }
-          arr.push(keywordObj);
         }
       });
-      return arr;
+      for (let key in keyObj) {
+        arr.push(keyObj[key]);
+      }
+      Template.instance().templateDict.set('keywords', arr);
+      const sessionSorter = Session.get('sessionSorter');
+      var sorted = arr.sort(function (a,b) {
+        return b[sessionSorter] - a[sessionSorter];
+      });
+      return sorted;
     }
   },
-  keywordChart: () => {
-    const ads = Template.instance().templateDict.get('ads');
-    const arr = [];
-    const adNames = [];
-    const words = [];
-    const impressions = [];
-    const clicks = [];
-    if (ads) {
-
-      ads.forEach(ad => {
-        let keyword = ad.data.keywordstats;
-        // console.log(ad.data.keywordstats)
-        adNames.push(ad.data.name);
-        for (let key in keyword) {
-          let keywordObj = {};
-          keywordObj = {
-            'adName': ad.data.name,
-            'word': key,
-            'impressions': keyword[key]['impressions'],
-            'clicks': keyword[key]['clicks']
-          }
-          arr.push(keywordObj);
-        }
-      });
-      // console.log("ARR", arr);
-      // return arr;
-
-
-      chartArr = arr.map(el => {
-        return {
-          name: el.word,
-          data: parseFloat(el.impressions),
-        }
-      });
-      // console.log('chartArr', chartArr)
-
-      // i want an array of objects, each object has the name of the keyword
-      // and it has an array inside of it with the data points for impressions
-
-
-      // object needs name, data
-    const testArr = [];
-    for (let i = 0; i <= 14; i++) {
-      let tracker = {};
-      let impArr = [];
-
-      let result = _.where(arr, {word: arr[i]['word']})
-      tracker['name'] = result[0]['word']
-      result.forEach(el => {
-        impArr.push(el.impressions)
-      });
-      tracker['data'] = impArr;
-      testArr.push(tracker)
-
+  keywordCTR: (num) => {
+    if (num > 0) {
+      return numeral(num * 100).format('0.000');
+    } else {
+      return 0;
     }
-
-    return {
-      chart: {
-        zoomType: 'x'
-      },
-      // TODO FIX THIS
-      title: {
-        text: `Keyword Impressions Performance`,
-      },
-
-      subtitle: {
-        text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
-      },
-
-      tooltip: {
-        // valueSuffix: " " + type,
-        shared: true,
-        crosshairs: true
-      },
-      xAxis: {
-        categories: adNames
-      },
-
-      yAxis: {
-        title: {
-          text: 'Impressions'
-        },
-        plotLines: [{
-          value: 0,
-          width: 1,
-          color: '#808080'
-        }]
-      },
-
-      plotOptions: { // removes the markers along the plot lines
-        series: {
-          marker: {
-            enabled: false
-          }
-        }
-      },
-      series: testArr
-    }
-
-    } // end of if
-
-
-  },
-  keywordClicksChart: () => {
-    const ads = Template.instance().templateDict.get('ads');
-    const arr = [];
-    const adNames = [];
-    const words = [];
-    if (ads) {
-
-      ads.forEach(ad => {
-        let keyword = ad.data.keywordstats;
-        // console.log(ad.data.keywordstats)
-        adNames.push(ad.data.name);
-        for (let key in keyword) {
-          let keywordObj = {};
-          keywordObj = {
-            'adName': ad.data.name,
-            'word': key,
-            'clicks': keyword[key]['clicks']
-          }
-          arr.push(keywordObj);
-        }
-      });
-
-      // i want an array of objects, each object has the name of the keyword
-      // and it has an array inside of it with the data points for impressions
-
-
-      // object needs name, data
-    const testArr = [];
-    for (let i = 0; i <= 14; i++) {
-      let tracker = {};
-      let clicksArr = [];
-
-      let result = _.where(arr, {word: arr[i]['word']})
-      tracker['name'] = result[0]['word']
-      result.forEach(el => {
-        clicksArr.push(el.clicks);
-      });
-      tracker['data'] = clicksArr;
-      testArr.push(tracker)
-    }
-
-    return {
-      chart: {
-        zoomType: 'x'
-      },
-      // TODO FIX THIS
-      title: {
-        text: `Keyword Clicks Performance`,
-      },
-
-      subtitle: {
-        text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
-      },
-
-      tooltip: {
-        // valueSuffix: " " + type,
-        shared: true,
-        crosshairs: true
-      },
-      xAxis: {
-        categories: adNames
-      },
-
-      yAxis: {
-        title: {
-          text: 'Clicks'
-        },
-        plotLines: [{
-          value: 0,
-          width: 1,
-          color: '#808080'
-        }]
-      },
-
-      plotOptions: { // removes the markers along the plot lines
-        series: {
-          marker: {
-            enabled: false
-          }
-        }
-      },
-      series: testArr
-    }
-
-    } // end of if
-
-
   },
   adCreativeChart: () => {
     const ads = Template.instance().templateDict.get('ads');
@@ -490,7 +320,7 @@ Template.ads.helpers({
             zoomType: 'xy'
         },
         title: {
-            text: 'Impressions vs CTR vs Clicks'
+            text: 'Impressions vs CTR vs Post Engagement'
         },
         xAxis: [{
             categories: names,
@@ -584,7 +414,116 @@ Template.ads.helpers({
     } else {
       return '';
     }
+  },
+  keywordPerformanceChart: () => {
+    const keywords = Template.instance().templateDict.get('keywords')
 
+    if (keywords) {
+      const words = [];
+      const impressions = [];
+      const clicks = [];
+      const ctr = [];
+
+      keywords.forEach(word => {
+        words.push(word.keyword);
+        impressions.push(word.impressions);
+        clicks.push(word.clicks);
+        ctr.push(parseFloat(numeral(word.ctr * 100).format('0.000')));
+      });
+
+      return {
+        chart: {
+            zoomType: 'xy'
+          },
+          title: {
+            text: 'Keyword Performance'
+          },
+          subtitle: {
+            text: 'Impressions vs CTR vs Clicks'
+          },
+          xAxis: [{
+            categories: words,
+            crosshair: true
+          }],
+          yAxis: [{ // Primary yAxis
+            labels: {
+              format: '{value} clicks',
+              style: {
+                color: Highcharts.getOptions().colors[2]
+              }
+            },
+            title: {
+              text: 'Clicks',
+              style: {
+                color: Highcharts.getOptions().colors[2]
+              }
+            },
+            opposite: true
+          }, { // Secondary yAxis
+            gridLineWidth: 0,
+            title: {
+              text: 'Impressions',
+              style: {
+                color: Highcharts.getOptions().colors[0]
+              }
+            },
+            labels: {
+              format: '{value} impressions',
+              style: {
+                color: Highcharts.getOptions().colors[0]
+              }
+            }
+          }, { // Tertiary yAxis
+            gridLineWidth: 0,
+            title: {
+              text: 'CTR',
+              style: {
+                color: Highcharts.getOptions().colors[1]
+              }
+            },
+            labels: {
+              format: '{value}%',
+              style: {
+                color: Highcharts.getOptions().colors[1]
+              }
+            },
+            opposite: true
+          }],
+          tooltip: {
+            shared: true
+          },
+        series: [
+          {
+            name: 'Impressions',
+            type: 'column',
+            yAxis: 1,
+            data: impressions,
+            tooltip: {
+              valueSuffix: ' impressions'
+            }
+          }, {
+            name: 'CTR',
+            type: 'spline',
+            yAxis: 2,
+            data: ctr,
+            marker: {
+              enabled: false
+            },
+            dashStyle: 'shortdot',
+            tooltip: {
+                valueSuffix: '%'
+            }
+          }, {
+            name: 'Clicks',
+            type: 'spline',
+            data: clicks,
+            tooltip: {
+              valueSuffix: ' clicks'
+            }
+          }
+        ]
+      } // end of return
+    } // end of if
   }
 });
 
@@ -594,14 +533,23 @@ Template.ads.events({
     Meteor.call('refreshAds', campId);
   },
   'click .modal-trigger': (event, template) => {
-    console.log(event.target.textContent);
+    const factorSpend = event.target.dataset.spend;
     const adName = event.target.textContent;
     $('#ad-modal').openModal();
     const ad = Ads.findOne({'data.name': adName});
+    // set actual spend to adjusted spend
+    ad.data.spend = factorSpend;
     template.templateDict.set('modal', ad);
   },
   'click .close-modal-x': (event, instance) => {
     $('#ad-modal').closeModal();
+  },
+  'click .keyword-table': (event, instance) => {
+    let sortBy = event.target.textContent.toLowerCase();
+    if (!sortBy) {
+      sortBy = event.target.dataset.name.toLowerCase();
+    }
+    Session.set('sessionSorter', sortBy);
   }
 });
 

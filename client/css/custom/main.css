@@ -244,6 +244,10 @@ a:hover {
   justify-content: center;
   margin-bottom: 1em;
 }
+
+.keyword-table-icon {
+  padding-left: 4px;
+}
 /****************************************************************
  *
  * CSS Percentage Circle
