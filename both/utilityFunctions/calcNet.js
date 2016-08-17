@@ -115,7 +115,7 @@ export const calcNet = {
           }
           try {
             Initiatives.update(
-              {name: init.name},
+              {_id: init._id},
               {$set: dataToSet}
             );
           } catch(e) {
@@ -158,7 +158,7 @@ export const calcNet = {
           }
           try {
             Initiatives.update(
-              {name: init.name},
+              {_id: init._id},
               {$set: dataToSet}
             );
           } catch(e) {

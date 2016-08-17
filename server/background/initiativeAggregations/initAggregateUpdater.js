@@ -61,7 +61,8 @@ SyncedCron.add({
           Meteor.clearInterval(setIntervalId);
         } else {
           Meteor.call('aggregateObjective', activeInitiatives[counter]);
-          calcNet.calculateNetNumbers(activeInitiatives[counter]);
+          // calcNet.calculateNetNumbers(activeInitiatives[counter]);
+          // calcNet function is now called from helper in client/resources/start.js
           counter++;
         }
       }, 500);

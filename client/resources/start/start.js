@@ -6,19 +6,15 @@ import MasterAccounts from '/collections/MasterAccounts';
 import dragula from 'dragula';
 import { initiativesFunctionObject } from '/both/utilityFunctions/calculateInitiativePercentages';
 import { Session } from 'meteor/session';
-import { Tracker } from 'meteor/tracker';
+import { calcNet } from '/both/utilityFunctions/calcNet';
 
 
-Tracker.autorun(function () {
-  // if (Session.get("agencySelect")) {
-  //   console.log('session agencySelect');
-  //   Session.set("brandSelect", null);
-  // }
-  // if (Session.get("brandSelect")) {
-  //   console.log('session brandSelect')
-  //   Session.set("agencySelect", null);
-  // }
-});
+// ----------- FUNCTIONS ------------ //
+
+// ---------- END FUNCTIONS ---------- //
+
+
+
 
 Template.initiativesHome.onCreated(function () {
   if (!Session.get("initiativeSelect")) {
@@ -33,6 +29,10 @@ Template.initiativesHome.onRendered(function () {
   Meteor.typeahead.inject();
   $('.tooltipped').tooltip({ delay: 50 });
   Session.set('dateSort', {'lineItems.0.endDate': 1});
+
+
+
+
 });
 
 
@@ -178,6 +178,15 @@ Template.initiativesHome.helpers({
   calcSpend: (objective, _id, state) => {
     const init = Initiatives.findOne({_id: _id});
     const allCapsObjective = objective.split(' ').join('_').toUpperCase();
+    const refreshInits = function refreshInits (init, objective) {
+      const spendPercent = init[objective]['net']['spendPercent'];
+      if (spendPercent === null || spendPercent === 0 || spendPercent === NaN) {
+        console.log('running refresh with', init.name)
+        // Meteor.call('aggregateObjective', init.name);
+        calcNet.calculateNetNumbers(init.name);
+      }
+    }
+    refreshInits(init, allCapsObjective);
     for (let key in init) {
       if (key === allCapsObjective) {
         if (! init[key]['net']) {
