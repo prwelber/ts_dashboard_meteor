@@ -58,6 +58,7 @@ livedata@1.0.18
 localstorage@1.0.9
 logging@1.0.12
 maazalik:highcharts@0.4.0
+maazalik:highcharts-gauge@0.4.0
 materialize:materialize@0.97.5
 matteodem:server-session@0.4.2
 meteor@1.1.14

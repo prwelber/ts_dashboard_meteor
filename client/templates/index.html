@@ -24,7 +24,7 @@
                 {{/if}}
 
                 {{#if whatRoute "initiativeHomepage"}}
-                  <li><a id="view-initiative-stats-modal" class="modal-trigger" href="#modal1">Initiative Stats</a></li>
+                  <li><a id="view-initiative-stats-modal" class="modal-trigger" href="#modal1">Campaign + Aggregate Stats</a></li>
                   {{#if isInRole "admin"}}
                     <li><a id="view-aggregate-modal" class="modal-trigger" href="#modal2">Campaign Aggregator</a></li>
                     <li><a id="file-upload-modal" class="modal-trigger" href="#modal3">Files</a></li>
@@ -49,7 +49,7 @@
                 <li><a href="/">Home</a></li>
                 <li><a class="{{active "admin"}}" href="/admin">Admin</a></li>
                 {{#if whatRoute "initiativeHomepage"}}
-                  <li><a id="view-initiative-stats-modal" class="modal-trigger" href="#modal1">Initiative Stats</a></li>
+                  <li><a id="view-initiative-stats-modal" class="modal-trigger" href="#modal1">Campaign + Aggregate Stats</a></li>
                   <li><a id="view-aggregate-modal" class="modal-trigger" href="#modal2">Campaign Aggregator</a></li>
                 {{/if}}
                 {{#if overviewRoute "overview"}}

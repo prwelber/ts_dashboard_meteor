@@ -85,9 +85,22 @@ Template.initiativeHomepage.helpers({
     })
     return camps;
   },
-  getClientNumbers: () => {
+  getClientNumbers: (action, lineItem) => {
     const init = Template.instance().templateDict.get('initiative');
+    // action is the action, item is the lineItem
+    if (action && lineItem) {
+      const objective = lineItem.objective.toUpperCase().replace(/ /g, "_");
+      console.log('init[objective]', init[objective]);
+      if (action === 'spend') {
+        return init[objective]['net']['client_spend'];
+      } else {
+        return init[objective][action];
+      }
+    }
+
+
     const objArr = whichObjectives(init);
+    console.log('getClientNumbers', objArr)
     return objArr;
   },
   'isTabDisabled': (num) => {
@@ -628,8 +641,93 @@ Template.initiativeHomepage.helpers({
       returnObj['cpvv'] = returnObj.spend / returnObj.videoViews;
       return returnObj;
     }
+  },
+  gaugeChart0Spend: () => {
+    const itemNumber = 0;
+    const init = Template.instance().templateDict.get('initiative');
+    const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
+    const spend = parseFloat(init[objective].net.client_spend.toFixed(2));
+    const max = parseFloat(init.lineItems[itemNumber].budget);
+    return initiativeHomepageFunctions.gaugeChart('Spend', spend, max)
+  },
+  gaugeChart0Action: () => {
+    const itemNumber = 0;
+    const init = Template.instance().templateDict.get('initiative');
+    const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
+    const dealType = init.lineItems[itemNumber].dealType;
+    let title;
+    let action;
+    if (dealType === 'CPM') {
+      title = 'Impressions';
+      action = 'impressions';
+    } else if (dealType === 'CPC') {
+      title = 'Clicks';
+      action = 'clicks'
+    } else if (dealType === 'CPVV') {
+      title = 'Video View';
+      action = 'videoViews';
+    } else if (dealType === 'CPL') {
+      title = 'Likes';
+      action = 'likes';
+    }
+    const actions = init[objective][action];
+    const max = parseFloat(init.lineItems[itemNumber].quantity);
+    return initiativeHomepageFunctions.gaugeChart(title, actions, max);
+  },
+  gaugeChart0CostPerAction: () => {
+    const itemNumber = 0;
+    const init = Template.instance().templateDict.get('initiative');
+    const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
+    const dealType = init.lineItems[itemNumber].dealType.toLowerCase();
+    const actions = init[objective]['net']['client_' + dealType];
+    const max = parseFloat(init.lineItems[itemNumber].price);
+    return initiativeHomepageFunctions.gaugeChart(dealType, actions, max);
+  },
+  gaugeChart1Spend: () => {
+    const itemNumber = 1;
+    const init = Template.instance().templateDict.get('initiative');
+    const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
+    const spend = parseFloat(init[objective].net.client_spend.toFixed(2));
+    const max = parseFloat(init.lineItems[itemNumber].budget);
+    return initiativeHomepageFunctions.gaugeChart('Spend', spend, max)
+  },
+  gaugeChart1Action: () => {
+    const itemNumber = 1;
+    const init = Template.instance().templateDict.get('initiative');
+    const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
+    const dealType = init.lineItems[itemNumber].dealType;
+    let title;
+    let action;
+    if (dealType === 'CPM') {
+      title = 'Impressions';
+      action = 'impressions';
+    } else if (dealType === 'CPC') {
+      title = 'Clicks';
+      action = 'clicks'
+    } else if (dealType === 'CPVV') {
+      title = 'Video View';
+      action = 'videoViews';
+    } else if (dealType === 'CPL') {
+      title = 'Likes';
+      action = 'likes';
+    }
+    const actions = init[objective][action];
+    const max = parseFloat(init.lineItems[itemNumber].quantity);
+    return initiativeHomepageFunctions.gaugeChart(title, actions, max)
+  },
+  gaugeChart1CostPerAction: () => {
+    const itemNumber = 1;
+    const init = Template.instance().templateDict.get('initiative');
+    const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
+    const dealType = init.lineItems[itemNumber].dealType.toLowerCase();
+    const actions = init[objective]['net']['client_' + dealType];
+    const max = parseFloat(init.lineItems[itemNumber].price);
+    return initiativeHomepageFunctions.gaugeChart(dealType, actions, max)
   }
 });
+
+
+
 
 
 
@@ -716,3 +814,9 @@ Template.initiativeHomepage.onDestroyed(function () {
   $('#modal2').closeModal();
   $('#modal3').closeModal();
 });
+
+
+// -------- GAUGE FUNCTION -------- //
+
+
+

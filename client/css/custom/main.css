@@ -248,6 +248,10 @@ a:hover {
 .keyword-table-icon {
   padding-left: 4px;
 }
+
+.init-homepage-card {
+  font-size: 1.5em;
+}
 /****************************************************************
  *
  * CSS Percentage Circle

@@ -733,5 +733,67 @@ export const initiativeHomepageFunctions = {
         color: '#0d47a1'
       }]
     } // end of return
+  },
+  gaugeChart: (title, actions, max) => {
+
+
+    return {
+      chart: {
+        type: 'solidgauge',
+        height: 180,
+        width: 200
+      },
+      title: null,
+      pane: {
+        center: ['50%', '90%'],
+        size: '115%',
+        startAngle: -90,
+        endAngle: 90,
+        background: {
+            backgroundColor: '#EEE',
+            innerRadius: '60%',
+            outerRadius: '100%',
+            shape: 'arc'
+        }
+      },
+      yAxis: {
+        min: 0,
+        max: max,
+        title: {
+          text: title,
+          y: -65
+        },
+        stops: [
+          [0.1, '#55BF3B'],
+          [0.5, '#DDDF0D'],
+          [0.9, '#92d7ff']
+        ],
+        // tickAmount: 2,
+        labels: {
+            y: 2
+        },
+        // lineWidth: 0,
+        //   tickAmount: 2,
+        //   tickWidth: 0,
+      },
+      // plotOptions: {
+      //   solidgauge: {
+      //     dataLabels: {
+      //       y: 15,
+      //       borderWidth: 0,
+      //       useHTML: true
+      //     }
+      //   }
+      // },
+      credits: {
+        enabled: false
+      },
+
+      series: [{
+        name: title,
+        data: [actions]
+      }]
+
+    }
   }
 };

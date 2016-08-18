@@ -36,6 +36,7 @@ semantic:ui
 flemay:less-autoprefixer
 numeral:numeral
 maazalik:highcharts
+maazalik:highcharts-gauge
 reactive-dict
 materialize:materialize
 msavin:jetsetter
