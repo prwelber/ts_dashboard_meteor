@@ -346,10 +346,19 @@ Meteor.methods({
   }
 });
 
-Meteor.publish('Initiatives', function (opts) {
+Meteor.publish('Initiatives', function (opts, type) {
+  // type is there as an argument so we can know if it's a campaign route
   var user = Meteor.users.findOne({_id: this.userId});
 
   try {
+
+    if (type === 'campaign') {
+      return Initiatives.find({campaign_ids: {$in: [opts]}});
+    }
+    if (opts) {
+      return Initiatives.find({_id: opts});
+    }
+
 
     if (user.admin === true) {
       return Initiatives.find( {} );

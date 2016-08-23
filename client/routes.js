@@ -78,7 +78,7 @@ FlowRouter.route('/accounts/:campaign_id/overview', {
   subscriptions: function (params) {
     this.register('campaignInsightList', Meteor.subscribe('campaignInsightList', params.campaign_id));
     this.register('campaignBasicsList', Meteor.subscribe('campaignBasicsList', params.campaign_id));
-    this.register('Initiatives', Meteor.subscribe('Initiatives'));
+    this.register('Initiatives', Meteor.subscribe('Initiatives', params.campaign_id, 'campaign'));
     this.register('insightsBreakdownByDaysList', Meteor.subscribe('insightsBreakdownByDaysList', params.campaign_id));
   },
   name: 'campaignInsights',
