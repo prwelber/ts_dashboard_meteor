@@ -20,7 +20,7 @@
         <h4 class="center-align no-top-margin">{{getInitiative.product}}</h4>
       </div>
     </div>
-    <div class="row" style="margin-bottom: 0px;">
+    <div class="row" style="margin-bottom: -30px; margin-top: -10px;">
       <table class="centered">
         {{#each getInitiative.lineItems}}
           <thead>
@@ -69,7 +69,7 @@
       <p class="center-align">Updated: {{timezone inserted}}</p>
 
 
-      <div class="col s6 m6 l6 card grey lighten-5">
+{{!--       <div class="col s6 m6 l6 card grey lighten-5">
         <div class="card-content">
           <span class="center-align dash-data">{{campaign_id}}</span><br>
           <span class="">Campaign ID</span>
@@ -80,10 +80,13 @@
           <span class="center-align dash-data">{{objectiveText objective}}</span><br>
           <span class="">Objective</span>
         </div>
-      </div>
+      </div> --}}
 
-      <p class="fancy"><span>Core Stats</span></p>
+      {{!-- <p class="fancy"><span>Core Stats</span></p> --}}
       {{#if isInRole "admin"}}
+        <div class="col s12">
+          <p class="fancy" style="margin-bottom: 1em;"><span>Actual Stats</span></p>
+        </div>
         <div class="col s6 m4 l3 card grey lighten-5">
           <div class="card-content">
             <span class="center-align dash-data">{{money spend}}</span><br>
@@ -108,48 +111,14 @@
             <span class="">CPVV</span>
           </div>
         </div>
-       {{!--  <div class="col s6 m4 l3 card {{likesObjective}}">
+        <div class="col s6 m4 l3 card {{likesObjective}}">
           <div class="card-content ">
             <span class="center-align dash-data">{{money cpl}}</span><br>
             <span class="">CPL</span>
           </div>
-        </div> --}}
+        </div>
 
-      {{else}}
-        {{!------------ BELOW IS WHAT CLIENT SEES ------------}}
-        <div class="col s6 m4 l3 card grey lighten-5">
-          <div class="card-content ">
-            <span class="center-align dash-data">{{clientStatsSpend spend "spend"}}</span><br>
-            <span class="">Spend</span>
-          </div>
-        </div>
-        <div class="col s6 m4 l3 card {{highlight 'CPM'}}">
-          <div class="card-content ">
-            <span class="center-align dash-data">{{money clientStats.cpm}}</span><br>
-            <span class="">CPM</span>
-          </div>
-        </div>
-        <div class="col s6 m4 l3 card {{highlight 'CPC'}}">
-          <div class="card-content ">
-            <span class="center-align dash-data">{{money clientStats.cpc}}</span><br>
-            <span class="">CPC</span>
-          </div>
-        </div>
-        <div class="col s6 m4 l3 card {{highlight 'CPVV'}}">
-          <div class="card-content ">
-            <span class="center-align dash-data">{{money clientStats.cpvv}}</span><br>
-            <span class="">CPVV</span>
-          </div>
-        </div>
-        <div class="col s6 m4 l3 card {{highlight 'CPL'}}">
-          <div class="card-content ">
-            <span class="center-align dash-data">{{money clientStats.cpl}}</span><br>
-            <span class="">CPL</span>
-          </div>
-        </div>
-      {{/if}}
-
-      <div class="col s6 m4 l3 card grey lighten-5">
+        <div class="col s6 m4 l3 card">
         <div class="card-content ">
           <span class="center-align dash-data">{{number total_actions}}</span><br>
           <span class="">Total Actions</span>
@@ -179,27 +148,158 @@
       <div class="col s6 m4 l3 card {{highlight 'CPL'}}">
         <div class="card-content">
           <span class="center-align dash-data">{{number like}}</span><br>
-          <span class="">Likes</span>
+          <span class="">Page Likes (New Fans)</span>
         </div>
       </div>
+
       <div class="col s6 m4 l3 card {{highlight 'CPVV'}}">
         <div class="card-content ">
           <span class="center-align dash-data">{{number video_view}}</span><br>
           <span class="">Video Views</span>
         </div>
       </div>
+
       <div class="col s6 m4 l3 card grey lighten-5">
         <div class="card-content ">
           <span class="center-align dash-data">{{number page_engagement}}</span><br>
           <span class="">Page Engagement</span>
         </div>
       </div>
+
       <div class="col s6 m4 l3 card grey lighten-5">
         <div class="card-content ">
           <span class="center-align dash-data">{{number post_engagement}}</span><br>
           <span class="">Post Engagement</span>
         </div>
       </div>
+
+      {{else}}
+        {{!------------ BELOW IS WHAT CLIENT SEES ------------}}
+      <div class='row'>
+        <div class="col l3 s6">
+          <div class="client-dash-card valign-wrapper">
+            <div class="col s5 valign center-align light-blue lighten-3 client-dash-card-holder" style="padding-top: 15%">
+              <i class="fa fa-usd fa-4x" aria-hidden="true"></i>
+            </div>
+            <div class="col s7 center-align">
+              <span class="dash-data">{{clientStatsSpend spend "spend"}}</span>
+              <br>
+              <span class="dash-label">Spend</span>
+            </div>
+          </div>
+        </div>
+        <div class="col l3 s6">
+          <div class="client-dash-card valign-wrapper">
+            <div class="col s5 valign center-align red lighten-3 client-dash-card-holder" style="padding-top: 15%">
+              <i class="fa fa-eye fa-4x" aria-hidden="true" style="color: black;"></i>
+            </div>
+            <div class="col s7 center-align dash-flex">
+              <span class="dash-data">{{money clientStats.cpm}}</span>
+              <p class="dash-label">CPM</p>
+              <span class="dash-data">{{number impressions}}</span>
+              <p class="dash-label">Impressions</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col l3 s6">
+          <div class="client-dash-card valign-wrapper">
+            <div class="col s5 valign center-align amber lighten-3 client-dash-card-holder" style="padding-top: 15%">
+              <i class="fa fa-mouse-pointer fa-4x" aria-hidden="true" style="color: black;"></i>
+            </div>
+            <div class="col s7 center-align dash-flex">
+              <span class="dash-data">{{money clientStats.cpc}}</span>
+              <p class="dash-label">CPC</p>
+              <span class="dash-data">{{number clicks}}</span>
+              <p class="dash-label">Clicks</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col l3 s6">
+          <div class="client-dash-card valign-wrapper">
+            <div class="col s5 valign center-align indigo lighten-3 client-dash-card-holder" style="padding-top: 15%">
+              <i class="fa fa-video-camera fa-4x" aria-hidden="true" style="color: black;"></i>
+            </div>
+            <div class="col s7 center-align dash-flex">
+              <span class="dash-data">{{money clientStats.cpvv}}</span>
+              <p class="dash-label">CPVV</p>
+              <span class="dash-data">{{number video_view}}</span>
+              <p class="dash-label">Video View</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col l3 s6">
+          <div class="client-dash-card valign-wrapper">
+            <div class="col s5 valign center-align green lighten-3 client-dash-card-holder" style="padding-top: 15%">
+              <i class="fa fa-thumbs-up fa-4x" aria-hidden="true" style="color: black;"></i>
+            </div>
+            <div class="col s7 center-align dash-flex">
+              <span class="dash-data">{{money clientStats.cpl}}</span>
+              <p class="dash-label">CPL</p>
+              <span class="dash-data">{{number like}}</span>
+              <p class="dash-label">Page Likes</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col l3 s6">
+          <div class="client-dash-card valign-wrapper">
+            <div class="col s5 valign center-align teal lighten-3 client-dash-card-holder" style="padding-top: 15%">
+              <i class="fa fa-link fa-4x" aria-hidden="true" style="color: black;"></i>
+            </div>
+            <div class="col s7 center-align dash-flex">
+              <span class="dash-data">{{money clientStats.cplc}}</span>
+              <p class="dash-label">CP Link Click</p>
+              <span class="dash-data">{{number link_click}}</span>
+              <p class="dash-label">Link Clicks</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col l3 s6">
+          <div class="client-dash-card valign-wrapper">
+            <div class="col s5 valign center-align deep-orange lighten-3 client-dash-card-holder" style="padding-top: 15%">
+              <i class="fa fa-file-text fa-4x" aria-hidden="true" style="color: black;"></i>
+            </div>
+            <div class="col s7 center-align dash-flex">
+              <span class="dash-data">{{money clientStats.cppe}}</span>
+              <p class="dash-label">CP Post Eng</p>
+              <span class="dash-data">{{number post_engagement}}</span>
+              <p class="dash-label">Post Engagement</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col l3 s6">
+          <div class="client-dash-card valign-wrapper">
+            <div class="col s5 valign center-align blue-grey lighten-3 client-dash-card-holder" style="padding-top: 15%">
+              <i class="fa fa-desktop fa-4x" aria-hidden="true" style="color: black;"></i>
+            </div>
+            <div class="col s7 center-align dash-flex">
+              <span class="dash-data">{{money clientStats.cpta}}</span>
+              <p class="dash-label">CP Total Act</p>
+              <span class="dash-data">{{number total_actions}}</span>
+              <p class="dash-label">Total Actions</p>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      {{!-- end of row that holds what client sees --}}
+
+      {{/if}}
+{{!--         <div class="col s6 m4 l3 card {{highlight 'CPL'}}">
+          <div class="card-content ">
+            <span class="center-align dash-data">{{money clientStats.cpl}}</span><br>
+            <span class="">CPL</span>
+          </div>
+        </div> --}}
+
+
 
       {{#if offsite_conversion}}
         <div class="col s6 m4 l3 card grey lighten-5">

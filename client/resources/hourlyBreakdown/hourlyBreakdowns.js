@@ -47,11 +47,11 @@ Template.hourlyBreakdowns.helpers({
     },
     'clicksChart': () => {
       const hours = Template.instance().templateDict.get('hours');
-      return hourlyBreakdownsFunction.lineChart(hours, 'impressions', 'Impressions', '#f44336');
+      return hourlyBreakdownsFunction.lineChart(hours, 'impressions', 'Impressions', '#00bcd4');
     },
     impressionsChart: () => {
       const hours = Template.instance().templateDict.get('hours');
-      return hourlyBreakdownsFunction.lineChart(hours, 'clicks', 'Click', '#3f51b5');
+      return hourlyBreakdownsFunction.lineChart(hours, 'clicks', 'Click', '#1a237e');
     },
     videoViewChart: () => {
       const hours = Template.instance().templateDict.get('hours');
@@ -63,7 +63,7 @@ Template.hourlyBreakdowns.helpers({
     },
     ctrChart: () => {
       const hours = Template.instance().templateDict.get('hours');
-      return hourlyBreakdownsFunction.lineChart(hours, 'ctr', 'CTR', '#ef6c00');
+      return hourlyBreakdownsFunction.lineChart(hours, 'ctr', 'CTR', '#673ab7');
     },
     postLikeChart: () => {
       const hours = Template.instance().templateDict.get('hours');

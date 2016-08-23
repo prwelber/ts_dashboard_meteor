@@ -33,6 +33,15 @@ const whichObjectives = function whichObjectives (initiative) {
   return arr;
 }
 
+const refreshInits = function refreshInits (init, objective) {
+  const spendPercent = init[objective]['net']['spendPercent'];
+  if (spendPercent === null || spendPercent === 0 || spendPercent === NaN || spendPercent === undefined) {
+    console.log('running refresh with', init.name)
+    // Meteor.call('aggregateObjective', init.name);
+    calcNet.calculateNetNumbers(init.name);
+  }
+}
+
 
 Template.initiativeHomepage.onCreated(function () {
   this.templateDict = new ReactiveDict();
@@ -88,9 +97,9 @@ Template.initiativeHomepage.helpers({
   getClientNumbers: (action, lineItem) => {
     const init = Template.instance().templateDict.get('initiative');
     // action is the action, item is the lineItem
+    let objective;
     if (action && lineItem) {
-      const objective = lineItem.objective.toUpperCase().replace(/ /g, "_");
-      console.log('init[objective]', init[objective]);
+      objective = lineItem.objective.toUpperCase().replace(/ /g, "_");
       if (action === 'spend') {
         return init[objective]['net']['client_spend'];
       } else {
@@ -100,7 +109,10 @@ Template.initiativeHomepage.helpers({
 
 
     const objArr = whichObjectives(init);
-    console.log('getClientNumbers', objArr)
+    if (! objArr[0].net.client_spend) {
+      console.log('running refreshInit in initiativeHomepage.js')
+      refreshInits(init, objective);
+    }
     return objArr;
   },
   'isTabDisabled': (num) => {
@@ -646,8 +658,13 @@ Template.initiativeHomepage.helpers({
     const itemNumber = 0;
     const init = Template.instance().templateDict.get('initiative');
     const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
-    const spend = parseFloat(init[objective].net.client_spend.toFixed(2));
+    let spend = parseFloat(init[objective].net.client_spend.toFixed(2));
     const max = parseFloat(init.lineItems[itemNumber].budget);
+
+    if (spend > max) {
+      spend = max;
+    }
+
     return initiativeHomepageFunctions.gaugeChart('Spend', spend, max)
   },
   gaugeChart0Action: () => {
@@ -687,8 +704,11 @@ Template.initiativeHomepage.helpers({
     const itemNumber = 1;
     const init = Template.instance().templateDict.get('initiative');
     const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
-    const spend = parseFloat(init[objective].net.client_spend.toFixed(2));
+    let spend = parseFloat(init[objective].net.client_spend.toFixed(2));
     const max = parseFloat(init.lineItems[itemNumber].budget);
+    if (spend > max) {
+      spend = max;
+    }
     return initiativeHomepageFunctions.gaugeChart('Spend', spend, max)
   },
   gaugeChart1Action: () => {

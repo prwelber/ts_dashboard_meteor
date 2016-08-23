@@ -68,6 +68,43 @@
               </ul>
             </div>
           </nav>
+          <div class="col s12 blue-grey darken-1 z-depth-1" style="height: 30px; display: flex; align-items: center;">
+            <a href="#!" class="breadcrumb" style="padding-left: 10px;"><i class="fa fa-home" aria-hidden="true"></i></a>
+            {{#if sessionBreadcrumb "initiativeHomepage"}}
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Initiative</a>
+            {{/if}}
+            {{#if sessionBreadcrumb "overview"}}
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Initiative</a>
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Campaign</a>
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Overview</a>
+            {{/if}}
+            {{#if sessionBreadcrumb "hourlyBreakdowns"}}
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Initiative</a>
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Campaign</a>
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Hourly Breakdowns</a>
+            {{/if}}
+            {{#if sessionBreadcrumb "breakdowns"}}
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Initiative</a>
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Campaign</a>
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Age/Gender Breakdowns</a>
+            {{/if}}
+            {{#if sessionBreadcrumb "creative"}}
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Initiative</a>
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Campaign</a>
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Creative</a>
+            {{/if}}
+            {{#if sessionBreadcrumb "report"}}
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Initiative</a>
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Campaign</a>
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Reporting</a>
+            {{/if}}
+            {{#if sessionBreadcrumb "daybreakdowns"}}
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Initiative</a>
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Campaign</a>
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Daily Breakdown</a>
+            {{/if}}
+          </div>
+
 
           <div id="spinner-div"></div>
 

@@ -11,7 +11,8 @@ export const hourlyBreakdownsFunction = {
 
     return {
       chart: {
-        zoomType: 'x'
+        zoomType: 'x',
+        backgroundColor: '#cfd8dc',
       },
       // TODO FIX THIS
       title: {
@@ -33,14 +34,15 @@ export const hourlyBreakdownsFunction = {
       },
 
       yAxis: {
-        title: {
-          // text: type
-        },
-        plotLines: [{
-          value: 0,
-          width: 1,
-          color: '#808080'
-        }]
+        // title: {
+        //   // text: type
+        // },
+        // plotLines: [{
+        //   value: 0,
+        //   width: 1,
+        //   color: '#808080'
+        // }]
+        gridLineColor: '#ff5722',
       },
 
       plotOptions: { // removes the markers along the plot lines

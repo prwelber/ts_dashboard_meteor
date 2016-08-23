@@ -87,14 +87,6 @@ export const calcNet = {
     inits.forEach((init) => {
       let numbs = {};
       numbs['name'] = init.name;
-      // get total budget
-
-      // init.lineItems.forEach((item) => {
-      //   if (item.budget !== "" || parseFloat(item.budget) > 0) {
-      //     totalBudget += parseFloat(item.budget);
-      //   }
-      // });
-
       init.lineItems.forEach((item, index) => {
         const objective = item.objective.split(' ').join('_').toUpperCase();
         const totalBudget = parseFloat(item.budget);
@@ -139,7 +131,7 @@ export const calcNet = {
           try {
             numbs['deal'] = "percentTotal";
 
-            // grab objective and then get that object from init object
+            // grab objective and then get that object from initiative object
             // const objective = item.objective.toUpperCase().replace(/ /g, "_");
             // this makes (for example) "Link Clicks" into "LINK_CLICKS"
 

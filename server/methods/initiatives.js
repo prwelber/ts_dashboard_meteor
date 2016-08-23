@@ -351,7 +351,7 @@ Meteor.publish('Initiatives', function (opts) {
 
   try {
 
-    if (user.admin === true || user.admin === null) {
+    if (user.admin === true) {
       return Initiatives.find( {} );
     } else if (user.agency.length > 0) {
       return Initiatives.find({agency: {$in: user.agency}});

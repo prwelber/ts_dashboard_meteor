@@ -76,6 +76,12 @@ Template.index.helpers({
   'getCampaignNumber': function () {
     return FlowRouter.current().params.campaign_id;
   },
+  sessionBreadcrumb: (route) => {
+    const session = Session.get('route');
+    if (session === route) {
+      return true;
+    }
+  },
   loggedInUser: () => {
     if (! Meteor.user()) {
       return false;

@@ -13,6 +13,7 @@ main {
 table {
   margin-bottom: 35px;
 }
+
  /* --------------- For Dragula ----------------- */
  .gu-mirror {
   position: fixed !important;
@@ -251,6 +252,26 @@ a:hover {
 
 .init-homepage-card {
   font-size: 1.5em;
+}
+
+.client-dash-card {
+  border: 1px solid rgba(212, 212, 213, 0.42);
+  height: 10em;
+}
+
+.client-dash-card-holder {
+  height: 100%;
+}
+
+.dash-label {
+  /*color: #bdbdbd;*/
+  color: #9e9e9e;
+}
+
+.dash-flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 /****************************************************************
  *

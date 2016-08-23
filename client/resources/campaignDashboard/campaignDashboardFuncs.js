@@ -127,6 +127,9 @@ export const campaignDashboardFunctionObject = {
       clientNumbers["cpc"] = clientSpend / campData.clicks;
       clientNumbers["cpl"] = clientSpend / campData.like;
       clientNumbers["cpvv"] = clientSpend / campData.video_view;
+      clientNumbers["cplc"] = clientSpend / campData.link_click;
+      clientNumbers["cppe"] = clientSpend / campData.post_engagement;
+      clientNumbers["cpta"] = clientSpend / campData.total_actions;
       return clientNumbers;
   }
 };

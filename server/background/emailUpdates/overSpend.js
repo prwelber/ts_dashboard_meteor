@@ -37,7 +37,12 @@ SyncedCron.add({
           data['objective'] = item.objective;
           data['budget'] = formatters.money(item.budget);
           const objective = item.objective.toUpperCase().replace(/ /g, "_");
-          data['spendPercent'] = parseFloat(init[objective]['net']['spendPercent'].toFixed(2));
+          try {
+            data['spendPercent'] = parseFloat(init[objective]['net']['spendPercent'].toFixed(2));
+          } catch(e) {
+            console.log("Error in overSpend email background job", e);
+          }
+
           data['actualSpend'] = formatters.money(init[objective]['spend'])
           data['clientSpend'] = formatters.money(init[objective]['net']['client_spend']);
           data['deliveryPercent'] = formatters.twoDecimals(initiativesFunctionObject.calculateDeliveryPercent(init, index));

@@ -178,6 +178,7 @@ Template.initiativesHome.helpers({
   calcSpend: (objective, _id, state) => {
     const init = Initiatives.findOne({_id: _id});
     const allCapsObjective = objective.split(' ').join('_').toUpperCase();
+    // --- FUNCTION EXPRESSION --- //
     const refreshInits = function refreshInits (init, objective) {
       const spendPercent = init[objective]['net']['spendPercent'];
       if (spendPercent === null || spendPercent === 0 || spendPercent === NaN || spendPercent === undefined) {
@@ -186,7 +187,12 @@ Template.initiativesHome.helpers({
         calcNet.calculateNetNumbers(init.name);
       }
     }
-    refreshInits(init, allCapsObjective);
+    try {
+      refreshInits(init, allCapsObjective);
+    } catch (e) {
+      console.log('Error in start.js refreshing init', e, init.name, allCapsObjective)
+    }
+
     for (let key in init) {
       if (key === allCapsObjective) {
         if (! init[key]['net']) {
