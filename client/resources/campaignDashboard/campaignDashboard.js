@@ -197,16 +197,16 @@ Template.campaignDashboard.helpers({
 
     const clientSpend = campaignDashboardFunctionObject.clientSpend(num, type, dealType, realItem[0], quotedPrice, campData, init, index);
     // make sure client spend does not go over budget
-    if (clientSpend > parseFloat(realItem[0].budget)) {
+    // if (clientSpend > parseFloat(realItem[0].budget)) {
 
-      // make client spend equal budgeted amount and change
-      Template.instance().templateDict.set('clientSpend', realItem[0].budget);
-      return mastFunc.money(realItem[0].budget);
+    //   // make client spend equal budgeted amount and change
+    //   Template.instance().templateDict.set('clientSpend', realItem[0].budget);
+    //   return mastFunc.money(realItem[0].budget);
 
-    } else {
+    // } else {
       Template.instance().templateDict.set('clientSpend', clientSpend);
       return mastFunc.money(clientSpend);
-    }
+    // }
   },
   clientStats: () => {
     const clientSpend = Template.instance().templateDict.get('clientSpend');

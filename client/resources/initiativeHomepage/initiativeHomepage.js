@@ -95,16 +95,39 @@ Template.initiativeHomepage.helpers({
     return camps;
   },
   getClientNumbers: (action, lineItem) => {
+    console.log('firing!', action, lineItem)
     const init = Template.instance().templateDict.get('initiative');
     // action is the action, item is the lineItem
     let objective;
-    if (action && lineItem) {
-      objective = lineItem.objective.toUpperCase().replace(/ /g, "_");
-      if (action === 'spend') {
-        return init[objective]['net']['client_spend'];
-      } else {
-        return init[objective][action];
+
+    // if (action && lineItem) {
+    //   objective = lineItem.objective.toUpperCase().replace(/ /g, "_");
+    //   if (action === 'spend') {
+
+    //     const max = parseFloat(lineItem.budget);
+    //     if (init[objective]['net']['client_spend'] > max) {
+    //       return max;
+    //     }
+    //     return init[objective]['net']['client_spend'];
+    //   } else {
+    //     return init[objective][action];
+    //   }
+    // }
+
+    const findItem = function findItem(string, lineItems) {
+      let objective;
+      if (string === 'LINK_CLICKS') {
+        objective = 'Link Clicks';
+      } else if (string === 'VIDEO_VIEWS') {
+        objective = 'Video Views';
+      } else if (string === 'POST_ENGAGEMENT') {
+        objective = 'Post Engagement';
+      } else if (string === 'CONVERSIONS') {
+        objective = 'Conversions';
+      } else if (string === 'PAGE_LIKES') {
+        objective = 'Page Likes';
       }
+      return _.where(lineItems, {objective: objective});
     }
 
 
@@ -113,6 +136,15 @@ Template.initiativeHomepage.helpers({
       console.log('running refreshInit in initiativeHomepage.js')
       refreshInits(init, objective);
     }
+    console.log(objArr)
+    // objArr.forEach(el => {
+    //   const foundItem = findItem(el._id, init.lineItems)[0];
+    //   if (el.net.client_spend > parseFloat(foundItem.budget)) {
+    //     el.net.client_spend = parseFloat(foundItem.budget);
+    //   }
+    //   console.log('foundItem', foundItem)
+    // });
+
     return objArr;
   },
   'isTabDisabled': (num) => {
@@ -632,6 +664,13 @@ Template.initiativeHomepage.helpers({
       }];
       return returnArr[0];
     } else if (init.lineItems[0].percent_total === true) {
+      // get max budget
+      let maxBudget = 0;
+      init.lineItems.forEach(item => {
+        if (item.budget) {
+          maxBudget += item.budget;
+        }
+      });
       const returnObj = {
         spend: 0,
         impressions: 0,
@@ -651,6 +690,10 @@ Template.initiativeHomepage.helpers({
       returnObj['cpc'] = returnObj.spend / returnObj.clicks;
       returnObj['cpl'] = returnObj.spend / returnObj.likes;
       returnObj['cpvv'] = returnObj.spend / returnObj.videoViews;
+      console.log('returnObj', returnObj, maxBudget);
+      // if (returnObj.spend > maxBudget) {
+      //   returnObj.spend = maxBudget;
+      // }
       return returnObj;
     }
   },
@@ -661,9 +704,9 @@ Template.initiativeHomepage.helpers({
     let spend = parseFloat(init[objective].net.client_spend.toFixed(2));
     const max = parseFloat(init.lineItems[itemNumber].budget);
 
-    if (spend > max) {
-      spend = max;
-    }
+    // if (spend > max) {
+    //   spend = max;
+    // }
 
     return initiativeHomepageFunctions.gaugeChart('Spend', spend, max)
   },
@@ -706,9 +749,9 @@ Template.initiativeHomepage.helpers({
     const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
     let spend = parseFloat(init[objective].net.client_spend.toFixed(2));
     const max = parseFloat(init.lineItems[itemNumber].budget);
-    if (spend > max) {
-      spend = max;
-    }
+    // if (spend > max) {
+    //   spend = max;
+    // }
     return initiativeHomepageFunctions.gaugeChart('Spend', spend, max)
   },
   gaugeChart1Action: () => {

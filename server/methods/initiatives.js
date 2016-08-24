@@ -355,14 +355,17 @@ Meteor.publish('Initiatives', function (opts, type) {
     if (type === 'campaign') {
       return Initiatives.find({campaign_ids: {$in: [opts]}});
     }
+
+    if (user.admin === true) {
+      return Initiatives.find( {} );
+    }
+
     if (opts) {
       return Initiatives.find({_id: opts});
     }
 
 
-    if (user.admin === true) {
-      return Initiatives.find( {} );
-    } else if (user.agency.length > 0) {
+    if (user.agency.length > 0) {
       return Initiatives.find({agency: {$in: user.agency}});
     } else if (user.initiatives.length >= 1) {
       return Initiatives.find({name: {$in: user.initiatives}});
