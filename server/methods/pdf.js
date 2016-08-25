@@ -104,8 +104,13 @@ Meteor.methods({
          "margin": "1cm"
        },
        siteType: 'html',
-       renderDelay: 100
+       renderDelay: 2000
     };
+
+    // this fixes a major problem where it worked locally but not on Galaxy
+    if (Meteor.isProduction) {
+      options.phantomPath = "/usr/bin/phantomjs";
+    }
 
     webshot(html_string, fileName, options, function(err) {
       fs.readFile(fileName, function (err, data) {
