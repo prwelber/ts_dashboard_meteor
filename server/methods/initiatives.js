@@ -226,7 +226,7 @@ Meteor.methods({
           net_cpvv: undefined
         }
       } catch(e) {
-        console.log('Error adding cost per data to aggregate with name', e, name);
+        console.log('Error in aggregateObjective function with name:', e, name);
       }
         objectiveAggregateArray.push(result);
     }

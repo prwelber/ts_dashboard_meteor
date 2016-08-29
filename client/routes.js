@@ -297,6 +297,7 @@ FlowRouter.route('/admin/users/', {
 FlowRouter.route('/admin/users/:_id/edit', {
     subscriptions: function () {
         this.register('Initiatives', Meteor.subscribe('Initiatives'));
+        this.register('Agencies', Meteor.subscribe('Agencies'));
     },
     name: "editUser",
     action: function (params) {

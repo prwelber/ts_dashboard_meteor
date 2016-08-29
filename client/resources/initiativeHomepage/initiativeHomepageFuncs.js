@@ -235,6 +235,36 @@ export const initiativeHomepageFunctions = {
         avgSpendArray.push(parseFloat(idealSpendTotal.toFixed(2)));
       }
 
+      // -------------- REMOVE CERTAIN THINGS FOR CLIENTS -------------- //
+      let adminToolTip = function adminToolTip (name, data, color) {
+        if (Meteor.user().admin === true) {
+          return {
+            name: name,
+            data: data,
+            color: color,
+            tooltip: {
+              valueSuffix: ' USD',
+              valuePrefix: '$'
+            }
+          }
+        } else {
+          return {
+            name: name,
+            data: data,
+            color: color,
+            tooltip: {
+              enabled: false
+            }
+          }
+        }
+      }
+
+      // ---------------- END CLIENT SCRUB FUNCTIONS ---------------- //
+      let isAdmin = false;
+      if (Meteor.user().admin === true) {
+        isAdmin = true;
+      }
+
         return {
           chart: {
             zoomType: 'x'
@@ -248,10 +278,13 @@ export const initiativeHomepageFunctions = {
             text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
           },
 
+          // tooltip: {
+          //   valueSuffix: " " + type,
+          //   shared: true,
+          //   crosshairs: true
+          // },
           tooltip: {
-            valueSuffix: " " + type,
-            shared: true,
-            crosshairs: true
+            enabled: isAdmin
           },
           xAxis: {
             // type: 'datetime',
@@ -268,39 +301,58 @@ export const initiativeHomepageFunctions = {
               color: '#808080'
             }]
           },
-
+          // plotOptionsFunction(),
           plotOptions: { // removes the markers along the plot lines
             series: {
               marker: {
-                enabled: false
+                enabled: false,
+                states: {
+                  hover: {
+                    enabled: isAdmin
+                  }
+                }
               }
             }
           },
-          series: [{
+          series: [
+          {
             name: 'Pacing Delivery',
             data: avgDeliveryArray,
-            color: '#90caf9'
-          }, {
+            color: '#90caf9',
+            tooltip: {
+              valueSuffix: ' ' + type
+            }
+          },
+          {
             name: 'Actual Delivery',
             data: typeArray,
-            color: '#0d47a1'
-          }, {
-            name: 'Actual Spend',
-            data: spendArray,
-            color: '#b71c1c',
+            color: '#0d47a1',
             tooltip: {
-              valueSuffix: ' USD',
-              valuePrefix: '$'
+              valueSuffix: ' ' + type
             }
-          }, {
-            name: 'Pacing Spend',
-            data: avgSpendArray,
-            color: '#ef9a9a',
-            tooltip: {
-              valueSuffix: ' USD',
-              valuePrefix: '$'
-            }
-          }]
+          },
+          adminToolTip('Actual Spend', spendArray, '#b71c1c'),
+          adminToolTip('Pacing Spend', avgSpendArray, '#ef9a9a')
+          // {
+          //   name: 'Actual Spend',
+          //   data: spendArray,
+          //   color: '#b71c1c',
+          //   adminToolTip()
+          //   tooltip: {
+          //       valueSuffix: ' USD',
+          //       valuePrefix: '$'
+          //     }
+          // },
+          // {
+          //   name: 'Pacing Spend',
+          //   data: avgSpendArray,
+          //   color: '#ef9a9a',
+          //   tooltip: {
+          //     valueSuffix: ' USD',
+          //     valuePrefix: '$'
+          //   }
+          // }
+          ]
         } // end of return
       }; // end of if (objective) {
     } // end of if (index < count && index !== undefined)

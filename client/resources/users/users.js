@@ -1,6 +1,7 @@
-import { Meteor } from 'meteor/meteor'
-import { FlowRouter } from 'meteor/kadira:flow-router'
-import Initiatives from '/collections/Initiatives'
+import { Meteor } from 'meteor/meteor';
+import { FlowRouter } from 'meteor/kadira:flow-router';
+import Initiatives from '/collections/Initiatives';
+import Agencies from '/collections/Agencies';
 import moment from 'moment-timezone';
 
 Meteor.subscribe("usersList");
@@ -32,6 +33,11 @@ Template.editUser.helpers({
     if (user['agency'].indexOf(name) >= 0) {
       return "selected";
     }
+  },
+  getAgencies: () => {
+    console.log(Agencies.find().fetch())
+    return Agencies.find();
+
   }
 });
 

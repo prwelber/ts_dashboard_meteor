@@ -141,7 +141,7 @@ export const calcNet = {
             numbs['client_spend'] = percentTotalSpend(dealType, quotedPrice, campaignStats, init, index);
             // - running stringToPercentTotal func may not be necessary - //
             numbs['percentage'] = item.percentTotalPercent;
-            numbs['budget'] = totalBudget;
+            numbs['budget'] = parseFloat(item.budget);
             numbs['spendPercent'] = parseFloat((numbs['client_spend'] / numbs['budget']) * 100);
             numbs['client_cpc'] = parseFloat((numbs.client_spend / init[objective]['clicks']).toFixed(2));
             numbs['client_cpl'] = numbs.client_spend / init[objective]['likes'];

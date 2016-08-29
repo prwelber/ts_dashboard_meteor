@@ -1,3 +1,4 @@
+
 <template name="editUser">
   <div class="row">
     <h2 class="center-align">Make Changes To User Profile</h2>
@@ -51,12 +52,16 @@
           <option value="Hitachi" {{agencySelected "Hitachi"}}>Hitachi</option>
           <option value="Horizon" {{agencySelected "Horizon"}}>Horizon</option>
           <option value="Icon" {{agencySelected "Icon"}}>Icon</option>
+          {{!-- <option value="Media Kitchen" {{agencySelected "Media Kitchen"}}>Media Kitchen</option> --}}
           <option value="Mundy" {{agencySelected "Mundy"}}>Mundy</option>
           <option value="Power Creative" {{agencySelected "Power Creative"}}>Power Creative</option>
           <option value="Rachael Piper" {{agencySelected "Rachael Piper"}}>Rachel Piper</option>
           <option value="SapientNitro" {{agencySelected "SapientNitro"}}>SapientNitro</option>
           <option value="True Media" {{agencySelected "True Media"}}>True Media</option>
           <option value="Uniworld" {{agencySelected "Uniworld"}}>Uniworld</option>
+          {{#each getAgencies}}
+            <option value="{{name}}" {{agencySelected name}}>{{name}}</option>
+          {{/each}}
         </select>
         <label class="active">Agency</label>
       </div>
