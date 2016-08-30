@@ -1,17 +1,19 @@
 import { Meteor } from 'meteor/meteor'
-import MasterAccounts from '/collections/MasterAccounts'
+import MasterAccounts from '/collections/MasterAccounts';
+import Agencies from '/collections/Agencies';
+import { formatters as format} from '/both/utilityFunctions/formatters';
 
 
 Template.aggregations.onRendered(function () {
-  $('.datepicker').pickadate({
-    selectMonths: true,
-    selectYears: 10
-  });
+  // $('.datepicker').pickadate({
+  //   selectMonths: true,
+  //   selectYears: 10
+  // });
 });
 
 Template.aggregations.helpers({
   getBrands: function () {
-    return MasterAccounts.find();
+    return MasterAccounts.find({}, {sort: {name: 1}});
   },
   getAgData: function () {
     let data = Session.get("aggregateData");
@@ -21,6 +23,15 @@ Template.aggregations.helpers({
     } else {
       return {error: "There has been an error with this query or there is no data."}
     }
+  },
+  getAgencies: () => {
+    return Agencies.find();
+  },
+  money: (num) => {
+    return format.money(num);
+  },
+  number: (number) => {
+    return format.num(number)
   }
 });
 
@@ -32,13 +43,13 @@ Template.aggregations.events({
 
     et.agency.value ? params['agency'] = et.agency.value : '';
     et.products.value ? params['product'] = et.products.value : '';
-    et.objective.value ? params['objective'] = et.objective.value : '';
+    // et.objective.value ? params['objective'] = et.objective.value : '';
     et.brand.value ? params['brand'] = et.brand.value : '';
 
     let afterDate;
     let beforeDate;
-    et.afterDate.value ? afterDate = moment(et.afterDate.value, "DD MMMM, YYYY").toISOString() : '';
-    et.beforeDate.value ? beforeDate = moment(et.beforeDate.value, "DD MMMM, YYYY").toISOString() : '';
+    et.afterDate.value ? afterDate = moment(et.afterDate.value, "YYYY-MM-DD").toISOString() : '';
+    et.beforeDate.value ? beforeDate = moment(et.beforeDate.value, "YYYY-MM-DD").toISOString() : '';
 
     console.log(params);
     console.log(afterDate);

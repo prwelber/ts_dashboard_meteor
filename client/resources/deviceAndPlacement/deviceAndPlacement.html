@@ -1,0 +1,23 @@
+<template name="deviceAndPlacement">
+  <h1>Device and Placement Breakdown</h1>
+
+  {{#if isReady "DeviceAndPlacement" "Initiatives"}}
+
+    <h1>Subs Ready</h1>
+
+    {{#each getData}}
+      <h5>{{data.placement}} on {{data.impression_device}}</h5>
+      <p>{{data.impressions}}</p>
+      <p>{{data.reach}}</p>
+      <p>{{data.clicks}}</p>
+      <p>{{data.total_actions}}</p>
+      <p>{{data.spend}}</p>
+    {{/each}}
+
+  {{else}}
+    <h1>Not Ready!</h1>
+    <p>Loading...</p>
+  {{/if}}
+
+
+</template>

@@ -261,17 +261,21 @@ export const initiativeHomepageFunctions = {
 
       // ---------------- END CLIENT SCRUB FUNCTIONS ---------------- //
       let isAdmin = false;
+      let adminHeight = 300;
       if (Meteor.user().admin === true) {
         isAdmin = true;
+        adminHeight = null;
       }
 
         return {
           chart: {
-            zoomType: 'x'
+            // backgroundColor: '#fafafa',
+            zoomType: 'x',
+            height: adminHeight,
           },
           // TODO FIX THIS
           title: {
-            text: "Results for " + action,
+            text: "Delivery",
           },
 
           subtitle: {
@@ -331,6 +335,235 @@ export const initiativeHomepageFunctions = {
               valueSuffix: ' ' + type
             }
           },
+          // adminToolTip('Actual Spend', spendArray, '#b71c1c'),
+          // adminToolTip('Pacing Spend', avgSpendArray, '#ef9a9a')
+          // {
+          //   name: 'Actual Spend',
+          //   data: spendArray,
+          //   color: '#b71c1c',
+          //   adminToolTip()
+          //   tooltip: {
+          //       valueSuffix: ' USD',
+          //       valuePrefix: '$'
+          //     }
+          // },
+          // {
+          //   name: 'Pacing Spend',
+          //   data: avgSpendArray,
+          //   color: '#ef9a9a',
+          //   tooltip: {
+          //     valueSuffix: ' USD',
+          //     valuePrefix: '$'
+          //   }
+          // }
+          ]
+        } // end of return
+      }; // end of if (objective) {
+    } // end of if (index < count && index !== undefined)
+  },
+
+  objectiveSpendChart: (init, index, count) => {
+    if (index < count && index !== undefined) {
+      // need to grab the objective from the line item
+      const objective = init.lineItems[index]['objective'].split(' ').join('_').toUpperCase();
+      const quotedPrice = parseFloat(init.lineItems[index].price);
+      const daysDiff = moment(init.lineItems[index]['endDate'], moment.ISO_8601).diff(moment(init.lineItems[index]['startDate'], moment.ISO_8601), 'days');
+      let insights;
+      const type = deliveryTypeChecker(init, index);
+      let camp;
+
+      // need to match objective with campaign that has that objective, which is in
+      // the campaign_names array
+
+      if (objective) {
+
+      const getDaysBreakdown = function getDaysBreakdown (init, index, objective) {
+        for (let i = 0; i < init.campaign_names.length; i++) {
+          camp = CampaignInsights.findOne({'data.campaign_name': init.campaign_names[i]})
+          if (camp.data.objective === objective) {
+            return InsightsBreakdownsByDays.find({'data.campaign_name': camp.data.campaign_name}, {sort: {'data.date_start': 1}}).fetch();
+          }
+        }
+      }
+
+      insights = getDaysBreakdown(init, index, objective);
+
+      // get campaign factorSpend for use later
+      const factorSpend = percentTotalSpend(camp.data, init, index);
+      let dealType = init.lineItems[index].percent_total;
+      const clientNumbs = clientNumbers(factorSpend, camp.data, init, dealType)
+
+      // make array of x axis dates, delivery numbers and spending
+      const xAxisArray = [];
+      const typeArray = [];
+      let spendArray = [];
+      let spendCount = 0;
+      let typeCount = parseFloat(insights[0].data[type]);
+      insights.forEach(el => {
+        xAxisArray.push(moment(el.data.date_start, moment.ISO_8601).format("MM-DD"));
+        typeArray.push(parseFloat(typeCount.toFixed(2)));
+        typeCount += parseFloat(el.data[type]);
+        spendArray.push(parseFloat(spendCount.toFixed(2)));
+        spendCount += accounting.unformat(el.data.spend);
+      });
+
+      // -------------- Adjust spend to reflect dealtype ----------- //
+
+      let action;
+      if (init.lineItems[index].cost_plus === true) {
+        init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
+        init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
+        init.lineItems[index].dealType === "CPL" ? action = "like" : '';
+        init.lineItems[index].dealType === "CPVV" ? action = "video_view" : '';
+        let percent = init.lineItems[index].costPlusPercent.split('');
+        percent.unshift(".");
+        percent = 1 + parseFloat(percent.join(''));
+        // need to MULTIPLY spend by 'percent' (should be 1.15 or similar)
+        spendArray = spendArray.map((num) => {
+          return num * percent;
+        });
+      }
+
+      if (init.lineItems[index].percent_total === true) {
+
+        init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
+        init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
+        init.lineItems[index].dealType === "CPL" ? action = "like" : '';
+        init.lineItems[index].dealType === "CPVV" ? action = "video_view" : '';
+
+        const dealType = init.lineItems[index].dealType;
+        const quotedPrice = init.lineItems[index].price;
+
+        const deal = init.lineItems[index].dealType.toLowerCase();
+        spendCount = 0;
+        spendArray = [];
+        insights.forEach(day => {
+          if (action === "impressions") {
+            spendCount = spendCount + ((day['data'][action] / 1000) * clientNumbs[deal]);
+          } else {
+            spendCount = spendCount + (day['data'][action] * clientNumbs[deal]);
+          }
+          spendArray.push(parseFloat(spendCount.toFixed(2)));
+        });
+      }
+      // --------------- End spend adjustment -------------------- //
+
+
+      // make ideal spend and delivery
+      const avg = parseFloat(init.lineItems[index].quantity) / daysDiff;
+      const spendAvg = parseFloat(init.lineItems[index].budget) / daysDiff;
+      const avgDeliveryArray = [];
+      const avgSpendArray = [];
+
+      let total = 0,
+          idealSpendTotal = 0;
+      for (let i = 0; i < daysDiff + 1; i++) {
+        total = total + avg;
+        idealSpendTotal = idealSpendTotal + spendAvg;
+        avgDeliveryArray.push(parseFloat(total.toFixed(2)));
+        avgSpendArray.push(parseFloat(idealSpendTotal.toFixed(2)));
+      }
+
+      // -------------- REMOVE CERTAIN THINGS FOR CLIENTS -------------- //
+      let adminToolTip = function adminToolTip (name, data, color) {
+        if (Meteor.user().admin === true) {
+          return {
+            name: name,
+            data: data,
+            color: color,
+            tooltip: {
+              valueSuffix: ' USD',
+              valuePrefix: '$'
+            }
+          }
+        } else {
+          return {
+            name: name,
+            data: data,
+            color: color,
+            tooltip: {
+              enabled: false
+            }
+          }
+        }
+      }
+
+      // ---------------- END CLIENT SCRUB FUNCTIONS ---------------- //
+      let isAdmin = false;
+      let adminHeight = 300;
+      if (Meteor.user().admin === true) {
+        isAdmin = true;
+        adminHeight = null;
+      }
+
+        return {
+          chart: {
+            zoomType: 'x',
+            // backgroundColor: '#fafafa',
+            height: adminHeight,
+          },
+          // TODO FIX THIS
+          title: {
+            text: "Spend",
+          },
+
+          subtitle: {
+            text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+          },
+
+          // tooltip: {
+          //   valueSuffix: " " + type,
+          //   shared: true,
+          //   crosshairs: true
+          // },
+          tooltip: {
+            enabled: isAdmin
+          },
+          xAxis: {
+            // type: 'datetime',
+            categories: xAxisArray
+          },
+
+          yAxis: {
+            title: {
+              text: 'Spend'
+            },
+            plotLines: [{
+              value: 0,
+              width: 1,
+              color: '#808080'
+            }]
+          },
+          // plotOptionsFunction(),
+          plotOptions: { // removes the markers along the plot lines
+            series: {
+              marker: {
+                enabled: false,
+                states: {
+                  hover: {
+                    enabled: isAdmin
+                  }
+                }
+              }
+            }
+          },
+          series: [
+          // {
+          //   name: 'Pacing Delivery',
+          //   data: avgDeliveryArray,
+          //   color: '#90caf9',
+          //   tooltip: {
+          //     valueSuffix: ' ' + type
+          //   }
+          // },
+          // {
+          //   name: 'Actual Delivery',
+          //   data: typeArray,
+          //   color: '#0d47a1',
+          //   tooltip: {
+          //     valueSuffix: ' ' + type
+          //   }
+          // },
           adminToolTip('Actual Spend', spendArray, '#b71c1c'),
           adminToolTip('Pacing Spend', avgSpendArray, '#ef9a9a')
           // {
@@ -357,6 +590,8 @@ export const initiativeHomepageFunctions = {
       }; // end of if (objective) {
     } // end of if (index < count && index !== undefined)
   },
+
+
   objectiveCostPerChart: (init, index, count) => {
     if (index < count && index !== undefined) {
       // need to grab the objective from the line item

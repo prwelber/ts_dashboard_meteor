@@ -6,16 +6,29 @@
     <form class="aggregations-form">
       <div class="input-field col s3">
         <select name="products" id="product-select" class="browser-default">
-          <option value="" selected>None</option>
-          <option value="Wine">Wine</option>
-          <option value="Food">Food</option>
-          <option value="Cars">Cars</option>
-          <option value="Fashion">Fashion</option>
+          <option value="" disabled selected>Choose Product Type</option>
+            <option value="Cars">Cars</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Finance">Finance</option>
+            <option value="Food">Food</option>
+            <option value="Hotels">Hotels</option>
+            <option value="Travel">Travel</option>
+            <option value="Religion">Religion</option>
+            <option value="Politics">Politics</option>
+            <option value="Clothes">Clothes</option>
+            <option value="Technology">Technology</option>
+            <option value="Nonprofit">Nonprofit</option>
+            <option value="Shoes">Shoes</option>
+            <option value="Health">Health</option>
+            <option value="Museums">Museums</option>
+            <option value="Sports">Sports</option>
+            <option value="Liquor">Liquor</option>
+            <option value="Wine">Wine</option>
         </select>
         <label class="active">Product</label>
       </div>
 
-      <div class="input-field col s3">
+      {{!-- <div class="input-field col s3">
         <select name="objective" id="objective-select" class="browser-default">
           <option value="" selected>None</option>
           <option value="Conversions">Conversions</option>
@@ -31,18 +44,30 @@
           <option value="Leads">Leads</option>
         </select>
         <label class="active">Objective</label>
-      </div>
+      </div> --}}
 
       <div class="input-field col s3">
         <select name="agency" id="agency-select" class="browser-default">
-          <option value="" selected>None</option>
-          <option value="Constellation">Constellation</option>
-          <option value="Cornerstone">Cornerstone</option>
-          <option value="High Wide & Handsome">High Wide & Handsome</option>
-          <option value="Hitachi">Hitachi</option>
-          <option value="Horizon">Horizon</option>
-          <option value="Icon">Icon</option>
-          <option value="Rachael Piper">Rachael Piper</option>
+          <option value="" disabled selected>Choose Agency</option>
+            <option value="Citizens">Citizens</option>
+            <option value="Constellation">Constellation</option>
+            <option value="Cornerstone">Cornerstone</option>
+            <option value="CUE">CUE</option>
+            <option value="Farm Rich">Farm Rich</option>
+            <option value="Hadeler Krueger">Hadeler Krueger</option>
+            <option value="High Wide & Handsome">High Wide & Handsome</option>
+            <option value="Hitachi">Hitachi</option>
+            <option value="Horizon">Horizon</option>
+            <option value="Icon">Icon</option>
+            <option value="Mundy">Mundy</option>
+            <option value="Power Creative">Power Creative</option>
+            <option value="Rachael Piper">Rachel Piper</option>
+            <option value="SapientNitro">SapientNitro</option>
+            <option value="True Media">True Media</option>
+            <option value="Uniworld">Uniworld</option>
+            {{#each getAgencies}}
+              <option value="{{name}}">{{name}}</option>
+            {{/each}}
         </select>
         <label class="active">Agency</label>
       </div>
@@ -59,12 +84,14 @@
 
       <div class="col s4">
         <input id="afterDate" type="date" class="datepicker" placeholder="Initiatives Beginning On Or After This Date" name="afterDate">
+        <label for="afterDate">Beginning on or after this date</label>
       </div>
       <div class="col s4">
         <input id="beforeDate" type="date" class="datepicker" placeholder="Initiatives Ending On Or Before This Date" name="beforeDate">
+        <label for="beforeDate">Ending on or before this date</label>
       </div>
 
-      <div class="col s12">
+      <div class="col s12" style='margin-top: 2em;'>
         <button class="btn waves-effect waves-light" type="submit">
           Run Aggregation
         </button>
@@ -77,29 +104,35 @@
         <p>{{getAgData.error}}</p>
       {{else}}
         {{#with getAgData}}
-          <table class="striped centered">
+          <table class="centered">
             <thead>
               <tr>
                 <th>Spend</th>
+                <th>Total Budget</th>
                 <th>Impressions</th>
                 <th>CPM</th>
                 <th>Clicks</th>
                 <th>CPC</th>
                 <th>Likes</th>
                 <th>CPL</th>
+                <th>Video View</th>
                 <th>Reach</th>
+                <th>Num of Results</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>{{spend}}</td>
+                <td>{{money totalBudget}}</td>
                 <td>{{impressions}}</td>
                 <td>{{cpm}}</td>
                 <td>{{clicks}}</td>
                 <td>{{cpc}}</td>
                 <td>{{likes}}</td>
                 <td>{{cpl}}</td>
+                <td>{{number videoViews}}</td>
                 <td>{{reach}}</td>
+                <td>{{count}}</td>
               </tr>
             </tbody>
           </table>

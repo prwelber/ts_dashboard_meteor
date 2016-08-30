@@ -96,7 +96,16 @@ Template.index.helpers({
   },
   overviewRoute: (route) => {
     const sesh = Session.get("route")
-    if (sesh === "overview" || sesh === "charts" || sesh === "breakdowns" || sesh === "daybreakdowns" || sesh === "hourlyBreakdowns" || sesh === "targeting" || sesh === "creative" || sesh === "report") {
+    if (sesh === "overview" ||
+        sesh === "charts" ||
+        sesh === "breakdowns" ||
+        sesh === "daybreakdowns" ||
+        sesh === "hourlyBreakdowns" ||
+        sesh === "targeting" ||
+        sesh === "creative" ||
+        sesh === "report" ||
+        sesh === "deviceAndPlacement")
+    {
       return true;
     }
   },

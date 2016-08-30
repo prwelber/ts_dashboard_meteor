@@ -152,6 +152,18 @@ FlowRouter.route('/accounts/:campaign_id/hourlybreakdowns', {
     }
 });
 
+FlowRouter.route('/accounts/:campaign_id/devicebreakdowns', {
+    subscriptions: function (params) {
+        this.register("Initiatives", Meteor.subscribe("Initiatives"));
+        this.register("DeviceAndPlacement", Meteor.subscribe("DeviceAndPlacement", params.campaign_id, 'campaign'));
+    },
+    name: 'deviceAndPlacement',
+    action: function (params) {
+        Session.set('route', 'deviceAndPlacement');
+        BlazeLayout.render('index', {main: 'deviceAndPlacement'});
+    }
+});
+
 FlowRouter.route('/accounts/:campaign_id/targeting', {
     subscriptions: function (opts) {
         this.register('AdSetsList', Meteor.subscribe('AdSetsList', opts.campaign_id));
@@ -191,6 +203,7 @@ FlowRouter.route('/admin/', {
 FlowRouter.route('/admin/aggregations', {
     subscriptions: function () {
         this.register('Initiatives', Meteor.subscribe('Initiatives'));
+        this.register('Agencies', Meteor.subscribe('Agencies'));
     },
     name: "aggregations",
     action: function () {

@@ -41,7 +41,8 @@
                     <li class="{{active "daybreakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/daybreakdowns">Daily</a></li>
                     <li class="{{active "hourlyBreakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/hourlybreakdowns">Hourly</a></li>
                   {{#if isInRole "admin"}}
-                    <li class="{{active "charts"}}"><a class="tooltipped" data-position="bottom" data-tooltip="View Charts" href="/accounts/{{getCampaignNumber}}/charts"><i class="material-icons">trending_up</i> </a></li>
+                    <li class="{{active "deviceAndPlacement"}}"><a href="/accounts/{{getCampaignNumber}}/devicebreakdowns">Device + Placement</a></li>
+                    {{!-- <li class="{{active "charts"}}"><a class="tooltipped" data-position="bottom" data-tooltip="View Charts" href="/accounts/{{getCampaignNumber}}/charts"><i class="material-icons">trending_up</i> </a></li> --}}
                   {{/if}}
                 {{/if}}
               </ul>
@@ -56,6 +57,7 @@
                   <li class="{{active "report"}}"><a href="/accounts/{{getCampaignNumber}}/report">Reporting</a></li>
                   <li class="{{active "overview"}}"><a href="/accounts/{{getCampaignNumber}}/overview">Overview</a></li>
                   {{#if isInRole "admin"}}
+                    <li class="{{active "deviceAndPlacement"}}"><a href="/accounts/{{getCampaignNumber}}/devicebreakdowns">Device + Placement</a></li>
                     <li class="{{active "targeting"}}"><a href="/accounts/{{getCampaignNumber}}/targeting">Targeting</a></li>
                     <li class="{{active "charts"}}"><a class="tooltipped" data-position="bottom" data-tooltip="View Charts" href="/accounts/{{getCampaignNumber}}/charts"><i class="material-icons">trending_up</i> </a></li>
                   {{/if}}
@@ -72,6 +74,9 @@
             <a href="#!" class="breadcrumb" style="padding-left: 10px;"><i class="fa fa-home" aria-hidden="true"></i></a>
             {{#if sessionBreadcrumb "initiativeHomepage"}}
               <a href="#!" class="breadcrumb" style="font-size: 14px;">Initiative</a>
+            {{/if}}
+            {{#if sessionBreadcrumb "admin"}}
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Admin</a>
             {{/if}}
             {{#if sessionBreadcrumb "overview"}}
               <a href="#!" class="breadcrumb" style="font-size: 14px;">Initiative</a>
@@ -102,6 +107,11 @@
               <a href="#!" class="breadcrumb" style="font-size: 14px;">Initiative</a>
               <a href="#!" class="breadcrumb" style="font-size: 14px;">Campaign</a>
               <a href="#!" class="breadcrumb" style="font-size: 14px;">Daily Breakdown</a>
+            {{/if}}
+            {{#if sessionBreadcrumb "deviceAndPlacement"}}
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Initiative</a>
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Campaign</a>
+              <a href="#!" class="breadcrumb" style="font-size: 14px;">Device / Placement Breakdown</a>
             {{/if}}
           </div>
 

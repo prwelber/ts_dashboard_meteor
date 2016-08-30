@@ -561,8 +561,11 @@ include charting for each lineItem and definitely aggregations --}}
             {{> highchartsHelper chartId="gauge0CostPerAction" chartWidth="50%" chartHeight="40%" chartObject=gaugeChart0CostPerAction}}
           </div>
         </div>
-        <div class="col s10 offset-s1" style="margin-top: -2em;">
-          {{> highchartsHelper chartId="objectiveChart0" chartWidth="100%" chartHeight="50%" chartObject=objectiveChart0}}
+        <div class="col s5 offset-s1" style="margin-top: -1em;">
+          {{> highchartsHelper chartId="objectiveChart0" chartWidth="100%" chartHeight="40%" chartObject=objectiveChart0}}
+        </div>
+        <div class="col s5" style="margin-top: -1em;">
+          {{> highchartsHelper chartId="objectiveChart0Spend" chartWidth="100%" chartHeight="40%" chartObject=objectiveChart0Spend}}
         </div>
       {{/if}}
     {{/if}}
@@ -576,7 +579,7 @@ include charting for each lineItem and definitely aggregations --}}
         </div>
       {{else}}
         <div class="row" style="width: 80%;">
-          <div class="col s12 center-align">
+          <div class="col s12 center-align" style="margin-top: 2em;">
             <h3>Line Item #2</h3>
           </div>
           <div class="col s3 offset-s1">
@@ -589,8 +592,11 @@ include charting for each lineItem and definitely aggregations --}}
             {{> highchartsHelper chartId="gauge1CostPerAction" chartWidth="50%" chartHeight="40%" chartObject=gaugeChart1CostPerAction}}
           </div>
         </div>
-        <div class="col s10 offset-s1" style="margin-top: -2em;">
+        <div class="col s5 offset-s1" style="margin-top: -2em;">
           {{> highchartsHelper chartId="objectiveChart1" chartWidth="100%" chartHeight="50%" chartObject=objectiveChart1}}
+        </div>
+        <div class="col s5" style="margin-top: -1em;">
+          {{> highchartsHelper chartId="objectiveChart1Spend" chartWidth="100%" chartHeight="40%" chartObject=objectiveChart1Spend}}
         </div>
       {{/if}}
     {{/if}}

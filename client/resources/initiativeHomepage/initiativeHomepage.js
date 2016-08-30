@@ -36,7 +36,6 @@ const whichObjectives = function whichObjectives (initiative) {
 const refreshInits = function refreshInits (init, objective) {
   const spendPercent = init[objective]['net']['spendPercent'];
   if (spendPercent === null || spendPercent === 0 || spendPercent === NaN || spendPercent === undefined) {
-    console.log('running refresh with', init.name)
     // Meteor.call('aggregateObjective', init.name);
     calcNet.calculateNetNumbers(init.name);
   }
@@ -95,7 +94,6 @@ Template.initiativeHomepage.helpers({
     return camps;
   },
   getClientNumbers: (action, lineItem) => {
-    console.log('firing!', action, lineItem)
     const init = Template.instance().templateDict.get('initiative');
     // action is the action, item is the lineItem
     let objective;
@@ -133,10 +131,8 @@ Template.initiativeHomepage.helpers({
 
     const objArr = whichObjectives(init);
     if (! objArr[0].net.client_spend) {
-      console.log('running refreshInit in initiativeHomepage.js')
       refreshInits(init, objective);
     }
-    console.log(objArr)
     // objArr.forEach(el => {
     //   const foundItem = findItem(el._id, init.lineItems)[0];
     //   if (el.net.client_spend > parseFloat(foundItem.budget)) {
@@ -464,6 +460,21 @@ Template.initiativeHomepage.helpers({
     }
 
   },
+  objectiveChart0Spend: () => {
+    const number = 0;
+    const init = Template.instance().templateDict.get('initiative');
+    let count = 0;
+    init.lineItems.forEach(el => {
+      if (el.budget !== "") {
+        count += 1;
+      }
+    });
+    if (init.dupObjectives) {
+      return initiativeHomepageFunctions.dupObjectivesDeliveryChart(init, number, count);
+    } else {
+      return initiativeHomepageFunctions.objectiveSpendChart(init, number, count);
+    }
+  },
   objectiveChart1: () => {
     const number = 1;
     const init = Template.instance().templateDict.get('initiative');
@@ -474,6 +485,17 @@ Template.initiativeHomepage.helpers({
       }
     });
     return initiativeHomepageFunctions.objectiveDeliveryChart(init, number, count);
+  },
+  objectiveChart1Spend: () => {
+    const number = 1;
+    const init = Template.instance().templateDict.get('initiative');
+    let count = 0;
+    init.lineItems.forEach(el => {
+      if (el.budget !== "") {
+        count += 1;
+      }
+    });
+    return initiativeHomepageFunctions.objectiveSpendChart(init, number, count);
   },
   objectiveChart2: () => {
     const number = 2;
@@ -690,7 +712,6 @@ Template.initiativeHomepage.helpers({
       returnObj['cpc'] = returnObj.spend / returnObj.clicks;
       returnObj['cpl'] = returnObj.spend / returnObj.likes;
       returnObj['cpvv'] = returnObj.spend / returnObj.videoViews;
-      console.log('returnObj', returnObj, maxBudget);
       // if (returnObj.spend > maxBudget) {
       //   returnObj.spend = maxBudget;
       // }
