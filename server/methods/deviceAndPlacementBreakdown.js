@@ -69,7 +69,6 @@ Meteor.methods({
                 data['impression_device'] = data.impression_device;
                 masterArray.push(data);
             });
-            console.log('masterArray', masterArray);
         } catch(e) {
             console.log("Error pulling device and placement Breakdown, here's the error:", e);
         }
@@ -86,10 +85,6 @@ Meteor.methods({
     'refreshDevice': (campaignNumber) => {
       DeviceAndPlacement.remove({'data.campaign_id': campaignNumber});
       return "success!";
-    },
-    'testDevice': () => {
-        console.log('test method running');
-        return 'fired!'
     }
 });
 

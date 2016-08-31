@@ -156,6 +156,7 @@ FlowRouter.route('/accounts/:campaign_id/devicebreakdowns', {
     subscriptions: function (params) {
         this.register("Initiatives", Meteor.subscribe("Initiatives"));
         this.register("DeviceAndPlacement", Meteor.subscribe("DeviceAndPlacement", params.campaign_id, 'campaign'));
+        this.register('campaignInsightList', Meteor.subscribe('campaignInsightList', params.campaign_id));
     },
     name: 'deviceAndPlacement',
     action: function (params) {

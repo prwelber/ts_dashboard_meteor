@@ -1,18 +1,195 @@
 <template name="deviceAndPlacement">
-  <h1>Device and Placement Breakdown</h1>
 
   {{#if isReady "DeviceAndPlacement" "Initiatives"}}
+    {{#if isInRole "admin"}}
+      <div class="row device-placement-wrapper">
+        <div class="col s12 center-align">
+          <h2>{{campaign.campaign_name}}</h2>
+        </div>
+        <div class="col s12">
+          <table class="highlight">
+            <thead>
+              <tr>
+                <th>Placement</th>
+                <th>Impression Device</th>
+                <th>Impressions</th>
+                <th>Reach</th>
+                <th>Clicks</th>
+                <th>Total Actions</th>
+                <th>Actual Spend</th>
+                <th>CPM</th>
+                <th>CPC</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each getData}}
+                <tr>
+                  <td>{{remove_ data.placement}}</td>
+                  <td>{{remove_ data.impression_device}}</td>
+                  <td>{{num data.impressions}}</td>
+                  <td>{{num data.reach}}</td>
+                  <td>{{num data.clicks}}</td>
+                  <td>{{num data.total_actions}}</td>
+                  <td>{{money data.spend}}</td>
+                  <td>{{money data.cpm}}</td>
+                  <td>{{money data.cpc}}</td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+        <div class="col s12">
+          {{#each el in getDeviceData}}
+            <p>thing</p>
+          {{/each}}
+        </div>
+        <div class="col s12">
+          {{> highchartsHelper chartId="pieChartImpressions" chartWidth="100%" chartHeight="100%" chartObject=pieChartImpressions}}
+        </div>
+      </div>
 
-    <h1>Subs Ready</h1>
+    {{else}}
+    <div style="display: none;">
+      {{getData}}
+    </div>
+    {{!-- for client --}}
+      <div class="container">
+        <div class="row">
+          <div class="col s12 center-align">
+            <h2>{{campaign.campaign_name}}</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12 center-align" style="margin: 1em 0 1em 0;">
+            <h4>Impression Device Breakdown</h4>
+          </div>
+          <div class="col l3 s6">
+            <div class="client-dash-card">
+              <div class="col s5 center-align blue lighten-3 client-dash-card-holder">
+                <i class="fa fa-mobile fa-4x" aria-hidden="true" style="color: black;"></i>
+                <span class="black-text">iPhone</span>
+              </div>
+              <div class="col s7 center-align dash-flex">
+                <span class="dash-data">{{num deviceData.iphoneImpressions}}</span>
+                <p class="dash-label">Impressions</p>
+                <span class="dash-data">{{num deviceData.iphoneClicks}}</span>
+                <p class="dash-label">Clicks</p>
+              </div>
+            </div>
+          </div>
+          <div class="col l3 s6">
+            <div class="client-dash-card">
+              <div class="col s5 center-align green lighten-3 client-dash-card-holder">
+                <i class="fa fa-android fa-4x" aria-hidden="true" style="color: black;"></i>
+                <span class="black-text">Android</span>
+              </div>
+              <div class="col s7 center-align dash-flex">
+                <span class="dash-data">{{num deviceData.androidImpressions}}</span>
+                <p class="dash-label">Impressions</p>
+                <span class="dash-data">{{num deviceData.androidClicks}}</span>
+                <p class="dash-label">Clicks</p>
+              </div>
+            </div>
+          </div>
+          <div class="col l3 s6">
+            <div class="client-dash-card">
+              <div class="col s5 center-align grey lighten-3 client-dash-card-holder">
+                <i class="fa fa-laptop fa-4x" aria-hidden="true" style="color: black;"></i>
+                <span class="black-text">Desktop</span>
+              </div>
+              <div class="col s7 center-align dash-flex">
+                <span class="dash-data">{{num deviceData.desktopImpressions}}</span>
+                <p class="dash-label">Impressions</p>
+                <span class="dash-data">{{num deviceData.desktopClicks}}</span>
+                <p class="dash-label">Clicks</p>
+              </div>
+            </div>
+          </div>
+          <div class="col l3 s6">
+            <div class="client-dash-card">
+              <div class="col s5 center-align red lighten-3 client-dash-card-holder">
+                <i class="fa fa-tablet fa-4x" aria-hidden="true" style="color: black;"></i>
+                <span class="black-text">iPad</span>
+              </div>
+              <div class="col s7 center-align dash-flex">
+                <span class="dash-data">{{num deviceData.ipadImpressions}}</span>
+                <p class="dash-label">Impressions</p>
+                <span class="dash-data">{{num deviceData.ipadClicks}}</span>
+                <p class="dash-label">Clicks</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s6">
+            {{> highchartsHelper chartId="pieDevice" chartWidth="100%" chartHeight="100%" chartObject=pieDevice}}
+          </div>
+          <div class="col s6">
+            {{> highchartsHelper chartId="piePlacement" chartWidth="100%" chartHeight="100%" chartObject=piePlacement}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12 center-align" style="margin: 1em 0 1em 0;">
+            <h4>Placement Breakdown</h4>
+          </div>
+          <div class="col l4 s6">
+            <div class="client-dash-card">
+              <div class="col s5 center-align deep-purple lighten-3 client-dash-card-holder">
+                <i class="fa fa-mobile fa-4x" aria-hidden="true" style="color: black;"></i>
+                <span class="black-text">Mobile</span>
+              </div>
+              <div class="col s7 center-align dash-flex">
+                <span class="dash-data">{{num placementData.mobileImpressions}}</span>
+                <p class="dash-label">Impressions</p>
+                <span class="dash-data">{{num placementData.mobileClicks}}</span>
+                <p class="dash-label">Clicks</p>
+              </div>
+            </div>
+          </div>
+          <div class="col l4 s6">
+            <div class="client-dash-card">
+              <div class="col s5 center-align amber lighten-3 client-dash-card-holder">
+                <i class="fa fa-desktop fa-4x" aria-hidden="true" style="color: black;"></i>
+                <span class="black-text">Desktop</span>
+              </div>
+              <div class="col s7 center-align dash-flex">
+                <span class="dash-data">{{num placementData.desktopImpressions}}</span>
+                <p class="dash-label">Impressions</p>
+                <span class="dash-data">{{num placementData.desktopClicks}}</span>
+                <p class="dash-label">Clicks</p>
+              </div>
+            </div>
+          </div>
+          <div class="col l4 s6">
+            <div class="client-dash-card">
+              <div class="col s5 center-align cyan lighten-3 client-dash-card-holder icon-container-flex">
+                <i class="fa fa-instagram fa-4x" aria-hidden="true" style="color: black;"></i>
+                <span class="black-text">Instagram</span>
+              </div>
+              <div class="col s7 center-align dash-flex">
+                <span class="dash-data">{{num placementData.instagramImpressions}}</span>
+                <p class="dash-label">Impressions</p>
+                <span class="dash-data">{{num placementData.instagramClicks}}</span>
+                <p class="dash-label">Clicks</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s6">
+            {{> highchartsHelper chartId="pieChartImpressions" chartWidth="100%" chartHeight="100%" chartObject=pieChartImpressions}}
+          </div>
+          <div class="col s6">
+            {{> highchartsHelper chartId="pieChartImpressions" chartWidth="100%" chartHeight="100%" chartObject=pieChartImpressions}}
+          </div>
+          <div class="col s12">
+            {{> highchartsHelper chartId="pieChartImpressions" chartWidth="100%" chartHeight="100%" chartObject=pieChartImpressions}}
+          </div>
+        </div>
+      </div>
+    {{/if}}
 
-    {{#each getData}}
-      <h5>{{data.placement}} on {{data.impression_device}}</h5>
-      <p>{{data.impressions}}</p>
-      <p>{{data.reach}}</p>
-      <p>{{data.clicks}}</p>
-      <p>{{data.total_actions}}</p>
-      <p>{{data.spend}}</p>
-    {{/each}}
+
 
   {{else}}
     <h1>Not Ready!</h1>

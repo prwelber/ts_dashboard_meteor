@@ -261,6 +261,10 @@ a:hover {
 
 .client-dash-card-holder {
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .dash-label {
@@ -269,9 +273,18 @@ a:hover {
 }
 
 .dash-flex {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+}
+
+.device-placement-wrapper {
+  margin: 0 2em 0 2em;
+}
+
+.icon-container-flex {
+
 }
 /****************************************************************
  *

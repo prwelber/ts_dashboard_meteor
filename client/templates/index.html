@@ -37,11 +37,11 @@
                     <li class="{{active "targeting"}}"><a href="/accounts/{{getCampaignNumber}}/targeting">Targeting</a></li>
                   {{/if}}
                     <li class="{{active "creative"}}"><a href="/accounts/{{getCampaignNumber}}/creative">Creative</a></li>
-                    <li class="{{active "breakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/breakdowns">Age & Gender</a></li>
+                    <li class="{{active "breakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/breakdowns">Age + Gender</a></li>
                     <li class="{{active "daybreakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/daybreakdowns">Daily</a></li>
                     <li class="{{active "hourlyBreakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/hourlybreakdowns">Hourly</a></li>
-                  {{#if isInRole "admin"}}
                     <li class="{{active "deviceAndPlacement"}}"><a href="/accounts/{{getCampaignNumber}}/devicebreakdowns">Device + Placement</a></li>
+                  {{#if isInRole "admin"}}
                     {{!-- <li class="{{active "charts"}}"><a class="tooltipped" data-position="bottom" data-tooltip="View Charts" href="/accounts/{{getCampaignNumber}}/charts"><i class="material-icons">trending_up</i> </a></li> --}}
                   {{/if}}
                 {{/if}}
@@ -62,7 +62,7 @@
                     <li class="{{active "charts"}}"><a class="tooltipped" data-position="bottom" data-tooltip="View Charts" href="/accounts/{{getCampaignNumber}}/charts"><i class="material-icons">trending_up</i> </a></li>
                   {{/if}}
                   <li class="{{active "creative"}}"><a href="/accounts/{{getCampaignNumber}}/creative">Creative</a></li>
-                  <li class="{{active "breakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/breakdowns">Age & Gender</a></li>
+                  <li class="{{active "breakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/breakdowns">Age + Gender</a></li>
                   <li class="{{active "daybreakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/daybreakdowns">Daily</a></li>
                   <li class="{{active "hourlyBreakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/hourlybreakdowns">Hourly</a></li>
 
