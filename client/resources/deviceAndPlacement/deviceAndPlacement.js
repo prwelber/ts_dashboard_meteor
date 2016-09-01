@@ -4,7 +4,7 @@ import DeviceAndPlacement from '/collections/DeviceAndPlacement';
 import Initiatives from '/collections/DeviceAndPlacement';
 import CampaignInsights from '/collections/CampaignInsights';
 var Promise = require('bluebird');
-import { formatters as fmt } from '/both/utilityFunctions/formatters'
+import { formatters as fmt } from '/both/utilityFunctions/formatters';
 
 // learned map reduce!
 const mapReduceDevice = function mapReduceDevice (device, metric, items) {
@@ -44,15 +44,15 @@ const mapReducePlacement = function mapReducePlacement (placement, metric, items
 }
 
 
+
 Template.deviceAndPlacement.onCreated(function () {
   this.templateDict = new ReactiveDict();
 });
 
 
 Template.deviceAndPlacement.onRendered(function () {
-
+  $('.tooltipped').tooltip({delay: 25});
 });
-
 
 Template.deviceAndPlacement.helpers({
   isReady: function (sub1, sub2) {
@@ -79,7 +79,6 @@ Template.deviceAndPlacement.helpers({
     const id = FlowRouter.getParam('campaign_id');
     const data = DeviceAndPlacement.find({'data.campaign_id': id}, {sort: {'data.impressions': -1}}).fetch();
     templateDict.set('data', data);
-    console.log(data);
     return data;
   },
   deviceData: () => {
@@ -133,7 +132,6 @@ Template.deviceAndPlacement.helpers({
     });
 
     return {
-
       chart: {
         plotBackgroundColor: null,
         plotBorderWidth: null,
@@ -168,20 +166,49 @@ Template.deviceAndPlacement.helpers({
   },
   pieDevice: () => {
     const data = Template.instance().templateDict.get('data');
-
-    const chartArray = [];
-    data.forEach(el => {
-      let o = {};
-      if (parseFloat(el.data.impressions) >= 1000) {
-        o['name'] = el.data.impression_device;
-        o.name.replace(/_/g, " ");
-        o['y'] = el.data.impressions;
-        chartArray.push(o);
-      }
+    const realData = data.map(el => {
+      return el.data;
     });
+    const chartArray = [];
+
+    var desktop = _.where(realData, {impression_device: 'desktop'});
+    var iphone = _.where(realData, {impression_device: 'iphone'});
+    var androidPhone = _.where(realData, {impression_device: 'android_smartphone'})
+    var other = _.where(realData, {impression_device: 'other'});
+    var ipad = _.where(realData, {impression_device: 'ipad'});
+    var androidTablet = _.where(realData, {impression_device: 'android_tablet'});
+
+    var arrayOfDevices = [desktop, iphone, androidPhone, other, ipad, androidTablet];
+
+    /*
+    * Below, we are looping over arrayOfDevices and mapping each
+    * element, returning just the impressions, and then adding them up
+    * with a reduce function. We also assign the name and the impression
+    * number to an object which we push into an array that is to be charted
+    */
+
+    for (let i = 0; i < arrayOfDevices.length; i++) {
+      if (arrayOfDevices[i].length === 0) {
+        continue;
+      }
+      let name = arrayOfDevices[i][0].impression_device;
+
+      let o = {
+        name: name
+      };
+
+      let blank = arrayOfDevices[i].map(obj => {
+        return obj.impressions;
+      }).reduce((prev, curr) => {
+        return prev + curr
+      }, 0);
+
+      o['y'] = blank;
+
+      chartArray.push(o);
+    }
 
     return {
-
       chart: {
         plotBackgroundColor: null,
         plotBorderWidth: null,
@@ -219,29 +246,20 @@ Template.deviceAndPlacement.helpers({
     const realData = data.map(el => {
       return el.data;
     });
-    console.log('realData', realData)
     const otherArray = [];
-    const chartArray = [];
-    data.forEach(el => {
-      let o = {};
-      if (parseFloat(el.data.impressions) >= 1000) {
-        o['name'] = el.data.placement;
-        o.name.replace(/_/g, " ");
-        o['y'] = el.data.impressions;
-        chartArray.push(o);
-      }
-    });
 
     var mobile = _.where(realData, {placement: 'mobile_feed'});
     var insta = _.where(realData, {placement: 'instagramstream'});
     var rightHand = _.where(realData, {placement: 'right_hand'})
     var desk = _.where(realData, {placement: 'desktop_feed'});
     var mobileExternal = _.where(realData, {placement: 'mobile_external_only'});
+    var mobileVideo = _.where(realData, {placement: 'mobile_video_channel'});
+    var desktopVideo = _.where(realData, {placement: 'desktop_video_channel'});
 
-
+    // concat desk and rightHand
     var allDesktop = rightHand.concat(desk)
 
-    var arrayOfPlacements = [mobile, insta, mobileExternal, allDesktop];
+    var arrayOfPlacements = [mobile, insta, mobileExternal, allDesktop, mobileVideo, desktopVideo];
 
     /*
     * Below, we are looping over arrayOfPlacements and mapping each
@@ -271,8 +289,6 @@ Template.deviceAndPlacement.helpers({
 
       otherArray.push(o);
     }
-
-    console.log('otherArray', otherArray)
 
     return {
 
@@ -311,13 +327,19 @@ Template.deviceAndPlacement.helpers({
   campaign: () => {
     const id = FlowRouter.getParam('campaign_id');
     const camp = CampaignInsights.findOne({'data.campaign_id': id});
-    // return camp.data;
+    if (camp) {
+      return camp.data;
+    }
   }
 });
 
 
 Template.deviceAndPlacement.events({
-
+  'click #refresh-device-placement': (event, template) => {
+    event.preventDefault();
+    const id = FlowRouter.getParam('campaign_id');
+    Meteor.call('refreshDevice', id);
+  }
 });
 
 

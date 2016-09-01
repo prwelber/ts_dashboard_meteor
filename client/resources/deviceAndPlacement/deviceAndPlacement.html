@@ -47,6 +47,14 @@
           {{> highchartsHelper chartId="pieChartImpressions" chartWidth="100%" chartHeight="100%" chartObject=pieChartImpressions}}
         </div>
       </div>
+      <div class="row">
+        <div class="col s12 center-align" style="margin-top: 3em;">
+          <button id="refresh-device-placement" class="btn waves-effect waves-light tooltipped" name="action" data-position="top" data-tooltip="Refresh Insight Data">
+            {{!-- <i class="material-icons">loop</i> --}}
+            <h4>REFRESH DATA</h4>
+          </button>
+        </div>
+      </div>
 
     {{else}}
     <div style="display: none;">
@@ -176,12 +184,12 @@
           </div>
         </div>
         <div class="row">
-          <div class="col s6">
+          {{!-- <div class="col s6">
             {{> highchartsHelper chartId="pieChartImpressions" chartWidth="100%" chartHeight="100%" chartObject=pieChartImpressions}}
           </div>
           <div class="col s6">
             {{> highchartsHelper chartId="pieChartImpressions" chartWidth="100%" chartHeight="100%" chartObject=pieChartImpressions}}
-          </div>
+          </div> --}}
           <div class="col s12">
             {{> highchartsHelper chartId="pieChartImpressions" chartWidth="100%" chartHeight="100%" chartObject=pieChartImpressions}}
           </div>
