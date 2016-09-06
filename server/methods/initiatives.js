@@ -351,6 +351,9 @@ Meteor.publish('Initiatives', function (opts, type) {
   var user = Meteor.users.findOne({_id: this.userId});
 
   try {
+    if (opts['type'] === 'boost') {
+      return Initiatives.find({}, {fields: {name: 1}, sort: {name: 1}});
+    }
 
     if (type === 'campaign') {
       return Initiatives.find({campaign_ids: {$in: [opts]}});

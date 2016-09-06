@@ -9,8 +9,8 @@ FlowRouter.route('/', {
 });
 
 FlowRouter.route('/home', {
-    subscriptions: function () {
-        this.register('Initiatives', Meteor.subscribe('Initiatives'));
+    subscriptions: function (params) {
+        this.register('Initiatives', Meteor.subscribe('Initiatives', params));
     },
     name: 'index',
     action: () => {
@@ -460,3 +460,31 @@ FlowRouter.route('/admin/calllog', {
         BlazeLayout.render('index', {main: 'calllog'});
     }
 })
+
+
+// ----------------- BOOST REQUESTS ------------------------ //
+
+
+FlowRouter.route('/admin/boostrequest', {
+    subscriptions: function () {
+        this.register('BoostRequests', Meteor.subscribe('BoostRequests'));
+        this.register('BoostTargeting', Meteor.subscribe('BoostTargeting'));
+    },
+    name: 'boostrequests',
+    action: () => {
+        BlazeLayout.render('index', {main: 'boostrequests'});
+    }
+});
+
+FlowRouter.route('/admin/boostrequest/new', {
+    subscriptions: function (params) {
+        params['type'] = 'boost';
+        this.register('BoostRequests', Meteor.subscribe('BoostRequests'));
+        this.register('BoostTargeting', Meteor.subscribe('BoostTargeting'));
+        this.register('Initiatives', Meteor.subscribe('Initiatives', params));
+    },
+    name: 'createBoostRequest',
+    action: () => {
+        BlazeLayout.render('index', {main: 'createBoostRequest'});
+    }
+});

@@ -1,0 +1,345 @@
+<template name='createBoostRequest'>
+  <h1>Create Boost Request</h1>
+
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <div class="row">
+      <div class="col s12 center-align">
+        <h3>New Targeting Profile</h3>
+      </div>
+      <form action="" class="new-targeting-form">
+        <div class="col s6 offset-s3 center-align">
+          <input type="text" id="targeting-name" name="targeting-name" style="margin-bottom: 5px;">
+          <label for="targeting-name">Targeting Profile Name</label>
+        </div>
+        <br><br><br>
+        <div class="col s12">
+          <h4 style="margin: 15px 0 10px 0;">Gender</h4>
+          <p>
+            <input type="checkbox" class="gender-boxes" id="male" value="Male"/>
+            <label for="male">Male</label>
+          </p>
+          <p>
+            <input type="checkbox" class="gender-boxes" id="female" value="Female"/>
+            <label for="female">Female</label>
+          </p>
+          <p>
+            <input type="checkbox" class="gender-boxes" id="both" value="Both"/>
+            <label for="both">Male & Female</label>
+          </p>
+        </div>
+        <div class="col s3">
+          <input type="text" id="targeting-min-age" name="targeting-min-age" style="margin-bottom: 5px;" value="21">
+          <label for="targeting-min-age">Min Age</label>
+          <input type="text" id="targeting-max-age" name="targeting-max-age" style="margin-bottom: 5px;" value="65">
+          <label for="targeting-max-age">Max Age</label>
+        </div>
+        <div class="col s12">
+          <input type="text" id="targeting-location" name="targeting-location" style="margin-bottom: 5px;" value="United States">
+          <label for="targeting-location">Location</label>
+        </div>
+        <div class="col s12">
+          <input type="text" id="targeting-interests" name="targeting-interests" style="margin-bottom: 5px;">
+          <label for="targeting-interests">Interests / Behaviors</label>
+        </div>
+        <br><br><br>
+        <div class="col s12">
+          <h4 style="margin: 15px 0 10px 0;">Connections</h4>
+          <p>
+            <input type="checkbox" class="connections" id="fans" value="Fans"/>
+            <label for="fans">Fans</label>
+          </p>
+          <p>
+            <input type="checkbox" class="connections" id="FoF" value="FoF"/>
+            <label for="FoF">FoF</label>
+          </p>
+          <p>
+            <input type="checkbox" class="connections" id="none" value="None"/>
+            <label for="none">None</label>
+          </p>
+        </div>
+        <div class="col s12 center-align">
+          <input type="submit" value="Create New Targeting Profile">
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  {{#if isReady 'BoostRequests' 'BoostTargeting'}}
+    <div class="container">
+      <form class="col s12 new-boost-form">
+        <div class="row">
+          <div class="input-field col s4">
+            <label class="active">Owner</label>
+            <select class="browser-default" name="boost-owner">
+              <option value="" disabled selected>Choose Owner</option>
+              {{#each getUsers}}
+                <option value="{{firstName}} {{lastName}}">{{firstName}} {{lastName}} - {{email}}</option>
+              {{/each}}
+            </select>
+          </div>
+          <div class="input-field col s4">
+            <label class="active">Initiative</label>
+            <select class="browser-default" name="boost-initiative">
+              <option value="" disabled selected>Choose Initiative</option>
+              {{#each getInitiatives}}
+                <option value="{{name}}">{{name}}</option>
+              {{/each}}
+            </select>
+          </div>
+          <div class="input-field col s4">
+            <label class="active">Creative Link</label>
+            <input placeholder="Link URL" id="boost-creative-link" type="text" name="boost-creative-link">
+          </div>
+        </div>
+        {{!-- <div class="col s2">
+          <p class="new-targeting">
+            <input name="group1" type="radio" id="new-targeting" checked="checked"/>
+            <label for="new-targeting">New Targeting</label>
+          </p>
+          <p class="pre-made-targeting">
+            <input name="group1" type="radio" id="pre-made-targeting" />
+            <label for="pre-made-targeting">Pre-made Target</label>
+          </p>
+        </div> --}}
+        <div class="col s12">
+          <blockquote>
+            Date Format: 11-12-2015
+            <br>
+            Budget Format: 12500.00
+          </blockquote>
+        </div>
+        {{#if newTargeting}}
+          {{#each createRows}}
+            {{#if showRow (addOne @index)}}
+              <div class="row">
+                <div class="col s1">
+                  <span>Creative #{{addOne @index}}</span>
+                </div>
+
+                <div class="input-field col s1 tooltipped" data-position="top" data-tooltip="Date Format: 10-10-2015">
+                  <input placeholder="Start" id="boost-start" type="text" name="boost-start-{{addOne @index}}">
+                  <label for="boost-start" class="active">Start</label>
+                </div>
+                <div class="input-field col s1 tooltipped" data-position="top" data-tooltip="Date Format: 12-31-2015">
+                  <input placeholder="End" id="boost-end" type="text" name="boost-end-{{addOne @index}}">
+                  <label for="boost-end" class="active">End</label>
+                </div>
+                <div class="input-field col s1 tooltipped" data-position="top" data-tooltip="Budget Format: 15000.00">
+                  <input placeholder="Budget" id="boost-budget" type="text" name="boost-budget-{{addOne @index}}">
+                  <label for="boost-budget" class="active">Budget</label>
+                </div>
+                <div class="input-field col s3">
+                  <select name="boost-targeting-{{addOne @index}}" class="browser-default targeting-select" id="">
+                    <option value="" disabled selected>Choose Targeting</option>
+                    <option value="new-targeting">Create New Targeting Profile</option>
+                    {{#each getBoostTargeting}}
+                      <option value="{{name}}">{{name}}</option>
+                    {{/each}}
+                  </select>
+
+                  {{!-- <input placeholder="Audience" id="boost-audience" type="text" name="boost-audience-{{addOne @index}}">
+                  <label for="boost-audience" class="active">Audience</label> --}}
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Optimization" id="boost-optimization" type="text" name="boost-optimization-{{addOne @index}}">
+                  <label for="boost-optimization" class="active">Optimization</label>
+                </div>
+                <div class="col s2">
+                  <button class="boost-add-creative" data-index={{addTwo @index}}>New Creative Row</button>
+                </div>
+              </div>
+            {{/if}}
+          {{/each}}
+        {{else}}
+          <h1>Pre made targeting</h1>
+        {{/if}}
+        <div class="row">
+          <div class="col s12 center-align">
+            <input type="submit" value="Create Boost Request">
+          </div>
+        </div>
+      </form>
+    </div>
+
+  {{else}}
+    <h3>Loading...</h3>
+  {{/if}}
+
+</template>
+<!-- {{#if creative2}}
+          <div class="row">
+            <div class="col s1">
+              <span>Creative #2</span>
+            </div>
+            <div class="input-field col s1">
+              <input placeholder="Link URL" id="boost-link" type="text" name="boost-link">
+              <label for="boost-link" class="active">Creative URL</label>
+            </div>
+            <div class="input-field col s1">
+              <input placeholder="Start" id="boost-start" type="text" name="boost-start">
+              <label for="boost-start" class="active">Start</label>
+            </div>
+            <div class="input-field col s1">
+              <input placeholder="End" id="boost-end" type="text" name="boost-end">
+              <label for="boost-end" class="active">End</label>
+            </div>
+            <div class="input-field col s1">
+              <input placeholder="Budget" id="boost-budget" type="text" name="boost-budget">
+              <label for="boost-budget" class="active">Budget</label>
+            </div>
+            <div class="input-field col s3">
+              <input placeholder="Audience" id="boost-audience" type="text" name="boost-audience">
+              <label for="boost-audience" class="active">Audience</label>
+            </div>
+            <div class="input-field col s3">
+              <input placeholder="Optimization" id="boost-optimization" type="text" name="boost-optimization">
+              <label for="boost-optimization" class="active">Optimization</label>
+            </div>
+            <div class="col s1">
+              <button class="boost-add-creative-3">Add Creative #3</button>
+            </div>
+          </div>
+        {{/if}}
+        {{#if creative3}}
+          <div class="row">
+            <div class="col s1">
+              <span>Creative #3</span>
+            </div>
+            <div class="input-field col s1">
+              <input placeholder="Link URL" id="boost-link" type="text" name="boost-link">
+              <label for="boost-link" class="active">Creative URL</label>
+            </div>
+            <div class="input-field col s1">
+              <input placeholder="Start" id="boost-start" type="text" name="boost-start">
+              <label for="boost-start" class="active">Start</label>
+            </div>
+            <div class="input-field col s1">
+              <input placeholder="End" id="boost-end" type="text" name="boost-end">
+              <label for="boost-end" class="active">End</label>
+            </div>
+            <div class="input-field col s1">
+              <input placeholder="Budget" id="boost-budget" type="text" name="boost-budget">
+              <label for="boost-budget" class="active">Budget</label>
+            </div>
+            <div class="input-field col s3">
+              <input placeholder="Audience" id="boost-audience" type="text" name="boost-audience">
+              <label for="boost-audience" class="active">Audience</label>
+            </div>
+            <div class="input-field col s3">
+              <input placeholder="Optimization" id="boost-optimization" type="text" name="boost-optimization">
+              <label for="boost-optimization" class="active">Optimization</label>
+            </div>
+            <div class="col s1">
+              <button class="boost-add-creative-4">Add Creative #4</button>
+            </div>
+          </div>
+        {{/if}}
+        {{#if creative4}}
+          <div class="row">
+            <div class="col s1">
+              <span>Creative #4</span>
+            </div>
+            <div class="input-field col s1">
+              <input placeholder="Link URL" id="boost-link" type="text" name="boost-link">
+              <label for="boost-link" class="active">Creative URL</label>
+            </div>
+            <div class="input-field col s1">
+              <input placeholder="Start" id="boost-start" type="text" name="boost-start">
+              <label for="boost-start" class="active">Start</label>
+            </div>
+            <div class="input-field col s1">
+              <input placeholder="End" id="boost-end" type="text" name="boost-end">
+              <label for="boost-end" class="active">End</label>
+            </div>
+            <div class="input-field col s1">
+              <input placeholder="Budget" id="boost-budget" type="text" name="boost-budget">
+              <label for="boost-budget" class="active">Budget</label>
+            </div>
+            <div class="input-field col s3">
+              <input placeholder="Audience" id="boost-audience" type="text" name="boost-audience">
+              <label for="boost-audience" class="active">Audience</label>
+            </div>
+            <div class="input-field col s3">
+              <input placeholder="Optimization" id="boost-optimization" type="text" name="boost-optimization">
+              <label for="boost-optimization" class="active">Optimization</label>
+            </div>
+            <div class="col s1">
+              <button class="boost-add-creative-5">Add Creative #5</button>
+            </div>
+          </div>
+        {{/if}}
+        {{#if creative5}}
+          <div class="row">
+            <div class="col s1">
+              <span>Creative #5</span>
+            </div>
+            <div class="input-field col s1">
+              <input placeholder="Link URL" id="boost-link" type="text" name="boost-link">
+              <label for="boost-link" class="active">Creative Link</label>
+            </div>
+            <div class="input-field col s1">
+              <input placeholder="Start" id="boost-start" type="text" name="boost-start">
+              <label for="boost-start" class="active">Start</label>
+            </div>
+            <div class="input-field col s1">
+              <input placeholder="End" id="boost-end" type="text" name="boost-end">
+              <label for="boost-end" class="active">End</label>
+            </div>
+            <div class="input-field col s1">
+              <input placeholder="Budget" id="boost-budget" type="text" name="boost-budget">
+              <label for="boost-budget" class="active">Budget</label>
+            </div>
+            <div class="input-field col s3">
+              <input placeholder="Audience" id="boost-audience" type="text" name="boost-audience">
+              <label for="boost-audience" class="active">Audience</label>
+            </div>
+            <div class="input-field col s3">
+              <input placeholder="Optimization" id="boost-optimization" type="text" name="boost-optimization">
+              <label for="boost-optimization" class="active">Optimization</label>
+            </div>
+            <div class="col s1">
+              <button class="boost-add-creative-6">Add Creative #6</button>
+            </div>
+          </div>
+        {{/if}}
+        {{#if creative6}}
+          <div class="row">
+            <div class="col s1">
+              <span>Creative #6</span>
+            </div>
+            <div class="input-field col s1">
+              <input placeholder="Link URL" id="boost-link" type="text" name="boost-link">
+              <label for="boost-link" class="active">Creative Link</label>
+            </div>
+            <div class="input-field col s1">
+              <input placeholder="Start" id="boost-start" type="text" name="boost-start">
+              <label for="boost-start" class="active">Start</label>
+            </div>
+            <div class="input-field col s1">
+              <input placeholder="End" id="boost-end" type="text" name="boost-end">
+              <label for="boost-end" class="active">End</label>
+            </div>
+            <div class="input-field col s1">
+              <input placeholder="Budget" id="boost-budget" type="text" name="boost-budget">
+              <label for="boost-budget" class="active">Budget</label>
+            </div>
+            <div class="input-field col s3">
+              <input placeholder="Audience" id="boost-audience" type="text" name="boost-audience">
+              <label for="boost-audience" class="active">Audience</label>
+            </div>
+            <div class="input-field col s3">
+              <input placeholder="Optimization" id="boost-optimization" type="text" name="boost-optimization">
+              <label for="boost-optimization" class="active">Optimization</label>
+            </div>
+            {{!-- <div class="col s1">
+              <button class="boost-add-creative-6">Add Creative #6</button>
+            </div> --}}
+          </div>
+        {{/if}}
+
+        -->

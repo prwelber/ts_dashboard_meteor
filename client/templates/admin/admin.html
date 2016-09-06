@@ -1,7 +1,7 @@
 <template name="admin">
   {{#if isInRole 'admin' }}
   <div id="admin-home-row" class="row">
-  <div class="col s6 m4 l3">
+  <div class="col s6 m4 l4">
       <div class="card z-depth-3">
         <div class="card-content">
           <span class="card-title">Call Log</span>
@@ -10,7 +10,7 @@
         </div>
       </div>
     </div>
-    <div class="col s6 m4 l3">
+    <div class="col s6 m4 l4">
       <div class="card z-depth-3">
         <div class="card-content">
           <span class="card-title">PDF / IO Generator</span>
@@ -19,7 +19,7 @@
         </div>
       </div>
     </div>
-    <div class="col s6 m4 l3">
+    <div class="col s6 m4 l4">
       <div class="card z-depth-3">
         <div class="card-content">
           <span class="card-title"> Spending / Aggregations</span>
@@ -28,7 +28,7 @@
         </div>
       </div>
     </div>
-    <div class="col s6 m4 l3">
+    <div class="col s6 m4 l4">
       <div class="card z-depth-3">
         <div class="card-content">
           <span class="card-title">Campaigns</span>
@@ -37,7 +37,7 @@
         </div>
       </div>
     </div>
-    <div class="col s6 m4 l3">
+    <div class="col s6 m4 l4">
       <div class="card z-depth-3">
         <div class="card-content">
           <span class="card-title">Brands</span>
@@ -46,7 +46,7 @@
         </div>
       </div>
     </div>
-    <div class="col s6 m4 l3">
+    <div class="col s6 m4 l4">
       <div class="card z-depth-3">
         <div class="card-content">
           <span class="card-title">Users</span>
@@ -55,7 +55,7 @@
         </div>
       </div>
     </div>
-    <div class="col s6 m4 l3">
+    <div class="col s6 m4 l4">
       <div class="card z-depth-3">
         <div class="card-content">
           <span class="card-title">Agencies</span>
@@ -64,12 +64,21 @@
         </div>
       </div>
     </div>
-    <div class="col s6 m4 l3">
+    <div class="col s6 m4 l4">
       <div class="card z-depth-3">
         <div class="card-content">
           <span class="card-title">Initiatives</span>
           <p><a href="/admin/initiatives">Initiative List</a></p>
           <a href="/initiatives/new">New Initiative</a>
+        </div>
+      </div>
+    </div>
+    <div class="col s6 m4 l4">
+      <div class="card z-depth-3">
+        <div class="card-content">
+          <span class="card-title">Boost Requests</span>
+          <p><a href="/admin/boostrequest">View Requests</a></p>
+          <a href="/admin/boostrequest/new">Create Request</a>
         </div>
       </div>
     </div>
