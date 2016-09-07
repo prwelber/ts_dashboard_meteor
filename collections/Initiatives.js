@@ -4,6 +4,6 @@ Initiatives.allow({
   update: function (userId, user) {
     return userId;
   }
-})
+});
 
 export default Initiatives

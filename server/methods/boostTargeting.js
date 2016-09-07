@@ -16,8 +16,8 @@ Meteor.methods({
     });
     return 'success!'
   },
-  deleteBoostTargeting: () => {
-
+  deleteBoostTargeting: (id) => {
+    BoostTargeting.remove({_id: id});
   },
   updateBoostTargeting: () => {
 

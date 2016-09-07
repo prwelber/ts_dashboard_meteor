@@ -1,3 +1,189 @@
+
+
+
+
 <template name='boostrequests'>
   <h1>Boost Requests</h1>
+  <div class="row">
+    <div class="col s2">
+      <a href="/admin/boostrequest/new" class="waves-effect waves-teal btn-flat">New Boost Request</a>
+    </div>
+    <div class="col s2">
+      <a class="waves-effect waves-teal btn-flat view-targeting-profiles">View Targeting Profiles</a>
+    </div>
+  </div>
+
+  {{#if isReady 'BoostRequests'}}
+
+    <div class="container">
+      {{!-- <div class="row"> --}}
+        <div class="row">
+
+          <div class="col s7 offset-s3 right-align">
+            <h5>Filter by Month of Start Date</h5>
+          </div>
+          <div class="col s6">
+            <div class="col s3 boost-legend-color" style='background-color: #bbdefb'>Requested</div>
+            <div class="col s3 boost-legend-color" style='background-color: #c5e1a5'>Scheduled</div>
+            <div class="col s3 boost-legend-color" style='background-color: #fff59d'>Modified</div>
+            <div class="col s3 boost-legend-color" style='background-color: #ef9a9a'>Cancelled</div>
+          </div>
+          <div class="col s6">
+            <div class="col s2 center-align month-selector" data-month="1">Jan</div>
+            <div class="col s2 center-align month-selector" data-month="2">Feb</div>
+            <div class="col s2 center-align month-selector" data-month="3">Mar</div>
+            <div class="col s2 center-align month-selector" data-month="4">Apr</div>
+            <div class="col s2 center-align month-selector" data-month="5">May</div>
+            <div class="col s2 center-align month-selector" data-month="6">Jun</div>
+            <div class="col s2 center-align month-selector" data-month="7">Jul</div>
+            <div class="col s2 center-align month-selector" data-month="8">Aug</div>
+            <div class="col s2 center-align month-selector" data-month="9">Sep</div>
+            <div class="col s2 center-align month-selector" data-month="10">Oct</div>
+            <div class="col s2 center-align month-selector" data-month="11">Nov</div>
+            <div class="col s2 center-align month-selector" data-month="12">Dec</div>
+            <div class="col s2 center-align month-selector" data-month="null">Clear</div>
+          </div>
+        </div>
+      {{!-- </div> --}}
+    </div>
+    <div class="row" style="width: 90%;">
+      <table class="highlight">
+        <thead>
+          <tr>
+            <th>Initiative</th>
+            <th>Owner</th>
+            <th>URL Link</th>
+            <th>Created Date</th>
+            <th>Creatives</th>
+            <th>Notes</th>
+            <th>Actions</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each req in getRequests}}
+            <tr data-_id="{{req._id}}" style="{{statusBackground req._id}}">
+              <td>{{req.initiative}}</td>
+              <td>{{req.owner}}</td>
+              <td> <a target="_blank" href="http://{{req.creativeLink}}">Link</a></td>
+              <td>{{date req.created}}</td>
+              <td><a href="" class="link-to-creatives" data-_id="{{req._id}}">Click for Creatives</a></td>
+              <td>{{req.notes}}</td>
+              <td>
+                <a href="/admin/boostrequest/{{req._id}}/edit">Edit</a>
+                <button class="delete-boost-request" data-identifier="{{req._id}}">Delete</button>
+              </td>
+              <td>
+                <select name="" id="" class="browser-default boost-status">
+                  <option value="" selected>Select Status</option>
+                  <option value="Requested">Requested</option>
+                  <option value="Scheduled">Scheduled</option>
+                  <option value="Modified">Modified</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+
+    {{!-- </div> --}}
+  {{else}}
+    <p>Loading...</p>
+  {{/if}}
+
+
+
+<div id="modal1" class="modal" style="width: 90%;">
+  <div class="modal-content">
+    <div class="row">
+      <div class="col s12 center-align">
+        <h3>Creatives for {{modalData.initiative}}</h3>
+      </div>
+    </div>
+    <div class="row">
+      <table class="bordered boost-request-table">
+        <thead>
+          <tr>
+            <th>Start</th>
+            <th>End</th>
+            <th>Budget</th>
+            <th>Optimization</th>
+            <th>Target Name</th>
+            <th>Gender</th>
+            <th>Min Age</th>
+            <th>Max Age</th>
+            <th>Location</th>
+            <th>Interests</th>
+            <th>Connections</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each el in modalData.creatives}}
+            <tr>
+              <td>{{date el.start}}</td>
+              <td>{{date el.end}}</td>
+              <td>{{el.budget}}</td>
+              <td>{{el.optimization}}</td>
+              <td>{{el.targeting}}</td>
+              <td>{{getGender el.targeting}}</td>
+              <td>{{getMinAge el.targeting}}</td>
+              <td>{{getMaxAge el.targeting}}</td>
+              <td>{{getLocation el.targeting}}</td>
+              <td>{{getInterests el.targeting}}</td>
+              <td>{{getConnections el.targeting}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="modal2" class="modal" style="width: 80%;">
+  <div class="modal-content">
+    <div class="row">
+      <div class="col s12 center-align">
+        <h3>Targeting Profiles</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12">
+        <table class="bordered boost-request-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Gender</th>
+              <th>Min Age</th>
+              <th>Max Age</th>
+              <th>Location</th>
+              <th>Interests</th>
+              <th>Connections</th>
+              <th>Created On</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each el in getTargets}}
+              <tr>
+                <td>{{el.name}}</td>
+                <td>{{el.gender}}</td>
+                <td>{{el.minAge}}</td>
+                <td>{{el.maxAge}}</td>
+                <td>{{el.location}}</td>
+                <td>{{el.interests}}</td>
+                <td>{{el.connections}}</td>
+                <td>{{date el.created}}</td>
+                <td><a data-id="{{el._id}}" href="#" class="delete-targeting">Delete</a></td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 </template>

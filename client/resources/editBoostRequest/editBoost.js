@@ -4,23 +4,78 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import BoostRequests from '/collections/BoostRequests';
 import Initiatives from '/collections/Initiatives';
 import BoostTargeting from '/collections/BoostTargeting';
-// import { ReactiveVar } from 'meteor/meteor:reactive-var';
 
-Template.createBoostRequest.onCreated(function () {
+
+Template.editBoostRequest.onCreated(function () {
   this.creative = new ReactiveVar([1]);
   this.newTargeting = new ReactiveVar(true);
+  this.boostRequest = new ReactiveDict();
 });
 
-Template.createBoostRequest.onRendered(function () {
+Template.editBoostRequest.onRendered(function () {
   $('.tooltipped').tooltip({delay: 50});
   $('.modal-trigger').leanModal();
 })
 
-Template.createBoostRequest.helpers({
+Template.editBoostRequest.helpers({
   isReady: (sub1, sub2) => {
     if (FlowRouter.subsReady(sub1) && FlowRouter.subsReady(sub2)) {
       return true;
     }
+  },
+  getRequest: () => {
+    const id = FlowRouter.getParam('id');
+    const boost = BoostRequests.findOne({_id: id})
+    const template = Template.instance();
+
+    const arr = [];
+    for (let i = 1; i <= boost.creatives.length; i++) {
+      arr.push(i);
+    }
+    template.creative.set(arr)
+
+    Template.instance().boostRequest.set('data', boost);
+    return BoostRequests.findOne({_id: id});
+  },
+  showRow: (num) => {
+    var reactive = Template.instance().creative.get();
+    if (reactive.indexOf(num) >= 0) { return true; }
+  },
+  newTargeting: () => {
+    var newTargeting = Template.instance().newTargeting.get();
+    return newTargeting;
+  },
+  createRows: () => {
+    return [1,2,3,4,5,6,7,8,9,10];
+  },
+  addOne: (num) => {
+    return num + 1;
+  },
+  addTwo: (num) => {
+    return num + 2;
+  },
+  creativeStart: (index) => {
+    const dict = Template.instance().boostRequest;
+    return dict.get('data').creatives[index].start;
+  },
+  creativeEnd: (index) => {
+    const dict = Template.instance().boostRequest;
+    return dict.get('data').creatives[index].end;
+  },
+  creativeBudget: (index) => {
+    const dict = Template.instance().boostRequest;
+    return dict.get('data').creatives[index].budget;
+  },
+  creativeOptimization: (index) => {
+    const dict = Template.instance().boostRequest;
+    return dict.get('data').creatives[index].optimization;
+  },
+  creativeTargeting: (index) => {
+    const dict = Template.instance().boostRequest;
+    return dict.get('data').creatives[index].targeting;
+  },
+  getBoostTargeting: () => {
+    return BoostTargeting.find({}, {sort: {name: 1}});
   },
   getUsers: () => {
     return Meteor.users.find({
@@ -29,48 +84,22 @@ Template.createBoostRequest.helpers({
   },
   getInitiatives: () => {
     return Initiatives.find({});
-  },
-  createRows: () => {
-    return [1,2,3,4,5,6,7,8,9,10];
-  },
-  addOne: (num) => {
-    return num + 1;
-  },
-  showRow: (num) => {
-    var reactive = Template.instance().creative.get();
-    if (reactive.indexOf(num) >= 0) { return true; }
-  },
-  addTwo: (num) => {
-    return num + 2;
-  },
-  newTargeting: () => {
-    var newTargeting = Template.instance().newTargeting.get();
-    return newTargeting;
-  },
-  getBoostTargeting: () => {
-    return BoostTargeting.find();
   }
 });
 
-
-
-Template.createBoostRequest.events({
+Template.editBoostRequest.events({
   'click .boost-add-creative': (event, template) => {
     event.preventDefault();
     var reactive = template.creative.get();
     reactive.push(parseInt(event.target.dataset.index));
     template.creative.set(reactive)
   },
-  'click .new-targeting': (event, template) => {
-    template.newTargeting.set(true);
-  },
-  'click .pre-made-targeting': (event, template) => {
-    template.newTargeting.set(false);
-  },
   'submit .new-boost-form': (event, template) => {
     event.preventDefault();
-    const date = "MM-DD-YYYY";
     let boost = {};
+    const date = "MM-DD-YYYY";
+    const _id = FlowRouter.getParam('id');
+    boost['_id'] = _id;
     boost['owner'] = event.target['boost-owner'].value;
     boost['initiative'] = event.target['boost-initiative'].value;
     boost['creativeLink'] = event.target['boost-creative-link'].value;
@@ -80,19 +109,19 @@ Template.createBoostRequest.events({
     for (let i = 1; i < length + 1; i++) {
       let creative = {};
       // creative['url'] = event.target[`boost-link-${i}`].value;
-      creative['start'] = moment(event.target[`boost-start-${i}`].value, date).toISOString();
-      creative['end'] = moment(event.target[`boost-end-${i}`].value, date).toISOString();
+      creative['start'] = moment(event.target[`boost-start-${i}`].value).toISOString();
+      creative['end'] = moment(event.target[`boost-end-${i}`].value).toISOString();
       creative['budget'] = event.target[`boost-budget-${i}`].value;
       creative['targeting'] = event.target[`boost-targeting-${i}`].value;
       creative['optimization'] = event.target[`boost-optimization-${i}`].value;
       boost.creatives.push(creative);
     }
     console.log('object to send to server', boost)
-    Meteor.call('createBoostRequest', boost, (err, res) => {
+    Meteor.call('updateBoostRequest', boost, (err, res) => {
       if (err) { alert(err) }
       if (res) {
-        alert('Created Successfully');
-        FlowRouter.go('/admin/boostrequest');
+        alert('Updated Successfully');
+        FlowRouter.go('/admin/boostrequest')
       }
     });
   },
@@ -124,10 +153,8 @@ Template.createBoostRequest.events({
     // send to server
     Meteor.call('createBoostTargeting', profile, (err, res) => {
       if (err) { alert(err) }
-      if (res) {
-        template.$("#modal1").closeModal()
-      }
+      if (res) { console.log(res) }
     });
 
   }
-});
+})

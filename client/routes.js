@@ -488,3 +488,16 @@ FlowRouter.route('/admin/boostrequest/new', {
         BlazeLayout.render('index', {main: 'createBoostRequest'});
     }
 });
+
+FlowRouter.route('/admin/boostrequest/:id/edit', {
+    subscriptions: function (params) {
+        params['type'] = 'boost';
+        this.register('BoostRequests', Meteor.subscribe('BoostRequests'));
+        this.register('BoostTargeting', Meteor.subscribe('BoostTargeting'));
+        this.register('Initiatives', Meteor.subscribe('Initiatives', params));
+    },
+    name: 'editBoostRequest',
+    action: () => {
+        BlazeLayout.render('index', {main: 'editBoostRequest'});
+    }
+});

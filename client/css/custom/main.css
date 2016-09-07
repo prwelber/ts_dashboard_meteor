@@ -14,6 +14,21 @@ table {
   margin-bottom: 35px;
 }
 
+.boost-request-table td,th {
+  padding: 10px 10px;
+}
+
+.month-selector {
+  border: 1px solid gray;
+}
+
+.boost-legend-color {
+  margin: 0 auto;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+}
+
  /* --------------- For Dragula ----------------- */
  .gu-mirror {
   position: fixed !important;

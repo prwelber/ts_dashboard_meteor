@@ -1,0 +1,171 @@
+<template name='editBoostRequest'>
+  <h1>Edit Boost Request</h1>
+
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <div class="row">
+      <div class="col s12 center-align">
+        <h3>New Targeting Profile</h3>
+      </div>
+      <form action="" class="new-targeting-form">
+        <div class="col s6 offset-s3 center-align">
+          <input type="text" id="targeting-name" name="targeting-name" style="margin-bottom: 5px;">
+          <label for="targeting-name">Targeting Profile Name</label>
+        </div>
+        <br><br><br>
+        <div class="col s12">
+          <h4 style="margin: 15px 0 10px 0;">Gender</h4>
+          <p>
+            <input type="checkbox" class="gender-boxes" id="male" value="Male"/>
+            <label for="male">Male</label>
+          </p>
+          <p>
+            <input type="checkbox" class="gender-boxes" id="female" value="Female"/>
+            <label for="female">Female</label>
+          </p>
+          <p>
+            <input type="checkbox" class="gender-boxes" id="both" value="Both"/>
+            <label for="both">Male & Female</label>
+          </p>
+        </div>
+        <div class="col s3">
+          <input type="text" id="targeting-min-age" name="targeting-min-age" style="margin-bottom: 5px;" value="21">
+          <label for="targeting-min-age">Min Age</label>
+          <input type="text" id="targeting-max-age" name="targeting-max-age" style="margin-bottom: 5px;" value="65">
+          <label for="targeting-max-age">Max Age</label>
+        </div>
+        <div class="col s12">
+          <input type="text" id="targeting-location" name="targeting-location" style="margin-bottom: 5px;" value="United States">
+          <label for="targeting-location">Location</label>
+        </div>
+        <div class="col s12">
+          <input type="text" id="targeting-interests" name="targeting-interests" style="margin-bottom: 5px;">
+          <label for="targeting-interests">Interests / Behaviors</label>
+        </div>
+        <br><br><br>
+        <div class="col s12">
+          <h4 style="margin: 15px 0 10px 0;">Connections</h4>
+          <p>
+            <input type="checkbox" class="connections" id="fans" value="Fans"/>
+            <label for="fans">Fans</label>
+          </p>
+          <p>
+            <input type="checkbox" class="connections" id="FoF" value="FoF"/>
+            <label for="FoF">FoF</label>
+          </p>
+          <p>
+            <input type="checkbox" class="connections" id="none" value="Non-Fans"/>
+            <label for="none">Non-Fans</label>
+          </p>
+          <p>
+            <input type="checkbox" class="connections" id="everyone" value="Everyone"/>
+            <label for="everyone">Everyone (Any Connection)</label>
+          </p>
+        </div>
+        <div class="col s12 center-align">
+          <input type="submit" value="Create New Targeting Profile">
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  {{#if isReady 'BoostRequests' 'BoostTargeting'}}
+    <div class="container">
+      <form class="col s12 new-boost-form">
+        <div class="row">
+          <div class="input-field col s4">
+            <label class="active">Owner</label>
+            <select class="browser-default" name="boost-owner">
+            <option value="{{getRequest.owner}}" selected>{{getRequest.owner}}</option>
+              {{#each getUsers}}
+                <option value="{{firstName}} {{lastName}}">{{firstName}} {{lastName}} - {{email}}</option>
+              {{/each}}
+            </select>
+          </div>
+          <div class="input-field col s4">
+            <label class="active">Initiative</label>
+            <select class="browser-default" name="boost-initiative">
+              <option value="{{getRequest.initiative}}" selected>{{getRequest.initiative}}</option>
+              {{#each getInitiatives}}
+                <option value="{{name}}">{{name}}</option>
+              {{/each}}
+            </select>
+          </div>
+          <div class="input-field col s4">
+            <label class="active">Creative Link</label>
+            <input placeholder="Link URL" id="boost-creative-link" type="text" name="boost-creative-link" value="{{getRequest.creativeLink}}">
+          </div>
+        </div>
+
+        <div class="col s12">
+          <blockquote>
+            Date Format: 11-12-2015
+            <br>
+            Budget Format: 12500.00
+          </blockquote>
+        </div>
+        {{#if newTargeting}}
+          {{#each createRows}}
+            {{#if showRow (addOne @index)}}
+              <div class="row">
+                <div class="col s1">
+                  <span>Creative #{{addOne @index}}</span>
+                </div>
+
+                <div class="input-field col s1 tooltipped" data-position="top" data-tooltip="Date Format: 10-10-2015">
+                  <input placeholder="Start" id="boost-start" type="text" name="boost-start-{{addOne @index}}" value="{{creativeStart @index}}">
+                  <label for="boost-start" class="active">Start</label>
+                </div>
+                <div class="input-field col s1 tooltipped" data-position="top" data-tooltip="Date Format: 12-31-2015">
+                  <input placeholder="End" id="boost-end" type="text" name="boost-end-{{addOne @index}}" value="{{creativeEnd @index}}">
+                  <label for="boost-end" class="active">End</label>
+                </div>
+                <div class="input-field col s1 tooltipped" data-position="top" data-tooltip="Budget Format: 15000.00">
+                  <input placeholder="Budget" id="boost-budget" type="text" name="boost-budget-{{addOne @index}}" value="{{creativeBudget @index}}">
+                  <label for="boost-budget" class="active">Budget</label>
+                </div>
+                <div class="input-field col s3">
+                  <select name="boost-targeting-{{addOne @index}}" class="browser-default targeting-select" id="">
+                    {{!-- <option value="" disabled selected>Choose Targeting</option> --}}
+                    <option value="{{creativeTargeting @index}}" selected>{{creativeTargeting @index}}</option>
+                    <option value="new-targeting">Create New Targeting Profile</option>
+                    {{#each getBoostTargeting}}
+                      <option value="{{name}}">{{name}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+                <div class="input-field col s3">
+                  <input placeholder="Optimization" id="boost-optimization" type="text" name="boost-optimization-{{addOne @index}}" value="{{creativeOptimization @index}}">
+                  <label for="boost-optimization" class="active">Optimization</label>
+                </div>
+                <div class="col s2">
+                  <button class="boost-add-creative" data-index={{addTwo @index}}>New Creative Row</button>
+                </div>
+              </div>
+            {{/if}}
+          {{/each}}
+        {{else}}
+          <h1>Pre made targeting</h1>
+        {{/if}}
+        <div class="row">
+          <div class="col s4">
+            <textarea name="boost-notes" rows="10" cols="50" placeholder="Write notes here" value="{{getRequest.notes}}"></textarea>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12 center-align">
+            <input type="submit" value="Update Boost Request">
+          </div>
+        </div>
+      </form>
+    </div>
+
+  {{else}}
+    <h3>Loading...</h3>
+  {{/if}}
+
+</template>

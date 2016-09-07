@@ -6,20 +6,58 @@ import BoostTargeting from '/collections/BoostTargeting';
 Meteor.methods({
   createBoostRequest: (payload) => {
     const created = moment().toISOString();
-    payload['created'] = created;
     BoostRequests.insert({
       created: created,
       owner: payload.owner,
       initiative: payload.initiative,
       creativeLink: payload.creativeLink,
-      creatives: payload.creatives
+      creatives: payload.creatives,
+      notes: payload.notes
     });
+    return 'success';
   },
-  deleteBoostRequest: () => {
-
+  deleteBoostRequest: (id) => {
+    BoostRequests.remove({_id: id});
   },
-  updateBoostRequest: () => {
+  updateBoostRequest: (payload) => {
+    BoostRequests.update({_id: payload._id}, {
+      $set: {
+        owner: payload.owner,
+        initiative: payload.initiative,
+        creativeLink: payload.creativeLink,
+        creatives: payload.creatives,
+        notes: payload.notes,
+        updated: moment().toISOString()
+      }
+    });
+    return 'updated successfully';
+  },
+  getByMonth: (month) => {
+    console.log('running getByMonth')
+    // var result = BoostRequests.aggregate([
+    //   {$match:
+    //     {"data.initiative": name}
+    //   }
 
+    //   {"$project": {
+    //     "budget": 1,
+    //     "start": 1,
+    //     "targeting": 1,
+    //     "month": { "$month": "$start" }  // Extra field for "month"
+    //   }},
+
+    // // Sort by your month value
+    // {"$sort": { "month": 1 }},
+
+    // // Then just clean the extra part from your projection
+    // // ( if you need to )
+    // {"$project": {
+    //     "Name": 1,
+    //     "BirthDate": 1,
+    //     "Address": 1,
+    // }},
+    // ])
+    console.log('result', result)
   }
 });
 
