@@ -21,6 +21,9 @@
                 <li style="padding-left: 10px;">Hi, {{getUser}}</li>
                 {{!-- <li class="userLogout"> <a href="">Logout</a></li> --}}
                 <li><a href="/home">Home</a></li>
+                {{#if constellationUser}}
+                  <li><a href="/admin/boostrequest">Boost Requests</a></li>
+                {{/if}}
                 {{#if isInRole "admin"}}
                   <li><a class="{{active "admin"}}" href="/admin">Admin</a></li>
                 {{/if}}

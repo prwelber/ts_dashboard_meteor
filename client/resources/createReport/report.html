@@ -2,17 +2,17 @@
   {{!-- <div class="container"> --}}
     <div class="row">
       <div class="col s12">
-         <h2 class="center-align">Report for {{campaignName}}</h2>
+         <h5 class="center-align">Report for {{campaignName}}</h5>
       </div>
     </div>
     {{#if isReady "Initiatives" "campaignInsightList"}}
       {{#if reportReady}}
       <div class="row">
         <div class="col s12">
-          <h3 class="center-align">Select Date Range and Metrics</h3>
-          <h6 class="center-align">1. Select a date or date range. If dates are left blank, default setting is campaign lifetime.</h6>
-          <h6 class="center-align">2. Choose a Line Item</h6>
-          <h6 class="center-align">3. Check 'Day by Day' box for a breakdown by day or leave unchecked for overview report</h6>
+          <p class="center-align">Select Date Range and Metrics</p>
+          <p class="center-align">1. Select a date or date range. If dates are left blank, default setting is campaign lifetime.</p>
+          <p class="center-align">2. Choose a Line Item</p>
+          <p class="center-align">3. Check 'Day by Day' box for a breakdown by day or leave unchecked for overview report</p>
         </div>
         <div class="col s2">
           <label for="">Start Date</label>
@@ -41,7 +41,7 @@
       </div>
       <div class="row">
         <div class="col s12">
-          <h4 class="center-align" style="margin: 1em 0 1em 0;">Performance</h4>
+          <h5 class="center-align" style="margin: 1em 0 1em 0;">Performance</h5>
         </div>
         <div class="performance">
           <div class="col s6 m4 l3">
@@ -67,7 +67,7 @@
           </div>
         </div>
         <div class="col s12">
-          <h4 class="center-align" style="margin: 1em 0 1em 0;">Actions</h4>
+          <h5 class="center-align" style="margin: 1em 0 1em 0;">Actions</h5>
         </div>
         <div class="actions">
           <div class="col s6 m4 l3">
@@ -110,7 +110,7 @@
             <p><input type="checkbox" id="website_clicks" /><label for="website_clicks">Website Clicks</label></p>
           </div>
           {{!-- <div class="col s12">
-            <h4 class="center-align" style="margin: 1em 0 1em 0;">Engagement: Cost per (cp) Action</h4>
+            <h5 class="center-align" style="margin: 1em 0 1em 0;">Engagement: Cost per (cp) Action</h5>
           </div>
           <div class="col s6 m4 l3">
             <p><input type="checkbox" id="cpc" /><label for="cpc">cp Click</label></p>
@@ -143,7 +143,7 @@
             <p><input type="checkbox" id="cost_per_total_action" /><label for="cost_per_total_action">cp Action</label></p>
           </div> --}}
           <div class="col s12">
-            <h4 class="center-align" style="margin: 1em 0 1em 0;">Conversions</h4>
+            <h5 class="center-align" style="margin: 1em 0 1em 0;">Conversions</h5>
           </div>
           <div class="col s6 m4 l3">
             <p><input type="checkbox" id="offsite_conversion" /><label for="offsite_conversion">Offsite Conversions</label></p>
@@ -152,7 +152,7 @@
             <p><input type="checkbox" id="cost_per_conversion" /><label for="cost_per_conversion">cp Conversion</label></p>
           </div>
           <div class="col s12">
-            <h4 class="center-align" style="margin: 1em 0 1em 0;">Videos</h4>
+            <h5 class="center-align" style="margin: 1em 0 1em 0;">Videos</h5>
           </div>
           <div class="col s6 m4 l3">
             <p><input type="checkbox" id="video_play" /><label for="video_play">Video Plays</label></p>

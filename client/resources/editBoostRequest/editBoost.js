@@ -153,7 +153,11 @@ Template.editBoostRequest.events({
     // send to server
     Meteor.call('createBoostTargeting', profile, (err, res) => {
       if (err) { alert(err) }
-      if (res) { console.log(res) }
+      if (res) {
+        console.log(res);
+        Materialize.toast('Successfully Created Targeting!', 2000);
+        template.$("#modal1").closeModal();
+      }
     });
 
   }

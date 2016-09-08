@@ -2,62 +2,64 @@
 
   {{#if isReady "Initiatives" "campaignInsightList"}}
     <div class="row dashboard-initiative-header">
-      <a href="/initiatives/{{getInitiative._id}}/homepage"><h2>Initiative & Line Items</h2></a>
+      <a href="/initiatives/{{getInitiative._id}}/homepage"><h5>Initiative & Line Items</h5></a>
       <div class="col s3">
         <p class="center-align border-bottom">Name</p>
-        <h4 class="center-align no-top-margin">{{getInitiative.name}}</h4>
+        <p class="center-align no-top-margin">{{getInitiative.name}}</p>
       </div>
       <div class="col s3">
         <p class="center-align border-bottom">Agency</p>
-        <h4 class="center-align no-top-margin">{{getInitiative.agency}}</h4>
+        <p class="center-align no-top-margin">{{getInitiative.agency}}</p>
       </div>
       <div class="col s3">
       <p class="center-align border-bottom">Brand</p>
-        <h4 class="center-align no-top-margin">{{getInitiative.brand}}</h4>
+        <p class="center-align no-top-margin">{{getInitiative.brand}}</p>
       </div>
       <div class="col s3">
       <p class="center-align border-bottom">Product</p>
-        <h4 class="center-align no-top-margin">{{getInitiative.product}}</h4>
+        <p class="center-align no-top-margin">{{getInitiative.product}}</p>
       </div>
     </div>
-    <div class="row" style="margin-bottom: -30px; margin-top: -10px;">
-      <table class="centered">
-        {{#each getInitiative.lineItems}}
-          <thead>
-            <tr>
-              {{#if objective}} <th>Objective</th> {{/if}}
-              {{#if platform}} <th>Platform</th> {{/if}}
-              {{#if dealType}} <th>Deal Type</th> {{/if}}
-              {{#if quantity}} <th>Quantity</th> {{/if}}
-              {{#if price}} <th>Price</th> {{/if}}
-              {{#if budget}} <th>Budget</th> {{/if}}
-              {{#if startDate}} <th>Start Date</th> {{/if}}
-              {{#if endDate}} <th>End Date</th> {{/if}}
-              {{#if isInRole "admin"}}
-                {{#if costPlusPercent}} <th>Cost Plus</th> {{/if}}
-                {{#if percentTotalPercent}} <th>Percent Total</th> {{/if}}
-                {{#if isClientPercent}} <th>Client</th> {{/if}}
-              {{/if}}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              {{#if objective}}<td>{{objective}}</td>{{/if}}
-              {{#if platform}}<td>{{platform}}</td>{{/if}}
-              {{#if dealType}}<td>{{dealType}}</td>{{/if}}
-              {{#if quantity}}<td>{{number quantity}}</td>{{/if}}
-              {{#if price}}<td>{{price}}</td>{{/if}}
-              {{#if budget}}<td>{{money budget}}</td>{{/if}}
-              {{#if startDate}}<td>{{formatDate startDate}}</td>{{/if}}
-              {{#if endDate}}<td>{{formatDate endDate}}</td>{{/if}}
-              {{#if isInRole "admin"}}
-                {{#if costPlusPercent}}<td>{{costPlusPercent}}%</td>{{/if}}
-                {{#if percentTotalPercent}}<td>{{percentTotalPercent}}%</td>{{/if}}
-                {{#if isClientPercent}}<td>{{isClientPercent}}%</td>{{/if}}
-              {{/if}}
-            </tr>
-          </tbody>
-        {{/each}}
+    <div class="row line-items" style="margin-bottom: -30px; margin-top: -10px;">
+      <table class="centered boost-request-table">
+        <thead>
+          <tr>
+            <th>Objective</th>
+            <th>Platform</th>
+            <th>Deal Type</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Budget</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            {{#if isInRole "admin"}}
+              <th>Cost Plus</th>
+              <th>Percent Total</th>
+              <th>Client</th>
+            {{/if}}
+          </tr>
+        </thead>
+        <tbody>
+          {{#each getInitiative.lineItems}}
+            {{#if budget}}
+              <tr>
+                <td>{{objective}}</td>
+                <td>{{platform}}</td>
+                <td>{{dealType}}</td>
+                <td>{{number quantity}}</td>
+                <td>{{price}}</td>
+                <td>{{money budget}}</td>
+                <td>{{formatDate startDate}}</td>
+                <td>{{formatDate endDate}}</td>
+                {{#if isInRole "admin"}}
+                  <td>{{costPlusPercent}}%</td>
+                  <td>{{percentTotalPercent}}%</td>
+                  <td>{{isClientPercent}}%</td>
+                {{/if}}
+              </tr>
+            {{/if}}
+          {{/each}}
+        </tbody>
       </table>
     </div>
     <br>
@@ -65,8 +67,8 @@
   <div class="container">
     <div class="row">
       {{#with fetchInsights}}
-      <h2 class="center-align">{{campaign_name}}</h2>
-      <p class="center-align">Updated: {{timezone inserted}}</p>
+      <h5 class="center-align" style="margin-bottom: 0px;">{{campaign_name}}</h5>
+      <p class="center-align" style="margin-bottom: 1em;">Updated: {{timezone inserted}}</p>
 
 
 {{!--       <div class="col s6 m6 l6 card grey lighten-5">
@@ -178,7 +180,7 @@
       <div class='row'>
         <div class="col l3 s6">
           <div class="client-dash-card valign-wrapper">
-            <div class="col s5 valign center-align light-blue lighten-3 client-dash-card-holder" style="padding-top: 15%">
+            <div class="col s5 valign center-align client-dash-card-holder" style="padding-top: 15%">
               <i class="fa fa-usd fa-4x" aria-hidden="true"></i>
             </div>
             <div class="col s7 center-align">
@@ -190,7 +192,7 @@
         </div>
         <div class="col l3 s6">
           <div class="client-dash-card valign-wrapper">
-            <div class="col s5 valign center-align red lighten-3 client-dash-card-holder" style="padding-top: 15%">
+            <div class="col s5 valign center-align client-dash-card-holder" style="padding-top: 15%">
               <i class="fa fa-eye fa-4x" aria-hidden="true" style="color: black;"></i>
             </div>
             <div class="col s7 center-align dash-flex">
@@ -204,7 +206,7 @@
 
         <div class="col l3 s6">
           <div class="client-dash-card valign-wrapper">
-            <div class="col s5 valign center-align amber lighten-3 client-dash-card-holder" style="padding-top: 15%">
+            <div class="col s5 valign center-align client-dash-card-holder" style="padding-top: 15%">
               <i class="fa fa-mouse-pointer fa-4x" aria-hidden="true" style="color: black;"></i>
             </div>
             <div class="col s7 center-align dash-flex">
@@ -218,7 +220,7 @@
 
         <div class="col l3 s6">
           <div class="client-dash-card valign-wrapper">
-            <div class="col s5 valign center-align indigo lighten-3 client-dash-card-holder" style="padding-top: 15%">
+            <div class="col s5 valign center-align client-dash-card-holder" style="padding-top: 15%">
               <i class="fa fa-video-camera fa-4x" aria-hidden="true" style="color: black;"></i>
             </div>
             <div class="col s7 center-align dash-flex">
@@ -233,7 +235,7 @@
       <div class="row">
         <div class="col l3 s6">
           <div class="client-dash-card valign-wrapper">
-            <div class="col s5 valign center-align green lighten-3 client-dash-card-holder" style="padding-top: 15%">
+            <div class="col s5 valign center-align client-dash-card-holder" style="padding-top: 15%">
               <i class="fa fa-thumbs-up fa-4x" aria-hidden="true" style="color: black;"></i>
             </div>
             <div class="col s7 center-align dash-flex">
@@ -247,7 +249,7 @@
 
         <div class="col l3 s6">
           <div class="client-dash-card valign-wrapper">
-            <div class="col s5 valign center-align teal lighten-3 client-dash-card-holder" style="padding-top: 15%">
+            <div class="col s5 valign center-align client-dash-card-holder" style="padding-top: 15%">
               <i class="fa fa-link fa-4x" aria-hidden="true" style="color: black;"></i>
             </div>
             <div class="col s7 center-align dash-flex">
@@ -261,7 +263,7 @@
 
         <div class="col l3 s6">
           <div class="client-dash-card valign-wrapper">
-            <div class="col s5 valign center-align deep-orange lighten-3 client-dash-card-holder" style="padding-top: 15%">
+            <div class="col s5 valign center-align client-dash-card-holder" style="padding-top: 15%">
               <i class="fa fa-file-text fa-4x" aria-hidden="true" style="color: black;"></i>
             </div>
             <div class="col s7 center-align dash-flex">
@@ -275,7 +277,7 @@
 
         <div class="col l3 s6">
           <div class="client-dash-card valign-wrapper">
-            <div class="col s5 valign center-align blue-grey lighten-3 client-dash-card-holder" style="padding-top: 15%">
+            <div class="col s5 valign center-align client-dash-card-holder" style="padding-top: 15%">
               <i class="fa fa-desktop fa-4x" aria-hidden="true" style="color: black;"></i>
             </div>
             <div class="col s7 center-align dash-flex">

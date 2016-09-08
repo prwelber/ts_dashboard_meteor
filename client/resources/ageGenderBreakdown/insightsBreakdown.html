@@ -4,7 +4,7 @@
   <div class="container">
     <div class="row">
       <div class="col s12 center-align">
-        <h2 class="insight-h2">Insights Breakdown by Age + Gender</h2>
+        <h5 class="insight-h2">Insights Breakdown by Age + Gender</h5>
       </div>
       <div class="col s12 center-align">
         {{#if isInRole "admin"}}
@@ -14,7 +14,7 @@
       <div class="row">
         <div class="col s12 center-align">
           <button id="refresh-age-gender" class="btn-large waves-effect waves-light tooltipped" data-position="right" data-tooltip="Retrieve Live Data">
-            <h4>REFRESH DATA</h4>
+            <p>REFRESH DATA</p>
           </button>
         </div>
       </div>
@@ -106,16 +106,17 @@
   </div>
 
     {{else}}
+
     {{!-- BELOW IS WHAT CLIENT WILL SEE --}}
       <div class="row">
         <div class="col s12 center-align">
-          <h2>Age & Gender Charts</h2>
+          <h5>Age & Gender Breakdown</h5>
         </div>
       </div>
       <div class="row">
         <div class="col s12 center-align">
           <button id="refresh-age-gender" class="btn-large waves-effect waves-light tooltipped" data-position="right" data-tooltip="Retrieve Live Data">
-            <h4>REFRESH DATA</h4>
+            <p>REFRESH DATA</p>
           </button>
         </div>
         <div class="col s12 center-align">

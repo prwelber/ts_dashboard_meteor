@@ -14,14 +14,6 @@ table {
   margin-bottom: 35px;
 }
 
-.boost-request-table td,th {
-  padding: 10px 10px;
-}
-
-.month-selector {
-  border: 1px solid gray;
-}
-
 .boost-legend-color {
   margin: 0 auto;
   border: 1px solid black;
@@ -120,6 +112,7 @@ a:hover {
   margin-top: 15px;
   margin-bottom: 15px;
   text-align: center;
+  width: 85%;
 }
 
 .no-top-margin {
@@ -270,7 +263,7 @@ a:hover {
 }
 
 .client-dash-card {
-  border: 1px solid rgba(212, 212, 213, 0.42);
+  border: 1px solid #607d8b;
   height: 10em;
 }
 
@@ -296,6 +289,40 @@ a:hover {
 
 .device-placement-wrapper {
   margin: 0 2em 0 2em;
+}
+
+.boost-request-table td {
+  padding: 5px 5px;
+}
+
+.boost-request-table th {
+  padding: 0px 5px;
+}
+
+.month-selector {
+  border: 1px solid gray;
+  cursor: pointer;
+}
+
+.sort-init {
+  cursor: pointer;
+}
+
+.boost-request-creative-table td {
+  font-size: 10px;
+  width: 75px;
+}
+
+.boost-request-creative-table th {
+  width: 75px;
+  padding-bottom: 0px;
+  font-size: 12px;
+}
+
+/* -------------- CAMPAIN OVERVIEW PAGE -------------- */
+
+.line-items {
+  width: 80%;
 }
 
 /****************************************************************

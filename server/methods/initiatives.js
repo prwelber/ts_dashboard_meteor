@@ -349,32 +349,38 @@ Meteor.methods({
 Meteor.publish('Initiatives', function (opts, type) {
   // type is there as an argument so we can know if it's a campaign route
   var user = Meteor.users.findOne({_id: this.userId});
+  // console.log('user from initiatives server', user)
 
   try {
-    if (opts['type'] === 'boost') {
-      return Initiatives.find({}, {fields: {name: 1}, sort: {name: 1}});
-    }
-
-    if (type === 'campaign') {
-      return Initiatives.find({campaign_ids: {$in: [opts]}});
-    }
-
-    if (user.admin === true) {
-      return Initiatives.find( {} );
-    }
 
     if (opts) {
-      return Initiatives.find({_id: opts});
+
+      if (type === 'campaign') {
+        return Initiatives.find({campaign_ids: {$in: [opts]}});
+      }
+
+      if (opts['type'] === 'boost') {
+        return Initiatives.find({}, {fields: {name: 1}, sort: {name: 1}});
+      }
+
+      if (opts) {
+        return Initiatives.find({_id: opts});
+      }
     }
 
+
+
+
+    if (user['admin'] === true) {
+      return Initiatives.find( {} );
+    }
 
     if (user.agency.length > 0) {
       return Initiatives.find({agency: {$in: user.agency}});
     } else if (user.initiatives.length >= 1) {
       return Initiatives.find({name: {$in: user.initiatives}});
-    } else if (opts) {
-      return Initiatives.find({_id: opts});
     }
+
   } catch (e) {
     console.log('Error in Initiatives Server:', e);
   }

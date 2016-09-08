@@ -87,7 +87,6 @@ Template.createBoostRequest.events({
       creative['optimization'] = event.target[`boost-optimization-${i}`].value;
       boost.creatives.push(creative);
     }
-    console.log('object to send to server', boost)
     Meteor.call('createBoostRequest', boost, (err, res) => {
       if (err) { alert(err) }
       if (res) {
@@ -125,6 +124,7 @@ Template.createBoostRequest.events({
     Meteor.call('createBoostTargeting', profile, (err, res) => {
       if (err) { alert(err) }
       if (res) {
+        Materialize.toast('Successfully Created Targeting!', 2000);
         template.$("#modal1").closeModal()
       }
     });

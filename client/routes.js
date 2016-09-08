@@ -9,8 +9,8 @@ FlowRouter.route('/', {
 });
 
 FlowRouter.route('/home', {
-    subscriptions: function (params) {
-        this.register('Initiatives', Meteor.subscribe('Initiatives', params));
+    subscriptions: function () {
+        this.register('Initiatives', Meteor.subscribe('Initiatives'));
     },
     name: 'index',
     action: () => {

@@ -32,7 +32,6 @@ msavin:mongol
 standard-minifier-css
 standard-minifier-js
 meteorhacks:aggregate
-semantic:ui
 flemay:less-autoprefixer
 numeral:numeral
 maazalik:highcharts

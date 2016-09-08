@@ -1,16 +1,16 @@
 <template name="ads">
   <div class="col s10">
-      <h2 class="center-align">Ads Insights and Ads Creative</h2>
+      <h5 class="center-align">Ads Insights and Ads Creative</h5>
     <div class="col s12 center-align">
       <button id="refresh-ads" class="btn-large waves-effect waves-light tooltipped" name="action" data-position="bottom" data-tooltip="Refresh Ads Data" data-id="{{getCampaignNumber}}">
-        <h4>REFRESH ADS</h4>
+        <p>REFRESH ADS</p>
       </button>
     </div>
     <div class="divider" style="margin: 1em 0 1em 0;"></div>
   </div>
   {{#if isReady "AdsList"}}
 
-    <table class="highlight">
+    <table class="highlight boost-request-table">
       <thead>
         <tr>
           <th>Ad Name (click for detail)</th>
@@ -71,7 +71,7 @@
             <img src="{{adModal.picture}}" style="width: 90%;">
           </div>
           <div class="col s12 m4 l4">
-            <table>
+            <table class="boost-request-table">
               <tr>
                 <th>Impressions</th>
                 <td>{{number adModal.impressions}}</td>

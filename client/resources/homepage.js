@@ -115,6 +115,12 @@ Template.index.helpers({
   'getUser': () => {
     const user = Meteor.user();
     return user.firstName;
+  },
+  constellationUser: () => {
+    const user = Meteor.user();
+    if (user.agency.indexOf('Constellation') >= 0) {
+      return true;
+    }
   }
 });
 

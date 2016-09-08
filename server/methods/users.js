@@ -3,6 +3,13 @@ import { Accounts } from 'meteor/accounts-base'
 
 const assignUserRoles = function assignUserRoles (id, stuff) {
   if (stuff.agency.length >= 1) {
+
+    // if (stuff.agency.indexOf('Constellation') >= 0) {
+    //   console.log('adding user to agency AND constellation groups')
+    //   Roles.addUsersToRoles(id, stuff.agency,'agency');
+    //   return;
+    // }
+
     // adds the array of agencies to the roles, and the group is 'agency'
     Roles.addUsersToRoles(id, stuff.agency, 'agency');
   }

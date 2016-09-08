@@ -3,7 +3,7 @@
   <div class="container">
     <div class="row">
       <div class="col s6">
-        <h2>Edit Initiative</h2>
+        <h4>Edit Initiative</h4>
       </div>
     </div>
     <form id="edit-initiative-form" class="col s12">
@@ -98,7 +98,7 @@
             <label class="active">Product</label>
           </div>
         </div>
-        <h2>Enter Line Items</h2>
+        <h5>Enter Line Items</h5>
         {{#each getInitiative.lineItems}}
           <ul class="collapsible" data-collapsible="expandable">
             <li>
@@ -228,7 +228,7 @@
             </li>
           </ul>
         {{/each}}
-      <h2>Notes</h2>
+      <h5>Notes</h5>
         <div class="row">
           <div class="input-field col s12">
             <textarea name="notes" class="materialize-textarea" id="textarea1" placeholder="write down any notes for this initiative" value="{{notes}}"></textarea>
@@ -236,7 +236,7 @@
           </div>
         </div>
         {{#if isReady "campaignBasicsList"}}
-          <h2>Campaigns Within This Initiative</h2>
+          <h5>Campaigns Within This Initiative</h5>
           <div class="row">
             <div class="col s6">
               <ul class="collection">

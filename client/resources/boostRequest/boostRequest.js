@@ -20,9 +20,11 @@ Template.boostrequests.helpers({
   },
   getRequests: () => {
     const mon = Session.get('month');
-    console.log('month', mon);
     const year = new Date().getFullYear();
-
+    const sortInit = Session.get('sortInit');
+    if (sortInit === 1 || sortInit === -1) {
+      return BoostRequests.find({}, {sort: {initiative: sortInit}});
+    }
 
     // switch statement for filtering by month
     switch (mon) {
@@ -118,14 +120,13 @@ Template.boostrequests.helpers({
     // return BoostRequests.find({}, {sort: {created: -1}});
   },
   date: (date) => {
-    return formatters.time(date);
+    // return formatters.time(date);
+    return moment(date, moment.ISO_8601).format('MM-DD-YYYY');
   },
   modalData: () => {
-    console.log('modalData', Template.instance().modalData.get('data'))
     return Template.instance().modalData.get('data');
   },
   getGender: (name) => {
-    console.log('name', name)
     return BoostTargeting.findOne({name: name}).gender;
   },
   getMinAge: (name) => {
@@ -146,17 +147,33 @@ Template.boostrequests.helpers({
   statusBackground: (_id) => {
     const boost = BoostRequests.findOne({_id: _id});
     if (boost.status === 'Requested') {
-      return 'background-color: #bbdefb';
+      return 'background-color: white';
     } else if (boost.status === 'Scheduled') {
       return 'background-color: #c5e1a5';
     } else if (boost.status === 'Modified') {
       return 'background-color: #fff59d';
     } else if (boost.status === 'Cancelled') {
       return 'background-color: #ef9a9a';
+    } else if (boost.status === 'Double Checked') {
+      return 'background-color: #bbdefb'
     }
   },
   getTargets: () => {
     return BoostTargeting.find({}, {sort: {name: 1}});
+  },
+  getCreative: (arr) => {
+    console.log('arr', arr)
+    const targetArray = [];
+    arr.forEach(el => {
+      let target = BoostTargeting.findOne({name: el.targeting});
+      target['start'] = el.start;
+      target['end'] = el.end;
+      target['budget'] = el.budget;
+      target['optimization'] = el.optimization;
+      targetArray.push(target);
+    });
+    console.log('targetArray', targetArray);
+    return targetArray;
   }
 });
 
@@ -179,6 +196,7 @@ Template.boostrequests.events({
   },
   'click .month-selector': (event, template) => {
     $('.month-selector').css('background-color', 'white');
+    Session.set('sortInit', null);
     if (event.target.dataset.month === 'null') {
       Session.set('month', null);
       return;
@@ -204,10 +222,22 @@ Template.boostrequests.events({
     Meteor.call('deleteBoostTargeting', id, (err, res) => {
       if (err) { alert(err) }
     });
+  },
+  'click .sort-init': (event, template) => {
+
+    if (Session.get('sortInit')) {
+      var sort = Session.get('sortInit')
+      Session.set('sortInit', (sort * -1));
+    } else {
+      Session.set('sortInit', 1)
+    }
+
+
   }
 });
 
 
 Template.boostrequests.onDestroyed(function () {
   Session.set('month', null);
+  Session.set('sortInit', null);
 });
