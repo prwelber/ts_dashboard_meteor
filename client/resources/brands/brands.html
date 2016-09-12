@@ -1,7 +1,7 @@
 <template name="newBrand">
     <div class="container">
         <div class="col s12">
-            <h2>Create New Brand</h2>
+            <h4>Create New Brand</h4>
         </div>
         <div class="col s12">
             <form class="new-brand-form">
@@ -36,20 +36,22 @@
 </template>
 
 <template name="brands">
-    <h2>Brand List</h2>
-    {{#each brand in getBrands}}
-        <h3><a class="brandLink" href="/admin/brands/{{brand.account_id}}/update">{{brand.name}}</a></h3>
-        Agency: {{brand.agency}}
-        <br />
-        Facebook ID: {{brand.account_id}}
-        <br />
-        <a href="#" class="delete-brand" data-id={{brand._id}}>Delete</a>
-        <br><br>
-    {{/each}}
+    <h4 class="center-align">Brand List</h4>
+        <div class="container">
+            {{#each brand in getBrands}}
+                <h5>{{!-- <a class="brandLink" href="/admin/brands/{{brand.account_id}}/update"> --}}{{brand.name}}{{!-- </a> --}}</h5>
+                Agency: {{brand.agency}}
+                <br />
+                {{!-- Facebook ID: {{brand.account_id}} --}}
+                <br />
+                <a href="#" class="delete-brand" data-id={{brand._id}}>Delete</a>
+                <br><br>
+            {{/each}}
+        </div>
 </template>
 
 <template name="updateBrand">
-    <h2>Update Brand</h2>
+    <h4>Update Brand</h4>
     <form class="update-brand-form">
         <p>Name</p><input type="text" name="name" value="{{getBrand.name}}">
         <p>Agency</p><select name="agency" id="agency-select">

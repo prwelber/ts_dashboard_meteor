@@ -1,10 +1,10 @@
 <template name="agencies">
-  <h2>All Agencies</h2>
+  <h4>Agencies</h4>
   <div class="container">
     {{#each agency in getAgencies}}
       <div class="row">
         <div class="col s4">
-          <h4>{{agency.name}}</h4>
+          <p>{{agency.name}}</p>
         </div>
         <div class="col s2">
           <p>{{agency.location}}</p>

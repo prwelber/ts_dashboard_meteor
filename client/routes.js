@@ -195,6 +195,7 @@ FlowRouter.route('/accounts/:campaign_id/creative', {
 FlowRouter.route('/admin/', {
     name: "admin",
     action: function () {
+        Session.set('route', 'admin');
         BlazeLayout.render('index', {main: "admin"});
     }
 });
@@ -435,8 +436,7 @@ FlowRouter.route('/admin/spending', {
 
 FlowRouter.route('/admin/pdf', {
     subscriptions: function () {
-        const params = {'spending': 'spending'};
-        this.register('Initiatives', Meteor.subscribe('Initiatives', params));
+        this.register('Initiatives', Meteor.subscribe('Initiatives'));
     },
     name: 'pdf',
     action: () => {
