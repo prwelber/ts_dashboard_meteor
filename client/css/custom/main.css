@@ -14,12 +14,20 @@ table {
   margin-bottom: 35px;
 }
 
-.boost-legend-color {
-  margin: 0 auto;
-  border: 1px solid black;
-  display: flex;
-  justify-content: center;
-}
+
+
+
+
+/* --------------- FONT AWESOME FIXES --------------- */
+
+.fa-2x {
+  font-size: 2em !important;}
+.fa-3x {
+  font-size: 3em !important;}
+.fa-4x {
+  font-size: 4em !important;}
+.fa-5x {
+  font-size: 5em !important;}
 
  /* --------------- For Dragula ----------------- */
  .gu-mirror {
@@ -317,6 +325,21 @@ a:hover {
   width: 75px;
   padding-bottom: 0px;
   font-size: 12px;
+}
+
+.boost-legend-color {
+  margin: 0 auto;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+}
+
+
+/* ---------------- INITIATIVE HOMEPAGE ---------------- */
+
+.campaign-basic-card {
+  width: 50%;
+  margin: 0 auto;
 }
 
 /* -------------- CAMPAIN OVERVIEW PAGE -------------- */

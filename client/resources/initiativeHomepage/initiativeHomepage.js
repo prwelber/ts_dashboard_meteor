@@ -807,6 +807,35 @@ Template.initiativeHomepage.helpers({
     const actions = init[objective]['net']['client_' + dealType];
     const max = parseFloat(init.lineItems[itemNumber].price);
     return initiativeHomepageFunctions.gaugeChart(dealType, actions, max)
+  },
+  getPlatform: (platform, objective) => {
+    const init = Template.instance().templateDict.get('initiative');
+    console.log('args', platform, objective)
+    // check to see if objective matches a line item
+    // this is really only for instagram purposes
+    // need to do Instagram to lower case()
+
+    var instagramTest = _.where(init.lineItems, {platform: 'Instagram'})[0];
+
+    console.log('instaTest', instagramTest)
+
+    if (instagramTest) {
+      if (instagramTest.objective.toUpperCase().replace(/ /g, '_') === objective) {
+        return 'instagram';
+      }
+    }
+
+    if (!platform) {
+      return 'facebook-official';
+    }
+
+    if (platform === 'facebook') {
+      return 'facebook-official';
+    } else if (platform === 'twitter') {
+      return 'twitter-square';
+    } else {
+      return 'facebook-official';
+    }
   }
 });
 

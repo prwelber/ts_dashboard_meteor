@@ -76,10 +76,11 @@ Meteor.methods({
                 console.log("Error matching campaignBasic and initiative", e);
             }
         });
-
         campaignOverviewArray.forEach(el => {
+            el['platform'] = 'facebook';
             if (el.id) {
                 el['campaign_id'] = el.id;
+
                 delete el['id'];
             }
         });

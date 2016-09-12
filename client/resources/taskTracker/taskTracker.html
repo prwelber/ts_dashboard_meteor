@@ -1,50 +1,54 @@
 <template name="taskTracker">
-  <div class="container">
+  {{!-- <div class="container"> --}}
     <div class="row">
       <div class="col s12">
         <h5 class="center-align">Task Tracker</h5>
       </div>
     </div>
     {{#if isReady "Initiatives"}}
-      <div class="row" style="margin-bottom: 0px;">
-        <div class="col s3">
-          <h4>
-            <input type="checkbox" class="tracker-checkbox" name="approvedTargeting" id="approvedTargeting" {{targetingChecked}}>
-            <label for="approvedTargeting">Approved Targeting</label>
-          </h4>
-        </div>
-        <div class="col s3">
-          <h4>
-            <input type="checkbox" class="tracker-checkbox" name="receivedCreative" id="receivedCreative" {{creativeChecked}}>
-            <label for="receivedCreative">Received Creative</label>
-          </h4>
-        </div>
-        <div class="col s3">
-          <h4>
-            <input type="checkbox" class="tracker-checkbox" name="receivedTracking" id="receivedTracking" {{trackingChecked}}>
-            <label for="receivedTracking">Received Tracking</label>
-          </h4>
-        </div>
-        <div class="col s3">
-          <h4>
-            <input type="checkbox" class="tracker-checkbox" name="signedIO" id="signedIO" {{signedIoChecked}}>
-            <label for="signedIO">Signed IO</label>
-          </h4>
-        </div>
-        <div class="col s12">
-          <div class="center-align" style="margin-top: 1em;">
-            {{#with getInit}}
-              <h4>
-                <input type="checkbox" id="double{{_id}}" class="filled-in double-check" checked="{{dailyCheck _id}}"/>
-                <label for="double{{_id}}">Daily Check</label>
-              </h4>
-            {{/with}}
+      <div class="row">
+      <div class="col s12">
+        <div class="row" style="margin-bottom: 0px;">
+          <div class="col s3">
+            <p>
+              <input type="checkbox" class="tracker-checkbox" name="approvedTargeting" id="approvedTargeting" {{targetingChecked}}>
+              <label for="approvedTargeting">Approved Targeting</label>
+            </p>
+          </div>
+          <div class="col s3">
+            <p>
+              <input type="checkbox" class="tracker-checkbox" name="receivedCreative" id="receivedCreative" {{creativeChecked}}>
+              <label for="receivedCreative">Received Creative</label>
+            </p>
+          </div>
+          <div class="col s3">
+            <p>
+              <input type="checkbox" class="tracker-checkbox" name="receivedTracking" id="receivedTracking" {{trackingChecked}}>
+              <label for="receivedTracking">Received Tracking</label>
+            </p>
+          </div>
+          <div class="col s3">
+            <p>
+              <input type="checkbox" class="tracker-checkbox" name="signedIO" id="signedIO" {{signedIoChecked}}>
+              <label for="signedIO">Signed IO</label>
+            </p>
+          </div>
+          <div class="col s12">
+            <div class="center-align" style="margin-top: 1em;">
+              {{#with getInit}}
+                <p>
+                  <input type="checkbox" id="double{{_id}}" class="filled-in double-check" checked="{{dailyCheck _id}}"/>
+                  <label for="double{{_id}}">Daily Check</label>
+                </p>
+              {{/with}}
+            </div>
           </div>
         </div>
+      </div>
       </div>
     {{else}}
       <p>Loading...</p>
     {{/if}}
 
-  </div>
+  {{!-- </div> --}}
 </template>
