@@ -249,9 +249,10 @@ Meteor.publish('campaignInsightList', function (opts, searchValue) {
             }
           }
         )
-      } else {
-        return CampaignInsights.find({}); //publish all insights
       }
+      // else {
+      //   return CampaignInsights.find({}); //publish all insights
+      // }
 
     } else if (opts.spending === "spending") {
 

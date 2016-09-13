@@ -194,10 +194,10 @@
               <i class="fa fa-eye fa-4x" aria-hidden="true" style="color: black;"></i>
             </div>
             <div class="col s7 center-align dash-flex">
-              <span class="dash-data">{{money clientStats.cpm}}</span>
-              <p class="dash-label">CPM</p>
               <span class="dash-data">{{number impressions}}</span>
               <p class="dash-label">Impressions</p>
+              <span class="dash-data">{{money clientStats.cpm}}</span>
+              <p class="dash-label">CPM</p>
             </div>
           </div>
         </div>
@@ -208,10 +208,10 @@
               <i class="fa fa-mouse-pointer fa-4x" aria-hidden="true" style="color: black;"></i>
             </div>
             <div class="col s7 center-align dash-flex">
-              <span class="dash-data">{{money clientStats.cpc}}</span>
-              <p class="dash-label">CPC</p>
               <span class="dash-data">{{number clicks}}</span>
               <p class="dash-label">Clicks</p>
+              <span class="dash-data">{{money clientStats.cpc}}</span>
+              <p class="dash-label">CPC</p>
             </div>
           </div>
         </div>
@@ -222,10 +222,10 @@
               <i class="fa fa-video-camera fa-4x" aria-hidden="true" style="color: black;"></i>
             </div>
             <div class="col s7 center-align dash-flex">
-              <span class="dash-data">{{money clientStats.cpvv}}</span>
-              <p class="dash-label">CPVV</p>
               <span class="dash-data">{{number video_view}}</span>
               <p class="dash-label">Video View</p>
+              <span class="dash-data">{{money clientStats.cpvv}}</span>
+              <p class="dash-label">CPVV</p>
             </div>
           </div>
         </div>
@@ -237,10 +237,10 @@
               <i class="fa fa-thumbs-up fa-4x" aria-hidden="true" style="color: black;"></i>
             </div>
             <div class="col s7 center-align dash-flex">
-              <span class="dash-data">{{money clientStats.cpl}}</span>
-              <p class="dash-label">CPL</p>
               <span class="dash-data">{{number like}}</span>
               <p class="dash-label">Page Likes</p>
+              <span class="dash-data">{{money clientStats.cpl}}</span>
+              <p class="dash-label">CPL</p>
             </div>
           </div>
         </div>
@@ -248,13 +248,13 @@
         <div class="col l3 s6">
           <div class="client-dash-card valign-wrapper">
             <div class="col s5 valign center-align client-dash-card-holder" style="padding-top: 15%">
-              <i class="fa fa-link fa-4x" aria-hidden="true" style="color: black;"></i>
+              <i class="fa fa-users fa-4x" aria-hidden="true" style="color: black;"></i>
             </div>
             <div class="col s7 center-align dash-flex">
-              <span class="dash-data">{{money clientStats.cplc}}</span>
-              <p class="dash-label">CP Link Click</p>
-              <span class="dash-data">{{number link_click}}</span>
-              <p class="dash-label">Link Clicks</p>
+              <span class="dash-data">{{number reach}}</span>
+              <p class="dash-label">Reach</p>
+              <span class="dash-data">{{spendPerc frequency}}</span>
+              <p class="dash-label">Frequency</p>
             </div>
           </div>
         </div>
@@ -265,10 +265,10 @@
               <i class="fa fa-file-text fa-4x" aria-hidden="true" style="color: black;"></i>
             </div>
             <div class="col s7 center-align dash-flex">
-              <span class="dash-data">{{money clientStats.cppe}}</span>
-              <p class="dash-label">CP Post Eng</p>
               <span class="dash-data">{{number post_engagement}}</span>
               <p class="dash-label">Post Engagement</p>
+              {{!-- <span class="dash-data">{{money clientStats.cppe}}</span>
+              <p class="dash-label">CP Post Eng</p> --}}
             </div>
           </div>
         </div>
@@ -279,8 +279,8 @@
               <i class="fa fa-desktop fa-4x" aria-hidden="true" style="color: black;"></i>
             </div>
             <div class="col s7 center-align dash-flex">
-              <span class="dash-data">{{money clientStats.cpta}}</span>
-              <p class="dash-label">CP Total Act</p>
+              {{!-- <span class="dash-data">{{money clientStats.cpta}}</span>
+              <p class="dash-label">CP Total Act</p> --}}
               <span class="dash-data">{{number total_actions}}</span>
               <p class="dash-label">Total Actions</p>
             </div>

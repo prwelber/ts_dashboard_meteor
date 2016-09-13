@@ -65,6 +65,38 @@ Template.projections.events({
   },
   'keyup #factor-projection-percent': (e, instance) => {
     Session.set('factor', parseFloat(e.target.value));
+  },
+  'click #factor-calc-button': (event, template) => {
+
+    const metric = template.$('#calc-factor-metric').val()
+    const amount = template.$('#calc-factor-amount').val()
+    const budget = template.$('#calc-factor-budget').val()
+    const action = template.$('#calc-factor-type').val();
+    if (!budget) {
+      alert ('please enter a budget number');
+      return;
+    }
+
+    const getFactor = function getFactor(budget, amount, type, actualCostPer) {
+      if (type === 'impressions') {
+        var newFactor = actualCostPer / (budget / (amount / 1000));
+        return newFactor * 100;
+      } else {
+        var newFactor = actualCostPer / (budget / amount);
+        return newFactor * 100;
+      }
+    }
+
+    const newFactor = getFactor(budget, amount, action, metric)
+
+    console.log('getFactor', getFactor(budget, amount, action, metric));
+    alert(`copy and paste this number: ${newFactor} into the factor % input on the Initiative Edit page`);
+
+
+  },
+  'change #calc-factor-select': (event, template) => {
+    console.log(event.target.value);
+    Session.set('selectValue', event.target.value);
   }
 });
 
@@ -80,6 +112,44 @@ Template.projections.helpers({
     const insight = Template.instance().templateDict.get('campData');
     if (insight.spend) {
       return true;
+    }
+  },
+  getStat: () => {
+    const insight = Template.instance().templateDict.get('campData');
+    const sesh = Session.get('selectValue');
+    if (sesh === 'impressions') {
+      return insight.impressions;
+    } else if (sesh === 'clicks') {
+      return insight.clicks;
+    } else if (sesh === 'video_view') {
+      return insight.video_view;
+    } else if (sesh === 'likes') {
+      return insight.like;
+    }
+  },
+  getStatCostPer: () => {
+    const insight = Template.instance().templateDict.get('campData');
+    const sesh = Session.get('selectValue');
+    if (sesh === 'impressions') {
+      return insight.cpm;
+    } else if (sesh === 'clicks') {
+      return insight.cpc;
+    } else if (sesh === 'video_view') {
+      return insight.cost_per_video_view;
+    } else if (sesh === 'likes') {
+      return insight.cpl;
+    }
+  },
+  getType: () => {
+    const sesh = Session.get('selectValue');
+    if (sesh === 'impressions') {
+      return 'impressions';
+    } else if (sesh === 'clicks') {
+      return 'clicks';
+    } else if (sesh === 'video_view') {
+      return 'video view';
+    } else if (sesh === 'likes') {
+      return 'likes';
     }
   },
   lineItem: () => {
@@ -272,6 +342,16 @@ Template.projections.helpers({
   },
   'getSessionDay': function () {
     return Session.get('dayNumber');
+  },
+  calcNewFactor: () => {
+    return 0;
+  },
+  twoDec: (num) => {
+    if (typeof num === 'string') {
+      return parseFloat(num).toFixed(2)
+    } else {
+      return num.toFixed(2);
+    }
   }
 });
 

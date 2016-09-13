@@ -138,7 +138,7 @@ export const initiativeHomepageFunctions = {
       // need to grab the objective from the line item
       const objective = init.lineItems[index]['objective'].split(' ').join('_').toUpperCase();
       const quotedPrice = parseFloat(init.lineItems[index].price);
-      const daysDiff = moment(init.lineItems[index]['endDate'], moment.ISO_8601).diff(moment(init.lineItems[index]['startDate'], moment.ISO_8601), 'days');
+      const daysDiff = moment(init.lineItems[index]['endDate'], moment.ISO_8601).diff(moment(init.lineItems[index]['startDate'], moment.ISO_8601), 'days') + 1;
       let insights;
       const type = deliveryTypeChecker(init, index);
       let camp;
@@ -247,14 +247,15 @@ export const initiativeHomepageFunctions = {
               valuePrefix: '$'
             }
           }
-        } else {
+        }
+        else {
           return {
-            name: name,
-            data: data,
-            color: color,
-            tooltip: {
-              enabled: false
-            }
+            // name: name,
+            // data: data,
+            // color: color,
+            // tooltip: {
+            //   enabled: false
+            // }
           }
         }
       }
@@ -335,8 +336,8 @@ export const initiativeHomepageFunctions = {
               valueSuffix: ' ' + type
             }
           },
-          // adminToolTip('Actual Spend', spendArray, '#b71c1c'),
-          // adminToolTip('Pacing Spend', avgSpendArray, '#ef9a9a')
+          adminToolTip('Actual Spend', spendArray, '#b71c1c'),
+          adminToolTip('Pacing Spend', avgSpendArray, '#ef9a9a')
           // {
           //   name: 'Actual Spend',
           //   data: spendArray,
@@ -367,7 +368,7 @@ export const initiativeHomepageFunctions = {
       // need to grab the objective from the line item
       const objective = init.lineItems[index]['objective'].split(' ').join('_').toUpperCase();
       const quotedPrice = parseFloat(init.lineItems[index].price);
-      const daysDiff = moment(init.lineItems[index]['endDate'], moment.ISO_8601).diff(moment(init.lineItems[index]['startDate'], moment.ISO_8601), 'days');
+      const daysDiff = moment(init.lineItems[index]['endDate'], moment.ISO_8601).diff(moment(init.lineItems[index]['startDate'], moment.ISO_8601), 'days') + 1;
       let insights;
       const type = deliveryTypeChecker(init, index);
       let camp;

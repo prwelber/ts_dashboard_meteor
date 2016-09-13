@@ -129,7 +129,7 @@ FlowRouter.route('/accounts/:campaign_id/breakdowns', {
 FlowRouter.route('/accounts/:campaign_id/daybreakdowns', {
     subscriptions: function (params) {
         this.register('insightsBreakdownByDaysList', Meteor.subscribe('insightsBreakdownByDaysList', params.campaign_id));
-        this.register('campaignInsightList', Meteor.subscribe('campaignInsightList'));
+        this.register('campaignInsightList', Meteor.subscribe('campaignInsightList', params.campaign_id));
         this.register("Initiatives", Meteor.subscribe("Initiatives"));
     },
     name: 'insightsBreakdownDaily',
@@ -422,7 +422,7 @@ FlowRouter.route('/admin/spending', {
         const params = {'spending': 'spending'};
         this.register('campaignBasicsList', Meteor.subscribe('campaignBasicsList', params));
         // this.register('campaignInsightList', Meteor.subscribe('campaignInsightList', params));
-        // this.register('insightsBreakdownByDaysList', Meteor.subscribe('insightsBreakdownByDaysList', params));
+        this.register('insightsBreakdownByDaysList', Meteor.subscribe('insightsBreakdownByDaysList', params));
     },
     name: 'spending',
     action: () => {

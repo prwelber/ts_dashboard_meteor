@@ -84,7 +84,7 @@
     </div>
     {{!-- {{#if insightPresent}} --}}
       <div class="row">
-        <h3 class="center-align">Factor Calculator</h3>
+        <h5 class="center-align">Factor Projection Calculator</h5>
         <div class="col s1">
           <input type="text" id="factor-projection-percent" value={{lineItem.lineItem.percentTotalPercent}}>
           <label for="factor-projection-percent">Current Factor</label>
@@ -112,6 +112,51 @@
         <div class="col s2">
           <h5>Projected Client Spend: {{money projectFactorSpend}}</h5>
         </div>
+      </div>
+      <div class="row">
+        <h5 class="center-align">Calculate Factor to Match Budget</h5>
+
+        <div class="col s3">
+          <select name="calc-factor-select" id="calc-factor-select" class="browser-default">
+            <option value="" selected disabled>Choose Deal Type</option>
+            <option value="impressions">Impressions</option>
+            <option value="clicks">Clicks</option>
+            <option value="likes">Likes</option>
+            <option value="video_view">Video View</option>
+          </select>
+          <label for="calc-factor-select">Select Deal Type</label>
+        </div>
+
+        <div class="col s2">
+          <input type="text" id="calc-factor-metric" value="{{twoDec getStatCostPer}}">
+          <label for="calc-factor-metric">Input actual CPM/CPC/etc..</label>
+        </div>
+
+        <div class="col s2">
+          <input type="text" id="calc-factor-amount" value="{{getStat}}">
+          <label for="calc-factor-amount">Input Impressions/Clicks/etc..</label>
+        </div>
+
+        <div class="col s1">
+          <input type="text" id="calc-factor-budget">
+          <label for="calc-factor-budget">Input Budget</label>
+        </div>
+
+        <div class="col s2">
+          <input type="text" id="calc-factor-type" value="{{getType}}">
+          <label for="calc-factor-type">Type - 'impressions', 'clicks' or 'video view'</label>
+        </div>
+
+        <div class="col s2">
+          <button id="factor-calc-button">Run</button>
+        </div>
+
+        {{!-- <div class="col s2">
+          <h5>Projected Client Spend: {{money projectFactorSpend}}</h5>
+        </div> --}}
+
+
+
       </div>
     {{!-- {{else}}
       <p>No data available, so Factor Calculator cannot run.</p>

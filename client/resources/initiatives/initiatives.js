@@ -11,17 +11,9 @@ Tracker.autorun(function () {
     }
 });
 
-// Template.initiativeStats.helpers({
-//     'getInitiativeStats': function (template) {
-//         camp_id = Session.get("campaign_id");
-//         let initiative = Initiatives.findOne({campaign_id: camp_id});
-//         return initiative;
-//     }
-// });
-
 Template.initiatives.helpers({
     'getInitiatives': function () {
-      let inits =  Initiatives.find().fetch();
+      let inits =  Initiatives.find({}, {sort: {name: 1}}).fetch();
       inits.forEach(el => {
         el.startDate = moment(el.startDate).format("MM-DD-YYYY");
       });
