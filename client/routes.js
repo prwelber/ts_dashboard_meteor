@@ -501,3 +501,26 @@ FlowRouter.route('/admin/boostrequest/:id/edit', {
         BlazeLayout.render('index', {main: 'editBoostRequest'});
     }
 });
+
+
+// ------------------ TWITTER STUFF!!!! ------------------ //
+
+FlowRouter.route('/twitteraccounts', {
+    name: "twitterAccounts",
+    action: function () {
+        Session.set("route", "home");
+        BlazeLayout.render('index', {main: 'twitterAccounts'});
+    }
+});
+
+FlowRouter.route('/twitteraccounts/:account_id', {
+    subscriptions: function (params) {
+        params['type'] = 'all';
+        this.register('campaignBasicsList', Meteor.subscribe('campaignBasicsList', params.account_id));
+        this.register('Initiatives', Meteor.subscribe('Initiatives', params));
+    },
+    name: 'twitterAccountOverview',
+    action: function (params) {
+        BlazeLayout.render('index', {main: 'twitterAccountOverview'});
+    }
+});

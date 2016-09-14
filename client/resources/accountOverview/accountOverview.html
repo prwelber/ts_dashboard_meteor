@@ -1,16 +1,17 @@
 <template name="accountOverview">
     {{isUserUpdated}}
-    <h2>Single Account Overview</h2>
-    <button class="waves-effect waves-light btn" id="refreshCampaigns">Refresh Accounts</button>
+    <h4>Single Account Overview</h4>
+    <button class="waves-effect waves-light btn" id="refreshCampaigns">Get Facebook Campaigns</button>
+    <button class="waves-effect waves-light btn" id="refresh-twitter-campaigns">Get Twitter Campaigns</button>
     <p class='account-name'>{{getName.name}}</p>
     <p class="account-id">{{getName.account_id}}</p>
     <br />
-    <h2>All {{getName.name}} Campaigns</h2>
+    <h5>All {{getName.name}} Campaigns</h5>
         {{#each campaign in displayCampaignBasics 1}}
             <a href="/accounts/{{campaign.data.campaign_id}}/overview" >
-                <h4 class="insights-link" data-campaign="{{campaign.data.campaign_id}}" data-stop="{{campaign.stop_time}}">
+                <h5 class="insights-link" data-campaign="{{campaign.data.campaign_id}}" data-stop="{{campaign.stop_time}}">
                     {{campaign.data.name}}
-                </h4>
+                </h5>
             </a>
             <p>{{campaign.data.start_time}} -- {{campaign.data.stop_time}}</p>
             <p>Objective: {{campaign.data.objective}}</p>

@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor'
 Meteor.subscribe('fbAccountList');
+Meteor.subscribe('accountList');
 import MasterAccounts from '/collections/MasterAccounts';
 
 Template.accounts.events({
@@ -49,6 +50,24 @@ Template.accounts.helpers({
   'sessionSetter': function () {
     let userId = Meteor.userId();
     Session.set('id', userId);
+  }
+});
+
+Template.twitterAccounts.helpers({
+  getTwitterAccounts: () => {
+    let userId = Meteor.userId();
+    if (userId) {
+      return MasterAccounts.find({'data.platform': 'twitter'}, {sort: {'data.name': 1}});
+    }
+  }
+});
+
+Template.twitterAccounts.events({
+  'click .get-twitter-accounts': (event, template) => {
+    console.log('click registered!')
+    Meteor.call('getTwitterAccounts', (err, res) => {
+      console.log('res from getTwitterAccounts', res);
+    });
   }
 });
 

@@ -135,7 +135,7 @@ Template.projections.helpers({
     } else if (sesh === 'clicks') {
       return insight.cpc;
     } else if (sesh === 'video_view') {
-      return insight.cost_per_video_view;
+      return parseFloat(insight.cost_per_video_view);
     } else if (sesh === 'likes') {
       return insight.cpl;
     }

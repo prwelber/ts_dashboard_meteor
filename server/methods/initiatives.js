@@ -359,7 +359,7 @@ Meteor.publish('Initiatives', function (opts, type) {
         return Initiatives.find({campaign_ids: {$in: [opts]}});
       }
 
-      if (opts['type'] === 'boost') {
+      if (opts['type'] === 'boost' || opts['type'] === 'all') {
         return Initiatives.find({}, {fields: {name: 1}, sort: {name: 1}});
       }
 

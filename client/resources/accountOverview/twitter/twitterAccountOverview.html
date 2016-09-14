@@ -1,0 +1,43 @@
+<template name="twitterAccountOverview">
+  <div class="container">
+    {{#if isReady 'Initiatives' 'campaignBasicsList'}}
+        <h4>Single Account Overview</h4>
+        <button class="waves-effect waves-light btn" id="refresh-twitter-campaigns">Get Twitter Campaigns</button>
+        <p class='account-name'>{{getName.data.name}}</p>
+        <p class="account-id">{{getName.data.account_id}}</p>
+        <br />
+        <h5>All {{getName.name}} Campaigns</h5>
+        <div class="row">
+          {{#each campaign in displayCampaignBasics 1}}
+            <div class="col s7" style="margin-bottom: 15px;">
+              {{!-- <a href="/accounts/{{campaign.data.campaign_id}}/overview" > --}}
+              <a href="{{buildPath campaign.data.campaign_id campaign.data.initiative}}">
+                <h5 class="insights-link" data-campaign="{{campaign.data.campaign_id}}" data-stop="{{campaign.stop_time}}">
+                    {{campaign.data.name}}
+                </h5>
+              </a>
+              <p>{{campaign.data.start_time}} -- {{campaign.data.stop_time}}</p>
+              <div class="col s6">
+                <p>In Initiative:</p>
+                <select name="{{campaign.data.name}}" class="browser-default twitter-campaign-select">
+                  <option value="{{campaign.data.initiative}}" selected>{{campaign.data.initiative}}</option>
+                  {{#each init in getInits}}
+                      <option value="{{init.name}}">{{init.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+              <div class="col s7">
+                <p>Campaign ID: {{campaign.data.campaign_id}}</p>
+                <button class="delete-campaign-basic" data-id="{{campaign._id}}" data-name="{{campaign.data.name}}" data-initiative="{{campaign.data.initiative}}" data-campid="{{campaign.data.campaign_id}}">Delete</button>
+              </div>
+            </div>
+            <br><br>
+          {{/each}}
+        </div>
+        <button id="more-campaigns-button">View More Campaigns</button>
+        <button id="all-campaigns-button">View All Campaigns</button>
+    {{else}}
+      <p>Loading...</p>
+    {{/if}}
+  </div>
+</template>

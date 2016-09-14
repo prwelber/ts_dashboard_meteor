@@ -1,6 +1,7 @@
-import CampaignBasics from '/collections/CampaignBasics'
-import MasterAccounts from '/collections/MasterAccounts'
-import { Meteor } from 'meteor/meteor'
+import CampaignBasics from '/collections/CampaignBasics';
+import MasterAccounts from '/collections/MasterAccounts';
+import Initiatives from '/collections/Initiatives';
+import { Meteor } from 'meteor/meteor';
 
 Tracker.autorun(function () {
     if (FlowRouter.subsReady('campaignBasicsList')) {
@@ -8,20 +9,20 @@ Tracker.autorun(function () {
     }
 });
 
-Template.accountOverview.onRendered(function () {
-        let accountNumber = this.find(".account-id").textContent
-        let campId = this.find(".account-id").textContent
-        // console.log('accountNumber and campId:', accountNumber, campId);
+Template.twitterAccountOverview.onRendered(function () {
         Session.set("limit", 10);
 });
 
-// var myFunc = function () {console.log('this is a helper function')}
-
-Template.accountOverview.helpers({
+Template.twitterAccountOverview.helpers({
+    isReady: (sub1, sub2) => {
+        if (FlowRouter.subsReady(sub1) && FlowRouter.subsReady(sub2)) {
+            return true;
+        }
+    },
     'getName': function () {
-        let id = FlowRouter.current().params.account_id
-        let account = MasterAccounts.findOne({account_id: id})
-        return account
+        const id = FlowRouter.getParam('account_id');
+        const account = MasterAccounts.findOne({'data.account_id': id});
+        return account;
     },
     'displayCampaignBasics': function (count) {
         accountId = FlowRouter.current().params.account_id;
@@ -30,20 +31,24 @@ Template.accountOverview.helpers({
         if (camp) {
             let camps = CampaignBasics.find({"data.account_id": accountId}, {sort: {"data.start_time": -1}}).fetch();
             return camps;
-        } else {
-            // Meteor.addcall('getCampaigns', accountId)
         }
     },
-    'isUserUpdated': function () {
-        let user = Meteor.user();
-        if (!user.firstName) {
-            $("#message-box").text("")
-            $("#message-box").append("Please update your user profile in the admin section before continuing.");
-        }
+    getInits: () => {
+        return Initiatives.find({}, {sort: {name: 1}}).fetch();
+    },
+    buildPath: (campaign_id, init) => {
+        var params = {
+            campaign_id: campaign_id
+        };
+        const initName = init.replace(/ /g, '_');
+        var queryParams = {platform: "twitter", initiative: initName};
+        var path = FlowRouter.path('/accounts/:campaign_id/overview', params, queryParams);
+
+        return path;
     }
 });
 
-Template.accountOverview.events({
+Template.twitterAccountOverview.events({
     'click #more-campaigns-button': function(event, template) {
         let number = Session.get("limit");
         number += 5
@@ -53,20 +58,6 @@ Template.accountOverview.events({
     'click #all-campaigns-button': function (event, template) {
         let count = CampaignBasics.find().count()
         Session.set("limit", count);
-    },
-    'click .insights-link': function (event, template) {
-        Session.set("campaign_id", event.target.dataset.campaign);
-        Session.set("end_date", event.target.dataset.stop);
-    },
-    'click #refreshCampaigns': function (event, template) {
-        const accountNumber = FlowRouter.current().params.account_id;
-        const target = document.getElementById("spinner-div");
-        let spun = Blaze.render(Template.spin, target);
-        Meteor.call('getCampaigns', accountNumber, function (err, result) {
-            if (result) {
-                Blaze.remove(spun);
-            }
-        });
     },
     'click .delete-campaign-basic': (event, instance) => {
         const _id = event.target.dataset.id;
@@ -88,11 +79,17 @@ Template.accountOverview.events({
         Meteor.call('getTwitterCampaigns', id, (err, res) => {
             if (res) Blaze.remove(spun);
         });
+    },
+    'change .twitter-campaign-select': (event, template) => {
+        console.log('change registered')
+        console.log(event.target.value);
+        const init = event.target.value;
+        const twitterCamp = event.target.getAttribute('name');
+        console.log(event.target.getAttribute('name'));
+        Meteor.call('assignTwitterCampaignToInitiative', init, twitterCamp, (err, res) => {
+            if (res) {
+                Materialize.toast('Initiative Assigned!', 2000);
+            }
+        });
     }
-});
-
-
-Template.accountOverview.onCreated(function () {
-    //runs when an instance of the template is created
-
 });

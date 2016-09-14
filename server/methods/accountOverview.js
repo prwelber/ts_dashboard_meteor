@@ -112,6 +112,7 @@ Meteor.methods({
 
 // need a meteor.publish here
 Meteor.publish('campaignBasicsList', function (opts) {
+    console.log('opts', opts)
     const init = Initiatives.findOne(opts._id);
 
   if (opts.spending === "spending") {
@@ -120,7 +121,8 @@ Meteor.publish('campaignBasicsList', function (opts) {
 
   if (opts.page === "homepage") {
     const init = Initiatives.findOne({_id: opts._id});
-    // lookup initiative and match campaigns to that
+    // lookup initiative and match campaigns to that\
+    console.log('hitting 4')
     return CampaignBasics.find({"data.initiative": init.name});
 
   } else if (init) {
@@ -132,16 +134,26 @@ Meteor.publish('campaignBasicsList', function (opts) {
     return CampaignBasics.find();
 
   } else if (! opts) {
-
     return CampaignBasics.find({});
 
   }  else if (opts.toString().length < 15) {
 
-    return CampaignBasics.find({"data.campaign_id": opts}, {sort: {"data.sort_time_start": -1}});
+    // had to add this 'test' logic to say if you can't find anything looking at
+    // data.campaign_id, try data.account_id (which is likely to be where the twitter
+    // match will come from)
+
+    const test = CampaignBasics.find({"data.campaign_id": opts}, {sort: {"data.start_time": -1}}).fetch();
+    if (test.length === 0) {
+        const twitterCampaigns = CampaignBasics.find({'data.account_id': opts}, {sort: {'data.start_time': 1}});
+        return twitterCampaigns
+    } else {
+        return CampaignBasics.find({"data.campaign_id": opts}, {sort: {"data.start_time": -1}})
+    }
+
+    return test;
 
   } else if (opts.toString().length >= 15) {
-
-    return CampaignBasics.find({"data.account_id": opts}, {sort: {"data.sort_time_start": -1}});
+    return CampaignBasics.find({"data.account_id": opts}, {sort: {"data.start_time": -1}});
   }
 
 });
