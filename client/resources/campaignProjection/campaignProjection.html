@@ -83,7 +83,7 @@
       {{/with}}
     </div>
     {{!-- {{#if insightPresent}} --}}
-      <div class="row">
+      {{!-- <div class="row">
         <h5 class="center-align">Factor Projection Calculator</h5>
         <div class="col s1">
           <input type="text" id="factor-projection-percent" value={{lineItem.lineItem.percentTotalPercent}}>
@@ -112,9 +112,9 @@
         <div class="col s2">
           <h5>Projected Client Spend: {{money projectFactorSpend}}</h5>
         </div>
-      </div>
+      </div> --}}
       <div class="row">
-        <h5 class="center-align">Calculate Factor to Match Budget</h5>
+        <h5 class="center-align">Calculate Factor to Match Spend Amount</h5>
 
         <div class="col s3">
           <select name="calc-factor-select" id="calc-factor-select" class="browser-default">
@@ -139,7 +139,7 @@
 
         <div class="col s1">
           <input type="text" id="calc-factor-budget">
-          <label for="calc-factor-budget">Input Budget</label>
+          <label for="calc-factor-budget">Input Desired Budget or Client Spend</label>
         </div>
 
         <div class="col s2">
