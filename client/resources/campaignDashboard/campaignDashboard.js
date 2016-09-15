@@ -37,6 +37,9 @@ const getLineItem = function getLineItem(campaignData, initiative) {
 
 Template.campaignDashboard.onCreated( function () {
   this.templateDict = new ReactiveDict();
+  if (FlowRouter.getQueryParam('platform') === 'twitter') {
+    Session.set('platform', 'twitter');
+  }
 });
 
 Template.campaignDashboard.onRendered(function () {
@@ -78,7 +81,23 @@ Template.campaignDashboard.helpers({
     }
   },
   'fetchInsights': function () {
+    console.log('fetch insights running')
+    let sessionPlatform = Session.get('platform');
     let campaignNumber = FlowRouter.getParam('campaign_id');
+    let platform = FlowRouter.getQueryParam('platform');
+
+    if (sessionPlatform === 'twitter') {
+      console.log('twitter logic for fetch insights')
+      let twitterCampaign = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
+
+      if (!twitterCampaign) {
+        // need account_id, campaign_id, start and end
+        Meteor.call('getTwitterInsights', )
+      }
+      return twitterCampaign;
+
+    }
+    console.log('running logic for facebook fetch insight')
     let camp = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
     if (camp) {
       camp.data.cpm = mastFunc.money(camp.data.cpm);
@@ -97,6 +116,7 @@ Template.campaignDashboard.helpers({
         return camp.data;
       }
     } else {
+      console.log('calling server func to get insights from FB API')
       var target = document.getElementById("spinner-div");
       let spun = Blaze.render(Template.spin, target);
       Meteor.call('getInsights', campaignNumber, Session.get("end_date"), function (err, result) {

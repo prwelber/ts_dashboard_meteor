@@ -36,12 +36,13 @@ Template.twitterAccountOverview.helpers({
     getInits: () => {
         return Initiatives.find({}, {sort: {name: 1}}).fetch();
     },
-    buildPath: (campaign_id, init) => {
+    buildPath: (data, init) => {
+        console.log('data', data)
         var params = {
-            campaign_id: campaign_id
+            campaign_id: data.campaign_id
         };
         const initName = init.replace(/ /g, '_');
-        var queryParams = {platform: "twitter", initiative: initName};
+        var queryParams = {platform: "twitter", initiative: initName, campaign_id: data.campaign_id, account_id: data.account_id, start_time: data.start_time, stop_time: data.stop_time};
         var path = FlowRouter.path('/accounts/:campaign_id/overview', params, queryParams);
 
         return path;

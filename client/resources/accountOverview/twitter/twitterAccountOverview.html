@@ -11,7 +11,7 @@
           {{#each campaign in displayCampaignBasics 1}}
             <div class="col s7" style="margin-bottom: 15px;">
               {{!-- <a href="/accounts/{{campaign.data.campaign_id}}/overview" > --}}
-              <a href="{{buildPath campaign.data.campaign_id campaign.data.initiative}}">
+              <a href="{{buildPath campaign.data campaign.data.initiative}}">
                 <h5 class="insights-link" data-campaign="{{campaign.data.campaign_id}}" data-stop="{{campaign.stop_time}}">
                     {{campaign.data.name}}
                 </h5>

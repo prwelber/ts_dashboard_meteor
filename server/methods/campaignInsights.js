@@ -25,6 +25,10 @@ Meteor.methods({
 
 Meteor.methods({
   'getInsights': function (accountNumber, end_date) {
+    if (accountNumber.toString().length < 7) {
+      console.log('seems like a twitter campaign');
+      return;
+    }
     let insightsArray = [];
     let masterArray = [];
     let insights;
@@ -249,10 +253,9 @@ Meteor.publish('campaignInsightList', function (opts, searchValue) {
             }
           }
         )
+      } else {
+        return CampaignInsights.find({}); //publish all insights
       }
-      // else {
-      //   return CampaignInsights.find({}); //publish all insights
-      // }
 
     } else if (opts.spending === "spending") {
 

@@ -33,13 +33,37 @@ Template.campaignInsights.events({
 Template.campaignInsights.helpers({
   isReady: (sub) => {
     const campaignNumber = Template.instance().templateDict.get('campNum');
+    var call = Promise.promisify(Meteor.call);
 
+    // ------ TWITTER FLOW ------ //
+    if (FlowRouter.getQueryParam('platform') === 'twitter') {
+      console.log('platform is twitter');
+      const start = FlowRouter.getQueryParam('start_time');
+      const stop = FlowRouter.getQueryParam('stop_time');
+      const campaignId = FlowRouter.getQueryParam('campaign_id');
+      const accountId = FlowRouter.getQueryParam('account_id');
+
+      if (CampaignInsights.find({'data.campaign_id': campaignId}).count() === 0) {
+        Meteor.call('getTwitterInsights', campaignId, accountId, start, stop, (err, res) => {
+          if (res) {
+            console.log('res returned from meteor call')
+          }
+        });
+        return;
+      } else {
+        return true;
+      }
+    }
+
+
+    // ------- END TWITTER FLOW ------- //
+
+    console.log('running FB getInsights')
     if (FlowRouter.subsReady(sub) && CampaignInsights.find({'data.campaign_id': campaignNumber}).count() === 0) {
 
       var target = document.getElementById("spinner-div");
       let spun = Blaze.render(Template.spin, target);
 
-      var call = Promise.promisify(Meteor.call);
       call('getInsights', campaignNumber)
       .then(function (result) {
         Blaze.remove(spun);
@@ -52,6 +76,7 @@ Template.campaignInsights.helpers({
   },
   'fetchInsights': function () {
     const campaignNumber = FlowRouter.current().params.campaign_id;
+
     let camp = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
     if (camp) {
       // convert currency data types - may want to use underscore here
