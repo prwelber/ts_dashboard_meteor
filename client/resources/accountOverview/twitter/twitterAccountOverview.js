@@ -42,7 +42,7 @@ Template.twitterAccountOverview.helpers({
             campaign_id: data.campaign_id
         };
         const initName = init.replace(/ /g, '_');
-        var queryParams = {platform: "twitter", initiative: initName, campaign_id: data.campaign_id, account_id: data.account_id, start_time: data.start_time, stop_time: data.stop_time};
+        var queryParams = {platform: "twitter", initiative: initName, campaign_id: data.campaign_id, account_id: data.account_id, start_time: data.start_time, stop_time: data.stop_time, name: data.name};
         var path = FlowRouter.path('/accounts/:campaign_id/overview', params, queryParams);
 
         return path;

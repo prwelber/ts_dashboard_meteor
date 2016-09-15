@@ -42,9 +42,10 @@ Template.campaignInsights.helpers({
       const stop = FlowRouter.getQueryParam('stop_time');
       const campaignId = FlowRouter.getQueryParam('campaign_id');
       const accountId = FlowRouter.getQueryParam('account_id');
+      const name = FlowRouter.getQueryParam('name');
 
       if (CampaignInsights.find({'data.campaign_id': campaignId}).count() === 0) {
-        Meteor.call('getTwitterInsights', campaignId, accountId, start, stop, (err, res) => {
+        Meteor.call('getTwitterInsights', campaignId, accountId, start, stop, name, (err, res) => {
           if (res) {
             console.log('res returned from meteor call')
           }

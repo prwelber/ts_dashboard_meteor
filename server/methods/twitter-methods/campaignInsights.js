@@ -6,7 +6,7 @@ import { Meteor } from 'meteor/meteor';
 
 Meteor.methods({
 
-  'getTwitterInsights': (campId, accountId, start, end) => {
+  'getTwitterInsights': (campId, accountId, start, end, campaignName) => {
     if (campId === undefined) { return; }
     console.log(campId, accountId, start, end);
 
@@ -29,24 +29,55 @@ Meteor.methods({
     }
 
     const makeStart = function makeStart(prevEnd) {
-      let start = moment(prevEnd, moment.ISO_8601).add(1, 'd').toISOString().slice(0,19) + 'Z';
+      let start = moment(prevEnd, moment.ISO_8601).add(1, 'h').toISOString().slice(0,19) + 'Z';
       return start;
     }
 
     const makeEnd = function makeEnd(start) {
-      let end = moment(start, moment.ISO_8601).add(6, 'd').toISOString().slice(0,19) + 'Z';
+      let end = moment(start, moment.ISO_8601).add({days: 6, hours: 23}).toISOString().slice(0,19) + 'Z';
       return end;
     }
 
+    const checkNull = function checkNull(dataPoint) {
+      if (dataPoint instanceof Array) {
+        return dataPoint[0];
+      } else {
+        return 0;
+      }
+    }
+
     const diff = moment(end, moment.ISO_8601).diff(moment(start, moment.ISO_8601), 'd');
-    console.log('diff', diff);
+    const loops = Math.ceil(diff / 7);
+    console.log('diff', diff, loops);
 
     start = fixTime(start)['start'];
     end = fixTime(start)['end'];
     console.log('start and end', start, end)
 
     let counter = 0;
+    campId, accountId, start, end
+    let data = {
+      impressions: 0,
+      spend: 0,
+      follows: 0,
+      retweets: 0,
+      likes: 0,
+      engagements: 0,
+      clicks: 0,
+      media_views: 0,
+      card_engagements: 0,
+      replies: 0,
+      url_clicks: 0,
+      billed_engagements: 0,
+      carousel_swipes: 0,
+      campaign_id: campId,
+      account_id: accountId,
+      start_date: start,
+      end_date: end,
+      name: campaignName
+    }
 
+    // -------- START OF INTERVAL -------- //
     const intervalID = Meteor.setInterval(function() {
       counter++;
       console.log("START and END", start, end)
@@ -58,14 +89,36 @@ Meteor.methods({
         start_time: start,
         end_time: end,
         granularity: 'TOTAL',
-        metric_groups: 'ENGAGEMENT,BILLING',
+        metric_groups: 'ENGAGEMENT,BILLING,MEDIA',
         placement: 'ALL_ON_TWITTER'
       }
+
+      /*
+      * maybe i should save this by a total object and also
+      * segmented weekly data totals
+      * possibly no daily breakdown, just weekly (for now)
+      */
+
 
 
 
       result = T.get(`/stats/accounts/${accountId}`, payload);
-      console.log(result.twitterBody.data[0].id_data[0]);
+      dataResult = result.twitterBody.data[0].id_data[0].metrics;
+      console.log(result.twitterBody.data[0].id_data);
+
+      data.impressions        += checkNull(dataResult.impressions);
+      data.spend              += checkNull(dataResult.billed_charge_local_micro) / 1000000;
+      data.follows            += checkNull(dataResult.follows);
+      data.retweets           += checkNull(dataResult.retweets);
+      data.likes              += checkNull(dataResult.likes);
+      data.engagements        += checkNull(dataResult.engagements);
+      data.clicks             += checkNull(dataResult.clicks);
+      data.media_views        += checkNull(dataResult.media_views);
+      data.card_engagements   += checkNull(dataResult.card_engagements);
+      data.replies            += checkNull(dataResult.replies);
+      data.url_clicks         += checkNull(dataResult.url_clicks);
+      data.billed_engagements += checkNull(dataResult.billed_engagements);
+      data.carousel_swipes    += checkNull(dataResult.carousel_swipes);
 
       // start = end + 1
       start = makeStart(end);
@@ -73,19 +126,14 @@ Meteor.methods({
       // end = start + 6
       end = makeEnd(start)
 
-      if (counter >= 2) {
+      if (counter >= 5) {
         console.log('CLEARING INTERVAL')
+        console.log('DATA', data)
         Meteor.clearInterval(intervalID);
       }
     }, 2000);
 
 
-      //
-
-      // for requesting async job
-
-
-      // console.log('billing results', result.twitterBody)
       // console.log('result for stats/accounts', result.twitterBody.data[0].id_data[0])
       // // this below log gave me the impression number as an array, ex. [3361]
       // console.log('result for stats/accounts with impressions', result.twitterBody.data[0].id_data[0].metrics.impressions)
