@@ -39,8 +39,8 @@
           </tr>
         </thead>
         <tbody>
-          {{#each getInitiative.lineItems}}
-            {{#if budget}}
+          {{#with getLineItem}}
+            {{!-- {{#if budget}} --}}
               <tr>
                 <td>{{objective}}</td>
                 <td>{{platform}}</td>
@@ -55,8 +55,8 @@
                   <td>{{percentTotalPercent}}%</td>
                 {{/if}}
               </tr>
-            {{/if}}
-          {{/each}}
+            {{!-- {{/if}} --}}
+          {{/with}}
         </tbody>
       </table>
     </div>

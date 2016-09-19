@@ -52,6 +52,9 @@ Template.initiativeHomepage.onCreated(function () {
 
   this.templateDictionary = new ReactiveDict();
   this.templateDictionary.set('chartData', false);
+
+  this.aggregatedSpend = new ReactiveDict();
+  this.aggregatedSpend.set('spend', 0);
 });
 
 Template.initiativeHomepage.onRendered(function () {
@@ -65,6 +68,15 @@ Template.initiativeHomepage.onRendered(function () {
     $('ul.tabs').tabs();
   });
 
+
+  // dynamically set client aggregated spend if one of the line item
+  // spends should be over budget
+  let spends = $('.client-spend-init-homepage');
+  let spend = 0;
+  for (let i = 0; i < spends.length; i++) {
+    spend += accounting.unformat(spends[i].innerText);
+  }
+  this.aggregatedSpend.set('spend', spend)
 
   const initiative = Initiatives.findOne({_id: FlowRouter.getParam('_id')});
   Meteor.call('getAggregate', initiative.name);
@@ -133,14 +145,7 @@ Template.initiativeHomepage.helpers({
     if (! objArr[0].net.client_spend) {
       refreshInits(init, objective);
     }
-    // objArr.forEach(el => {
-    //   const foundItem = findItem(el._id, init.lineItems)[0];
-    //   if (el.net.client_spend > parseFloat(foundItem.budget)) {
-    //     el.net.client_spend = parseFloat(foundItem.budget);
-    //   }
-    //   console.log('foundItem', foundItem)
-    // });
-
+    console.log('OBJARR', objArr)
     return objArr;
   },
   'isTabDisabled': (num) => {
@@ -715,6 +720,7 @@ Template.initiativeHomepage.helpers({
       // if (returnObj.spend > maxBudget) {
       //   returnObj.spend = maxBudget;
       // }
+      console.log('RETURNOBJ', returnObj)
       return returnObj;
     }
   },
@@ -725,9 +731,9 @@ Template.initiativeHomepage.helpers({
     let spend = parseFloat(init[objective].net.client_spend.toFixed(2));
     const max = parseFloat(init.lineItems[itemNumber].budget);
 
-    // if (spend > max) {
-    //   spend = max;
-    // }
+    if (spend > max) {
+      spend = max;
+    }
 
     return initiativeHomepageFunctions.gaugeChart('Spend', spend, max)
   },
@@ -770,9 +776,9 @@ Template.initiativeHomepage.helpers({
     const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
     let spend = parseFloat(init[objective].net.client_spend.toFixed(2));
     const max = parseFloat(init.lineItems[itemNumber].budget);
-    // if (spend > max) {
-    //   spend = max;
-    // }
+    if (spend > max) {
+      spend = max;
+    }
     return initiativeHomepageFunctions.gaugeChart('Spend', spend, max)
   },
   gaugeChart1Action: () => {
@@ -852,6 +858,38 @@ Template.initiativeHomepage.helpers({
     var path = FlowRouter.path('/accounts/:campaign_id/overview', params, queryParams);
 
     return path;
+  },
+  overSpend: (spend, objective) => {
+    const init = Template.instance().templateDict.get('initiative');
+    const raw = accounting.unformat(spend);
+    let campaignObjective;
+    if (objective === 'LINK_CLICKS') {
+      campaignObjective = 'Link Clicks';
+    } else if (objective === 'VIDEO_VIEWS') {
+      campaignObjective = 'Video Views';
+    } else if (objective === 'POST_ENGAGEMENT') {
+      campaignObjective = 'Post Engagement';
+    } else if (objective === 'CONVERSIONS') {
+      campaignObjective = 'Conversions';
+    } else if (objective === 'PAGE_LIKES') {
+      campaignObjective = 'Page Likes';
+    }
+
+    const formattedObjective = objective.replace(/_/g, " ").toLowerCase();
+
+    const findIt = _.where(init.lineItems, {objective: campaignObjective})[0];
+    console.log('findIt', findIt, raw)
+
+    if (raw > parseFloat(findIt.budget)) {
+      return findIt.budget;
+    }
+
+    return spend;
+
+  },
+  agClientSpend: () => {
+    const spend = Template.instance().aggregatedSpend.get('spend');
+    return spend;
   }
 });
 

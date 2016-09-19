@@ -11,8 +11,9 @@ main {
 }
 
 table {
-  margin-bottom: 35px;
+  margin-bottom: 15px;
 }
+
 
 
 
@@ -121,6 +122,9 @@ a:hover {
   margin-bottom: 15px;
   text-align: center;
   width: 85%;
+  /*margin-left: 0px;*/
+  /*margin-right: 0px;*/
+  margin: 0 auto;
 }
 
 .no-top-margin {
@@ -332,6 +336,11 @@ a:hover {
   border: 1px solid black;
   display: flex;
   justify-content: center;
+}
+
+table td {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 

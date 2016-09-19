@@ -160,10 +160,10 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
     let effectiveNum = parseFloat(init.lineItems[itemNum].effectiveNum);
     let percentage = (parseFloat(init.lineItems[itemNum].percentTotalPercent) / 100);
     if (action === "impressions") {
-      let cpm = accounting.unformat(campaignData.cpm);
+      let cpm = parseFloat(accounting.unformat(campaignData.cpm).toFixed(2));
       if (cpm <= effectiveNum) {
         // effectiveNum = parseFloat((cpm / percentage).toFixed(2));
-        effectiveNum = (cpm / percentage);
+        effectiveNum = cpm / percentage;
         return (campaignData[action] / 1000) * effectiveNum;
       } else if ((cpm > effectiveNum && cpm < quotedPrice) || cpm >= quotedPrice) {
         return (campaignData[action] / 1000) * quotedPrice;
@@ -210,6 +210,7 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
 
 export const reportFunctions = {
   handleData: (data, actions, performance, init, lineItemName) => {
+    console.log('HANDLEDATA', data, actions, performance, init, lineItemName)
     const numbers = flattenData([data]); // numbers will be an object
     // get line item number
     let itemNumber = parseInt(lineItemName.substring(lineItemName.length - 1, lineItemName.length) - 1);
@@ -221,6 +222,7 @@ export const reportFunctions = {
     } else if (init.lineItems[itemNumber].percent_total) {
       const deal = "percent_total";
       const quotedPrice = init.lineItems[itemNumber].price;
+      console.log('MAKE CLIENT SPEND WITH', quotedPrice, numbers, init, itemNumber)
       clientSpend = percentTotalSpend (deal, quotedPrice, numbers, init, itemNumber);
     }
 

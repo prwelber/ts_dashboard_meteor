@@ -189,7 +189,7 @@
               <tr>
                 <td style="padding: 5px 0px;">Campaign</td>
                 <td style="padding: 5px 0px;">{{num._id}}</td>
-                <td style="padding: 5px 0px;">{{formatMoney num.net.client_spend}}</td>
+                <td class="client-spend-init-homepage" style="padding: 5px 0px;">{{formatMoney (overSpend num.net.client_spend num._id)}}</td>
                 <td style="padding: 5px 0px;">{{formatNumber num.clicks}}</td>
                 <td style="padding: 5px 0px;">{{formatMoney num.net.client_cpc}}</td>
                 <td style="padding: 5px 0px;">{{formatNumber num.impressions}}</td>
@@ -204,7 +204,7 @@
               <tr>
                 <td style="padding: 5px 0px;"><strong>Aggregate</strong></td>
                 <td style="padding: 5px 0px;"><strong>Aggregate</strong></td>
-                <td style="padding: 5px 0px;"><strong>{{formatMoney spend}}</strong></td>
+                <td style="padding: 5px 0px;"><strong>{{formatMoney agClientSpend}}</strong></td>
                 <td style="padding: 5px 0px;"><strong>{{formatNumber clicks}}</strong></td>
                 <td style="padding: 5px 0px;"><strong>{{formatMoney cpc}}</strong></td>
                 <td style="padding: 5px 0px;"><strong>{{formatNumber impressions}}</strong></td>
@@ -419,10 +419,14 @@ include charting for each lineItem and definitely aggregations --}}
 </div>
 
 
+
+
+
+
 {{#if isReady "Initiatives" "campaignInsightList" "insightsBreakdownByDaysList"}}
   <div class="container">
-    <div class="row">
-      <div class="row dashboard-initiative-header">
+    <div class="row" style="margin-top: 15px">
+      {{!-- <div class="dashboard-initiative-header"> --}}
         <div class="col s3">
           <p class="center-align border-bottom">Name</p>
           <p class="center-align no-top-margin" style="font-size: 1.25rem">{{initiative.name}}</p>
@@ -439,12 +443,13 @@ include charting for each lineItem and definitely aggregations --}}
         <p class="center-align border-bottom">Product</p>
           <p class="center-align no-top-margin" style="font-size: 1.25rem">{{initiative.product}}</p>
         </div>
-      </div>
-      <p class="center-align" style="font-size: 1.25rem">Line Items</p>
+      {{!-- </div> --}}
+      <p class="center-align" style="font-size: 1.25rem">Contract Line Items</p>
       <table class="centered">
 
         <thead>
           <tr>
+            <th>Line Item</th>
             <th>Objective</th>
             <th>Platform</th>
             <th>Deal Type</th>
@@ -464,6 +469,7 @@ include charting for each lineItem and definitely aggregations --}}
           {{#if budget}}
           {{!-- #if budget is essentially a validator --}}
             <tr>
+              <td>{{name}}</td>
               <td>{{objective}}</td>
               <td>{{platform}}</td>
               <td>{{dealType}}</td>
@@ -484,6 +490,11 @@ include charting for each lineItem and definitely aggregations --}}
     </div>
 
     </div>
+
+
+
+
+
 
 
   {{!-- the following block says if user is an admin, show cost per chart and

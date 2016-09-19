@@ -47,6 +47,7 @@ Template.insightsBreakdownDaily.onCreated(function () {
 
 Template.insightsBreakdownDaily.onRendered(function () {
   $('.tooltipped').tooltip({delay: 25});
+  console.log($('p'))
 });
 
 Template.insightsBreakdownDaily.events({

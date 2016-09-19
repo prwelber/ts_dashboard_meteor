@@ -45,6 +45,8 @@ Template.campaignDashboard.onCreated( function () {
 Template.campaignDashboard.onRendered(function () {
     $(".dropdown-button").dropdown({hover: true});
     $(".button-collapse").sideNav();
+    const camp = CampaignInsights.findOne({'data.campaign_id': FlowRouter.getParam('campaign_id')})
+    this.templateDict.set('campData', camp.data)
 });
 
 Template.campaignDashboard.events({
@@ -164,6 +166,13 @@ Template.campaignDashboard.helpers({
       } catch(e) {
           console.log("this error is not important");
       }
+  },
+  getLineItem: () => {
+    const init = Template.instance().templateDict.get('initiative');
+    const campData = Template.instance().templateDict.get('campData');
+    console.log('GETLINEITEM', init, campData, getLineItem(campData, init))
+    return getLineItem(campData, init);
+
   },
   'getInitiative': function () {
       const initiative = Template.instance().templateDict.get('initiative');

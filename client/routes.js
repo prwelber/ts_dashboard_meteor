@@ -135,7 +135,7 @@ FlowRouter.route('/accounts/:campaign_id/daybreakdowns', {
     name: 'insightsBreakdownDaily',
     action: function (params) {
         Session.set("route", "daybreakdowns");
-        BlazeLayout.render('index', {main: 'campaignDashboard', dash: 'insightsBreakdownDaily'});
+        BlazeLayout.render('index', {main: 'insightsBreakdownDaily'});
     }
 });
 
