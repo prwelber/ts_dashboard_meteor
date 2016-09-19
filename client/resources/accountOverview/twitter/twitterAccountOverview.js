@@ -37,7 +37,6 @@ Template.twitterAccountOverview.helpers({
         return Initiatives.find({}, {sort: {name: 1}}).fetch();
     },
     buildPath: (data, init) => {
-        console.log('data', data)
         var params = {
             campaign_id: data.campaign_id
         };
@@ -65,7 +64,6 @@ Template.twitterAccountOverview.events({
         const campName = event.target.dataset.name;
         const initName = event.target.dataset.initiative;
         const campaignID = event.target.dataset.campid;
-        console.log(campaignID, campName)
         Meteor.call('deleteCampaignBasic', _id, campName, initName, campaignID, (err, result) => {
             if (result) {
                 Materialize.toast('Successfully Deleted', 1500)
@@ -76,18 +74,16 @@ Template.twitterAccountOverview.events({
         const id = FlowRouter.getParam('account_id');
         const target = document.getElementById('spinner-div');
         let spun = Blaze.render(Template.spin, target);
-        console.log('twitter btn clicked', id)
         Meteor.call('getTwitterCampaigns', id, (err, res) => {
             if (res) Blaze.remove(spun);
         });
     },
     'change .twitter-campaign-select': (event, template) => {
-        console.log('change registered')
-        console.log(event.target.value);
         const init = event.target.value;
         const twitterCamp = event.target.getAttribute('name');
-        console.log(event.target.getAttribute('name'));
-        Meteor.call('assignTwitterCampaignToInitiative', init, twitterCamp, (err, res) => {
+        const twitterID = event.target.dataset.id;
+        console.log(event.target.getAttribute('name'), twitterID);
+        Meteor.call('assignTwitterCampaignToInitiative', init, twitterCamp, twitterID, (err, res) => {
             if (res) {
                 Materialize.toast('Initiative Assigned!', 2000);
             }

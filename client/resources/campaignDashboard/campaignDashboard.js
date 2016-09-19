@@ -69,6 +69,16 @@ Template.campaignDashboard.events({
     }
 });
 
+
+
+
+
+
+
+
+
+
+
 Template.campaignDashboard.helpers({
   isReady: (sub1, sub2) => {
     const template = Template.instance();
@@ -89,12 +99,25 @@ Template.campaignDashboard.helpers({
     if (sessionPlatform === 'twitter') {
       console.log('twitter logic for fetch insights')
       let twitterCampaign = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
-
+      console.log('TWITTER CAMP', twitterCampaign)
       if (!twitterCampaign) {
-        // need account_id, campaign_id, start and end
-        Meteor.call('getTwitterInsights', )
+        const start = FlowRouter.getQueryParam('start_time');
+        const stop = FlowRouter.getQueryParam('stop_time');
+        const campaignId = FlowRouter.getQueryParam('campaign_id');
+        const accountId = FlowRouter.getQueryParam('account_id');
+        const name = FlowRouter.getQueryParam('name');
+        const initName = FlowRouter.getQueryParam('initiative');
+
+        if (CampaignInsights.find({'data.campaign_id': campaignId}).count() === 0) {
+          Meteor.call('getTwitterInsights', campaignId, accountId, start, stop, name, initName, (err, res) => {
+            if (res) {
+              console.log('res returned from meteor call')
+            }
+          });
+          return;
+        }
       }
-      return twitterCampaign;
+      return twitterCampaign.data;
 
     }
     console.log('running logic for facebook fetch insight')
@@ -289,9 +312,15 @@ Template.campaignDashboard.helpers({
     } else {
       return "grey lighten-5";
     }
+  },
+  platformIsTwitter: () => {
+    if (Session.get('platform') === 'twitter') {
+      return true;
+    }
   }
 });
 
 Template.campaignDashboard.onDestroyed(function () {
     $("#message-box").text("");
+    Session.set('platform', null);
 });

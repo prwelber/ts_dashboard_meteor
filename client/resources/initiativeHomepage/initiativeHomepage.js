@@ -817,8 +817,6 @@ Template.initiativeHomepage.helpers({
 
     var instagramTest = _.where(init.lineItems, {platform: 'Instagram'})[0];
 
-    console.log('instaTest', instagramTest)
-
     if (instagramTest) {
       if (instagramTest.objective.toUpperCase().replace(/ /g, '_') === objective) {
         return 'instagram';
@@ -836,6 +834,24 @@ Template.initiativeHomepage.helpers({
     } else {
       return 'facebook-official';
     }
+  },
+  buildPath: (id, platform, start, stop, accountID, initName, campName) => {
+
+    let startTime = moment(start, 'MM-DD-YYYY hh:mm a').toISOString()
+    let stopTime = moment(stop, 'MM-DD-YYYY hh:mm a').toISOString()
+
+    const params = {campaign_id: id};
+    let queryParams = {};
+
+    if (platform === 'twitter') {
+      queryParams = {platform: "twitter", initiative: initName, campaign_id: id, account_id: accountID, start_time: startTime, stop_time: stopTime, name: campName};
+    } else {
+      queryParams = {platform: 'facebook'}
+    }
+
+    var path = FlowRouter.path('/accounts/:campaign_id/overview', params, queryParams);
+
+    return path;
   }
 });
 

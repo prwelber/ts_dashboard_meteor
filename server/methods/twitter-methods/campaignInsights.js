@@ -4,10 +4,48 @@ import CampaignBasics from '/collections/CampaignBasics';
 import { TwitterAdsAPI } from 'meteor/fallentech:twitter-ads';
 import { Meteor } from 'meteor/meteor';
 
+// ------------------ FUNCTIONS ------------------ //
+
+const fixTime = function fixTime(time) {
+  // start.startOf('hour').add(1, 'hour').toString()
+  let times = {};
+  let newTime = moment(time, moment.ISO_8601).startOf('day');
+  times['start'] = newTime.toISOString().slice(0,19) + 'Z';
+  // add 7 days
+  times['end'] = newTime.add(7, 'days').toISOString().slice(0,19) +'Z';
+  return times;
+}
+
+const makeStart = function makeStart(prevEnd) {
+  let start = moment(prevEnd, moment.ISO_8601).add(1, 'h').toISOString().slice(0,19) + 'Z';
+  return start;
+}
+
+const makeEnd = function makeEnd(start) {
+  let end = moment(start, moment.ISO_8601).add({days: 6, hours: 23}).toISOString().slice(0,19) + 'Z';
+  return end;
+}
+
+const checkNull = function checkNull(dataPoint) {
+  if (dataPoint instanceof Array) {
+    return dataPoint[0];
+  } else {
+    return 0;
+  }
+}
+
+
+
+
 Meteor.methods({
 
-  'getTwitterInsights': (campId, accountId, start, end, campaignName) => {
-    if (campId === undefined) { return; }
+  'getTwitterInsights': (campId, accountId, start, end, campaignName, initName) => {
+    if (campId === undefined || start === undefined || end === undefined) {
+      return;
+    }
+
+
+
     console.log(campId, accountId, start, end);
 
     var T = TwitterAdsAPI({
@@ -18,33 +56,6 @@ Meteor.methods({
       sandbox: false
     });
 
-    const fixTime = function fixTime(time) {
-      // start.startOf('hour').add(1, 'hour').toString()
-      let times = {};
-      let newTime = moment(time, moment.ISO_8601).startOf('day');
-      times['start'] = newTime.toISOString().slice(0,19) + 'Z';
-      // add 7 days
-      times['end'] = newTime.add(7, 'days').toISOString().slice(0,19) +'Z';
-      return times;
-    }
-
-    const makeStart = function makeStart(prevEnd) {
-      let start = moment(prevEnd, moment.ISO_8601).add(1, 'h').toISOString().slice(0,19) + 'Z';
-      return start;
-    }
-
-    const makeEnd = function makeEnd(start) {
-      let end = moment(start, moment.ISO_8601).add({days: 6, hours: 23}).toISOString().slice(0,19) + 'Z';
-      return end;
-    }
-
-    const checkNull = function checkNull(dataPoint) {
-      if (dataPoint instanceof Array) {
-        return dataPoint[0];
-      } else {
-        return 0;
-      }
-    }
 
     const diff = moment(end, moment.ISO_8601).diff(moment(start, moment.ISO_8601), 'd');
     const loops = Math.ceil(diff / 7);
@@ -55,7 +66,7 @@ Meteor.methods({
     console.log('start and end', start, end)
 
     let counter = 0;
-    campId, accountId, start, end
+
     let data = {
       impressions: 0,
       spend: 0,
@@ -74,8 +85,9 @@ Meteor.methods({
       account_id: accountId,
       start_date: start,
       end_date: end,
-      name: campaignName
-      platform: 'twitter'
+      campaign_name: campaignName,
+      platform: 'twitter',
+      initiative: initName
     }
 
     // -------- START OF INTERVAL -------- //
@@ -95,17 +107,14 @@ Meteor.methods({
       }
 
       /*
-      * maybe i should save this by a total object and also
+      * maybe i should save this by a total metrics object and also
       * segmented weekly data totals
       * possibly no daily breakdown, just weekly (for now)
       */
 
-
-
-
       result = T.get(`/stats/accounts/${accountId}`, payload);
       dataResult = result.twitterBody.data[0].id_data[0].metrics;
-      console.log(result.twitterBody.data[0].id_data);
+      console.log(result.twitterBody.data[0].id_data[0].metrics);
 
       data.impressions        += checkNull(dataResult.impressions);
       data.spend              += checkNull(dataResult.billed_charge_local_micro) / 1000000;
@@ -120,6 +129,7 @@ Meteor.methods({
       data.url_clicks         += checkNull(dataResult.url_clicks);
       data.billed_engagements += checkNull(dataResult.billed_engagements);
       data.carousel_swipes    += checkNull(dataResult.carousel_swipes);
+      data.end_date            = end;
 
       // start = end + 1
       start = makeStart(end);
@@ -127,13 +137,28 @@ Meteor.methods({
       // end = start + 6
       end = makeEnd(start)
 
-      if (counter >= 5) {
+
+
+      if (counter >= loops) {
         console.log('CLEARING INTERVAL')
+
+        const lineItem = T.get(`/accounts/${accountId}/line_items`, {campaign_ids: campId});
+
+        CampaignInsights.remove({'data.campaign_id': campId});
+        data['placements'] = lineItem.twitterBody.data[0].placements;
+        data['objective'] = lineItem.twitterBody.data[0].objective;
+        data['cpm'] = data.spend / (data.impressions / 1000);
+        data['cpc'] = data.spend / data.clicks;
+        data['cost_per_engagement'] = data.spend / data.engagements;
+        data['inserted'] = moment().format('MM-DD-YYYY hh:mm a');
         console.log('DATA', data)
+        CampaignInsights.insert({
+          data: data
+        });
+
         Meteor.clearInterval(intervalID);
       }
-    }, 2000);
-
+    }, 1500);
 
       // console.log('result for stats/accounts', result.twitterBody.data[0].id_data[0])
       // // this below log gave me the impression number as an array, ex. [3361]
@@ -141,5 +166,4 @@ Meteor.methods({
 
     return 'hi'
   }
-
 });

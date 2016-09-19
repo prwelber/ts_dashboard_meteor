@@ -19,7 +19,7 @@
               <p>{{campaign.data.start_time}} -- {{campaign.data.stop_time}}</p>
               <div class="col s6">
                 <p>In Initiative:</p>
-                <select name="{{campaign.data.name}}" class="browser-default twitter-campaign-select">
+                <select name="{{campaign.data.name}}" data-id="{{campaign.data.campaign_id}}" class="browser-default twitter-campaign-select">
                   <option value="{{campaign.data.initiative}}" selected>{{campaign.data.initiative}}</option>
                   {{#each init in getInits}}
                       <option value="{{init.name}}">{{init.name}}</option>

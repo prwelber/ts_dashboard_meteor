@@ -87,7 +87,101 @@
         <div class="col s12">
           <p class="fancy" style="margin-bottom: 1em;"><span>Actual Stats</span></p>
         </div>
-        <div class="col s6 m4 l3 card grey lighten-5">
+        {{#if platformIsTwitter}}
+          <div class="col s6 m4 l3 card grey lighten-5">
+            <div class="card-content">
+              <span class="center-align dash-data">{{money spend}}</span><br>
+              <span class="">Spend</span>
+            </div>
+          </div>
+          <div class="col s6 m4 l3 card {{highlight 'CPM'}}">
+            <div class="card-content">
+              <span class="center-align dash-data">{{money cpm}}</span><br>
+              <span class="">CPM</span>
+            </div>
+          </div>
+          <div class="col s6 m4 l3 card {{highlight 'CPC'}}">
+            <div class="card-content">
+              <span class="center-align dash-data">{{money cpc}}</span><br>
+              <span class="">CPC</span>
+            </div>
+          </div>
+          <div class="col s6 m4 l3 card {{highlight 'CPM'}}">
+            <div class="card-content">
+              <span class="center-align dash-data">{{number impressions}}</span><br>
+              <span class="">Impressions</span>
+            </div>
+          </div>
+          <div class="col s6 m4 l3 card {{highlight 'CPC'}}">
+            <div class="card-content ">
+              <span class="center-align dash-data">{{number clicks}}</span><br>
+              <span class="">Clicks</span>
+            </div>
+          </div>
+          <div class="col s6 m4 l3 card">
+            <div class="card-content ">
+              <span class="center-align dash-data">{{number engagements}}</span><br>
+              <span class="">Enagements</span>
+            </div>
+          </div>
+          <div class="col s6 m4 l3 card">
+            <div class="card-content ">
+              <span class="center-align dash-data">{{money cost_per_engagement}}</span><br>
+              <span class="">Cost Per Engagement</span>
+            </div>
+          </div>
+          <div class="col s6 m4 l3 card">
+            <div class="card-content ">
+              <span class="center-align dash-data">{{number follows}}</span><br>
+              <span class="">Follows</span>
+            </div>
+          </div>
+          <div class="col s6 m4 l3 card">
+            <div class="card-content ">
+              <span class="center-align dash-data">{{number retweets}}</span><br>
+              <span class="">Retweets</span>
+            </div>
+          </div>
+          <div class="col s6 m4 l3 card">
+            <div class="card-content ">
+              <span class="center-align dash-data">{{number likes}}</span><br>
+              <span class="">Likes</span>
+            </div>
+          </div>
+          <div class="col s6 m4 l3 card">
+            <div class="card-content ">
+              <span class="center-align dash-data">{{number replies}}</span><br>
+              <span class="">Replies</span>
+            </div>
+          </div>
+          <div class="col s6 m4 l3 card">
+            <div class="card-content ">
+              <span class="center-align dash-data">{{number url_clicks}}</span><br>
+              <span class="">Link Clicks</span>
+            </div>
+          </div>
+          <div class="col s6 m4 l3 card">
+            <div class="card-content ">
+              <span class="center-align dash-data">{{number media_views}}</span><br>
+              <span class="">Media Views</span>
+            </div>
+          </div>
+          <div class="col s6 m4 l3 card">
+            <div class="card-content ">
+              <span class="center-align dash-data">{{number card_engagements}}</span><br>
+              <span class="">Card Engagements</span>
+            </div>
+          </div>
+          <div class="col s6 m4 l3 card">
+            <div class="card-content ">
+              <span class="center-align dash-data">{{number carousel_swipes}}</span><br>
+              <span class="">Carousel Swipes</span>
+            </div>
+          </div>
+        {{!-- END TWITTER STATS --}}
+        {{else}}
+        {{!-- BEGIN FACEBOOK STATS --}}
+          <div class="col s6 m4 l3 card grey lighten-5">
           <div class="card-content">
             <span class="center-align dash-data">{{money spend}}</span><br>
             <span class="">Spend</span>
@@ -119,59 +213,62 @@
         </div>
 
         <div class="col s6 m4 l3 card">
-        <div class="card-content ">
-          <span class="center-align dash-data">{{number total_actions}}</span><br>
-          <span class="">Total Actions</span>
+          <div class="card-content ">
+            <span class="center-align dash-data">{{number total_actions}}</span><br>
+            <span class="">Total Actions</span>
+          </div>
         </div>
-      </div>
-      <div class="col s6 m4 l3 card {{highlight 'CPM'}}">
-        <div class="card-content">
-          <span class="center-align dash-data">{{number impressions}}</span><br>
-          <span class="">Impressions</span>
+        <div class="col s6 m4 l3 card {{highlight 'CPM'}}">
+          <div class="card-content">
+            <span class="center-align dash-data">{{number impressions}}</span><br>
+            <span class="">Impressions</span>
+          </div>
         </div>
-      </div>
 
-      <div class="col s6 m4 l3 card {{highlight 'CPC'}}">
-        <div class="card-content ">
-          <span class="center-align dash-data">{{number clicks}}</span><br>
-          <span class="">Clicks</span>
+        <div class="col s6 m4 l3 card {{highlight 'CPC'}}">
+          <div class="card-content ">
+            <span class="center-align dash-data">{{number clicks}}</span><br>
+            <span class="">Clicks</span>
+          </div>
         </div>
-      </div>
 
-      <div class="col s6 m4 l3 card grey lighten-5">
-        <div class="card-content ">
-          <span class="center-align dash-data">{{number link_click}}</span><br>
-          <span class="">Link Clicks</span>
+        <div class="col s6 m4 l3 card grey lighten-5">
+          <div class="card-content ">
+            <span class="center-align dash-data">{{number link_click}}</span><br>
+            <span class="">Link Clicks</span>
+          </div>
         </div>
-      </div>
 
-      <div class="col s6 m4 l3 card {{highlight 'CPL'}}">
-        <div class="card-content">
-          <span class="center-align dash-data">{{number like}}</span><br>
-          <span class="">Page Likes (New Fans)</span>
+        <div class="col s6 m4 l3 card {{highlight 'CPL'}}">
+          <div class="card-content">
+            <span class="center-align dash-data">{{number like}}</span><br>
+            <span class="">Page Likes (New Fans)</span>
+          </div>
         </div>
-      </div>
 
-      <div class="col s6 m4 l3 card {{highlight 'CPVV'}}">
-        <div class="card-content ">
-          <span class="center-align dash-data">{{number video_view}}</span><br>
-          <span class="">Video Views</span>
+        <div class="col s6 m4 l3 card {{highlight 'CPVV'}}">
+          <div class="card-content ">
+            <span class="center-align dash-data">{{number video_view}}</span><br>
+            <span class="">Video Views</span>
+          </div>
         </div>
-      </div>
 
-      <div class="col s6 m4 l3 card grey lighten-5">
-        <div class="card-content ">
-          <span class="center-align dash-data">{{number page_engagement}}</span><br>
-          <span class="">Page Engagement</span>
+        <div class="col s6 m4 l3 card grey lighten-5">
+          <div class="card-content ">
+            <span class="center-align dash-data">{{number page_engagement}}</span><br>
+            <span class="">Page Engagement</span>
+          </div>
         </div>
-      </div>
 
-      <div class="col s6 m4 l3 card grey lighten-5">
-        <div class="card-content ">
-          <span class="center-align dash-data">{{number post_engagement}}</span><br>
-          <span class="">Post Engagement</span>
+        <div class="col s6 m4 l3 card grey lighten-5">
+          <div class="card-content ">
+            <span class="center-align dash-data">{{number post_engagement}}</span><br>
+            <span class="">Post Engagement</span>
+          </div>
         </div>
-      </div>
+
+        {{/if}}
+        {{!-- END TWITTER OR FACEBOOK ADMIN STATS --}}
 
       {{else}}
         {{!------------ BELOW IS WHAT CLIENT SEES ------------}}
@@ -292,13 +389,6 @@
       {{!-- end of row that holds what client sees --}}
 
       {{/if}}
-{{!--         <div class="col s6 m4 l3 card {{highlight 'CPL'}}">
-          <div class="card-content ">
-            <span class="center-align dash-data">{{money clientStats.cpl}}</span><br>
-            <span class="">CPL</span>
-          </div>
-        </div> --}}
-
 
 
       {{#if offsite_conversion}}

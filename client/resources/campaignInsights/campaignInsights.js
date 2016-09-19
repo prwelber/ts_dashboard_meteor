@@ -22,7 +22,12 @@ Template.campaignInsights.onRendered(function () {
 
 Template.campaignInsights.events({
   'click #refresh-insights': function (event, template) {
+    if (FlowRouter.getQueryParam('platform') === 'twitter') {
+      Meteor.call('getTwitterInsights', this.campaign_id, this.account_id, this.start_date, this.end_date, this.campaign_name, this.initiative)
+    }
+
     Meteor.call('refreshInsight', this.campaign_id, this.campaign_name, this.initiative);
+
     $('.tooltipped').tooltip('remove');
   },
   'click .setSessionCampName': function () {
@@ -35,25 +40,30 @@ Template.campaignInsights.helpers({
     const campaignNumber = Template.instance().templateDict.get('campNum');
     var call = Promise.promisify(Meteor.call);
 
+    if (FlowRouter.subsReady(sub) === true) {
+      return true;
+    }
+
     // ------ TWITTER FLOW ------ //
     if (FlowRouter.getQueryParam('platform') === 'twitter') {
       console.log('platform is twitter');
-      const start = FlowRouter.getQueryParam('start_time');
-      const stop = FlowRouter.getQueryParam('stop_time');
-      const campaignId = FlowRouter.getQueryParam('campaign_id');
-      const accountId = FlowRouter.getQueryParam('account_id');
-      const name = FlowRouter.getQueryParam('name');
-
-      if (CampaignInsights.find({'data.campaign_id': campaignId}).count() === 0) {
-        Meteor.call('getTwitterInsights', campaignId, accountId, start, stop, name, (err, res) => {
-          if (res) {
-            console.log('res returned from meteor call')
-          }
-        });
-        return;
-      } else {
-        return true;
-      }
+      // const start = FlowRouter.getQueryParam('start_time');
+      // const stop = FlowRouter.getQueryParam('stop_time');
+      // const campaignId = FlowRouter.getQueryParam('campaign_id');
+      // const accountId = FlowRouter.getQueryParam('account_id');
+      // const name = FlowRouter.getQueryParam('name');
+      // NEED TO PUT THIS IN DASHBOARD.JS FILE
+      // if (CampaignInsights.find({'data.campaign_id': campaignId}).count() === 0) {
+      //   Meteor.call('getTwitterInsights', campaignId, accountId, start, stop, name, (err, res) => {
+      //     if (res) {
+      //       console.log('res returned from meteor call')
+      //     }
+      //   });
+      //   return;
+      // } else {
+      //   return true;
+      // }
+      return true;
     }
 
 
@@ -80,26 +90,7 @@ Template.campaignInsights.helpers({
 
     let camp = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
     if (camp) {
-      // convert currency data types - may want to use underscore here
-      camp.data.impressions = mastFunc.num(camp.data.impressions);
-      camp.data.ctr = camp.data.ctr.toString().substr(0,5);
-      camp.data.frequency = numeral(camp.data.frequency).format("0,0.00");
-      camp.data.cpl = mastFunc.money(camp.data.cpl);
-      camp.data.cpm = mastFunc.money(camp.data.cpm);
-      camp.data.cpc = mastFunc.money(camp.data.cpc);
-      camp.data.spend = mastFunc.money(camp.data.spend);
-      if (camp.data.video_view) {
-        camp.data['tenSecondView'] = camp.data['video_10_sec_watched_actions'][0]['value'];
-        camp.data['costPerTenSecondView'] = mastFunc.money(camp.data['cost_per_10_sec_video_view'][0]['value']);
-        camp.data['fifteenSecondView'] = camp.data['video_15_sec_watched_actions'][0]['value'];
-        camp.data['avgPctWatched'] = camp.data['video_avg_pct_watched_actions'][0]['value'];
-        camp.data['avgSecWatched'] = camp.data['video_avg_sec_watched_actions'][0]['value'];
-        camp.data['completeWatched'] = camp.data['video_complete_watched_actions'][0]['value'];
-
-        return [camp.data];
-      } else {
-        return [camp.data];
-      }
+      return [camp.data];
     }
   },
   'cleanText': function (text) {
