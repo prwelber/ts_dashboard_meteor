@@ -75,6 +75,7 @@ Meteor.methods({
       start_date: start,
       end_date: end,
       name: campaignName
+      platform: 'twitter'
     }
 
     // -------- START OF INTERVAL -------- //
