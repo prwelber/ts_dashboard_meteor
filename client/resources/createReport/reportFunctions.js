@@ -169,7 +169,7 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
         return (campaignData[action] / 1000) * quotedPrice;
       }
     } else if (action === "clicks") {
-      let cpc = accounting.unformat(campaignData.cpc);
+      let cpc = parseFloat(accounting.unformat(campaignData.cpc).toFixed(2));
       if (cpc <= effectiveNum) {
         // effectiveNum = parseFloat((cpc / percentage).toFixed(2));
         effectiveNum = (cpc / percentage);
@@ -178,7 +178,7 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
         return (campaignData[action]) * quotedPrice;
       }
     } else if (action === "like") {
-      let cpl = accounting.unformat(campaignData.cpl);
+      let cpl = parseFloat(accounting.unformat(campaignData.cpl).toFixed(2));
       if (cpl <= effectiveNum) {
         // effectiveNum = parseFloat((cpl / percentage).toFixed(2));
         effectiveNum = (cpl / percentage);
@@ -187,7 +187,7 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
         return (campaignData[action]) * quotedPrice;
       }
     } else if (action === "video_view") {
-      let cpvv = accounting.unformat(campaignData['cost_per_video_view']);
+      let cpvv = parseFloat(accounting.unformat(campaignData['cost_per_video_view']).toFixed(2));
       if (cpvv <= effectiveNum) {
         // effectiveNum = parseFloat((cpvv / percentage).toFixed(2));
         effectiveNum = (cpvv / percentage);
