@@ -140,6 +140,9 @@ Template.index.helpers({
     if (user.agency.indexOf('Constellation') >= 0) {
       return true;
     }
+  },
+  linkActive: (route) => {
+    return Session.get('route') === route ? "orange": "";
   }
 });
 

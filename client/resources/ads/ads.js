@@ -331,6 +331,14 @@ Template.ads.helpers({
             categories: names,
             crosshair: true
         }],
+        plotOptions: {
+          series: {
+            lineWidth: 0,
+            marker: {
+              radius: 10
+            }
+          }
+        },
         yAxis: [{ // Primary yAxis
             labels: {
                 format: '{value} post engs',
@@ -394,6 +402,7 @@ Template.ads.helpers({
             type: 'spline',
             yAxis: 2,
             data: ctr,
+            visible: false,
             marker: {
                 enabled: false
             },

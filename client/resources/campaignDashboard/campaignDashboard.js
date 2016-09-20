@@ -101,6 +101,9 @@ Template.campaignDashboard.helpers({
     if (sessionPlatform === 'twitter') {
       console.log('twitter logic for fetch insights')
       let twitterCampaign = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
+      if (twitterCampaign.data.spend) {
+        return twitterCampaign.data;
+      }
       console.log('TWITTER CAMP', twitterCampaign)
       if (!twitterCampaign) {
         const start = FlowRouter.getQueryParam('start_time');
@@ -113,7 +116,7 @@ Template.campaignDashboard.helpers({
         if (CampaignInsights.find({'data.campaign_id': campaignId}).count() === 0) {
           Meteor.call('getTwitterInsights', campaignId, accountId, start, stop, name, initName, (err, res) => {
             if (res) {
-              console.log('res returned from meteor call')
+              console.log('res returned from get Twitter Insights meteor call')
             }
           });
           return;
@@ -174,6 +177,16 @@ Template.campaignDashboard.helpers({
   },
   'getInitiative': function () {
       const initiative = Template.instance().templateDict.get('initiative');
+      console.log('from getInitiative', initiative)
+      if (!initiative) {
+        if (FlowRouter.getQueryParam('platform') === 'twitter') {
+          const initName = FlowRouter.getQueryParam('initiative');
+          console.log('from getInitiative 2', initName)
+          const init = Initiatives.findOne({name: initName});
+          console.log('INITIATIVE!', init)
+          return init;
+        }
+      }
       return initiative;
   },
   'getBudgetTotal': function () {

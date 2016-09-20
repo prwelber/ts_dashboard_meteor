@@ -7,6 +7,7 @@ import CampaignBasics from '/collections/CampaignBasics';
 
 Meteor.methods({
   assignTwitterCampaignToInitiative: (initName, twitterCampName, twitterID) => {
+    console.log('from assignTwitterCampaignToInitiative', initName, twitterID, twitterCampName)
     if (initName && twitterCampName) {
       CampaignBasics.update(
         {'data.name': twitterCampName},

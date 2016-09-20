@@ -249,8 +249,44 @@ Template.initiativesHome.helpers({
   },
   getBrands: () => {
     return MasterAccounts.find({}, {sort: {name: 1}});
+  },
+  factorCheckArrow: () => {
+    return 'down'
+  },
+  factorCheckColor: () => {
+    return 'green'
+  },
+  factorCheckActual: (_id, index) => {
+    const init = Initiatives.findOne({_id: _id});
+    const lineItem = init.lineItems[index]
+    const dealType = lineItem.dealType.toLowerCase(); // eg. cpc vs CPC
+    const contractedPrice = lineItem.price;
+    const objective = lineItem.objective.replace(/ /g, "_").toUpperCase();
+
+    console.log('factorCheckActual', init[objective][dealType])
+
+    return init[objective][dealType]
+  },
+  factorCheckClient: (_id, index) => {
+    const init = Initiatives.findOne({_id: _id});
+    const lineItem = init.lineItems[index]
+    const dealType = lineItem.dealType.toLowerCase(); // eg. cpc vs CPC
+    const contractedPrice = lineItem.price;
+    const objective = lineItem.objective.replace(/ /g, "_").toUpperCase();
+
+    console.log('factorCheckClient', init[objective]['net']['client_'+dealType])
+
+    return init[objective]['net']['client_'+dealType];
+
   }
 });
+
+
+
+
+
+
+
 
 Template.initiativesHome.events({
  "click .userLogout": (event, template) => {

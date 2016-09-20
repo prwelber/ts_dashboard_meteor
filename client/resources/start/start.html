@@ -159,17 +159,27 @@
               {{/if}}
               {{!-- {{#if isInRole 'admin'}} --}}
                 <div class="row" style="margin-bottom: 10px;">
-                  <div class="col s4 offset-s3">
+                  <div class="col s3 offset-s3">
                     <span class="percent-circle-header">Spend</span>
                     <span class="percent-circle-header">Delivery</span>
                     <span class="percent-circle-header">Flight</span>
                   </div>
+                  {{#if isInRole 'admin'}}
+                    <div class="col s3">
+                      <span class="factor-check-header">Actual</span>
+                      <span class="factor-check-header" style="padding-left: 3.3em;">Client</span>
+                    </div>
+                  {{/if}}
                 </div>
                 <div class="row" style="margin-bottom: 5px;">
                   {{#each item in lineItems}}
                     {{#if item.budget}}
-
-                    <div class="col s9 push-s3">
+                    <div class="col s3">
+                      <p style="padding-top: 4%;">{{item.name}} - {{#if isInRole 'admin'}}{{item.dealType}} @ {{item.price}} / {{/if}}{{item.objective}}</p>
+                    </div>
+                    {{!-- ORIGINAL --}}
+                    {{!-- <div class="col s9 push-s3"> --}}
+                    <div class="col s9">
                       {{!-- circles --}}
                       <div class="c100 p{{calcSpend item.objective _id "circle"}} small green grey lighten-1">
                         <span>{{calcSpend item.objective _id "number"}}%</span>
@@ -194,10 +204,18 @@
                           <div class="fill"></div>
                         </div>
                       </div>
+                    {{#if isInRole 'admin'}}
+                      <div>
+                        <span class="factor-check-actual">{{factorCheckActual _id @index}}</span>
+                        <i class="fa fa-arrow-{{factorCheckArrow _id @index}} fa-2x factor-arrow" aria-hidden="true" style="color: {{factorCheckColor _id @index}}"></i>
+                        <span class="factor-check-client">{{factorCheckClient _id @index}}</span>
+                      </div>
+                    {{/if}}
                     </div>
-                    <div class="col s3 pull-s9">
+                    {{!-- ORIGINAL --}}
+                    {{!-- <div class="col s3 pull-s9">
                       <p style="padding-top: 4%;">{{item.name}} - {{item.objective}}</p>
-                    </div>
+                    </div> --}}
                     {{/if}}
                   {{/each}}
                 </div>
