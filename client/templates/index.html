@@ -20,32 +20,56 @@
               <ul id="nav-mobile" class="left hide-on-med-and-down">
                 <li style="padding-left: 10px;">Hi, {{getUser}}</li>
                 {{!-- <li class="userLogout"> <a href="">Logout</a></li> --}}
-                <li><a href="/home">Home</a></li>
+                <li>
+                  <a href="/home" class="btn nav-link">Home</a>
+                </li>
                 {{#if constellationUser}}
-                  <li><a href="/admin/boostrequest">Boost Requests</a></li>
+                  <li>
+                    <a href="/admin/boostrequest" class="btn nav-link">Boost Requests</a>
+                  </li>
                 {{/if}}
                 {{#if isInRole "admin"}}
-                  <li><a class="{{active "admin"}}" href="/admin">Admin</a></li>
+                  <li class="{{active "admin"}}">
+                    <a href="/admin" class="btn nav-link">Admin</a>
+                  </li>
                 {{/if}}
 
                 {{#if whatRoute "initiativeHomepage"}}
-                  <li><a id="view-initiative-stats-modal" class="modal-trigger" href="#modal1">Campaign + Aggregate Stats</a></li>
+                  <li>
+                    <a id="view-initiative-stats-modal" class="modal-trigger btn nav-link" href="#modal1">Campaign + Aggregate Stats</a>
+                  </li>
                   {{#if isInRole "admin"}}
                     <li><a id="view-aggregate-modal" class="modal-trigger" href="#modal2">Campaign Aggregator</a></li>
                     <li><a id="file-upload-modal" class="modal-trigger" href="#modal3">Files</a></li>
                   {{/if}}
                 {{/if}}
                 {{#if overviewRoute "overview"}}
-                  <li class="{{active "report"}}"><a href="/accounts/{{getCampaignNumber}}/report">Reporting</a></li>
-                  <li class="{{active "overview"}}"><a href="/accounts/{{getCampaignNumber}}/overview">Overview</a></li>
+                  <li class="{{active "report"}}">
+                    <a href="/accounts/{{getCampaignNumber}}/report" class="btn nav-link">Reporting</a>
+                  </li>
+                  <li class="{{active "overview"}}">
+                    <a href="/accounts/{{getCampaignNumber}}/overview" class="btn nav-link">Overview</a>
+                  </li>
                   {{#if isInRole "admin"}}
-                    <li class="{{active "targeting"}}"><a href="/accounts/{{getCampaignNumber}}/targeting">Targeting</a></li>
+                    <li class="{{active "targeting"}}">
+                      <a href="/accounts/{{getCampaignNumber}}/targeting" class="btn nav-link">Targeting</a>
+                    </li>
                   {{/if}}
-                    <li class="{{active "creative"}}"><a href="/accounts/{{getCampaignNumber}}/creative">Creative</a></li>
-                    <li class="{{active "breakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/breakdowns">Age + Gender</a></li>
-                    <li class="{{active "daybreakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/daybreakdowns">Daily</a></li>
-                    <li class="{{active "hourlyBreakdowns"}}"><a href="/accounts/{{getCampaignNumber}}/hourlybreakdowns">Hourly</a></li>
-                    <li class="{{active "deviceAndPlacement"}}"><a href="/accounts/{{getCampaignNumber}}/devicebreakdowns">Device + Placement</a></li>
+                    <li class="{{active "creative"}}">
+                      <a href="/accounts/{{getCampaignNumber}}/creative" class="btn nav-link">Creative</a>
+                      </li>
+                    <li class="{{active "breakdowns"}}">
+                      <a href="/accounts/{{getCampaignNumber}}/breakdowns" class="btn nav-link">Age + Gender</a>
+                      </li>
+                    <li class="{{active "daybreakdowns"}}">
+                      <a href="/accounts/{{getCampaignNumber}}/daybreakdowns" class="btn nav-link">Daily</a>
+                      </li>
+                    <li class="{{active "hourlyBreakdowns"}}">
+                      <a href="/accounts/{{getCampaignNumber}}/hourlybreakdowns" class="btn nav-link">Hourly</a>
+                      </li>
+                    <li class="{{active "deviceAndPlacement"}}">
+                      <a href="/accounts/{{getCampaignNumber}}/devicebreakdowns" class="btn nav-link">Device + Placement</a>
+                      </li>
                   {{#if isInRole "admin"}}
                     {{!-- <li class="{{active "charts"}}"><a class="tooltipped" data-position="bottom" data-tooltip="View Charts" href="/accounts/{{getCampaignNumber}}/charts"><i class="material-icons">trending_up</i> </a></li> --}}
                   {{/if}}

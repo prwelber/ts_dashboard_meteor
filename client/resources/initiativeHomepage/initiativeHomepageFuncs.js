@@ -232,7 +232,7 @@ export const initiativeHomepageFunctions = {
 
       let total = 0,
           idealSpendTotal = 0;
-      for (let i = 0; i < daysDiff + 1; i++) {
+      for (let i = 0; i < daysDiff; i++) {
         total = total + avg;
         idealSpendTotal = idealSpendTotal + spendAvg;
         avgDeliveryArray.push(parseFloat(total.toFixed(2)));
@@ -462,7 +462,7 @@ export const initiativeHomepageFunctions = {
 
       let total = 0,
           idealSpendTotal = 0;
-      for (let i = 0; i < daysDiff + 1; i++) {
+      for (let i = 0; i < daysDiff ; i++) {
         total = total + avg;
         idealSpendTotal = idealSpendTotal + spendAvg;
         avgDeliveryArray.push(parseFloat(total.toFixed(2)));

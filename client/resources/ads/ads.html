@@ -1,8 +1,9 @@
 <template name="ads">
   <div class="col s10">
+      <p class="left-align">**Ad data covers last 30 days**</p>
       <h5 class="center-align">Ads Insights and Ads Creative</h5>
     <div class="col s12 center-align">
-      <button id="refresh-ads" class="btn-large waves-effect waves-light tooltipped" name="action" data-position="bottom" data-tooltip="Refresh Ads Data" data-id="{{getCampaignNumber}}">
+      <button id="refresh-ads" class="btn-flat btn waves-effect waves-light tooltipped" name="action" data-position="bottom" data-tooltip="Refresh Ads Data" data-id="{{getCampaignNumber}}">
         <p>REFRESH ADS</p>
       </button>
     </div>
@@ -14,7 +15,7 @@
       <thead>
         <tr>
           <th>Ad Name (click for detail)</th>
-          <th>Runtime</th>
+          <th>Insight Range</th>
           <th>Title</th>
           <th>Message</th>
           <th>Media</th>
@@ -32,7 +33,7 @@
         {{#each ad in getAds}}
           <tr>
             <td><a href="#ad-modal" class="modal-trigger" data-spend="{{ad.data.spend}}">{{ad.data.name}}</a></td>
-            <td>{{ad.data.date_start}} - {{ad.data.date_stop}}</td>
+            <td>{{shortDate ad.data.date_start}} - {{shortDate ad.data.date_stop}}</td>
             <td>{{ad.data.title}}</td>
             <td title={{ad.data.message}}>{{shortenMessage ad.data.message}}</td>
             <td><a target="_blank" href="{{ad.data.picture}}">Media</a></td>

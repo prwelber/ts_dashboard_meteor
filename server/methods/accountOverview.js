@@ -112,7 +112,6 @@ Meteor.methods({
 
 // need a meteor.publish here
 Meteor.publish('campaignBasicsList', function (opts) {
-    console.log('opts', opts)
     const init = Initiatives.findOne(opts._id);
 
   if (opts.spending === "spending") {
@@ -122,7 +121,6 @@ Meteor.publish('campaignBasicsList', function (opts) {
   if (opts.page === "homepage") {
     const init = Initiatives.findOne({_id: opts._id});
     // lookup initiative and match campaigns to that\
-    console.log('hitting 4')
     return CampaignBasics.find({"data.initiative": init.name});
 
   } else if (init) {

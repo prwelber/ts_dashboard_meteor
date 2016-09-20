@@ -145,7 +145,6 @@ Template.initiativeHomepage.helpers({
     if (! objArr[0].net.client_spend) {
       refreshInits(init, objective);
     }
-    console.log('OBJARR', objArr)
     return objArr;
   },
   'isTabDisabled': (num) => {
@@ -720,7 +719,6 @@ Template.initiativeHomepage.helpers({
       // if (returnObj.spend > maxBudget) {
       //   returnObj.spend = maxBudget;
       // }
-      console.log('RETURNOBJ', returnObj)
       return returnObj;
     }
   },
@@ -816,7 +814,6 @@ Template.initiativeHomepage.helpers({
   },
   getPlatform: (platform, objective) => {
     const init = Template.instance().templateDict.get('initiative');
-    console.log('args', platform, objective)
     // check to see if objective matches a line item
     // this is really only for instagram purposes
     // need to do Instagram to lower case()
@@ -878,7 +875,6 @@ Template.initiativeHomepage.helpers({
     const formattedObjective = objective.replace(/_/g, " ").toLowerCase();
 
     const findIt = _.where(init.lineItems, {objective: campaignObjective})[0];
-    console.log('findIt', findIt, raw)
 
     if (raw > parseFloat(findIt.budget)) {
       return findIt.budget;

@@ -170,9 +170,7 @@ Template.campaignDashboard.helpers({
   getLineItem: () => {
     const init = Template.instance().templateDict.get('initiative');
     const campData = Template.instance().templateDict.get('campData');
-    console.log('GETLINEITEM', init, campData, getLineItem(campData, init))
     return getLineItem(campData, init);
-
   },
   'getInitiative': function () {
       const initiative = Template.instance().templateDict.get('initiative');

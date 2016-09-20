@@ -61,6 +61,9 @@ Template.ads.helpers({
       return true;
     }
   },
+  shortDate: (date) => {
+    return moment(date, "YYYY-MM-DD").format("MM-DD")
+  },
   'getAds': function () {
     const campaignNumber = FlowRouter.current().params.campaign_id;
     const init = Template.instance().templateDict.get('init');
@@ -222,6 +225,7 @@ Template.ads.helpers({
 
       return {
         chart: {
+          type: 'bar',
           zoomType: 'x'
         },
         // TODO FIX THIS
@@ -230,7 +234,7 @@ Template.ads.helpers({
         },
 
         subtitle: {
-          text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+          text: 'You can turn metrics on and off by clicking their name in the Legend below the graph.'
         },
 
         tooltip: {
@@ -264,7 +268,8 @@ Template.ads.helpers({
         {
           name: 'Impressions',
           data: impressions,
-          color: '#f44336'
+          color: '#f44336',
+          visible: false
         },
         {
           name: 'Clicks',
