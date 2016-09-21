@@ -17,7 +17,7 @@ Meteor.methods({
     });
 
     var result = T.get('accounts');
-
+    // console.log(result.twitterBody)
     const toInsert = [];
 
     result.twitterBody.data.forEach(el => {

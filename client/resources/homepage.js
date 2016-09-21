@@ -137,12 +137,46 @@ Template.index.helpers({
   },
   constellationUser: () => {
     const user = Meteor.user();
-    if (user.agency.indexOf('Constellation') >= 0) {
-      return true;
+    if (user.agency) {
+      if (user.agency.indexOf('Constellation') >= 0) {
+        return true;
+      }
     }
   },
   linkActive: (route) => {
     return Session.get('route') === route ? "orange": "";
+  },
+  buildQuery: (campaign_number) => {
+    if (FlowRouter.getQueryParam('platform') === 'twitter') {
+      const name = FlowRouter.getQueryParam('name');
+      const initiative = FlowRouter.getQueryParam('initiative');
+      const campaignId = FlowRouter.getQueryParam('campaign_id');
+      const accountId = FlowRouter.getQueryParam('account_id');
+      const startTime = FlowRouter.getQueryParam('start_time');
+      const stopTime = FlowRouter.getQueryParam('stop_time');
+      const platform = FlowRouter.getQueryParam('platform')
+
+      const params = {campaign_id: campaignId};
+      const queryParams = {
+        name: name,
+        initiative: initiative,
+        campaign_id: campaignId,
+        account_id: accountId,
+        start_time: startTime,
+        stop_time: stopTime,
+        platform: platform
+      };
+
+      return FlowRouter.path('/accounts/:campaign_id/daybreakdowns', params, queryParams);
+
+    } else {
+
+      const params = {
+        campaign_id: campaign_number
+      };
+
+      return FlowRouter.path('/accounts/:campaign_id/daybreakdowns', params)
+    }
   }
 });
 

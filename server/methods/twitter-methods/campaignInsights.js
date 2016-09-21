@@ -44,7 +44,11 @@ Meteor.methods({
       return;
     }
 
+    const cleanInitName = initName.replace(/_/g, " ");
 
+    const originalStart = fixTime(start)['start']
+    const originalEnd = fixTime(end)['start'];
+    console.log('original times', originalStart, originalEnd);
 
     console.log(campId, accountId, start, end);
 
@@ -87,7 +91,7 @@ Meteor.methods({
       end_date: end,
       campaign_name: campaignName,
       platform: 'twitter',
-      initiative: initName
+      initiative: cleanInitName
     }
 
     // -------- START OF INTERVAL -------- //
@@ -112,9 +116,19 @@ Meteor.methods({
       * possibly no daily breakdown, just weekly (for now)
       */
 
-      result = T.get(`/stats/accounts/${accountId}`, payload);
-      dataResult = result.twitterBody.data[0].id_data[0].metrics;
-      console.log(result.twitterBody.data[0].id_data[0].metrics);
+      let result;
+      let dataResult;
+      try {
+        result = T.get(`/stats/accounts/${accountId}`, payload);
+        dataResult = result.twitterBody.data[0].id_data[0].metrics;
+        // console.log(result.twitterBody.data[0].id_data[0].metrics);
+      } catch (e) {
+        console.log('Error pulling twitter insights - clearing interval', e);
+        Meteor.clearInterval(intervalID);
+        return "error";
+      }
+
+
 
       data.impressions        += checkNull(dataResult.impressions);
       data.spend              += checkNull(dataResult.billed_charge_local_micro) / 1000000;
@@ -131,6 +145,7 @@ Meteor.methods({
       data.carousel_swipes    += checkNull(dataResult.carousel_swipes);
       data.end_date            = end;
 
+
       // start = end + 1
       start = makeStart(end);
 
@@ -138,11 +153,19 @@ Meteor.methods({
       end = makeEnd(start)
 
 
-
       if (counter >= loops) {
         console.log('CLEARING INTERVAL')
 
         const lineItem = T.get(`/accounts/${accountId}/line_items`, {campaign_ids: campId});
+
+        // const reach = T.get(`/stats/accounts/${accountId}/reach/campaigns`, {
+        //   account_id: accountId,
+        //   campaign_ids: campId,
+        //   start_time: originalStart,
+        //   end_time: originalEnd
+        // });
+
+        // console.log('REACH', reach.twitterBody)
 
         CampaignInsights.remove({'data.campaign_id': campId});
         data['placements'] = lineItem.twitterBody.data[0].placements;

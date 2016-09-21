@@ -263,8 +263,6 @@ Template.initiativesHome.helpers({
     const contractedPrice = lineItem.price;
     const objective = lineItem.objective.replace(/ /g, "_").toUpperCase();
 
-    console.log('factorCheckActual', init[objective][dealType])
-
     return init[objective][dealType]
   },
   factorCheckClient: (_id, index) => {
@@ -273,8 +271,6 @@ Template.initiativesHome.helpers({
     const dealType = lineItem.dealType.toLowerCase(); // eg. cpc vs CPC
     const contractedPrice = lineItem.price;
     const objective = lineItem.objective.replace(/ /g, "_").toUpperCase();
-
-    console.log('factorCheckClient', init[objective]['net']['client_'+dealType])
 
     return init[objective]['net']['client_'+dealType];
 

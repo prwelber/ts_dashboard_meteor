@@ -65,6 +65,50 @@ Template.insightsBreakdownDaily.helpers({
       let spun = Blaze.render(Template.spin, target);
       const campaignNumber = FlowRouter.getParam('campaign_id');
       var call = Promise.promisify(Meteor.call);
+      if (FlowRouter.getQueryParam('platform') === 'twitter') {
+        console.log('twitter campaign logic');
+
+
+        let twitterCampaign = InsightsBreakdownsByDays.findOne({'data.campaign_id': campaignNumber});
+
+        if (twitterCampaign) {
+          console.log('found twitter daily insight')
+          return true;
+          // return InsightsBreakdownsByDays.find({'data.campaign_id': campaignNumber});
+        }
+        console.log('TWITTER CAMP', twitterCampaign)
+        if (!twitterCampaign) {
+          const start = FlowRouter.getQueryParam('start_time');
+          const stop = FlowRouter.getQueryParam('stop_time');
+          const campaignId = FlowRouter.getQueryParam('campaign_id');
+          const accountId = FlowRouter.getQueryParam('account_id');
+          const name = FlowRouter.getQueryParam('name');
+          const initName = FlowRouter.getQueryParam('initiative');
+          console.log('no twitter daily insight found, pulling new')
+          const diff = moment(stop, moment.ISO_8601).diff(moment(start, moment.ISO_8601), 'd');
+          const loops = Math.ceil(diff / 7) * 1.5;
+          Materialize.toast('Retrieving Twitter Day by Day Insights, estimated wait time is ' + loops + ' seconds', 8000);
+          if (InsightsBreakdownsByDays.find({'data.campaign_id': campaignId}).count() === 0) {
+            call('getDailyTwitterInsights', campaignId, accountId, start, stop, name, initName)
+            .then(function (result) {
+              Blaze.remove(spun);
+              if (result === 'error') {
+                alert('There was an error, please wait a while and try again later.');
+                return true;
+              }
+              console.log(result);
+            }).catch(function (err) {
+              console.log('ERROR!', err);
+            });
+            return true;
+          }
+        }
+          return true;
+        }
+
+
+
+      // if facebook campaign
       call('getDailyBreakdown', campaignNumber)
       .then(function (result) {
         // console.log("result from promise", result)

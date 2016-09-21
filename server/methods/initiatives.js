@@ -191,7 +191,7 @@ Meteor.methods({
           _id: objective,
           spend: {$sum: "$data.spend"},
           clicks: {$sum: "$data.clicks"},
-          reach: {$sum: "$data.reach"},
+          // reach: {$sum: "$data.reach"},
           impressions: {$sum: "$data.impressions"},
           likes: {$sum: "$data.like"},
           videoViews: {$sum: "$data.video_view"}

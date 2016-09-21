@@ -101,7 +101,9 @@ Template.campaignDashboard.helpers({
     if (sessionPlatform === 'twitter') {
       console.log('twitter logic for fetch insights')
       let twitterCampaign = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
-      if (twitterCampaign.data.spend) {
+      if (twitterCampaign) {
+        console.log('found twitter insight')
+        Template.instance().templateDict.set('campData', twitterCampaign.data)
         return twitterCampaign.data;
       }
       console.log('TWITTER CAMP', twitterCampaign)
@@ -112,16 +114,19 @@ Template.campaignDashboard.helpers({
         const accountId = FlowRouter.getQueryParam('account_id');
         const name = FlowRouter.getQueryParam('name');
         const initName = FlowRouter.getQueryParam('initiative');
-
+        const diff = moment(stop, moment.ISO_8601).diff(moment(start, moment.ISO_8601), 'd');
+          const loops = Math.ceil(diff / 7) * 1.5;
+        Materialize.toast('It can take a while to pull Twitter data, please be patient. Your estimated wait time is ' + loops + ' seconds', 8000);
         if (CampaignInsights.find({'data.campaign_id': campaignId}).count() === 0) {
           Meteor.call('getTwitterInsights', campaignId, accountId, start, stop, name, initName, (err, res) => {
-            if (res) {
-              console.log('res returned from get Twitter Insights meteor call')
+            if (res === 'error') {
+              alert('There has been an error, please wait a while and try again later.');
             }
           });
           return;
         }
       }
+      Template.instance().templateDict.set('campData', twitterCampaign.data)
       return twitterCampaign.data;
 
     }
@@ -173,17 +178,15 @@ Template.campaignDashboard.helpers({
   getLineItem: () => {
     const init = Template.instance().templateDict.get('initiative');
     const campData = Template.instance().templateDict.get('campData');
+    console.log('from getLineItem', init, campData);
     return getLineItem(campData, init);
   },
   'getInitiative': function () {
       const initiative = Template.instance().templateDict.get('initiative');
-      console.log('from getInitiative', initiative)
       if (!initiative) {
         if (FlowRouter.getQueryParam('platform') === 'twitter') {
           const initName = FlowRouter.getQueryParam('initiative');
-          console.log('from getInitiative 2', initName)
           const init = Initiatives.findOne({name: initName});
-          console.log('INITIATIVE!', init)
           return init;
         }
       }
@@ -283,7 +286,9 @@ Template.campaignDashboard.helpers({
     return mastFunc.num(num);
   },
   twoDecimals: (num) => {
-    return mastFunc.twoDecimals(num);
+    if (num) {
+      return mastFunc.twoDecimals(num);
+    }
   },
   timezone: (time) => {
 
