@@ -168,8 +168,8 @@ Meteor.methods({
         console.log('CLEARING INTERVAL')
 
         const lineItem = T.get(`/accounts/${accountId}/line_items`, {campaign_ids: campId});
-        console.log("lineItem", lineItem.twitterBody)
-
+        // console.log("lineItem", lineItem.twitterBody)
+        const objective = lineItem.twitterBody.data[0].objective;
         // CampaignInsights.remove({'data.campaign_id': campId});
 
 
@@ -179,15 +179,22 @@ Meteor.methods({
           }
         }
 
+
+
         console.log('DAY ARRAY LENGTH', dayArray.length);
         const cleanedDays = _.without(dayArray, undefined, null, NaN);
         console.log('CLEANED DAYS LENGTH', cleanedDays.length)
         console.log(cleanedDays[0], cleanedDays[1], cleanedDays[cleanedDays.length - 2], cleanedDays[cleanedDays.length - 1]);
-        // cleanedDays.forEach(el => {
-        //   InsightsBreakdownsByDays.insert({
-        //     data: el
-        //   });
-        // });
+
+        cleanedDays.forEach(el => {
+          el['objective'] = objective
+        });
+
+        cleanedDays.forEach(el => {
+          InsightsBreakdownsByDays.insert({
+            data: el
+          });
+        });
 
 
         Meteor.clearInterval(intervalID);

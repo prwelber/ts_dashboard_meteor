@@ -87,7 +87,7 @@ Template.insightsBreakdownDaily.helpers({
           console.log('no twitter daily insight found, pulling new')
           const diff = moment(stop, moment.ISO_8601).diff(moment(start, moment.ISO_8601), 'd');
           const loops = Math.ceil(diff / 7) * 1.5;
-          Materialize.toast('Retrieving Twitter Day by Day Insights, estimated wait time is ' + loops + ' seconds', 8000);
+          Materialize.toast('Retrieving Twitter Day by Day Insights, estimated wait time is ' + loops + ' seconds', 7000);
           if (InsightsBreakdownsByDays.find({'data.campaign_id': campaignId}).count() === 0) {
             call('getDailyTwitterInsights', campaignId, accountId, start, stop, name, initName)
             .then(function (result) {
