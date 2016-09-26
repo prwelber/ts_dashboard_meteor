@@ -344,8 +344,10 @@ table td {
 }
 
 .nav-link {
-  padding: 0 15px;
+  padding: 0 5px;
   background-color: #00acc1;
+  font-size: 10px;
+  /*margin: 0 5px;*/
 }
 
 .nav-link:hover {

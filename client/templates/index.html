@@ -14,11 +14,11 @@
           <nav>
             <div class="nav-wrapper blue-grey darken-2">
               <ul id="nav-mobile" class="right">
-                <li class="userLogout"> <a href="">Logout</a></li>
+                <li class="userLogout"> <a href="" style="font-size: 12px;">Logout</a></li>
               </ul>
               <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
               <ul id="nav-mobile" class="left hide-on-med-and-down">
-                <li style="padding-left: 10px;">Hi, {{getUser}}</li>
+                <li style="padding-left: 5px; font-size: 12px;">Hi, {{getUser}}</li>
                 {{!-- <li class="userLogout"> <a href="">Logout</a></li> --}}
                 <li>
                   <a href="/home" class="btn nav-link">Home</a>
@@ -59,7 +59,7 @@
                       <a href="/accounts/{{getCampaignNumber}}/creative" class="btn nav-link">Creative</a>
                       </li>
                     <li class="{{active "breakdowns"}}">
-                      <a href="/accounts/{{getCampaignNumber}}/breakdowns" class="btn nav-link">Age + Gender</a>
+                      <a href="/accounts/{{getCampaignNumber}}/breakdowns" class="btn nav-link">Age/Gender</a>
                       </li>
                     <li class="{{active "daybreakdowns"}}">
                       <a href="{{buildQuery getCampaignNumber}}" class="btn nav-link">Daily</a>
@@ -68,7 +68,7 @@
                       <a href="/accounts/{{getCampaignNumber}}/hourlybreakdowns" class="btn nav-link">Hourly</a>
                       </li>
                     <li class="{{active "deviceAndPlacement"}}">
-                      <a href="/accounts/{{getCampaignNumber}}/devicebreakdowns" class="btn nav-link">Device + Placement</a>
+                      <a href="/accounts/{{getCampaignNumber}}/devicebreakdowns" class="btn nav-link">Device/Placement</a>
                       </li>
                   {{#if isInRole "admin"}}
                     {{!-- <li class="{{active "charts"}}"><a class="tooltipped" data-position="bottom" data-tooltip="View Charts" href="/accounts/{{getCampaignNumber}}/charts"><i class="material-icons">trending_up</i> </a></li> --}}

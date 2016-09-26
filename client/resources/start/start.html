@@ -164,12 +164,12 @@
                     <span class="percent-circle-header">Delivery</span>
                     <span class="percent-circle-header">Flight</span>
                   </div>
-                  {{#if isInRole 'admin'}}
+                  {{!-- {{#if isInRole 'admin'}}
                     <div class="col s3">
                       <span class="factor-check-header">Actual</span>
                       <span class="factor-check-header" style="padding-left: 3.3em;">Client</span>
                     </div>
-                  {{/if}}
+                  {{/if}} --}}
                 </div>
                 <div class="row" style="margin-bottom: 5px;">
                   {{#each item in lineItems}}
@@ -204,13 +204,13 @@
                           <div class="fill"></div>
                         </div>
                       </div>
-                    {{#if isInRole 'admin'}}
+                    {{!-- {{#if isInRole 'admin'}}
                       <div>
                         <span class="factor-check-actual">{{factorCheckActual _id @index}}</span>
                         <i class="fa fa-arrow-{{factorCheckArrow _id @index}} fa-2x factor-arrow" aria-hidden="true" style="color: {{factorCheckColor _id @index}}"></i>
                         <span class="factor-check-client">{{factorCheckClient _id @index}}</span>
                       </div>
-                    {{/if}}
+                    {{/if}} --}}
                     </div>
                     {{!-- ORIGINAL --}}
                     {{!-- <div class="col s3 pull-s9">
