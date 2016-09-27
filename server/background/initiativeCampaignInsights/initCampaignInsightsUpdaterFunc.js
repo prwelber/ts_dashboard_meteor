@@ -79,6 +79,11 @@ export function insightUpdate(array) {
       }
       else {
         const camp = CampaignInsights.findOne({'data.campaign_id': array[counter]});
+        if (camp.data.platform === 'twitter') {
+          counter++;
+          // need logic for background updates on twitter campaigns
+          return;
+        }
         let originalInitiative;
         try {
           if (camp.data.initiative) {

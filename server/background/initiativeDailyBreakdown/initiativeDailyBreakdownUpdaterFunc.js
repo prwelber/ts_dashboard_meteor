@@ -39,6 +39,10 @@ export function dailyUpdate(array) {
       });
       const campaign = CampaignBasics.findOne({'data.campaign_id': array[counter]});
 
+      if (campaign.data.platform === 'twitter') {
+        counter++;
+        return;
+      }
 
       /*
       * These if / else if statements say the following:

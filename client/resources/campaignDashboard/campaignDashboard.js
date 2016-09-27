@@ -130,7 +130,6 @@ Template.campaignDashboard.helpers({
       return twitterCampaign.data;
 
     }
-    console.log('running logic for facebook fetch insight')
     let camp = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
     if (camp) {
       camp.data.cpm = mastFunc.money(camp.data.cpm);
@@ -149,7 +148,6 @@ Template.campaignDashboard.helpers({
         return camp.data;
       }
     } else {
-      console.log('calling server func to get insights from FB API')
       var target = document.getElementById("spinner-div");
       let spun = Blaze.render(Template.spin, target);
       Meteor.call('getInsights', campaignNumber, Session.get("end_date"), function (err, result) {

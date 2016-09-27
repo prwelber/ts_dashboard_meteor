@@ -16,12 +16,23 @@ export const initiativesFunctionObject = {
       type = "videoViews";
     }
 
+    const objective = initiative.lineItems[index].objective.replace(/ /g, '_').toUpperCase();
+
     let totalQuantity = parseFloat(initiative.lineItems[index]['quantity']);
 
     if (! initiative.aggregateData) {
       return "N/A";
     } else {
-      return (100 * initiative.aggregateData[type]) / totalQuantity;
+      if (initiative.dupObjectives) {
+        // if it is an intiative where the line items should be added togehter
+        // take the actions number from the aggregateData object
+        return (100 * initiative.aggregateData[type]) / totalQuantity;
+      } else {
+        // if it is not duplicate objectives, take the actions number from the
+        // objective data object
+        return (initiative[objective][type] / totalQuantity) * 100;
+      }
+
     }
   },
   calculateFlightPercentage: (initiative, index) => {

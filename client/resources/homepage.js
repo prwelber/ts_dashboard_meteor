@@ -146,7 +146,7 @@ Template.index.helpers({
   linkActive: (route) => {
     return Session.get('route') === route ? "orange": "";
   },
-  buildQuery: (campaign_number) => {
+  buildQuery: (campaign_number, type) => {
     if (FlowRouter.getQueryParam('platform') === 'twitter') {
       const name = FlowRouter.getQueryParam('name');
       const initiative = FlowRouter.getQueryParam('initiative');
@@ -166,16 +166,33 @@ Template.index.helpers({
         stop_time: stopTime,
         platform: platform
       };
+      if (type === 'daily') {
+        return FlowRouter.path('/accounts/:campaign_id/daybreakdowns', params, queryParams);
+      }
+      if (type === 'overview') {
+        return FlowRouter.path('/accounts/:campaign_id/overview', params, queryParams);
+      }
 
-      return FlowRouter.path('/accounts/:campaign_id/daybreakdowns', params, queryParams);
 
     } else {
 
       const params = {
         campaign_id: campaign_number
       };
+      if (type === 'overview') {
+        return FlowRouter.path('/accounts/:campaign_id/overview', params);
+      }
+      if (type === 'daily') {
+        return FlowRouter.path('/accounts/:campaign_id/daybreakdowns', params);
+      }
 
-      return FlowRouter.path('/accounts/:campaign_id/daybreakdowns', params)
+    }
+  },
+  isDisabled: () => {
+    if(FlowRouter.getQueryParam('platform') === 'twitter') {
+      return 'disabled';
+    } else {
+      return '';
     }
   }
 });

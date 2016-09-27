@@ -572,8 +572,16 @@ include charting for each lineItem and definitely aggregations --}}
           {{> highchartsHelper chartId="objectiveCostPerChart2" chartWidth="90%" chartHeight="70%" chartObject=objectiveCostPerChart2}}
         </div>
       {{else}}
-        <div class="col s12">
-          {{> highchartsHelper chartId="objectiveChart2" chartWidth="90%" chartHeight="70%" chartObject=objectiveChart2}}
+        <div class="row" style="width: 80%;">
+          <div class="col s12 center-align" style="margin-top: 2em;">
+            <h5>Line Item #3</h5>
+          </div>
+        </div>
+        <div class="col s5 offset-s1" style="margin-top: -2em;">
+          {{> highchartsHelper chartId="objectiveChart2" chartWidth="100%" chartHeight="50%" chartObject=objectiveChart2}}
+        </div>
+        <div class="col s5" style="margin-top: -1em;">
+          {{> highchartsHelper chartId="objectiveChart2Spend" chartWidth="100%" chartHeight="40%" chartObject=objectiveChart2Spend}}
         </div>
       {{/if}}
     {{/if}}

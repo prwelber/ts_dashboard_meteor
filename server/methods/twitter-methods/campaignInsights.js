@@ -76,7 +76,7 @@ Meteor.methods({
       spend: 0,
       follows: 0,
       retweets: 0,
-      likes: 0,
+      like: 0,
       engagements: 0,
       clicks: 0,
       media_views: 0,
@@ -134,7 +134,7 @@ Meteor.methods({
       data.spend              += checkNull(dataResult.billed_charge_local_micro) / 1000000;
       data.follows            += checkNull(dataResult.follows);
       data.retweets           += checkNull(dataResult.retweets);
-      data.likes              += checkNull(dataResult.likes);
+      data.like               += checkNull(dataResult.likes);
       data.engagements        += checkNull(dataResult.engagements);
       data.clicks             += checkNull(dataResult.clicks);
       data.media_views        += checkNull(dataResult.media_views);

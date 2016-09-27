@@ -512,6 +512,17 @@ Template.initiativeHomepage.helpers({
     });
     return initiativeHomepageFunctions.objectiveDeliveryChart(init, number, count);
   },
+  objectiveChart2Spend: () => {
+    const number = 2;
+    const init = Template.instance().templateDict.get('initiative');
+    let count = 0;
+    init.lineItems.forEach(el => {
+      if (el.budget !== "") {
+        count += 1;
+      }
+    });
+    return initiativeHomepageFunctions.objectiveSpendChart(init, number, count);
+  },
   objectiveChart3: () => {
     const number = 3;
     const init = Template.instance().templateDict.get('initiative');

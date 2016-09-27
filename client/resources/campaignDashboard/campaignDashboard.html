@@ -144,7 +144,7 @@
           </div>
           <div class="col s6 m4 l3 card">
             <div class="card-content ">
-              <span class="center-align dash-data">{{number likes}}</span><br>
+              <span class="center-align dash-data">{{number like}}</span><br>
               <span class="">Likes</span>
             </div>
           </div>
@@ -319,10 +319,15 @@
               <i class="fa fa-video-camera fa-4x" aria-hidden="true" style="color: black;"></i>
             </div>
             <div class="col s7 center-align dash-flex">
-              <span class="dash-data">{{number video_view}}</span>
-              <p class="dash-label">Video View</p>
-              <span class="dash-data">{{money clientStats.cpvv}}</span>
-              <p class="dash-label">CPVV</p>
+              {{#if platformIsTwitter}}
+                <span class="dash-data">{{number media_views}}</span>
+                <p class="dash-label">Media Views</p>
+              {{else}}
+                <span class="dash-data">{{number video_view}}</span>
+                <p class="dash-label">Video View</p>
+                <span class="dash-data">{{money clientStats.cpvv}}</span>
+                <p class="dash-label">CPVV</p>
+              {{/if}}
             </div>
           </div>
         </div>
@@ -334,10 +339,17 @@
               <i class="fa fa-thumbs-up fa-4x" aria-hidden="true" style="color: black;"></i>
             </div>
             <div class="col s7 center-align dash-flex">
-              <span class="dash-data">{{number like}}</span>
-              <p class="dash-label">Page Likes</p>
-              <span class="dash-data">{{money clientStats.cpl}}</span>
-              <p class="dash-label">CPL</p>
+              {{#if platformIsTwitter}}
+                <span class="dash-data">{{number like}}</span>
+                <p class="dash-label">Likes</p>
+                {{!-- <span class="dash-data">{{money clientStats.cpl}}</span>
+                <p class="dash-label">CPL</p> --}}
+              {{else}}
+                <span class="dash-data">{{number like}}</span>
+                <p class="dash-label">Page Likes</p>
+                <span class="dash-data">{{money clientStats.cpl}}</span>
+                <p class="dash-label">CPL</p>
+              {{/if}}
             </div>
           </div>
         </div>
@@ -348,10 +360,17 @@
               <i class="fa fa-users fa-4x" aria-hidden="true" style="color: black;"></i>
             </div>
             <div class="col s7 center-align dash-flex">
-              <span class="dash-data">{{number reach}}</span>
-              <p class="dash-label">Reach</p>
-              <span class="dash-data">{{spendPerc frequency}}</span>
-              <p class="dash-label">Frequency</p>
+              {{#if platformIsTwitter}}
+                <span class="dash-data">n/a</span>
+                <p class="dash-label">Reach</p>
+                <span class="dash-data">n/a</span>
+                <p class="dash-label">Frequency</p>
+              {{else}}
+                <span class="dash-data">{{number reach}}</span>
+                <p class="dash-label">Reach</p>
+                <span class="dash-data">{{spendPerc frequency}}</span>
+                <p class="dash-label">Frequency</p>
+              {{/if}}
             </div>
           </div>
         </div>
@@ -362,10 +381,13 @@
               <i class="fa fa-file-text fa-4x" aria-hidden="true" style="color: black;"></i>
             </div>
             <div class="col s7 center-align dash-flex">
-              <span class="dash-data">{{number post_engagement}}</span>
-              <p class="dash-label">Post Engagement</p>
-              {{!-- <span class="dash-data">{{money clientStats.cppe}}</span>
-              <p class="dash-label">CP Post Eng</p> --}}
+              {{#if platformIsTwitter}}
+                <span class="dash-data">{{number engagements}}</span>
+                <p class="dash-label">Engagements</p>
+              {{else}}
+                <span class="dash-data">{{number post_engagement}}</span>
+                <p class="dash-label">Post Engagement</p>
+              {{/if}}
             </div>
           </div>
         </div>
@@ -378,8 +400,17 @@
             <div class="col s7 center-align dash-flex">
               {{!-- <span class="dash-data">{{money clientStats.cpta}}</span>
               <p class="dash-label">CP Total Act</p> --}}
-              <span class="dash-data">{{number total_actions}}</span>
-              <p class="dash-label">Total Actions</p>
+              {{#if platformIsTwitter}}
+                <span class="dash-data">{{number follows}}</span>
+                <p class="dash-label">Follows</p>
+                <span class="dash-data">{{number retweets}}</span>
+                <p class="dash-label">Retweets</p>
+                <span class="dash-data">{{number replies}}</span>
+                <p class="dash-label">Replies</p>
+              {{else}}
+                <span class="dash-data">{{number total_actions}}</span>
+                <p class="dash-label">Total Actions</p>
+              {{/if}}
             </div>
           </div>
         </div>

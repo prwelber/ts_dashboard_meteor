@@ -12,7 +12,7 @@ import tz from 'moment-timezone';
 const fixTime = function fixTime(time, timezone) {
   // start.startOf('hour').add(1, 'hour').toString()
   let times = {};
-  let newTime = moment(time, moment.ISO_8601).startOf('day').tz(timezone);
+  let newTime = moment(time, moment.ISO_8601).tz(timezone).startOf('day');
   console.log('newTime',newTime.toString())
   times['start'] = newTime.toISOString().slice(0,19) + 'Z';
   // add 7 days
@@ -55,6 +55,7 @@ Meteor.methods({
     const account = MasterAccounts.findOne({'data.account_id': accountId});
     const timeZone = account.data.timezone;
     const cleanInitName = initName.replace(/_/g, " ");
+    console.log('TIMEZONE, start, end', timeZone, start, end)
 
     const originalStart = fixTime(start, timeZone)['start']
     const originalEnd = fixTime(end, timeZone)['start'];
@@ -119,28 +120,38 @@ Meteor.methods({
         let day = {};
         dataResult.impressions instanceof Array ? day['impressions'] = dataResult.impressions[i] : day['impressions'] = 0;
         // day['impressions'] = dataResult.impressions[i];
+
+        dataResult.tweets_send instanceof Array ? day['tweets_send'] = dataResult.tweets_send[i] : day['tweets_send'] = 0;
         // day['tweets_send'] = dataResult.tweets_send[i];
 
         dataResult.billed_charge_local_micro instanceof Array ? day['spend'] = dataResult.billed_charge_local_micro[i] / 1000000 : day['spend'] = 0;
-
         // day['spend'] = dataResult.billed_charge_local_micro[i] / 1000000;
-        // day['follows'] = dataResult.follows[i];
+
+        dataResult.retweets instanceof Array ? day['retweets'] = dataResult.retweets[i] : day['retweets'] = 0;
         // day['retweets'] = dataResult.retweets[i];
+
+        dataResult.likes instanceof Array ? day['like'] = dataResult.likes[i] : day['like'] = 0;
         // day['likes'] = dataResult.likes[i];
 
         dataResult.engagements instanceof Array ? day['engagements'] = dataResult.engagements[i] : day['engagements'] = 0;
-
         // day['engagements'] = dataResult.engagements[i];
+
         dataResult.clicks instanceof Array ? day['clicks'] = dataResult.clicks[i] : day['clicks'] = 0;
-
         // day['clicks'] = dataResult.clicks[i];
-        dataResult.media_views instanceof Array ? day['media_views'] = dataResult.media_views[i] : day['media_views'] = 0;
 
+        dataResult.media_views instanceof Array ? day['media_views'] = dataResult.media_views[i] : day['media_views'] = 0;
         // day['media_views'] = dataResult.media_views[i];
+
         // day['card_engagements'] = dataResult.card_engagements[i];
+
+        dataResult.replies instanceof Array ? day['replies'] = dataResult.replies[i] : day['replies'] = 0;
         // day['replies'] = dataResult.replies[i];
+
         // day['url_clicks'] = dataResult.url_clicks[i];
+
+        dataResult.follows instanceof Array ? day['follows'] = dataResult.follows[i] : day['media_views'] = 0;
         // day['follows'] = dataResult.follows[i];
+
         day['initiative'] = cleanInitName;
         day['inserted'] = moment().toISOString();
         day['date_start'] = moment(start).add(i, 'd').toISOString();

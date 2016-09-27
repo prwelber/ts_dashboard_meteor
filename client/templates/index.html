@@ -44,31 +44,31 @@
                   {{/if}}
                 {{/if}}
                 {{#if overviewRoute "overview"}}
-                  <li class="{{active "report"}}">
-                    <a href="/accounts/{{getCampaignNumber}}/report" class="btn nav-link">Reporting</a>
-                  </li>
                   <li class="{{active "overview"}}">
-                    <a href="/accounts/{{getCampaignNumber}}/overview" class="btn nav-link" style="color: {{linkActive "overview"}}">Overview</a>
+                    <a href="{{buildQuery getCampaignNumber 'overview'}}" class="btn nav-link" style="color: {{linkActive "overview"}}">Overview</a>
+                  </li>
+                  <li class="{{active "report"}}">
+                    <a href="/accounts/{{getCampaignNumber}}/report" class="btn nav-link {{isDisabled}}">Reporting</a>
                   </li>
                   {{#if isInRole "admin"}}
                     <li class="{{active "targeting"}}">
-                      <a href="/accounts/{{getCampaignNumber}}/targeting" class="btn nav-link">Targeting</a>
+                      <a href="/accounts/{{getCampaignNumber}}/targeting" class="btn nav-link {{isDisabled}}">Targeting</a>
                     </li>
                   {{/if}}
                     <li class="{{active "creative"}}">
-                      <a href="/accounts/{{getCampaignNumber}}/creative" class="btn nav-link">Creative</a>
+                      <a href="/accounts/{{getCampaignNumber}}/creative" class="btn nav-link {{isDisabled}}">Creative</a>
                       </li>
                     <li class="{{active "breakdowns"}}">
-                      <a href="/accounts/{{getCampaignNumber}}/breakdowns" class="btn nav-link">Age/Gender</a>
+                      <a href="/accounts/{{getCampaignNumber}}/breakdowns" class="btn nav-link {{isDisabled}}">Age/Gender</a>
                       </li>
                     <li class="{{active "daybreakdowns"}}">
-                      <a href="{{buildQuery getCampaignNumber}}" class="btn nav-link">Daily</a>
+                      <a href="{{buildQuery getCampaignNumber 'daily'}}" class="btn nav-link">Daily</a>
                       </li>
                     <li class="{{active "hourlyBreakdowns"}}">
-                      <a href="/accounts/{{getCampaignNumber}}/hourlybreakdowns" class="btn nav-link">Hourly</a>
+                      <a href="/accounts/{{getCampaignNumber}}/hourlybreakdowns" class="btn nav-link {{isDisabled}}">Hourly</a>
                       </li>
                     <li class="{{active "deviceAndPlacement"}}">
-                      <a href="/accounts/{{getCampaignNumber}}/devicebreakdowns" class="btn nav-link">Device/Placement</a>
+                      <a href="/accounts/{{getCampaignNumber}}/devicebreakdowns" class="btn nav-link {{isDisabled}}">Device/Placement</a>
                       </li>
                   {{#if isInRole "admin"}}
                     {{!-- <li class="{{active "charts"}}"><a class="tooltipped" data-position="bottom" data-tooltip="View Charts" href="/accounts/{{getCampaignNumber}}/charts"><i class="material-icons">trending_up</i> </a></li> --}}
