@@ -1,6 +1,18 @@
 <template name="deviceAndPlacement">
-
   {{#if isReady "DeviceAndPlacement" "Initiatives"}}
+
+
+  {{#if isTwitter}}
+
+  <h4>isTwitter === true</h4>
+  <button class="twitter-device" data-device="0">Click for iOS insights</button>
+  <button class="twitter-device" data-device="1">Click for Android insights</button>
+  <button class="twitter-device" data-device="3">Click for Web (other) insights</button>
+  <button class="twitter-device" data-device="4">Click for Desktop insights</button>
+
+  {{else}}
+
+
     {{#if isInRole "admin"}}
       <div class="row device-placement-wrapper">
         <div class="col s12 center-align">
@@ -197,7 +209,8 @@
       </div>
     {{/if}}
 
-
+  {{/if}}
+  {{!-- ^ end of #if isTwitter --}}
 
   {{else}}
     <h1>Not Ready!</h1>

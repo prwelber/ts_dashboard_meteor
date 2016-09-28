@@ -47,7 +47,6 @@ Template.insightsBreakdownDaily.onCreated(function () {
 
 Template.insightsBreakdownDaily.onRendered(function () {
   $('.tooltipped').tooltip({delay: 25});
-  console.log($('p'))
 });
 
 Template.insightsBreakdownDaily.events({
@@ -76,7 +75,6 @@ Template.insightsBreakdownDaily.helpers({
           return true;
           // return InsightsBreakdownsByDays.find({'data.campaign_id': campaignNumber});
         }
-        console.log('TWITTER CAMP', twitterCampaign)
         if (!twitterCampaign) {
           const start = FlowRouter.getQueryParam('start_time');
           const stop = FlowRouter.getQueryParam('stop_time');
@@ -84,7 +82,6 @@ Template.insightsBreakdownDaily.helpers({
           const accountId = FlowRouter.getQueryParam('account_id');
           const name = FlowRouter.getQueryParam('name');
           const initName = FlowRouter.getQueryParam('initiative');
-          console.log('no twitter daily insight found, pulling new')
           const diff = moment(stop, moment.ISO_8601).diff(moment(start, moment.ISO_8601), 'd');
           const loops = Math.ceil(diff / 7) * 1.5;
           Materialize.toast('Retrieving Twitter Day by Day Insights, estimated wait time is ' + loops + ' seconds', 7000);
@@ -148,6 +145,9 @@ Template.insightsBreakdownDaily.helpers({
   },
   formatDay: (day) => {
     return moment(day).format('MM.DD.YYYY')
+  },
+  updatedTime: (date) => {
+    return moment(date).format('ddd MMM DD YYYY hh:mm');
   },
   money: (num) => {
     return formatters.money(num);

@@ -59,6 +59,8 @@ Template.deviceAndPlacement.helpers({
     const templateDict = Template.instance().templateDict;
     const id = FlowRouter.getParam('campaign_id');
 
+    if (FlowRouter.getQueryParam('platform') === 'twitter') { return true; }
+
     if (FlowRouter.subsReady(sub1) && FlowRouter.subsReady(sub2)) {
 
       if (DeviceAndPlacement.find({'data.campaign_id': id}).count() === 0) {
@@ -330,6 +332,11 @@ Template.deviceAndPlacement.helpers({
     if (camp) {
       return camp.data;
     }
+  },
+  isTwitter: () => {
+    if (FlowRouter.getQueryParam('platform') === 'twitter') {
+      return true;
+    }
   }
 });
 
@@ -339,6 +346,23 @@ Template.deviceAndPlacement.events({
     event.preventDefault();
     const id = FlowRouter.getParam('campaign_id');
     Meteor.call('refreshDevice', id);
+  },
+  'click .twitter-device': (event, template) => {
+    const start = FlowRouter.getQueryParam('start_time');
+    const stop = FlowRouter.getQueryParam('stop_time');
+    const campaignId = FlowRouter.getQueryParam('campaign_id');
+    const accountId = FlowRouter.getQueryParam('account_id');
+    const name = FlowRouter.getQueryParam('name');
+    const initName = FlowRouter.getQueryParam('initiative');
+    const device = event.target.dataset.device;
+    console.log('device', device)
+    Meteor.call('getTwitterDeviceInsights', accountId, campaignId, start, stop, name, device, (err, res) => {
+      if (err) { console.log('ERR', err) }
+      if (res) {
+        console.log('RESULT', res);
+      }
+    });
+
   }
 });
 

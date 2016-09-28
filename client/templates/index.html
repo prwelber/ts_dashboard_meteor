@@ -68,7 +68,7 @@
                       <a href="/accounts/{{getCampaignNumber}}/hourlybreakdowns" class="btn nav-link {{isDisabled}}">Hourly</a>
                       </li>
                     <li class="{{active "deviceAndPlacement"}}">
-                      <a href="/accounts/{{getCampaignNumber}}/devicebreakdowns" class="btn nav-link {{isDisabled}}">Device/Placement</a>
+                      <a href="{{buildQuery getCampaignNumber 'device'}}" class="btn nav-link">Device/Placement</a>
                       </li>
                   {{#if isInRole "admin"}}
                     {{!-- <li class="{{active "charts"}}"><a class="tooltipped" data-position="bottom" data-tooltip="View Charts" href="/accounts/{{getCampaignNumber}}/charts"><i class="material-icons">trending_up</i> </a></li> --}}

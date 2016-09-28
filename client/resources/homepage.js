@@ -166,13 +166,29 @@ Template.index.helpers({
         stop_time: stopTime,
         platform: platform
       };
-      if (type === 'daily') {
-        return FlowRouter.path('/accounts/:campaign_id/daybreakdowns', params, queryParams);
-      }
-      if (type === 'overview') {
-        return FlowRouter.path('/accounts/:campaign_id/overview', params, queryParams);
-      }
+      // if (type === 'daily') {
+      //   return FlowRouter.path('/accounts/:campaign_id/daybreakdowns', params, queryParams);
+      // }
+      // if (type === 'overview') {
+      //   return FlowRouter.path('/accounts/:campaign_id/overview', params, queryParams);
+      // }
+      // if (type === 'device') {
+      //   return FlowRouter.path('/accounts/:campaign_id/devicebreakdowns', params, queryParams);
+      // }
 
+      switch (type) {
+        case 'daily':
+          return FlowRouter.path('/accounts/:campaign_id/daybreakdowns', params, queryParams);
+          break;
+        case 'overview':
+          return FlowRouter.path('/accounts/:campaign_id/overview', params, queryParams);
+          break;
+        case 'device':
+          return FlowRouter.path('/accounts/:campaign_id/devicebreakdowns', params, queryParams);
+          break;
+        default:
+          return FlowRouter.path('/accounts/:campaign_id/overview', params, queryParams);
+      }
 
     } else {
 
@@ -185,7 +201,9 @@ Template.index.helpers({
       if (type === 'daily') {
         return FlowRouter.path('/accounts/:campaign_id/daybreakdowns', params);
       }
-
+      if (type === 'device') {
+        return FlowRouter.path('/accounts/:campaign_id/devicebreakdowns', params);
+      }
     }
   },
   isDisabled: () => {
