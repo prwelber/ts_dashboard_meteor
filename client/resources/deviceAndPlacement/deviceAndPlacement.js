@@ -76,6 +76,28 @@ Template.deviceAndPlacement.helpers({
       return true;
     }
   },
+  getTwitterInsights: () => {
+    const campaignId = FlowRouter.getQueryParam('campaign_id');
+
+    return DeviceAndPlacement.find({'data.campaign_id': campaignId});
+  },
+  checkInsight: (device) => {
+    const campaignId = FlowRouter.getQueryParam('campaign_id');
+
+    const check = DeviceAndPlacement.findOne({'data.campaign_id': campaignId, 'data.device': device});
+
+    if (check) {
+      return moment(check.data.created).format('MM.DD.YYYY');
+    } else {
+      return 'No Data';
+    }
+  },
+  campaignName: () => {
+    return FlowRouter.getQueryParam('name');
+  },
+  date: (date) => {
+    return moment(date).format('MM.DD.YYYY hh:mm a');
+  },
   getData: () => {
     const templateDict = Template.instance().templateDict;
     const id = FlowRouter.getParam('campaign_id');

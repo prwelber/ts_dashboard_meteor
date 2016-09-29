@@ -20,6 +20,28 @@ const stringToCostPlusPercentage = function stringToCostPlusPercentage (num) {
   return num;
 }
 
+const defineCampaignObjective = function defineCampaignObjective (objective) {
+  let campaignObjective;
+  if (objective === 'LINK_CLICKS') {
+    campaignObjective = 'Link Clicks';
+  } else if (objective === 'VIDEO_VIEWS') {
+    campaignObjective = 'Video Views';
+  } else if (objective === 'POST_ENGAGEMENT') {
+    campaignObjective = 'Post Engagement';
+  } else if (objective === 'CONVERSIONS') {
+    campaignObjective = 'Conversions';
+  } else if (objective === 'PAGE_LIKES') {
+    campaignObjective = 'Page Likes';
+  } else if (objective === 'WEBSITE_CLICKS') {
+    campaignObjective = 'Website Clicks';
+  } else if (objective === 'LEAD_GENERATION') {
+    campaignObjective = 'Lead Generation';
+  } else if (objective === 'TWEET_ENGAGEMENTS') {
+    campaignObjective = 'Tweet Engagements';
+  }
+  return campaignObjective;
+}
+
 const whichObjectives = function whichObjectives (initiative) {
   const arr = [];
   initiative.VIDEO_VIEWS ? arr.push(initiative.VIDEO_VIEWS) : '';
@@ -30,6 +52,13 @@ const whichObjectives = function whichObjectives (initiative) {
   initiative.CONVERSIONS ? arr.push(initiative.CONVERSIONS) : '';
   initiative.APP_ENGAGEMENT ? arr.push(initiative.APP_ENGAGEMENT) : '';
   initiative.APP_INSTALLS ? arr.push(initiative.APP_INSTALLS) : '';
+  //  TWITTER
+  initiative.LEAD_GENERATION ? arr.push(initiative.LEAD_GENERATION) : '';
+  initiative.WEBSITE_CLICKS ? arr.push(initiative.WEBSITE_CLICKS) : '';
+  initiative.TWEET_ENGAGEMENTS ? arr.push(initiative.TWEET_ENGAGEMENTS) : '';
+  initiative.WEBSITE_CONVERSIONS ? arr.push(initiative.WEBSITE_CONVERSIONS) : '';
+  initiative.FOLLOWERS ? arr.push(initiative.FOLLOWERS) : '';
+  initiative.AWARENESS ? arr.push(initiative.AWARENESS) : '';
   return arr;
 }
 
@@ -870,18 +899,7 @@ Template.initiativeHomepage.helpers({
   overSpend: (spend, objective) => {
     const init = Template.instance().templateDict.get('initiative');
     const raw = accounting.unformat(spend);
-    let campaignObjective;
-    if (objective === 'LINK_CLICKS') {
-      campaignObjective = 'Link Clicks';
-    } else if (objective === 'VIDEO_VIEWS') {
-      campaignObjective = 'Video Views';
-    } else if (objective === 'POST_ENGAGEMENT') {
-      campaignObjective = 'Post Engagement';
-    } else if (objective === 'CONVERSIONS') {
-      campaignObjective = 'Conversions';
-    } else if (objective === 'PAGE_LIKES') {
-      campaignObjective = 'Page Likes';
-    }
+    let campaignObjective = defineCampaignObjective(objective);
 
     const formattedObjective = objective.replace(/_/g, " ").toLowerCase();
 
@@ -892,7 +910,6 @@ Template.initiativeHomepage.helpers({
     }
 
     return spend;
-
   },
   agClientSpend: () => {
     const spend = Template.instance().aggregatedSpend.get('spend');

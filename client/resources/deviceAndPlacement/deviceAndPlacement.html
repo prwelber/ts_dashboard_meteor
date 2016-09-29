@@ -4,11 +4,70 @@
 
   {{#if isTwitter}}
 
-  <h4>isTwitter === true</h4>
-  <button class="twitter-device" data-device="0">Click for iOS insights</button>
-  <button class="twitter-device" data-device="1">Click for Android insights</button>
-  <button class="twitter-device" data-device="3">Click for Web (other) insights</button>
-  <button class="twitter-device" data-device="4">Click for Desktop insights</button>
+
+  <div class="container">
+    <div class="row">
+      <h5 class="center-align">Device & Placement Breakdown for {{campaignName}} </h5>
+      <div class="col s12">
+        <table>
+          <thead>
+            <tr>
+              <th>Device</th>
+              <th>Placement</th>
+              <th>Insight Start Date</th>
+              <th>Insight End Date</th>
+              <th>Impressions</th>
+              <th>Engagements</th>
+              <th>Clicks</th>
+              <th>Updated</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each el in getTwitterInsights}}
+            <tr>
+              <td>{{el.data.device}}</td>
+              <td>{{el.data.placement}}</td>
+              <td>{{date el.data.insightsStart}}</td>
+              <td>{{date el.data.insightsEnd}}</td>
+              <td>{{num el.data.impressions}}</td>
+              <td>{{num el.data.engagements}}</td>
+              <td>{{num el.data.clicks}}</td>
+              <td>{{date el.data.created}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {{#if isInRole 'admin'}}
+      <div class="row">
+        <div class="col s3">
+          <button class="twitter-device btn" data-device="0">Fetch iOS insights</button><br>
+          Updated: {{checkInsight 'iOS'}}
+        </div>
+        <div class="col s3">
+          <button class="twitter-device btn" data-device="1">Fetch Android insights</button><br>
+          Updated: {{checkInsight 'Android'}}
+        </div>
+        <div class="col s3">
+          <button class="twitter-device btn" data-device="3">Fetch Mobile (other) insights</button><br>
+          Updated: {{checkInsight 'Mobile Other'}}
+        </div>
+        <div class="col s3">
+          <button class="twitter-device btn" data-device="4">Fetch Desktop insights</button><br>
+          Updated: {{checkInsight 'Desktop'}}
+        </div>
+      </div>
+    {{/if}}
+    <div class="row">
+      <div class="col s12 center-align">
+        <p style="font-size: 12px; margin-top: 5em;">For campaigns longer than 45 days, the data will reflect the most recent 45 day time period. <br> The data reported on this page is an estimate, and should not be considered official.</p>
+      </div>
+    </div>
+  </div>
+
+
+
 
   {{else}}
 

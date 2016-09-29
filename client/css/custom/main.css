@@ -377,6 +377,10 @@ nav ul li.active {
   padding: 0 20px;
 }
 
+.twitter-device {
+  font-size: 13px;
+}
+
 /* ---------------- INITIATIVE HOMEPAGE ---------------- */
 
 .campaign-basic-card {

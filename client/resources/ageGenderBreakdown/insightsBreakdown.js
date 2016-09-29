@@ -38,6 +38,10 @@ Template.insightsBreakdown.helpers({
   isReady: (sub1, sub2) => {
     const campaignNumber = FlowRouter.getParam("campaign_id");
 
+    if ((FlowRouter.subsReady(sub1) && FlowRouter.subsReady(sub2)) && (FlowRouter.getQueryParam('platform') === 'twitter')) {
+        return true;
+    }
+
     if ((FlowRouter.subsReady(sub1) && FlowRouter.subsReady(sub2)) && InsightsBreakdowns.find({'data.campaign_id': campaignNumber}).count() === 0) {
 
       var target = document.getElementById("spinner-div");
@@ -52,6 +56,11 @@ Template.insightsBreakdown.helpers({
         console.log('uh no error', err)
       });
     } else {
+      return true;
+    }
+  },
+  isTwitter: () => {
+    if (FlowRouter.getQueryParam('platform') === 'twitter') {
       return true;
     }
   },
@@ -653,6 +662,21 @@ Template.insightsBreakdown.events({
   "click #refresh-age-gender": (event, instance) => {
     Meteor.call('refreshAgeGender', FlowRouter.getParam('campaign_id'));
     $('.tooltipped').tooltip('remove');
+  },
+  'click .twitter-gender': (event, instance) => {
+    const start = FlowRouter.getQueryParam('start_time');
+    const stop = FlowRouter.getQueryParam('stop_time');
+    const campaignId = FlowRouter.getQueryParam('campaign_id');
+    const accountId = FlowRouter.getQueryParam('account_id');
+    const name = FlowRouter.getQueryParam('name');
+    // const initName = FlowRouter.getQueryParam('initiative');
+
+    Meteor.call('getTwitterGenderInsights', accountId, campaignId, start, stop, name, (err, res) => {
+      if (err) { console.log('ERR', err) }
+      if (res) {
+        console.log('RESULT', res);
+      }
+    });
   }
 });
 

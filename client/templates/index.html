@@ -59,7 +59,7 @@
                       <a href="/accounts/{{getCampaignNumber}}/creative" class="btn nav-link {{isDisabled}}">Creative</a>
                       </li>
                     <li class="{{active "breakdowns"}}">
-                      <a href="/accounts/{{getCampaignNumber}}/breakdowns" class="btn nav-link {{isDisabled}}">Age/Gender</a>
+                      <a href="{{buildQuery getCampaignNumber 'gender'}}" class="btn nav-link">Age/Gender</a>
                       </li>
                     <li class="{{active "daybreakdowns"}}">
                       <a href="{{buildQuery getCampaignNumber 'daily'}}" class="btn nav-link">Daily</a>

@@ -1,5 +1,24 @@
 <template name="insightsBreakdown">
   {{#if isReady "insightsBreakdownList" "Initiatives"}}
+
+  {{#if isTwitter}}
+
+    <div class="container">
+      <div class="row">
+        <h5>isTwitter -> true</h5>
+        <div class="col s12">
+          <button class="twitter-gender btn">Fetch Gender insights</button>
+        </div>
+      </div>
+    </div>
+
+
+
+
+  {{else}}
+
+
+
   {{#if isInRole "admin"}}
   <div class="container">
     <div class="row">
@@ -149,6 +168,10 @@
       </div>
     {{/if}}
     {{!-- ^ end of if isInRole "admin" --}}
+
+    {{/if}}
+    {{!-- ^ end of isTwitter --}}
+
     {{/if}}
     {{!-- ^ end of isReady --}}
 </template>

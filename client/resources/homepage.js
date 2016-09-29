@@ -166,15 +166,6 @@ Template.index.helpers({
         stop_time: stopTime,
         platform: platform
       };
-      // if (type === 'daily') {
-      //   return FlowRouter.path('/accounts/:campaign_id/daybreakdowns', params, queryParams);
-      // }
-      // if (type === 'overview') {
-      //   return FlowRouter.path('/accounts/:campaign_id/overview', params, queryParams);
-      // }
-      // if (type === 'device') {
-      //   return FlowRouter.path('/accounts/:campaign_id/devicebreakdowns', params, queryParams);
-      // }
 
       switch (type) {
         case 'daily':
@@ -185,6 +176,9 @@ Template.index.helpers({
           break;
         case 'device':
           return FlowRouter.path('/accounts/:campaign_id/devicebreakdowns', params, queryParams);
+          break;
+        case 'gender':
+          return FlowRouter.path('/accounts/:campaign_id/breakdowns', params, queryParams);
           break;
         default:
           return FlowRouter.path('/accounts/:campaign_id/overview', params, queryParams);
@@ -203,6 +197,9 @@ Template.index.helpers({
       }
       if (type === 'device') {
         return FlowRouter.path('/accounts/:campaign_id/devicebreakdowns', params);
+      }
+      if (type === 'gender') {
+        return FlowRouter.path('/accounts/:campaign_id/breakdowns', params);
       }
     }
   },
