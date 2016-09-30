@@ -170,8 +170,8 @@ Meteor.methods({
         CampaignInsights.remove({'data.campaign_id': campId});
         data['placements'] = lineItem.twitterBody.data[0].placements;
         data['objective'] = lineItem.twitterBody.data[0].objective;
-        data['cpm'] = data.spend / (data.impressions / 1000);
-        data['cpc'] = data.spend / data.clicks;
+        data['cpm'] = parseFloat((data.spend / (data.impressions / 1000)).toFixed(2));
+        data['cpc'] = parseFloat((data.spend / data.clicks).toFixed(2));
         data['cost_per_engagement'] = data.spend / data.engagements;
         data['inserted'] = moment().format('MM-DD-YYYY hh:mm a');
         console.log('DATA', data)

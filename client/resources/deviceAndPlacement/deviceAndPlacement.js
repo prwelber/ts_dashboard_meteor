@@ -96,7 +96,7 @@ Template.deviceAndPlacement.helpers({
     return FlowRouter.getQueryParam('name');
   },
   date: (date) => {
-    return moment(date).format('MM.DD.YYYY hh:mm a');
+    return moment(date).format('MM.DD.YYYY');
   },
   getData: () => {
     const templateDict = Template.instance().templateDict;

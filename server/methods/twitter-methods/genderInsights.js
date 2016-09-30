@@ -79,7 +79,11 @@ Meteor.methods({
     let pollURL;
 
     const intervalID = Meteor.setInterval(() => {
-      if (counter >= 12) { Meteor.clearInterval(intervalID); }
+
+      if (counter >= 30) {
+        console.log('twitter gender polling setInterval expired');
+        Meteor.clearInterval(intervalID);
+      }
 
       const pollPayload = {
         account_id: accountId,
@@ -111,9 +115,11 @@ Meteor.methods({
 
           request(
             { method: 'GET', uri: pollURL, gzip: true, encoding: null },
+
             Meteor.bindEnvironment(function (err, response, body) {
-              // console.log('the response is', response)
+
               zlib.gunzip(body, Meteor.bindEnvironment(function(err, unzipped) {
+
                 console.log('UNZIPPED', JSON.parse(unzipped))
                 var genderData = JSON.parse(unzipped);
                 console.log('DATA ID_DATA', genderData.data[0].id_data);
@@ -121,14 +127,16 @@ Meteor.methods({
                 let dataObject = {
                   platform: 'twitter',
                   campaign_id: campaignId,
-                  name: name,
+                  campaign_name: name,
                   insightsStart: newStart,
                   insightsEnd: newStop,
                   created: moment().toISOString(),
+                  genderData: []
                 }
 
                 genderData.data[0].id_data.forEach(el => {
-                  dataObject[el.segment.segment_name] = {
+                  let data = {
+                    gender: el.segment.segment_name,
                     impressions: checkNull(el.metrics.impressions),
                     follows: checkNull(el.metrics.follows),
                     retweets: checkNull(el.metrics.retweets),
@@ -138,13 +146,18 @@ Meteor.methods({
                     replies: checkNull(el.metrics.replies),
                     spend: checkNull(el.metrics.billed_charge_local_micro)
                   }
+                  dataObject.genderData.push(data);
                 });
 
-                console.log('FINISHED DATAOBJECT', dataObject);
+                console.log('FINISHED DATAOBJECT', dataObject.genderData);
 
-                // InsightsBreakdowns.insert({data: dataObject});
+                InsightsBreakdowns.insert({data: dataObject});
 
-                return 'finished successfully';
+                if (dataObject) {
+                  return 'finished successfully';
+                } else {
+                  return 'finished without data';
+                }
 
               })); // end of zlib.gunzip callback including Meteor.bindEnvironment
             }) // end of request cb including Meteor.bindEnvironment
@@ -155,8 +168,6 @@ Meteor.methods({
       }
       counter++;
     }, 1000 * 10); // end of Meteor.setInterval
-
-    return 'finished without insight';
-
+    // return 'finished without insight';
   }
 })

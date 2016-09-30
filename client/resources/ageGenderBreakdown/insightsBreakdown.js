@@ -64,6 +64,19 @@ Template.insightsBreakdown.helpers({
       return true;
     }
   },
+  getTwitterGenderData: () => {
+    const campaignId = FlowRouter.getQueryParam('campaign_id');
+    const genderInsights = InsightsBreakdowns.findOne({'data.campaign_id': campaignId});
+    return genderInsights.data.genderData;
+  },
+  getTwitterGenderInfo: () => {
+    const campaignId = FlowRouter.getQueryParam('campaign_id');
+    const insight = InsightsBreakdowns.findOne({'data.campaign_id': campaignId});
+    return insight.data;
+  },
+  date: (dateInfo) => {
+    return moment(dateInfo).format('MM.DD.YYYY');
+  },
   'getBreakdown': function () {
     // console.log('getBreakdown running');
     const campaignNumber = FlowRouter.getParam("campaign_id");

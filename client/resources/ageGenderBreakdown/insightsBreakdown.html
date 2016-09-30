@@ -5,19 +5,61 @@
 
     <div class="container">
       <div class="row">
-        <h5>isTwitter -> true</h5>
+        <div class="col s12 center-align">
+          <h5>Gender Breakdown for {{getTwitterGenderInfo.campaign_name}}</h5>
+          <p>Analytics Time Window: {{date getTwitterGenderInfo.insightsStart}} - {{date getTwitterGenderInfo.insightsEnd}}</p>
+        </div>
         <div class="col s12">
-          <button class="twitter-gender btn">Fetch Gender insights</button>
+          <table>
+            <thead>
+              <tr>
+                <th>Gender</th>
+                <th>Impressions</th>
+                <th>Clicks</th>
+                <th>Engagements</th>
+                <th>Retweets</th>
+                <th>Follows</th>
+                <th>Replies</th>
+                {{#if isInRole 'admin'}}
+                  <th>Spend</th>
+                {{/if}}
+              </tr>
+            </thead>
+            <tbody>
+              {{#each row in getTwitterGenderData}}
+                <tr>
+                  <td>{{row.gender}}</td>
+                  <td>{{number row.impressions}}</td>
+                  <td>{{number row.clicks}}</td>
+                  <td>{{number row.engagements}}</td>
+                  <td>{{number row.retweets}}</td>
+                  <td>{{number row.follows}}</td>
+                  <td>{{number row.replies}}</td>
+                  {{#if isInRole 'admin'}}
+                    <td>{{row.spend}}</td>
+                  {{/if}}
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+        {{#if isInRole 'admin'}}
+          <div class="col s12 center-align" style="margin-top: 3em;">
+            <button class="twitter-gender btn">Fetch Gender insights</button>
+          </div>
+        {{/if}}
+      </div>
+      <div class="row">
+        <div class="col s12 center-align">
+          <p style="font-size: 12px; margin-top: 5em;">For campaigns longer than 45 days, the data will reflect the most recent 45 day time period. <br> The data reported on this page is an estimate, and should not be considered official.</p>
         </div>
       </div>
     </div>
 
-
-
-
+    {{!-- END OF TWITTER GENDER INSIGHTS --}}
   {{else}}
 
-
+    {{!-- BEGINS FACEBOOK AGE + GENDER INSIGHTS --}}
 
   {{#if isInRole "admin"}}
   <div class="container">
