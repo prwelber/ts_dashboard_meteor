@@ -340,6 +340,9 @@ Template.campaignDashboard.helpers({
     if (Session.get('platform') === 'twitter') {
       return true;
     }
+  },
+  twoDigits: (num) => {
+    return num.toFixed(2)
   }
 });
 

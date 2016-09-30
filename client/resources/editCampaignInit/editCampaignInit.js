@@ -55,6 +55,7 @@ Template.editCampaignInit.events({
   "click .change-maker": (event, instance) => {
     const campName = event.target.attributes.name.value;
     const initName = instance.$("select[name='"+campName+"']").val()
+    // this method happens in server/methods/campaignInsights.js
     Meteor.call('changeCampaignInitiative', campName, initName, (err, res) => {
       if (! err) {
         console.log('change made successfully', res)

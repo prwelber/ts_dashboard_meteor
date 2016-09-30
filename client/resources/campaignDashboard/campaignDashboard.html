@@ -267,6 +267,20 @@
           </div>
         </div>
 
+        <div class="col s6 m4 l3 card grey lighten-5">
+          <div class="card-content ">
+            <span class="center-align dash-data">{{number reach}}</span><br>
+            <span class="">Reach</span>
+          </div>
+        </div>
+
+        <div class="col s6 m4 l3 card grey lighten-5">
+          <div class="card-content ">
+            <span class="center-align dash-data">{{twoDigits frequency}}</span><br>
+            <span class="">Frequency</span>
+          </div>
+        </div>
+
         {{/if}}
         {{!-- END TWITTER OR FACEBOOK ADMIN STATS --}}
 
@@ -294,7 +308,7 @@
               <span class="dash-data">{{number impressions}}</span>
               <p class="dash-label">Impressions</p>
               <span class="dash-data">{{money clientStats.cpm}}</span>
-              <p class="dash-label">CPM</p>
+              <p class="dash-label">Effective CPM</p>
             </div>
           </div>
         </div>
@@ -308,7 +322,7 @@
               <span class="dash-data">{{number clicks}}</span>
               <p class="dash-label">Clicks</p>
               <span class="dash-data">{{money clientStats.cpc}}</span>
-              <p class="dash-label">CPC</p>
+              <p class="dash-label">Effective CPC</p>
             </div>
           </div>
         </div>

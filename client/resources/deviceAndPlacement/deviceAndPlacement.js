@@ -377,7 +377,7 @@ Template.deviceAndPlacement.events({
     const name = FlowRouter.getQueryParam('name');
     const initName = FlowRouter.getQueryParam('initiative');
     const device = event.target.dataset.device;
-    console.log('device', device)
+    Materialize.toast('Pulling this metric from Twitter may take a while. After 5 minutes the request will timeout.', 6000);
     Meteor.call('getTwitterDeviceInsights', accountId, campaignId, start, stop, name, device, (err, res) => {
       if (err) { console.log('ERR', err) }
       if (res) {

@@ -683,6 +683,7 @@ Template.insightsBreakdown.events({
     const accountId = FlowRouter.getQueryParam('account_id');
     const name = FlowRouter.getQueryParam('name');
     // const initName = FlowRouter.getQueryParam('initiative');
+    Materialize.toast('Pulling this metric from Twitter may take a while. After 5 minutes the request will timeout.', 8000);
 
     Meteor.call('getTwitterGenderInsights', accountId, campaignId, start, stop, name, (err, res) => {
       if (err) { console.log('ERR', err) }

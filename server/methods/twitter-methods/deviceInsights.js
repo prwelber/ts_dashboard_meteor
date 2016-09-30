@@ -99,7 +99,7 @@ Meteor.methods({
     let pollURL;
 
     const intervalID = Meteor.setInterval(() => {
-      if (counter >= 12) { Meteor.clearInterval(intervalID); }
+      if (counter >= 30) { Meteor.clearInterval(intervalID); }
 
       const pollPayload = {
         account_id: accountId,

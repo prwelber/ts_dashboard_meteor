@@ -1,4 +1,5 @@
 import CampaignInsights from '/collections/CampaignInsights';
+import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
 import Initiatives from '/collections/Initiatives';
 import { apiVersion } from '/server/token/token';
 import CampaignBasics from '/collections/CampaignBasics';
@@ -175,10 +176,28 @@ Meteor.methods({
     // reassign initiative (update)
     // get init Id (findOne)
     // update init campaign arrays with $pull (update) and $push
-    //get campaignBasic and edit that initiative
+    // get campaignBasic and edit that initiative
     const basic = CampaignBasics.findOne({'data.name': campName});
     const camp = CampaignInsights.findOne({'data.campaign_name': campName});
     const oldInitiative = camp.data.initiative;
+
+
+    const day = InsightsBreakdownsByDays.findOne({'data.campaign_name': campName});
+    if (day.data.initiative != initName) {
+      // multi: true will update all docs that match query
+      InsightsBreakdownsByDays.update(
+        {'data.campaign_name': campName},
+        {$set:
+          {
+            'data.initiative': initName
+          }
+        },
+        {
+          multi: true
+        }
+      );
+    }
+
 
     CampaignInsights.update(
       {_id: camp._id},
