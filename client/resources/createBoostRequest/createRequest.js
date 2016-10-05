@@ -74,17 +74,17 @@ Template.createBoostRequest.events({
     boost['owner'] = event.target['boost-owner'].value;
     boost['initiative'] = event.target['boost-initiative'].value;
     boost['creativeLink'] = event.target['boost-creative-link'].value;
+    boost['optimization'] = event.target[`boost-optimization`].value;
     boost['notes'] = event.target['boost-notes'].value;
     boost['creatives'] = [];
     var length = template.creative.get().length;
     for (let i = 1; i < length + 1; i++) {
       let creative = {};
-      // creative['url'] = event.target[`boost-link-${i}`].value;
       creative['start'] = moment(event.target[`boost-start-${i}`].value, date).toISOString();
       creative['end'] = moment(event.target[`boost-end-${i}`].value, date).toISOString();
       creative['budget'] = event.target[`boost-budget-${i}`].value;
       creative['targeting'] = event.target[`boost-targeting-${i}`].value;
-      creative['optimization'] = event.target[`boost-optimization-${i}`].value;
+      // creative['optimization'] = event.target[`boost-optimization-${i}`].value;
       boost.creatives.push(creative);
     }
     Meteor.call('createBoostRequest', boost, (err, res) => {

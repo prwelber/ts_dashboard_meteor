@@ -77,7 +77,7 @@
     <div class="container">
       <form class="col s12 new-boost-form">
         <div class="row">
-          <div class="input-field col s4">
+          <div class="input-field col s3">
             <label class="active">Owner</label>
             <select class="browser-default" name="boost-owner">
             <option value="{{getRequest.owner}}" selected>{{getRequest.owner}}</option>
@@ -86,7 +86,7 @@
               {{/each}}
             </select>
           </div>
-          <div class="input-field col s4">
+          <div class="input-field col s3">
             <label class="active">Initiative</label>
             <select class="browser-default" name="boost-initiative">
               <option value="{{getRequest.initiative}}" selected>{{getRequest.initiative}}</option>
@@ -95,9 +95,13 @@
               {{/each}}
             </select>
           </div>
-          <div class="input-field col s4">
+          <div class="input-field col s3">
             <label class="active">Creative Link</label>
             <input placeholder="Link URL" id="boost-creative-link" type="text" name="boost-creative-link" value="{{getRequest.creativeLink}}">
+          </div>
+          <div class="input-field col s3">
+            <input placeholder="Optimization" id="boost-optimization" type="text" name="boost-optimization" value="{{getRequest.optimization}}">
+            <label for="boost-optimization" class="active">Optimization</label>
           </div>
         </div>
 
@@ -138,10 +142,10 @@
                     {{/each}}
                   </select>
                 </div>
-                <div class="input-field col s3">
+                {{!-- <div class="input-field col s3">
                   <input placeholder="Optimization" id="boost-optimization" type="text" name="boost-optimization-{{addOne @index}}" value="{{creativeOptimization @index}}">
                   <label for="boost-optimization" class="active">Optimization</label>
-                </div>
+                </div> --}}
                 <div class="col s2">
                   <button class="boost-add-creative" data-index={{addTwo @index}}>New Creative Row</button>
                 </div>

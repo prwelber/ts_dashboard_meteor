@@ -56,9 +56,9 @@
       <table class="highlight boost-request-table">
         <thead>
           <tr>
-            <th class="sort-init"> <a>Initiative <span style="font-size: 10px;">(sortable)</span></a> </th>
-            <th>Owner</th>
-            <th>URL Link</th>
+            <th class="sort-init"><a>Initiative<span style="font-size: 8px;">(sortable)</span></a></th>
+            <th class="sort-owner"><a>Owner<span style="font-size: 8px;">(sortable)</span></a></th>
+            <th style="width: 50px;">URL Link</th>
             <th>
               <div class="row" style="margin: 2.5em 0 5px 0;">
                 <div class="col s12">
@@ -66,16 +66,16 @@
                 </div>
                 <div class="col s12">
                   <tr class="boost-request-creative-table">
-                    <th style="width: 61px;">Start</th>
+                    <th class="sort-start" style="width: 61px;"><a>Start<span style="font-size: 8px;">(sortable)</span></a></th>
                     <th style="width: 61px;">End</th>
                     <th>Budget</th>
-                    <th style="width: 61px;">Min Age</th>
-                    <th style="width: 61px;">Max Age</th>
+                    <th style="width: 40px;">Min Age</th>
+                    <th style="width: 40px;">Max Age</th>
                     <th style="width: 70px;">Gender</th>
                     <th>Geo</th>
                     <th>Connection</th>
-                    <th style="width: 72px;">Interests</th>
-                    <th>Optimization</th>
+                    <th style="width: 200px;">Interests</th>
+                    <th style="width: 40px;">Old Opt</th>
                   </tr>
                 </div>
               </div>
@@ -83,7 +83,8 @@
 
 
             </th>
-            <th>Notes</th>
+            <th style="width: 40px;">Optimization</th>
+            <th style="width: 200px;">Notes</th>
             <th>Actions</th>
             <th>Status</th>
           </tr>
@@ -91,9 +92,9 @@
         <tbody>
           {{#each req in getRequests}}
             <tr data-_id="{{req._id}}" style="{{statusBackground req._id}}">
-              <td style="width: 13%;">{{req.initiative}}</td>
-              <td style="width: 9%;">{{req.owner}}</td>
-              <td style="width: 6%;"> <a target="_blank" href="http://{{req.creativeLink}}">Link</a></td>
+              <td style="width: 9%; font-size: 12px;">{{req.initiative}}</td>
+              <td style="width: 7%; font-size: 12px;">{{req.owner}}</td>
+              <td style="width: 50px;"> <a target="_blank" href="http://{{req.creativeLink}}">Link</a></td>
               <td>
                 <div class="row">
                   {{#each getCreative req.creatives}}
@@ -102,13 +103,13 @@
                         <td style="width: 61px;">{{date start}}</td>
                         <td style="width: 61px;">{{date end}}</td>
                         <td>${{budget}}</td>
-                        <td style="width: 61px;">{{minAge}}</td>
-                        <td style="width: 61px;">{{maxAge}}</td>
+                        <td style="width: 40px;">{{minAge}}</td>
+                        <td style="width: 40px;">{{maxAge}}</td>
                         <td style="width: 68px;">{{gender}}</td>
                         <td>{{location}}</td>
                         <td>{{connections}}</td>
-                        <td>{{interests}}</td>
-                        <td>{{optimization}}</td>
+                        <td style="width: 200px;">{{interests}}</td>
+                        <td style="width: 40px;">{{optimization}}</td>
                       </tr>
                     </div>
 
@@ -117,7 +118,8 @@
                 </div>
 
               </td>
-              <td style="max-width: 150px; word-wrap: break-word; font-size: 12px;">{{req.notes}}</td>
+              <td style="width: 40px; font-size: 12px;">{{req.optimization}}</td>
+              <td style="max-width: 200px; word-wrap: break-word; font-size: 12px;">{{req.notes}}</td>
               <td>
                 <a href="/admin/boostrequest/{{req._id}}/edit">Edit</a>
                 <button class="delete-boost-request" data-identifier="{{req._id}}">Delete</button>

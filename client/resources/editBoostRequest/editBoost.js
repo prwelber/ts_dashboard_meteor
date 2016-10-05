@@ -103,6 +103,7 @@ Template.editBoostRequest.events({
     boost['owner'] = event.target['boost-owner'].value;
     boost['initiative'] = event.target['boost-initiative'].value;
     boost['creativeLink'] = event.target['boost-creative-link'].value;
+    boost['optimization'] = event.target['boost-optimization'].value;
     boost['notes'] = event.target['boost-notes'].value;
     boost['creatives'] = [];
     var length = template.creative.get().length;
@@ -113,7 +114,7 @@ Template.editBoostRequest.events({
       creative['end'] = moment(event.target[`boost-end-${i}`].value).toISOString();
       creative['budget'] = event.target[`boost-budget-${i}`].value;
       creative['targeting'] = event.target[`boost-targeting-${i}`].value;
-      creative['optimization'] = event.target[`boost-optimization-${i}`].value;
+      // creative['optimization'] = event.target[`boost-optimization-${i}`].value;
       boost.creatives.push(creative);
     }
     console.log('object to send to server', boost)

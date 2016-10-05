@@ -11,6 +11,7 @@ Meteor.methods({
       owner: payload.owner,
       initiative: payload.initiative,
       creativeLink: payload.creativeLink,
+      optimization: payload.optimization,
       creatives: payload.creatives,
       notes: payload.notes
     });
@@ -25,6 +26,7 @@ Meteor.methods({
         owner: payload.owner,
         initiative: payload.initiative,
         creativeLink: payload.creativeLink,
+        optimization: payload.optimization,
         creatives: payload.creatives,
         notes: payload.notes,
         updated: moment().toISOString()

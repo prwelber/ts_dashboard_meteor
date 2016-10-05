@@ -22,8 +22,16 @@ Template.boostrequests.helpers({
     const mon = Session.get('month');
     const year = new Date().getFullYear();
     const sortInit = Session.get('sortInit');
+    const sortStart = Session.get('sortStart');
+    const sortOwner = Session.get('sortOwner');
     if (sortInit === 1 || sortInit === -1) {
       return BoostRequests.find({}, {sort: {initiative: sortInit}});
+    }
+    if (sortStart === 1 || sortStart === -1) {
+      return BoostRequests.find({}, {sort: {'creatives.0.start': sortStart}})
+    }
+    if (sortOwner === 1 || sortOwner === -1) {
+      return BoostRequests.find({}, {sort: {owner: sortOwner}})
     }
 
     // switch statement for filtering by month
@@ -224,15 +232,34 @@ Template.boostrequests.events({
     });
   },
   'click .sort-init': (event, template) => {
-
+    Session.set('sortStart', null);
+    Session.set('sortOwner', null);
     if (Session.get('sortInit')) {
       var sort = Session.get('sortInit')
       Session.set('sortInit', (sort * -1));
     } else {
       Session.set('sortInit', 1)
     }
-
-
+  },
+  'click .sort-start': (event, template) => {
+    Session.set('sortInit', null);
+    Session.set('sortOwner', null);
+    if (Session.get('sortStart')) {
+      var sort = Session.get('sortStart');
+      Session.set('sortStart', (sort * -1));
+    } else {
+      Session.set('sortStart', 1);
+    }
+  },
+  'click .sort-owner': (event, template) => {
+    Session.set('sortInit', null);
+    Session.set('sortStart', null);
+    if (Session.get('sortOwner')) {
+      var sort = Session.get('sortOwner');
+      Session.set('sortOwner', (sort * -1));
+    } else {
+      Session.set('sortOwner', 1);
+    }
   }
 });
 
@@ -240,4 +267,6 @@ Template.boostrequests.events({
 Template.boostrequests.onDestroyed(function () {
   Session.set('month', null);
   Session.set('sortInit', null);
+  Session.set('sortStart', null);
+  Session.set('sortOwner', null);
 });
