@@ -40,12 +40,15 @@ export function dailyUpdate(array) {
       const campaign = CampaignBasics.findOne({'data.campaign_id': array[counter]});
 
       try {
-        if (campaign.data.platform === 'twitter') {
+        if (campaign === null) {
+            counter++;
+            return;
+        } else if (campaign.data.platform === 'twitter') {
           counter++;
           return;
         }
       } catch (e) {
-        console.log('Error in background daily updater func', e);
+        console.log('Error in background daily updater func', e, array[counter], dayBreakdown);
         counter++;
         return;
       }

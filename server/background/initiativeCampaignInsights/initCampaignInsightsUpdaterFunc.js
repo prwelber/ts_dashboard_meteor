@@ -80,13 +80,16 @@ export function insightUpdate(array) {
       else {
         const camp = CampaignInsights.findOne({'data.campaign_id': array[counter]});
         try {
-          if (camp.data.platform === 'twitter') {
+          if (camp === null) {
+            counter++;
+            return;
+          } else if (camp.data.platform === 'twitter') {
             counter++;
             // need logic for background updates on twitter campaigns
             return;
           }
         } catch (e) {
-          console.log('err in camp insights background updater', e);
+          console.log('err in camp insights background updater', e, array[counter], camp);
           counter++;
           return;
         }

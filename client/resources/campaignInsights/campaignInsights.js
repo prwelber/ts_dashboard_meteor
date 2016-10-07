@@ -23,10 +23,11 @@ Template.campaignInsights.onRendered(function () {
 Template.campaignInsights.events({
   'click #refresh-insights': function (event, template) {
     if (FlowRouter.getQueryParam('platform') === 'twitter') {
-      Meteor.call('getTwitterInsights', this.campaign_id, this.account_id, this.start_date, this.end_date, this.campaign_name, this.initiative)
+      Meteor.call('getTwitterInsights', this.campaign_id, this.account_id, this.start_date, this.end_date, this.campaign_name, this.initiative);
+      Materialize.toast('Pulling Twitter data can be slow. Please be patient.', 8000)
+    } else {
+      Meteor.call('refreshInsight', this.campaign_id, this.campaign_name, this.initiative);
     }
-
-    Meteor.call('refreshInsight', this.campaign_id, this.campaign_name, this.initiative);
 
     $('.tooltipped').tooltip('remove');
   },

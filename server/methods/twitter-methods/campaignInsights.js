@@ -1,5 +1,5 @@
 import CampaignInsights from '/collections/CampaignInsights';
-import Initiatives from '/collections/Initiatives';
+// import Initiatives from '/collections/Initiatives';
 import CampaignBasics from '/collections/CampaignBasics';
 import { TwitterAdsAPI } from 'meteor/fallentech:twitter-ads';
 import { Meteor } from 'meteor/meteor';
@@ -48,7 +48,7 @@ Meteor.methods({
 
     const originalStart = fixTime(start)['start']
     const originalEnd = fixTime(end)['start'];
-    console.log('original times', originalStart, originalEnd);
+    // console.log('original times', originalStart, originalEnd);
 
     console.log(campId, accountId, start, end);
 
@@ -67,7 +67,7 @@ Meteor.methods({
 
     start = fixTime(start)['start'];
     end = fixTime(start)['end'];
-    console.log('start and end', start, end)
+    // console.log('start and end', start, end)
 
     let counter = 0;
 

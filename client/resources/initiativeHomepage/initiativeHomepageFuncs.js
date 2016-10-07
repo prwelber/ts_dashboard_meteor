@@ -147,6 +147,13 @@ export const initiativeHomepageFunctions = {
       const type = deliveryTypeChecker(init, index);
       let camp;
 
+      // -- get start and end from line item to query days collection -- //
+      const start = init.lineItems[index].startDate; // is ISOString format
+      const end = init.lineItems[index].endDate;
+
+
+
+
       // need to match objective with campaign that has that objective, which is in
       // the campaign_names array
 
@@ -156,13 +163,21 @@ export const initiativeHomepageFunctions = {
         for (let i = 0; i < init.campaign_names.length; i++) {
           camp = CampaignInsights.findOne({'data.campaign_name': init.campaign_names[i]})
           if (camp.data.objective === objective) {
-            return InsightsBreakdownsByDays.find({'data.campaign_name': camp.data.campaign_name}, {sort: {'data.date_start': 1}}).fetch();
+            return InsightsBreakdownsByDays.find(
+              {$and: [
+                {'data.date_start': {$gte: start}},
+                {'data.date_start': {$lte: end}},
+                {'data.campaign_name': camp.data.campaign_name}
+              ]},
+              {sort: {'data.date_start': 1}}
+            ).fetch();
+            // return InsightsBreakdownsByDays.find({'data.campaign_name': camp.data.campaign_name}, {sort: {'data.date_start': 1}}).fetch();
           }
         }
       }
 
       insights = getDaysBreakdown(init, index, objective);
-
+      console.log('from getDaysBreakdown', insights.length, insights[0], insights[1], insights[2])
       // get campaign factorSpend for use later
       const factorSpend = percentTotalSpend(camp.data, init, index);
       let dealType = init.lineItems[index].percent_total;
@@ -380,13 +395,26 @@ export const initiativeHomepageFunctions = {
       // need to match objective with campaign that has that objective, which is in
       // the campaign_names array
 
+
+
+
       if (objective) {
 
       const getDaysBreakdown = function getDaysBreakdown (init, index, objective) {
+        const start = init.lineItems[index].startDate; // is ISOString format
+        const end = init.lineItems[index].endDate;
         for (let i = 0; i < init.campaign_names.length; i++) {
           camp = CampaignInsights.findOne({'data.campaign_name': init.campaign_names[i]})
           if (camp.data.objective === objective) {
-            return InsightsBreakdownsByDays.find({'data.campaign_name': camp.data.campaign_name}, {sort: {'data.date_start': 1}}).fetch();
+            return InsightsBreakdownsByDays.find(
+              {$and: [
+                {'data.date_start': {$gte: start}},
+                {'data.date_start': {$lte: end}},
+                {'data.campaign_name': camp.data.campaign_name}
+              ]},
+              {sort: {'data.date_start': 1}}
+            ).fetch();
+            // return InsightsBreakdownsByDays.find({'data.campaign_name': camp.data.campaign_name}, {sort: {'data.date_start': 1}}).fetch();
           }
         }
       }
@@ -613,6 +641,10 @@ export const initiativeHomepageFunctions = {
       } else if (init.lineItems[index].dealType === "CPVV") {
         type = "cost_per_video_view";
       }
+
+      const start = init.lineItems[index].startDate; // is ISOString format
+      const end = init.lineItems[index].endDate;
+
       if (objective) {
         // loop over the campaign names in the initiative
         init.campaign_names.forEach(el => {
@@ -621,7 +653,17 @@ export const initiativeHomepageFunctions = {
           if (camp) {
             if (camp.data.objective === objective && camp) {
               // once I have the campaign, pull all the daily insights for that
-              insights = InsightsBreakdownsByDays.find({'data.campaign_name': camp.data.campaign_name}, {sort: {'data.date_start': 1}}).fetch();
+
+              insights = InsightsBreakdownsByDays.find(
+                {$and: [
+                  {'data.date_start': {$gte: start}},
+                  {'data.date_start': {$lte: end}},
+                  {'data.campaign_name': camp.data.campaign_name}
+                ]},
+                {sort: {'data.date_start': 1}}
+              ).fetch();
+
+              // insights = InsightsBreakdownsByDays.find({'data.campaign_name': camp.data.campaign_name}, {sort: {'data.date_start': 1}}).fetch();
             } else {
               null;
             }
