@@ -1,2 +1,2 @@
-export const apiVersion = 'v2.6'
+export const apiVersion = 'v2.7'
 exports.token = 'EAAClifxP1uEBADcIbbG7pfp7owRZA6k7Lw41O2ZBi1Ktf4oH9wmeXBhrtqeIc2jDZBe4eoL4gU8coOaWh5mPSBEpHufmeMYQUV730uMAGygD64SWNoPTBisU6ZAOevvfij4NQLG0choeCuORpvhzhSqDZBdcZAScsZD';
