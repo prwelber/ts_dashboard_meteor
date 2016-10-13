@@ -10,7 +10,7 @@ SyncedCron.config({
 
 SyncedCron.config({
   // Log job run details to console
-  log: false,
+  // log: false,
 });
 
 

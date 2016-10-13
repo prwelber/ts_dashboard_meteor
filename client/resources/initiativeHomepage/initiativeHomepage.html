@@ -503,6 +503,20 @@ include charting for each lineItem and definitely aggregations --}}
   <div class="row" style="width: 90%;">
     {{#if initiative.lineItems.[0].budget}}
       {{#if isInRole "admin"}}
+        <div class="row" style="width: 80%;">
+          <div class="col s12 center-align">
+            <h5>Line Item #1</h5>
+          </div>
+          <div class="col s3 offset-s1">
+            {{> highchartsHelper chartId="gauge0Spend" chartWidth="50%" chartHeight="40%" chartObject=gaugeChart0Spend}}
+          </div>
+          <div class="col s3 offset-s1">
+            {{> highchartsHelper chartId="gauge0Action" chartWidth="50%" chartHeight="40%" chartObject=gaugeChart0Action}}
+          </div>
+          <div class="col s3 offset-s1">
+            {{> highchartsHelper chartId="gauge0CostPerAction" chartWidth="50%" chartHeight="40%" chartObject=gaugeChart0CostPerAction}}
+          </div>
+        </div>
         <div class="col s6">
           {{> highchartsHelper chartId="objectiveChart0" chartWidth="90%" chartHeight="70%" chartObject=objectiveChart0}}
         </div>
@@ -534,6 +548,20 @@ include charting for each lineItem and definitely aggregations --}}
     {{/if}}
     {{#if initiative.lineItems.[1].budget}}
       {{#if isInRole "admin"}}
+        <div class="row" style="width: 80%;">
+          <div class="col s12 center-align" style="margin-top: 2em;">
+            <h5>Line Item #2</h5>
+          </div>
+          <div class="col s3 offset-s1">
+            {{> highchartsHelper chartId="gauge1Spend" chartWidth="50%" chartHeight="40%" chartObject=gaugeChart1Spend}}
+          </div>
+          <div class="col s3 offset-s1">
+            {{> highchartsHelper chartId="gauge1Action" chartWidth="50%" chartHeight="40%" chartObject=gaugeChart1Action}}
+          </div>
+          <div class="col s3 offset-s1">
+            {{> highchartsHelper chartId="gauge1CostPerAction" chartWidth="50%" chartHeight="40%" chartObject=gaugeChart1CostPerAction}}
+          </div>
+        </div>
         <div class="col s6">
           {{> highchartsHelper chartId="objectiveChart1" chartWidth="90%" chartHeight="70%" chartObject=objectiveChart1}}
         </div>

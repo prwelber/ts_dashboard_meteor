@@ -177,7 +177,7 @@ export const initiativeHomepageFunctions = {
       }
 
       insights = getDaysBreakdown(init, index, objective);
-      console.log('from getDaysBreakdown', insights.length, insights[0], insights[1], insights[2])
+      // console.log('from getDaysBreakdown', insights.length, insights[0], insights[1], insights[2])
       // get campaign factorSpend for use later
       const factorSpend = percentTotalSpend(camp.data, init, index);
       let dealType = init.lineItems[index].percent_total;
@@ -188,7 +188,13 @@ export const initiativeHomepageFunctions = {
       const typeArray = [];
       let spendArray = [];
       let spendCount = 0;
-      let typeCount = parseFloat(insights[0].data[type]);
+      let typeCount;
+      try {
+        typeCount = parseFloat(insights[0].data[type]);
+      } catch (e) {
+        console.log(e)
+      }
+
       insights.forEach(el => {
         xAxisArray.push(moment(el.data.date_start, moment.ISO_8601).format("MM-DD"));
         typeArray.push(parseFloat(typeCount.toFixed(2)));
@@ -431,7 +437,13 @@ export const initiativeHomepageFunctions = {
       const typeArray = [];
       let spendArray = [];
       let spendCount = 0;
-      let typeCount = parseFloat(insights[0].data[type]);
+      let typeCount;
+      try {
+        typeCount = parseFloat(insights[0].data[type]);
+      } catch (e) {
+        console.log('Err in initiativeHomepageFuncs.js', e)
+      }
+
       insights.forEach(el => {
         xAxisArray.push(moment(el.data.date_start, moment.ISO_8601).format("MM-DD"));
         typeArray.push(parseFloat(typeCount.toFixed(2)));

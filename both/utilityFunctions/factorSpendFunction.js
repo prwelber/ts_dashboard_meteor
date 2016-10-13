@@ -15,8 +15,10 @@ export const calcFactorSpend = {
     if (action === "impressions") {
       let cpm = accounting.unformat(campaignData.cpm);
       if (cpm <= effectiveNum) {
+
         // cpm = parseFloat(cpm.toFixed(2));
         effectiveNum = (cpm / percentage);
+        console.log(effectiveNum, cpm, percentage, campaignData)
         return (campaignData[action] / 1000) * effectiveNum;
       } else if ((cpm > effectiveNum && cpm < quotedPrice) || cpm >= quotedPrice) {
         return (campaignData[action] / 1000) * quotedPrice;

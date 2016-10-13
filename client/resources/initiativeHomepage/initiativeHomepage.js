@@ -1,12 +1,13 @@
-import CampaignInsights from '/collections/CampaignInsights'
-import Initiatives from '/collections/Initiatives'
-import CampaignBasics from '/collections/CampaignBasics'
-import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays'
+import CampaignInsights from '/collections/CampaignInsights';
+import Initiatives from '/collections/Initiatives';
+import CampaignBasics from '/collections/CampaignBasics';
+import InsightsBreakdownsByDays from '/collections/InsightsBreakdownsByDays';
 import Uploads from '/collections/Uploads';
-import { Meteor } from 'meteor/meteor'
-import { FlowRouter } from 'meteor/kadira:flow-router'
-import { Materialize } from 'meteor/materialize:materialize'
-import { initiativeHomepageFunctions } from './initiativeHomepageFuncs'
+import { Meteor } from 'meteor/meteor';
+import { FlowRouter } from 'meteor/kadira:flow-router';
+import { Materialize } from 'meteor/materialize:materialize';
+import { initiativeHomepageFunctions } from './initiativeHomepageFuncs';
+import { calcFactorSpend } from '/both/utilityFunctions/factorSpendFunction';
 
 var moment = require('moment');
 var range = require('moment-range');
@@ -766,20 +767,96 @@ Template.initiativeHomepage.helpers({
     const itemNumber = 0;
     const init = Template.instance().templateDict.get('initiative');
     const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
-    let spend = parseFloat(init[objective].net.client_spend.toFixed(2));
+    const dealType = init.lineItems[itemNumber].dealType.toLowerCase();
     const max = parseFloat(init.lineItems[itemNumber].budget);
+    const quotedPrice = parseFloat(init.lineItems[itemNumber].price);
+    const start = init.lineItems[itemNumber].startDate; // is ISOString format
+    const end = init.lineItems[itemNumber].endDate;
+    const days = InsightsBreakdownsByDays.find(
+    {
+      $and: [
+        {'data.date_start': {$gte: start}},
+        {'data.date_start': {$lte: end}},
+      ]
+    },
+      {
+        sort: {'data.date_start': 1},
+        fields: {
+          'data.date_start': 1,
+          // 'data.campaign_id': 1,
+          'data.impressions': 1,
+          'data.clicks': 1,
+          // 'data.like': 1,
+          'data.spend': 1,
+          'data.video_view': 1,
+          'data.cpc': 1,
+          'data.cpm': 1,
+          'data.cost_per_video_view': 1
+        }
+      }
+    ).fetch();
+
+    // need to map and reduce day data into one single object for factor func
+
+    /*
+    need to calc factor spend for each day
+    */
+
+    var metrics = ['impressions', 'clicks', 'like', 'video_view'];
+    var mapped = {};
+
+    for (let i = 0; i < metrics.length; i++) {
+      mapped[metrics[i]] = days.map(a => {
+        return a.data;
+      }).reduce( (x,y) => {
+        return x + y[metrics[i]];
+      }, 0);
+    }
+
+    // add cpm and add cpc to object
+    let cpm = 0;
+    let cpc = 0;
+    for (let i = 0; i < days.length; i++) {
+      cpm += accounting.unformat(days[i].data.cpm);
+      cpc += accounting.unformat(days[i].data.cpc);
+    }
+    mapped['cpm'] = cpm / days.length;
+    mapped['cpc'] = cpc / days.length;
+
+    console.log('MAPPED', mapped, quotedPrice, init,itemNumber)
+    let mappedSpend = days.map(day => {
+      if (dealType === 'cpm') {
+        return (day.data.impressions / 1000) * init[objective]['net'][`client_${dealType}`];
+      } else {
+        return day.data.clicks * init[objective]['net'][`client_${dealType}`];
+      }
+    });
+
+    // just take the cost per from the objective object within the initiative
+    // and use that to calculate
+
+    console.log('MAPPED SPEND', mappedSpend)
+    let spend = mappedSpend.reduce( (a,b) => {
+      return a + b;
+    });
+
+    console.log('SPEND', spend)
 
     if (spend > max) {
       spend = max;
     }
-
+    spend = parseFloat(spend.toFixed(2));
+    Session.set('gauge0Spend', spend);
     return initiativeHomepageFunctions.gaugeChart('Spend', spend, max)
   },
   gaugeChart0Action: () => {
+
     const itemNumber = 0;
     const init = Template.instance().templateDict.get('initiative');
-    const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
+    // const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
     const dealType = init.lineItems[itemNumber].dealType;
+    const start = init.lineItems[itemNumber].startDate; // is ISOString format
+    const end = init.lineItems[itemNumber].endDate;
     let title;
     let action;
     if (dealType === 'CPM') {
@@ -790,40 +867,145 @@ Template.initiativeHomepage.helpers({
       action = 'clicks'
     } else if (dealType === 'CPVV') {
       title = 'Video View';
-      action = 'videoViews';
+      action = 'video_view';
     } else if (dealType === 'CPL') {
       title = 'Likes';
       action = 'likes';
     }
-    const actions = init[objective][action];
+
+    const days = InsightsBreakdownsByDays.find(
+    {
+      $and: [
+        {'data.date_start': {$gte: start}},
+        {'data.date_start': {$lte: end}},
+      ]
+    },
+      {
+        sort: {'data.date_start': 1},
+        fields: {
+          'data.date_start': 1,
+          'data.campaign_id': 1,
+          'data.impressions': 1,
+          'data.clicks': 1,
+          'data.like': 1,
+          'data.spend': 1,
+          'data.video_view': 1
+        }
+      }
+    ).fetch();
+
+    const reducedActions = days.map(day => {
+      return day.data[action];
+    }).reduce((a,b) => {
+      return a + b;
+    });
+
     const max = parseFloat(init.lineItems[itemNumber].quantity);
-    return initiativeHomepageFunctions.gaugeChart(title, actions, max);
+    Session.set('gauge0Action', reducedActions)
+    return initiativeHomepageFunctions.gaugeChart(title, reducedActions, max);
   },
   gaugeChart0CostPerAction: () => {
     const itemNumber = 0;
     const init = Template.instance().templateDict.get('initiative');
-    const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
+    // const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
     const dealType = init.lineItems[itemNumber].dealType.toLowerCase();
-    const actions = init[objective]['net']['client_' + dealType];
+    // const actions = init[objective]['net']['client_' + dealType];
     const max = parseFloat(init.lineItems[itemNumber].price);
-    return initiativeHomepageFunctions.gaugeChart(dealType, actions, max);
+
+    let costPer;
+    if (dealType === 'cpm') {
+      costPer = Session.get('gauge0Spend') / (Session.get('gauge0Action') / 1000);
+    } else {
+      costPer = Session.get('gauge0Spend') / Session.get('gauge0Action')
+    }
+    costPer = parseFloat(costPer.toFixed(2));
+
+    return initiativeHomepageFunctions.gaugeChart(dealType, costPer, max);
   },
   gaugeChart1Spend: () => {
+
     const itemNumber = 1;
     const init = Template.instance().templateDict.get('initiative');
     const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
-    let spend = parseFloat(init[objective].net.client_spend.toFixed(2));
     const max = parseFloat(init.lineItems[itemNumber].budget);
+    const dealType = init.lineItems[itemNumber].dealType.toLowerCase();
+    const quotedPrice = parseFloat(init.lineItems[itemNumber].price);
+    const start = init.lineItems[itemNumber].startDate; // is ISOString format
+    const end = init.lineItems[itemNumber].endDate;
+    const days = InsightsBreakdownsByDays.find(
+    {
+      $and: [
+        {'data.date_start': {$gte: start}},
+        {'data.date_start': {$lte: end}},
+      ]
+    },
+      {
+        sort: {'data.date_start': 1},
+        fields: {
+          'data.date_start': 1,
+          // 'data.campaign_id': 1,
+          'data.impressions': 1,
+          'data.clicks': 1,
+          // 'data.like': 1,
+          'data.spend': 1,
+          'data.video_view': 1,
+          'data.cpc': 1,
+          'data.cpm': 1,
+          'data.cost_per_video_view': 1
+        }
+      }
+    ).fetch();
+
+    var metrics = ['impressions', 'clicks', 'like', 'video_view'];
+    var mapped = {};
+
+    for (let i = 0; i < metrics.length; i++) {
+      mapped[metrics[i]] = days.map(a => {
+        return a.data;
+      }).reduce( (x,y) => {
+        return x + y[metrics[i]];
+      }, 0);
+    }
+
+    // add cpm and add cpc to object
+    let cpm = 0;
+    let cpc = 0;
+    for (let i = 0; i < days.length; i++) {
+      cpm += accounting.unformat(days[i].data.cpm);
+      cpc += accounting.unformat(days[i].data.cpc);
+    }
+    mapped['cpm'] = cpm / days.length;
+    mapped['cpc'] = cpc / days.length;
+
+    let mappedSpend = days.map(day => {
+      if (dealType === 'cpm') {
+        return (day.data.impressions / 1000) * init[objective]['net'][`client_${dealType}`];
+      } else {
+        return day.data.clicks * init[objective]['net'][`client_${dealType}`];
+      }
+    });
+
+    // just take the cost per from the objective object within the initiative
+    // and use that to calculate
+
+    let spend = mappedSpend.reduce( (a,b) => {
+      return a + b;
+    });
+
     if (spend > max) {
       spend = max;
     }
+
+    spend = parseFloat(spend.toFixed(2));
+    Session.set('gauge1Spend', spend);
     return initiativeHomepageFunctions.gaugeChart('Spend', spend, max)
   },
   gaugeChart1Action: () => {
     const itemNumber = 1;
     const init = Template.instance().templateDict.get('initiative');
-    const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
     const dealType = init.lineItems[itemNumber].dealType;
+    const start = init.lineItems[itemNumber].startDate; // is ISOString format
+    const end = init.lineItems[itemNumber].endDate;
     let title;
     let action;
     if (dealType === 'CPM') {
@@ -839,18 +1021,52 @@ Template.initiativeHomepage.helpers({
       title = 'Likes';
       action = 'likes';
     }
-    const actions = init[objective][action];
+
+    const days = InsightsBreakdownsByDays.find(
+    {
+      $and: [
+        {'data.date_start': {$gte: start}},
+        {'data.date_start': {$lte: end}},
+      ]
+    },
+      {
+        sort: {'data.date_start': 1},
+        fields: {
+          'data.date_start': 1,
+          'data.campaign_id': 1,
+          'data.impressions': 1,
+          'data.clicks': 1,
+          'data.like': 1,
+          'data.spend': 1,
+          'data.video_view': 1
+        }
+      }
+    ).fetch();
+
+    const reducedActions = days.map(day => {
+      return day.data[action];
+    }).reduce((a,b) => {
+      return a + b;
+    });
+    Session.set('gauge1Action', reducedActions)
     const max = parseFloat(init.lineItems[itemNumber].quantity);
-    return initiativeHomepageFunctions.gaugeChart(title, actions, max)
+    return initiativeHomepageFunctions.gaugeChart(title, reducedActions, max)
   },
   gaugeChart1CostPerAction: () => {
     const itemNumber = 1;
     const init = Template.instance().templateDict.get('initiative');
-    const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
     const dealType = init.lineItems[itemNumber].dealType.toLowerCase();
-    const actions = init[objective]['net']['client_' + dealType];
     const max = parseFloat(init.lineItems[itemNumber].price);
-    return initiativeHomepageFunctions.gaugeChart(dealType, actions, max)
+
+    let costPer;
+    if (dealType === 'cpm') {
+      costPer = Session.get('gauge1Spend') / (Session.get('gauge1Action') / 1000);
+    } else {
+      costPer = Session.get('gauge1Spend') / Session.get('gauge1Action')
+    }
+    costPer = parseFloat(costPer.toFixed(2));
+
+    return initiativeHomepageFunctions.gaugeChart(dealType, costPer, max);
   },
   getPlatform: (platform, objective) => {
     const init = Template.instance().templateDict.get('initiative');
@@ -1004,6 +1220,10 @@ Template.initiativeHomepage.onDestroyed(function () {
   $('#modal1').closeModal();
   $('#modal2').closeModal();
   $('#modal3').closeModal();
+  Session.set('gauge0Spend', null);
+  Session.set('gauge1Spend', null);
+  Session.set('gauge0Action', null);
+  Session.set('gauge1Action', null);
 });
 
 
