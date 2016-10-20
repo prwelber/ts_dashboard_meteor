@@ -175,8 +175,9 @@ Template.initiativesHome.helpers({
   getOwner: () => {
     return this.owner;
   },
-  calcSpend: (objective, _id, state) => {
+  calcSpend: (objective, _id, state, index) => {
     const init = Initiatives.findOne({_id: _id});
+    console.log('index', index, init.name)
     const allCapsObjective = objective.split(' ').join('_').toUpperCase();
     // --- FUNCTION EXPRESSION --- //
     const refreshInits = function refreshInits (init, objective) {
@@ -192,6 +193,21 @@ Template.initiativesHome.helpers({
     } catch (e) {
       console.log('Error in start.js refreshing init', e, init.name, allCapsObjective)
     }
+
+    /*
+      1. get the start and end date from init line item
+      2. get those daily insights for time frame
+      3. total up spend for those days by doing delivery times cost per amount
+        - for example, total up clicks over time frame and multi by CPC
+      4. turn into percentage or number depending on state
+
+      ISSUES/THOUGHTS:
+      - don't want to bring all daily insights to client -->
+        - would take a while for start page to load up every time
+      - should we make server call (could take a while for each initiative)
+      - could run a background function that is calculating these totals
+        - and attaching them to initiative object for easy access
+    */
 
     for (let key in init) {
       if (key === allCapsObjective) {

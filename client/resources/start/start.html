@@ -181,8 +181,8 @@
                     {{!-- <div class="col s9 push-s3"> --}}
                     <div class="col s9">
                       {{!-- circles --}}
-                      <div class="c100 p{{calcSpend item.objective _id "circle"}} small green grey lighten-1">
-                        <span>{{calcSpend item.objective _id "number"}}%</span>
+                      <div class="c100 p{{calcSpend item.objective _id "circle" @index}} small green grey lighten-1">
+                        <span>{{calcSpend item.objective _id "number" @index}}%</span>
                         <div class="slice">
                           <div class="bar"></div>
                           <div class="fill"></div>
@@ -212,12 +212,16 @@
                       </div>
                     {{/if}} --}}
                     </div>
+
                     {{!-- ORIGINAL --}}
                     {{!-- <div class="col s3 pull-s9">
                       <p style="padding-top: 4%;">{{item.name}} - {{item.objective}}</p>
                     </div> --}}
                     {{/if}}
                   {{/each}}
+                  {{#if isInRole 'admin'}}
+                    <span>IO Num: {{ioID}}</span>
+                  {{/if}}
                 </div>
                 {{!-- {{else}} --}}
                   {{!-- <div class="row">
