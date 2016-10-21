@@ -177,13 +177,12 @@ Template.initiativesHome.helpers({
   },
   calcSpend: (objective, _id, state, index) => {
     const init = Initiatives.findOne({_id: _id});
-    console.log('index', index, init.name)
     const allCapsObjective = objective.split(' ').join('_').toUpperCase();
     // --- FUNCTION EXPRESSION --- //
     const refreshInits = function refreshInits (init, objective) {
       const spendPercent = init[objective]['net']['spendPercent'];
       if (spendPercent === null || spendPercent === 0 || spendPercent === NaN || spendPercent === undefined) {
-        console.log('running refresh with', init.name)
+        // console.log('running refresh with', init.name)
         // Meteor.call('aggregateObjective', init.name);
         calcNet.calculateNetNumbers(init.name);
       }

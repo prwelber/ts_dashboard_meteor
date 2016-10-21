@@ -348,7 +348,9 @@ Template.projections.helpers({
   },
   twoDec: (num) => {
     if (typeof num === 'string') {
-      return parseFloat(num).toFixed(2)
+      return parseFloat(num).toFixed(2);
+    } else if (num === undefined) {
+      return '';
     } else {
       return num.toFixed(2);
     }

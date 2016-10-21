@@ -93,20 +93,16 @@ Template.campaignDashboard.helpers({
     }
   },
   'fetchInsights': function () {
-    console.log('fetch insights running')
     let sessionPlatform = Session.get('platform');
     let campaignNumber = FlowRouter.getParam('campaign_id');
     let platform = FlowRouter.getQueryParam('platform');
 
     if (sessionPlatform === 'twitter') {
-      console.log('twitter logic for fetch insights')
       let twitterCampaign = CampaignInsights.findOne({'data.campaign_id': campaignNumber});
       if (twitterCampaign) {
-        console.log('found twitter insight')
         Template.instance().templateDict.set('campData', twitterCampaign.data)
         return twitterCampaign.data;
       }
-      console.log('TWITTER CAMP', twitterCampaign)
       if (!twitterCampaign) {
         const start = FlowRouter.getQueryParam('start_time');
         const stop = FlowRouter.getQueryParam('stop_time');
@@ -176,7 +172,6 @@ Template.campaignDashboard.helpers({
   getLineItem: () => {
     const init = Template.instance().templateDict.get('initiative');
     const campData = Template.instance().templateDict.get('campData');
-    console.log('from getLineItem', init, campData);
     return getLineItem(campData, init);
   },
   'getInitiative': function () {
@@ -342,7 +337,13 @@ Template.campaignDashboard.helpers({
     }
   },
   twoDigits: (num) => {
-    return num.toFixed(2)
+
+    if (num === undefined) {
+      return 'n/a';
+    } else {
+      return num.toFixed(2);
+    }
+    // return num.toFixed(2)
   }
 });
 

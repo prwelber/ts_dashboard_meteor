@@ -161,8 +161,12 @@ export const initiativeHomepageFunctions = {
 
       const getDaysBreakdown = function getDaysBreakdown (init, index, objective) {
         for (let i = 0; i < init.campaign_names.length; i++) {
-          camp = CampaignInsights.findOne({'data.campaign_name': init.campaign_names[i]})
+
+          camp = CampaignInsights.findOne({'data.campaign_name': init.campaign_names[i]});
+          // console.log('getDaysBreakdown', camp.data, objective, index)
+
           if (camp.data.objective === objective) {
+
             return InsightsBreakdownsByDays.find(
               {$and: [
                 {'data.date_start': {$gte: start}},
@@ -172,12 +176,15 @@ export const initiativeHomepageFunctions = {
               {sort: {'data.date_start': 1}}
             ).fetch();
             // return InsightsBreakdownsByDays.find({'data.campaign_name': camp.data.campaign_name}, {sort: {'data.date_start': 1}}).fetch();
+          } else {
+            console.log('objectives do not match');
+            continue;
           }
         }
       }
-
       insights = getDaysBreakdown(init, index, objective);
-      // console.log('from getDaysBreakdown', insights.length, insights[0], insights[1], insights[2])
+
+      console.log('length from getDaysBreakdown', insights.length, insights[0])
       // get campaign factorSpend for use later
       const factorSpend = percentTotalSpend(camp.data, init, index);
       let dealType = init.lineItems[index].percent_total;

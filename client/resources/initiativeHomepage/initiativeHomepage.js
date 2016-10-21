@@ -835,7 +835,6 @@ Template.initiativeHomepage.helpers({
     // just take the cost per from the objective object within the initiative
     // and use that to calculate
 
-    console.log('MAPPED SPEND', mappedSpend)
     let spend = mappedSpend.reduce( (a,b) => {
       return a + b;
     });
@@ -893,13 +892,11 @@ Template.initiativeHomepage.helpers({
         }
       }
     ).fetch();
-
     const reducedActions = days.map(day => {
-      return day.data[action];
+      return parseInt(day.data[action]);
     }).reduce((a,b) => {
       return a + b;
     });
-
     const max = parseFloat(init.lineItems[itemNumber].quantity);
     Session.set('gauge0Action', reducedActions)
     return initiativeHomepageFunctions.gaugeChart(title, reducedActions, max);
@@ -1016,7 +1013,7 @@ Template.initiativeHomepage.helpers({
       action = 'clicks'
     } else if (dealType === 'CPVV') {
       title = 'Video View';
-      action = 'videoViews';
+      action = 'video_view';
     } else if (dealType === 'CPL') {
       title = 'Likes';
       action = 'likes';
@@ -1044,13 +1041,17 @@ Template.initiativeHomepage.helpers({
     ).fetch();
 
     const reducedActions = days.map(day => {
-      return day.data[action];
+      if (! day.data[action]) {
+        return 0;
+      } else {
+        return parseInt(day.data[action]);
+      }
     }).reduce((a,b) => {
       return a + b;
     });
-    Session.set('gauge1Action', reducedActions)
+    Session.set('gauge1Action', reducedActions);
     const max = parseFloat(init.lineItems[itemNumber].quantity);
-    return initiativeHomepageFunctions.gaugeChart(title, reducedActions, max)
+    return initiativeHomepageFunctions.gaugeChart(title, reducedActions, max);
   },
   gaugeChart1CostPerAction: () => {
     const itemNumber = 1;
@@ -1064,6 +1065,7 @@ Template.initiativeHomepage.helpers({
     } else {
       costPer = Session.get('gauge1Spend') / Session.get('gauge1Action')
     }
+    console.log('costPer', costPer)
     costPer = parseFloat(costPer.toFixed(2));
 
     return initiativeHomepageFunctions.gaugeChart(dealType, costPer, max);
