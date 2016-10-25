@@ -317,6 +317,9 @@ Template.initiativesHome.helpers({
 
     return init[objective]['net']['client_'+dealType];
 
+  },
+  dateFormat: (date) => {
+    return moment(date, moment.ISO_8601).format('MM/DD/YYYY');
   }
 });
 
