@@ -79,7 +79,7 @@ SyncedCron.add({
 
   schedule: (parser) => {
     // return parser.text('at 5:44pm');
-    // return parser.text('at 11:49am');
+    // return parser.text('at 1:44pm');
     return parser.text('every 15 minutes');
   },
   job: (time) => {
@@ -90,8 +90,9 @@ SyncedCron.add({
       //   return; // for dev and testing purposes
       // }
 
-      let activeLines = _.where(init.lineItems, {'percent_total': true});
-      // grab line items that are percentage / factor deals
+      // filter returns an array where the elements in the list (in this case, line items)
+      // match the truth test
+      let activeLines = _.filter(init.lineItems, function(item) { return item.percent_total === true || item.cost_plus === true });
 
       activeLines.forEach((line, lineIndex) => {
 
