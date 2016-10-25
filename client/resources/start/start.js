@@ -187,6 +187,7 @@ Template.initiativesHome.helpers({
         calcNet.calculateNetNumbers(init.name);
       }
     }
+
     try {
       refreshInits(init, allCapsObjective);
     } catch (e) {
@@ -208,25 +209,38 @@ Template.initiativesHome.helpers({
         - and attaching them to initiative object for easy access
     */
 
-    for (let key in init) {
-      if (key === allCapsObjective) {
-        if (! init[key]['net']) {
-          return '';
-        } else {
-          if (parseFloat(init[key]['net']['spendPercent']) >= 100 && state === "circle") {
-            return "100";
-          } else if (parseFloat(init[key]['net']['spendPercent']) >= 100 && state === "number") {
-            if (Meteor.user().admin === false) {
-              return "100"
-            } else {
-              return numeral(init[key]['net']['spendPercent']).format("00");
-            }
-          } else {
-            return numeral(init[key]['net']['spendPercent']).format("00");
-          }
-        }
-      }
+    // get new line item results data
+    const lineItemResults = init.lineItems[index]['results'];
+
+    if (! lineItemResults.clientSpendPercentage) {
+      return '0';
+    } else if (state === 'circle') {
+      return parseInt(lineItemResults.clientSpendPercentage);
+    } else if (state === 'number') {
+      return parseInt(lineItemResults.clientSpendPercentage);
     }
+
+    // return lineItemResults.clientSpendPercentage.toFixed(2);
+
+    // for (let key in init) {
+    //   if (key === allCapsObjective) {
+    //     if (! init[key]['net']) {
+    //       return '';
+    //     } else {
+    //       if (parseFloat(init[key]['net']['spendPercent']) >= 100 && state === "circle") {
+    //         return "100";
+    //       } else if (parseFloat(init[key]['net']['spendPercent']) >= 100 && state === "number") {
+    //         if (Meteor.user().admin === false) {
+    //           return "100"
+    //         } else {
+    //           return numeral(init[key]['net']['spendPercent']).format("00");
+    //         }
+    //       } else {
+    //         return numeral(init[key]['net']['spendPercent']).format("00");
+    //       }
+    //     }
+    //   }
+    // }
   },
   calcDelivery: (_id, index, state) => {
     const init = Initiatives.findOne({_id: _id});
