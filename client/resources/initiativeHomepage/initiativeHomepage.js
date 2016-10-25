@@ -823,7 +823,7 @@ Template.initiativeHomepage.helpers({
     mapped['cpm'] = cpm / days.length;
     mapped['cpc'] = cpc / days.length;
 
-    console.log('MAPPED', mapped, quotedPrice, init,itemNumber)
+    // console.log('MAPPED', mapped, quotedPrice, init,itemNumber)
     let mappedSpend = days.map(day => {
       if (dealType === 'cpm') {
         return (day.data.impressions / 1000) * init[objective]['net'][`client_${dealType}`];
@@ -839,7 +839,7 @@ Template.initiativeHomepage.helpers({
       return a + b;
     });
 
-    console.log('SPEND', spend)
+    // console.log('SPEND', spend)
 
     if (spend > max) {
       spend = max;
@@ -1065,7 +1065,7 @@ Template.initiativeHomepage.helpers({
     } else {
       costPer = Session.get('gauge1Spend') / Session.get('gauge1Action')
     }
-    console.log('costPer', costPer)
+    // console.log('costPer', costPer)
     costPer = parseFloat(costPer.toFixed(2));
 
     return initiativeHomepageFunctions.gaugeChart(dealType, costPer, max);

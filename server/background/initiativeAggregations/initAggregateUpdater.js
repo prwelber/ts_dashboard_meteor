@@ -51,7 +51,7 @@ SyncedCron.add({
     // return parser.text(' at 4:26pm')
   },
   job: () => {
-    const inits = Initiatives.find({userActive: true}).fetch();
+    const inits = Initiatives.find({userActive: true}).fetch(); // find all active initiatives
 
     let names = _.map(inits, (el) => {
       return el.name;

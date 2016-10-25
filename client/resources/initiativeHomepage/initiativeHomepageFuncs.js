@@ -184,7 +184,7 @@ export const initiativeHomepageFunctions = {
       }
       insights = getDaysBreakdown(init, index, objective);
 
-      console.log('length from getDaysBreakdown', insights.length, insights[0])
+      // console.log('length from getDaysBreakdown', insights.length, insights[0])
       // get campaign factorSpend for use later
       const factorSpend = percentTotalSpend(camp.data, init, index);
       let dealType = init.lineItems[index].percent_total;

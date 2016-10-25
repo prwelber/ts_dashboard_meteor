@@ -116,8 +116,7 @@ Meteor.methods({
             console.log("Error assigning Initiative to Daily Breakdown", e);
           }
           // end of initiative matching
-        });
-        // console.log(masterArray);
+        }); // end of dailyBreakdownArray.forEach(el => {
 
     } catch(e) {
         console.log("Error pulling daily insights breakdown:", e)
@@ -152,7 +151,7 @@ Meteor.publish('insightsBreakdownByDaysList', function (opts, start, end) {
         {'data.date_start': 1, 'data.date_stop': 1, 'data.campaign_name': 1, 'data.campaign_id': 1, 'data.spend': 1, 'data.impressions': 1, 'data.clicks': 1, 'data.like': 1}
       });
   }
-
+  // this definitely needs to be redone
   if (opts.toString().length <= 15) {
     const insight = CampaignInsights.findOne({'data.campaign_id': opts});
     if (insight && insight.data.initiative) {

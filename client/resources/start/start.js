@@ -230,13 +230,27 @@ Template.initiativesHome.helpers({
   },
   calcDelivery: (_id, index, state) => {
     const init = Initiatives.findOne({_id: _id});
-    if (parseFloat(initiativesFunctionObject.calculateDeliveryPercent(init, index)) >= 100 && state === "circle") {
-      return "100";
-    } else if (parseFloat(initiativesFunctionObject.calculateDeliveryPercent(init, index)) >= 100 && state === "number") {
-      return numeral(initiativesFunctionObject.calculateDeliveryPercent(init, index)).format("00");
-    } else {
-      return numeral(initiativesFunctionObject.calculateDeliveryPercent(init, index)).format("00");
+
+    const deliveryPercentage = init.lineItems[index]['results']['actionsPercentage'];
+    if (! deliveryPercentage) {
+      return "0";
     }
+
+    if (deliveryPercentage >= 100 && state === "circle") {
+      return "100";
+    } else if (deliveryPercentage >= 100 && state === "number") {
+      return numeral(deliveryPercentage).format("00");
+    } else {
+      return numeral(deliveryPercentage).format("00");
+    }
+
+    // if (parseFloat(initiativesFunctionObject.calculateDeliveryPercent(init, index)) >= 100 && state === "circle") {
+    //   return "100";
+    // } else if (parseFloat(initiativesFunctionObject.calculateDeliveryPercent(init, index)) >= 100 && state === "number") {
+    //   return numeral(initiativesFunctionObject.calculateDeliveryPercent(init, index)).format("00");
+    // } else {
+    //   return numeral(initiativesFunctionObject.calculateDeliveryPercent(init, index)).format("00");
+    // }
   },
   calcFlight: (_id, index) => {
     const init = Initiatives.findOne({_id: _id});
