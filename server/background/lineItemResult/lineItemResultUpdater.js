@@ -120,7 +120,13 @@ SyncedCron.add({
 
         // ----------- setting client spend ----------- //
         const type = setDealtype(line);
-        const adjustor = init[objective]['net'][`client_${type}`];
+        let adjustor = 0;
+        try {
+          adjustor = init[objective]['net'][`client_${type}`];
+        } catch(e) {
+          console.log('Error assigning cost per action amount / adjustor', e);
+        }
+
         const budget = parseFloat(line.budget);
 
         const actionsPercentage = (reducedActions / parseInt(line.quantity) * 100);
