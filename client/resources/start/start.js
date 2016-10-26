@@ -11,6 +11,27 @@ import { calcNet } from '/both/utilityFunctions/calcNet';
 
 // ----------- FUNCTIONS ------------ //
 
+const getDateRange = function getDateRange(items) {
+  let earliest;
+  let latest;
+  const format = 'MM/DD/YYYY';
+
+  for (let i = 0; i < items.length - 1; i++) {
+
+    if (! earliest || moment(items[i].startDate, moment.ISO_8601).isBefore(moment(earliest, format))) {
+      earliest = moment(items[i].startDate, moment.ISO_8601).format(format);
+    }
+    if (! latest || moment(items[i].endDate, moment.ISO_8601).isAfter(moment(latest, format))) {
+      latest = moment(items[i].endDate, moment.ISO_8601).format(format);
+    }
+
+  }
+  return {
+    start: earliest,
+    end: latest
+  }
+}
+
 // ---------- END FUNCTIONS ---------- //
 
 
@@ -129,32 +150,40 @@ Template.initiativesHome.helpers({
   },
   'isActiveInitiative': function () {
     const now = moment()
+    const format = 'MM/DD/YYYY';
+    const dates = getDateRange(this.lineItems);
+    // dates.start dates.end
 
-    if (moment(this.lineItems[0].startDate, moment.ISO_8601).isAfter(now)) {
+
+
+    if (moment(dates.start, format).isAfter(now)) {
       return "Pending";
     }
 
-    if (moment(this.lineItems[0].endDate, moment.ISO_8601).isAfter(now)) {
+    if (moment(dates.end, format).isAfter(now)) {
       return "Active";
-    } else if (now.diff(moment(this.lineItems[0].endDate, moment.ISO_8601), 'd') === 0) {
+    } else if (now.diff(moment(dates.end, format), 'd') === 0) {
       return "Active";
-    } else if (now.diff(moment(this.lineItems[0].endDate, moment.ISO_8601), "days") <= 45) {
+    } else if (now.diff(moment(dates.end, format), "days") <= 45) {
       return "Ended Recently";
     } else {
       return "Ended";
     }
   },
   'isActiveClass': function () {
-    const now = moment()
-    if (moment(this.lineItems[0].startDate, moment.ISO_8601).isAfter(now)) {
+    const now = moment();
+    const format = 'MM/DD/YYYY';
+    const dates = getDateRange(this.lineItems);
+
+    if (moment(dates.start, format).isAfter(now)) {
       return "blue-text";
     }
 
-    if (moment(this.lineItems[0].endDate, moment.ISO_8601).isAfter(now)) {
+    if (moment(dates.end, format).isAfter(now)) {
       return "green-text";
-    } else if (now.diff(moment(this.lineItems[0].endDate, moment.ISO_8601), 'd') === 0) {
+    } else if (now.diff(moment(dates.end, format), 'd') === 0) {
       return "green-text";
-    } else if (now.diff(moment(this.lineItems[0].endDate, moment.ISO_8601), "days") <= 45) {
+    } else if (now.diff(moment(dates.end, format), "days") <= 45) {
       return "orange-text";
     } else {
       return "red-text";
@@ -319,7 +348,12 @@ Template.initiativesHome.helpers({
 
   },
   dateFormat: (date) => {
-    return moment(date, moment.ISO_8601).format('MM/DD/YYYY');
+    return moment(date, moment.ISO_8601).format('MM/DD');
+  },
+  initiativeDateRange: (_id) => {
+    const init = Initiatives.findOne({_id: _id});
+    const dateObject = getDateRange(init.lineItems);
+    return `${dateObject.start} - ${dateObject.end}`;
   }
 });
 

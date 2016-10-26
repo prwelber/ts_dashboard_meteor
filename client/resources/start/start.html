@@ -138,11 +138,11 @@
                   </div>
                 {{/if}}
                 <div class="col s3">
-                  <p class="right-align">{{formatDate lineItems.[0].startDate}} - {{formatDate lineItems.[0].endDate}}</p>
+                  <p class="right-align">{{initiativeDateRange _id}}</p>
                 </div>
               </div>
               {{#if isInRole 'admin'}}
-              <div class="row" style="margin: 10px 0 10px 0; font-size: 13px;">
+              <div class="row" style="margin: 10px 0 5px 0; font-size: 13px;">
                 <div class="col s6" style="padding-left: 0px;">
                   <p>
                     <em>Owner: {{owner}} | Agency: {{agency}} | Brand: {{brand}}</em>
@@ -159,10 +159,11 @@
               {{/if}}
               {{!-- {{#if isInRole 'admin'}} --}}
                 <div class="row" style="margin-bottom: 10px;">
-                  <div class="col s3 offset-s3">
+
+                  <div class="col s3 offset-s5">
                     <span class="percent-circle-header">Spend</span>
-                    <span class="percent-circle-header">Delivery</span>
-                    <span class="percent-circle-header">Flight</span>
+                    <span class="percent-circle-header" style="margin-left: 16px;">Delivery</span>
+                    <span class="percent-circle-header" style="margin-left: 16px;">Flight</span>
                   </div>
                   {{!-- {{#if isInRole 'admin'}}
                     <div class="col s3">
@@ -174,12 +175,13 @@
                 <div class="row" style="margin-bottom: 5px;">
                   {{#each item in lineItems}}
                     {{#if item.budget}}
-                    <div class="col s3">
-                      <p style="padding-top: 4%;">{{item.name}} - {{#if isInRole 'admin'}}{{item.dealType}} @ {{item.price}} / {{/if}}{{item.objective}}</p>
+                    <div class="col s5">
+                      <p style="padding-top: 4%;">{{item.name}} - {{#if isInRole 'admin'}}{{item.dealType}} @ {{item.price}} / {{/if}}{{item.objective}} | {{dateFormat item.startDate}} - {{dateFormat item.endDate}}</p>
                     </div>
                     {{!-- ORIGINAL --}}
                     {{!-- <div class="col s9 push-s3"> --}}
-                    <div class="col s9">
+                    <div class="col s7">
+
                       {{!-- circles --}}
                       <div class="c100 p{{calcSpend item.objective _id "circle" @index}} small green grey lighten-1">
                         <span>{{calcSpend item.objective _id "number" @index}}%</span>
@@ -189,7 +191,7 @@
                         </div>
                       </div>
 
-                      <div class="c100 p{{calcDelivery _id @index "circle"}} small grey lighten-1">
+                      <div class="c100 p{{calcDelivery _id @index "circle"}} small grey lighten-1 percircle">
                         <span>{{calcDelivery _id @index "number"}}%</span>
                         <div class="slice">
                           <div class="bar"></div>
@@ -197,7 +199,7 @@
                         </div>
                       </div>
 
-                      <div class="c100 p{{calcFlight _id @index}} small orange grey lighten-1">
+                      <div class="c100 p{{calcFlight _id @index}} small orange grey lighten-1 percircle">
                         <span>{{calcFlight _id @index}}%</span>
                         <div class="slice">
                           <div class="bar"></div>
@@ -211,7 +213,7 @@
                         <span class="factor-check-client">{{factorCheckClient _id @index}}</span>
                       </div>
                     {{/if}} --}}
-                    <span>{{dateFormat item.startDate}} - {{dateFormat item.endDate}}</span>
+                    {{!-- <p style="padding-top: 1em;">{{dateFormat item.startDate}} - {{dateFormat item.endDate}}</p> --}}
                     </div>
 
                     {{!-- ORIGINAL --}}

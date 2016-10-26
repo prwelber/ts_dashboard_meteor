@@ -126,6 +126,9 @@ Template.newInitiative.helpers({
         } else {
             return "";
         }
+    },
+    activeItem: () => {
+        console.log(this)
     }
 });
 

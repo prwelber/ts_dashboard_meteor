@@ -157,11 +157,11 @@
                 <label class="active">Deal Type</label>
               </div>
               <div class="input-field col s4">
-                <input type="text" id="start-date" name="startDate1">
+                <input type="text" id="start-date" name="startDate1" required class="validate" pattern="\d*\-\d*-\d\d\d\d">
                 <label for="start-date">Start Date (format: 1-2-2003)</label>
               </div>
               <div class="input-field col s4">
-                <input type="text" id="end-date" name="endDate1">
+                <input type="text" id="end-date" name="endDate1" required class="validate" pattern="\d*\-\d*-\d\d\d\d">
                 <label for="end-date">End Date (format: 10-11-2012)</label>
               </div>
               <div class="input-field col s2">
@@ -169,7 +169,7 @@
                   <label for="cost_plus">Cost Plus</label>
               </div>
               <div class="input-field col s2">
-                <input type="text" id="cost-plus-percent" name="costPlus1">
+                <input type="text" id="cost-plus-percent" name="costPlus1" class="validate" pattern="\d*">
                 <label for="cost-plus-percent">Cost Plus Percent</label>
               </div>
               <div class="input-field col s2">
@@ -177,11 +177,11 @@
                   <label for="percent-total">Percent of Total</label>
               </div>
               <div class="input-field col s3">
-                <input type="text" id="percent-total-percentage" name="percentTotalPercentage1">
+                <input type="text" id="percent-total-percentage" name="percentTotalPercentage1" class="validate" pattern="\d*">
                 <label for="percent-total-percentage">Factor % (ex. input 50 not .5)</label>
               </div>
               <div class="input-field col s3">
-                <input type="text" id="effective-number" name="effectiveNumber1" value="{{effectiveNumber1}}">
+                <input type="text" id="effective-number" name="effectiveNumber1" value="{{effectiveNumber1}}" >
                 <label for="effective-number" class="active">Effective Target Price</label>
               </div>
               {{!-- <div class="input-field col s2">
@@ -207,15 +207,15 @@
               </div>
 
               <div class="input-field col s2">
-                <input type="text" id="price-input" name="price1">
-                <label for="price-input">Per Unit Price</label>
+                <input type="text" id="price-input" name="price1" required class="validate" pattern="\d*\.\d*">
+                <label for="price-input" class="active">Per Unit Price (ex. 1.00)</label>
               </div>
               <div class="input-field col s2">
-                <input type="text" id="quantity-input" name="quantity1">
-                <label for="quantity-input">Quantity</label>
+                <input type="text" id="quantity-input" name="quantity1" required class="validate" pattern="(\d*\.\d*|\d*)">
+                <label for="quantity-input" class="active">Quantity (ex. 15000)</label>
               </div>
               <div class="input-field col s4">
-                <input type="text" id="budget-input" name="budget1" value={{budget1}}>
+                <input type="text" id="budget-input" name="budget1" value={{budget1}} required class="validate" pattern="(\d*\.\d*|\d*)">
                 <label for="budget-input" class="active">Budget (no commas, ex: 1000.00)</label>
               </div>
             </div>

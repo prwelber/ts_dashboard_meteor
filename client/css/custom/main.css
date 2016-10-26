@@ -381,6 +381,10 @@ nav ul li.active {
   font-size: 13px;
 }
 
+.percircle {
+  margin-left: .25em !important;
+}
+
 /* ---------------- INITIATIVE HOMEPAGE ---------------- */
 
 .campaign-basic-card {
