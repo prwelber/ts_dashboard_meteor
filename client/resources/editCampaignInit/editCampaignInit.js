@@ -8,7 +8,7 @@ Template.editCampaignInit.onCreated( () => {
 });
 
 Template.editCampaignInit.onRendered(() => {
-  Session.set('limit', 25);
+  Session.set('limit', 75);
   Session.set('search', false);
 });
 
@@ -35,7 +35,7 @@ Template.editCampaignInit.helpers({
     Meteor.subscribe("campaignInsightList", opts, Session.get('search'));
     if (! search) {
       return CampaignInsights.find({},
-        {fields: {'data.initiative': 1, 'data.campaign_name': 1, 'data.campaign_id': 1}, limit: limit, sort: {'data.campaign_name': 1}}
+        {fields: {'data.initiative': 1, 'data.campaign_name': 1, 'data.campaign_id': 1}, limit: limit, sort: {'data.inserted': -1}}
       ).fetch();
 
     } else {

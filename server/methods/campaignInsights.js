@@ -83,7 +83,7 @@ Meteor.methods({
         data['impressions'] = parseInt(data.impressions);
         data['cpm'] = data.cpm;
         data['cpp'] = accounting.formatMoney(data.cpp, "$", 2);
-        data['inserted'] = moment().format("MM-DD-YYYY hh:mm a");
+        data['inserted'] = moment().toISOString();
         data['cost_per_unique_click'] = mastFunc.makeMoney(data.cost_per_unique_click);
         data['cost_per_total_action'] = mastFunc.makeMoney(data.cost_per_total_action);
         data['clicks'] = Math.round((data['ctr'] / 100) * data['impressions']);

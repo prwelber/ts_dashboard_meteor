@@ -284,11 +284,28 @@ Template.campaignDashboard.helpers({
     }
   },
   timezone: (time) => {
-
+    console.log('TIME', time)
+    if (moment(time, moment.ISO_8601).isValid()) {
+      if (Meteor.isProduction) {
+        return moment(time, moment.ISO_8601).subtract(4, 'hours').format("MM-DD-YYYY hh:mm a z");
+      } else {
+        return moment(time, moment.ISO_8601).tz("America/New_York").format("MM-DD-YYYY hh:mm a z");
+      }
+    }
+    if (moment(time, 'MM-DD-YYYY').isValid()) {
+      if (Meteor.isProduction) {
+        return moment(time, 'MM-DD-YYYY').subtract(4, 'hours').format("MM-DD-YYYY hh:mm a z");
+      } else {
+        return moment(time, 'MM-DD-YYYY').tz("America/New_York").format("MM-DD-YYYY hh:mm a z");
+      }
+    }
+    const isoTime = time.toISOString();
     if (Meteor.isProduction) {
-      return moment(time, "MM-DD-YYYY hh:mm a").subtract(4, 'hours').format("MM-DD-YYYY hh:mm a z");
+      if (moment(isoTime, moment.ISO_8601).isValid()) {
+        return moment(isoTime, moment.ISO_8601).subtract(4, 'hours').format("MM-DD-YYYY hh:mm a z");
+      }
     } else {
-      return moment(time, "MM-DD-YYYY hh:mm a").tz("America/New_York").format("MM-DD-YYYY hh:mm a z");
+      return moment(isoTime, moment.ISO_8601).tz("America/New_York").format("MM-DD-YYYY hh:mm a z");
     }
   },
   objectiveText: (text) => {
