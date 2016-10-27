@@ -923,6 +923,7 @@ Template.initiativeHomepage.helpers({
         }
       }
     ).fetch();
+    console.log('0 action days len', days.length, start, end)
     const reducedActions = days.map(day => {
       return parseInt(day.data[action]);
     }).reduce((a,b) => {
@@ -1083,6 +1084,7 @@ Template.initiativeHomepage.helpers({
         }
       }
     ).fetch();
+    console.log('1 action days len', days.length, start, end)
     let daysTotal = 0;
     const reducedActions = days.map(day => {
       return parseInt(day.data[action]);
