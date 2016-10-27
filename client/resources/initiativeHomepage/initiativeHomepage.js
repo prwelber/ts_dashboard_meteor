@@ -799,7 +799,10 @@ Template.initiativeHomepage.helpers({
     const dealType = init.lineItems[itemNumber].dealType.toLowerCase();
     const max = parseFloat(init.lineItems[itemNumber].budget);
     const quotedPrice = parseFloat(init.lineItems[itemNumber].price);
-    const start = init.lineItems[itemNumber].startDate; // is ISOString format
+    let start = init.lineItems[itemNumber].startDate; // is ISOString format
+    if (Meteor.isProduction) {
+      start = moment(start, moment.ISO_8601).subtract(1, 'd').toISOString();
+    }
     const end = init.lineItems[itemNumber].endDate;
     const days = InsightsBreakdownsByDays.find(
     {
@@ -962,7 +965,10 @@ Template.initiativeHomepage.helpers({
     const max = parseFloat(init.lineItems[itemNumber].budget);
     const dealType = init.lineItems[itemNumber].dealType.toLowerCase();
     const quotedPrice = parseFloat(init.lineItems[itemNumber].price);
-    const start = init.lineItems[itemNumber].startDate; // is ISOString format
+    let start = init.lineItems[itemNumber].startDate; // is ISOString format
+    if (Meteor.isProduction) {
+      start = moment(start, moment.ISO_8601).subtract(1, 'd').toISOString();
+    }
     const end = init.lineItems[itemNumber].endDate;
 
     let action;
