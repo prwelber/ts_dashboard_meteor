@@ -883,7 +883,10 @@ Template.initiativeHomepage.helpers({
     const init = Template.instance().templateDict.get('initiative');
     const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
     const dealType = init.lineItems[itemNumber].dealType;
-    const start = init.lineItems[itemNumber].startDate; // is ISOString format
+    let start = init.lineItems[itemNumber].startDate; // is ISOString format
+    if (Meteor.isProduction) {
+      start = moment(start, moment.ISO_8601).subtract(1, 'd');
+    }
     const end = init.lineItems[itemNumber].endDate;
     let title;
     let action;
@@ -1044,7 +1047,10 @@ Template.initiativeHomepage.helpers({
     const init = Template.instance().templateDict.get('initiative');
     const dealType = init.lineItems[itemNumber].dealType;
     const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
-    const start = init.lineItems[itemNumber].startDate; // is ISOString format
+    let start = init.lineItems[itemNumber].startDate; // is ISOString format
+    if (Meteor.isProduction) {
+      start = moment(start, moment.ISO_8601).subtract(1, 'd');
+    }
     const end = init.lineItems[itemNumber].endDate;
     let title;
     let action;
