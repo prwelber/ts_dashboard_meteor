@@ -885,7 +885,7 @@ Template.initiativeHomepage.helpers({
     const dealType = init.lineItems[itemNumber].dealType;
     let start = init.lineItems[itemNumber].startDate; // is ISOString format
     if (Meteor.isProduction) {
-      start = moment(start, moment.ISO_8601).subtract(1, 'd');
+      start = moment(start, moment.ISO_8601).subtract(1, 'd').toISOString();
     }
     const end = init.lineItems[itemNumber].endDate;
     let title;
@@ -1049,7 +1049,7 @@ Template.initiativeHomepage.helpers({
     const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
     let start = init.lineItems[itemNumber].startDate; // is ISOString format
     if (Meteor.isProduction) {
-      start = moment(start, moment.ISO_8601).subtract(1, 'd');
+      start = moment(start, moment.ISO_8601).subtract(1, 'd').toISOString();
     }
     const end = init.lineItems[itemNumber].endDate;
     let title;
