@@ -140,19 +140,6 @@ Template.initiativeHomepage.helpers({
     // action is the action, item is the lineItem
     let objective;
 
-    // if (action && lineItem) {
-    //   objective = lineItem.objective.toUpperCase().replace(/ /g, "_");
-    //   if (action === 'spend') {
-
-    //     const max = parseFloat(lineItem.budget);
-    //     if (init[objective]['net']['client_spend'] > max) {
-    //       return max;
-    //     }
-    //     return init[objective]['net']['client_spend'];
-    //   } else {
-    //     return init[objective][action];
-    //   }
-    // }
 
     const findItem = function findItem(string, lineItems) {
       let objective;
@@ -171,10 +158,51 @@ Template.initiativeHomepage.helpers({
     }
 
 
-    const objArr = whichObjectives(init);
+
+
+    let objArr = whichObjectives(init);
     if (! objArr[0].net.client_spend) {
       refreshInits(init, objective);
     }
+
+    // loop over line items and see if the objective to upper case matches
+    // what we have in objArr
+    // if match, take that budget and check against client spend
+
+    const fixObjectiveString = function fixObjectiveString (str) {
+      let s = '';
+      for (let i = 0; i < str.length; i++) {
+        if (i === 0) {
+          s += str[i].toUpperCase();
+        } else if (str[i-1] === '_') {
+          s += str[i].toUpperCase();
+        } else {
+          s += str[i].toLowerCase();
+        }
+      }
+      s = s.replace(/_/, ' ');
+      return s;
+    }
+
+    objArr.forEach(line => {
+      const s = fixObjectiveString(line._id);
+      const result = _.where(init.lineItems, {objective: s});
+      if (line.net.client_spend > parseFloat(result[0].budget)) {
+        line.net.client_spend = parseFloat(result[0].budget);
+        line.net.client_cpm = line.net.client_spend / (line.impressions / 1000);
+        line.net.client_cpc = line.net.client_spend / line.clicks;
+        line.net.client_cpvv = line.net.client_spend / line.videoViews;
+      }
+
+    });
+
+    // get total spend and set it to a session var
+
+    const spendTotal = objArr.reduce(function(a,b) {
+      return a + b.net.client_spend;
+    }, 0)
+
+    Session.set('spendTotal', spendTotal);
     return objArr;
   },
   'isTabDisabled': (num) => {
@@ -760,6 +788,7 @@ Template.initiativeHomepage.helpers({
       // if (returnObj.spend > maxBudget) {
       //   returnObj.spend = maxBudget;
       // }
+      returnObj['spend'] = Session.get('spendTotal');
       return returnObj;
     }
   },
@@ -777,6 +806,8 @@ Template.initiativeHomepage.helpers({
       $and: [
         {'data.date_start': {$gte: start}},
         {'data.date_start': {$lte: end}},
+        {'data.initiative': init.name},
+        {'data.objective': objective}
       ]
     },
       {
@@ -795,7 +826,6 @@ Template.initiativeHomepage.helpers({
         }
       }
     ).fetch();
-
     // need to map and reduce day data into one single object for factor func
 
     /*
@@ -849,10 +879,9 @@ Template.initiativeHomepage.helpers({
     return initiativeHomepageFunctions.gaugeChart('Spend', spend, max)
   },
   gaugeChart0Action: () => {
-
     const itemNumber = 0;
     const init = Template.instance().templateDict.get('initiative');
-    // const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
+    const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
     const dealType = init.lineItems[itemNumber].dealType;
     const start = init.lineItems[itemNumber].startDate; // is ISOString format
     const end = init.lineItems[itemNumber].endDate;
@@ -877,6 +906,8 @@ Template.initiativeHomepage.helpers({
       $and: [
         {'data.date_start': {$gte: start}},
         {'data.date_start': {$lte: end}},
+        {'data.initiative': init.name},
+        {'data.objective': objective}
       ]
     },
       {
@@ -929,21 +960,34 @@ Template.initiativeHomepage.helpers({
     const quotedPrice = parseFloat(init.lineItems[itemNumber].price);
     const start = init.lineItems[itemNumber].startDate; // is ISOString format
     const end = init.lineItems[itemNumber].endDate;
+
+    let action;
+    if (dealType === 'cpm') {
+      action = 'impressions';
+    } else if (dealType === 'cpc') {
+      action = 'clicks'
+    } else if (dealType === 'cpvv') {
+      action = 'video_view';
+    } else if (dealType === 'cpl') {
+      action = 'likes';
+    }
+
+
     const days = InsightsBreakdownsByDays.find(
     {
       $and: [
         {'data.date_start': {$gte: start}},
         {'data.date_start': {$lte: end}},
+        {'data.initiative': init.name},
+        {'data.objective': objective}
       ]
     },
       {
         sort: {'data.date_start': 1},
         fields: {
           'data.date_start': 1,
-          // 'data.campaign_id': 1,
           'data.impressions': 1,
           'data.clicks': 1,
-          // 'data.like': 1,
           'data.spend': 1,
           'data.video_view': 1,
           'data.cpc': 1,
@@ -952,7 +996,6 @@ Template.initiativeHomepage.helpers({
         }
       }
     ).fetch();
-
     var metrics = ['impressions', 'clicks', 'like', 'video_view'];
     var mapped = {};
 
@@ -973,12 +1016,11 @@ Template.initiativeHomepage.helpers({
     }
     mapped['cpm'] = cpm / days.length;
     mapped['cpc'] = cpc / days.length;
-
     let mappedSpend = days.map(day => {
       if (dealType === 'cpm') {
         return (day.data.impressions / 1000) * init[objective]['net'][`client_${dealType}`];
       } else {
-        return day.data.clicks * init[objective]['net'][`client_${dealType}`];
+        return day.data[action] * init[objective]['net'][`client_${dealType}`];
       }
     });
 
@@ -992,7 +1034,6 @@ Template.initiativeHomepage.helpers({
     if (spend > max) {
       spend = max;
     }
-
     spend = parseFloat(spend.toFixed(2));
     Session.set('gauge1Spend', spend);
     return initiativeHomepageFunctions.gaugeChart('Spend', spend, max)
@@ -1001,6 +1042,7 @@ Template.initiativeHomepage.helpers({
     const itemNumber = 1;
     const init = Template.instance().templateDict.get('initiative');
     const dealType = init.lineItems[itemNumber].dealType;
+    const objective = init.lineItems[itemNumber].objective.toUpperCase().replace(/ /g, '_');
     const start = init.lineItems[itemNumber].startDate; // is ISOString format
     const end = init.lineItems[itemNumber].endDate;
     let title;
@@ -1024,6 +1066,8 @@ Template.initiativeHomepage.helpers({
       $and: [
         {'data.date_start': {$gte: start}},
         {'data.date_start': {$lte: end}},
+        {'data.initiative': init.name},
+        {'data.objective': objective}
       ]
     },
       {
@@ -1039,13 +1083,16 @@ Template.initiativeHomepage.helpers({
         }
       }
     ).fetch();
-
+    let daysTotal = 0;
     const reducedActions = days.map(day => {
-      if (! day.data[action]) {
-        return 0;
-      } else {
-        return parseInt(day.data[action]);
-      }
+      return parseInt(day.data[action]);
+      // if (! day.data[action]) {
+      //   console.log('returning 0', day.data)
+      //   return 0;
+      // } else {
+      //   daysTotal += day.data[action];
+
+      // }
     }).reduce((a,b) => {
       return a + b;
     });
@@ -1226,6 +1273,7 @@ Template.initiativeHomepage.onDestroyed(function () {
   Session.set('gauge1Spend', null);
   Session.set('gauge0Action', null);
   Session.set('gauge1Action', null);
+  Session.set('spendTotal', null);
 });
 
 

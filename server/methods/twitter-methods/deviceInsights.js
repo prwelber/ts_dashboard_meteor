@@ -111,7 +111,6 @@ Meteor.methods({
       pollResult = poll.twitterBody.data[0];
 
       if (pollResult.url) {
-        console.log('URL FOUND!', pollResult.url);
         pollURL = pollResult.url;
 
         if (pollURL) {
@@ -158,7 +157,6 @@ Meteor.methods({
                 }
 
                 deviceData.data[0].id_data.forEach(el => {
-                  console.log('impressions', el.metrics.impressions)
                   dataObject.deviceVersions.push(el.segment.segment_name);
                   dataObject.impressions += checkNull(el.metrics.impressions);
                   dataObject.clicks += checkNull(el.metrics.clicks);
