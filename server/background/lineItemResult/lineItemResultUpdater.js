@@ -40,10 +40,15 @@ const setDealtype = function setDealtype (lineItem) {
 }
 
 const lookupDays = function lookupDays (start, end, name, objective) {
+  let startDate = start;
+  if (Meteor.isProduction) {
+    startDate = moment(start, moment.ISO_8601).subtract(1, 'd').toISOString();
+  }
+  // did this to acount for production date weirdness
   return InsightsBreakdownsByDays.find(
   {
     $and: [
-      {'data.date_start': {$gte: start}},
+      {'data.date_start': {$gte: startDate}},
       {'data.date_start': {$lte: end}},
       {'data.initiative': name},
       {'data.objective': objective}
