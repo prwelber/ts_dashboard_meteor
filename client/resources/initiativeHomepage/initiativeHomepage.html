@@ -90,7 +90,7 @@
             <thead>
               <tr>
                 <th>Actual / Client</th>
-                <th>Objective</th>
+                <th>Objective / Platform</th>
                 <th>Spend</th>
                 <th>Clicks</th>
                 <th>CPC</th>
@@ -100,6 +100,7 @@
                 <th>CPL</th>
                 <th>Video Views</th>
                 <th>CPVV</th>
+                <th>Engagements</th>
               </tr>
             </thead>
             <tbody>
@@ -163,11 +164,32 @@
                 <td style="padding: 5px 0px;"><strong>{{formatMoney cpvv}}</strong></td>
               </tr>
             {{/with}}
+            {{#each data in platformData}}
+              <tr>
+                <td style="padding: 5px 0px;">Actual</td>
+                <td style="padding: 5px 0px;">All {{capitalizeFirstChar data._id}}</td>
+                <td style="padding: 5px 0px;"></td>
+                <td style="padding: 5px 0px;">{{formatNumber data.clicks}}</td>
+                <td style="padding: 5px 0px;"></td>
+                <td style="padding: 5px 0px;">{{formatNumber data.impressions}}</td>
+                <td style="padding: 5px 0px;"></td>
+                <td style="padding: 5px 0px;">{{formatNumber data.likes}}</td>
+                <td style="padding: 5px 0px;"></td>
+                <td style="padding: 5px 0px;">{{formatNumber data.videoViews}}</td>
+                <td style="padding: 5px 0px;"></td>
+                {{#if isFacebook data._id}}
+                  <td style="padding: 5px 0px;">{{formatNumber data.pageEngagements}}</td>
+                {{else}}
+                  <td style="padding: 5px 0px;">{{formatNumber data.engagements}}</td>
+                {{/if}}
+              </tr>
+            {{/each}}
             </tbody>
           </table>
         </div>
         {{else}}
-          <p>Performance</p>
+        {{!-- BELOW IS THE CLIENT VIEW --}}
+          <h5>Performance</h5>
           <table class="centered highlight">
             <thead>
               <tr>

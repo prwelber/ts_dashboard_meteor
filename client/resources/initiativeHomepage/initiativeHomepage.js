@@ -187,12 +187,17 @@ Template.initiativeHomepage.helpers({
     objArr.forEach(line => {
       const s = fixObjectiveString(line._id);
       const result = _.where(init.lineItems, {objective: s});
-      if (line.net.client_spend > parseFloat(result[0].budget)) {
-        line.net.client_spend = parseFloat(result[0].budget);
-        line.net.client_cpm = line.net.client_spend / (line.impressions / 1000);
-        line.net.client_cpc = line.net.client_spend / line.clicks;
-        line.net.client_cpvv = line.net.client_spend / line.videoViews;
+      try {
+        if (line.net.client_spend > parseFloat(result[0].budget)) {
+          line.net.client_spend = parseFloat(result[0].budget);
+          line.net.client_cpm = line.net.client_spend / (line.impressions / 1000);
+          line.net.client_cpc = line.net.client_spend / line.clicks;
+          line.net.client_cpvv = line.net.client_spend / line.videoViews;
+        }
+      } catch (e) {
+        console.log('Error finding budget in getClientNumbers', e, line);
       }
+
 
     });
 
@@ -203,6 +208,7 @@ Template.initiativeHomepage.helpers({
     }, 0)
 
     Session.set('spendTotal', spendTotal);
+    console.log('objArr from getClientNumbers', objArr);
     return objArr;
   },
   'isTabDisabled': (num) => {
@@ -904,7 +910,7 @@ Template.initiativeHomepage.helpers({
       action = 'video_view';
     } else if (dealType === 'CPL') {
       title = 'Likes';
-      action = 'likes';
+      action = 'like';
     }
 
     const days = InsightsBreakdownsByDays.find(
@@ -979,7 +985,7 @@ Template.initiativeHomepage.helpers({
     } else if (dealType === 'cpvv') {
       action = 'video_view';
     } else if (dealType === 'cpl') {
-      action = 'likes';
+      action = 'like';
     }
 
 
@@ -1071,7 +1077,7 @@ Template.initiativeHomepage.helpers({
       action = 'video_view';
     } else if (dealType === 'CPL') {
       title = 'Likes';
-      action = 'likes';
+      action = 'like';
     }
 
     const days = InsightsBreakdownsByDays.find(
@@ -1193,6 +1199,36 @@ Template.initiativeHomepage.helpers({
   agClientSpend: () => {
     const spend = Template.instance().aggregatedSpend.get('spend');
     return spend;
+  },
+  platformData: () => {
+    const init = Template.instance().templateDict.get('initiative');
+    console.log(init.platforms)
+    const data = [];
+    init.platforms.forEach(el => {
+      if (el) {
+        data.push(el)
+      }
+    });
+    console.log(data)
+    return data;
+  },
+  capitalizeFirstChar: (s) => {
+    let str = '';
+    for (let i = 0; i < s.length; i++) {
+      if (i === 0) {
+        str += s[i].toUpperCase();
+      } else {
+        str += s[i];
+      }
+    }
+    return str;
+  },
+  isFacebook: (platform) => {
+    if (platform === 'facebook') {
+      return true;
+    } else {
+      return false;
+    }
   }
 });
 
