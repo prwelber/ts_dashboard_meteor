@@ -18,17 +18,7 @@ export function dailyUpdate(array) {
     * only the last three days.
     */
 
-    // format moments for querying collection
-    const dateFormat = 'YYYY-MM-DD';
-    const today = moment().format(dateFormat);
-    const yesterday = moment().subtract(1, 'd').format(dateFormat);
-    const dayBeforeYesterday = moment().subtract(2, 'd').format(dateFormat);
 
-    const lastThreeDays = InsightsBreakdownsByDays.remove(
-      {'data.date_stop':
-          {$in: [today, yesterday, dayBeforeYesterday]}
-      }
-    );
 
     console.log('Daily Breakdown background func running with array length', array.length);
 
@@ -38,9 +28,8 @@ export function dailyUpdate(array) {
         'data.campaign_id': array[counter]
       });
       const campaign = CampaignBasics.findOne({'data.campaign_id': array[counter]});
-
       try {
-        if (campaign === null) {
+        if (campaign === null || campaign === undefined) {
             counter++;
             return;
         } else if (campaign.data.platform === 'twitter') {
@@ -65,6 +54,27 @@ export function dailyUpdate(array) {
         counter++;
         Meteor.clearInterval(setIntervalId);
       } else {
+
+
+        // this clears the last three days from the day by day collection
+        // format moments for querying collection
+        const dateFormat = 'YYYY-MM-DD';
+        const today = moment().format(dateFormat);
+        const yesterday = moment().subtract(1, 'd').format(dateFormat);
+        const dayBeforeYesterday = moment().subtract(2, 'd').format(dateFormat);
+
+        const lastThreeDays = InsightsBreakdownsByDays.remove({
+          $and : [
+            {'data.campaign_id': array[counter]},
+            {'data.date_stop':
+                {$in: [today, yesterday, dayBeforeYesterday]}
+            }
+          ]
+        });
+
+
+
+
 
         // this begins the portion of the code taken from
         // the server method
@@ -184,6 +194,6 @@ export function dailyUpdate(array) {
         counter++;
       } // end of else block in if (counter >= array.length)
     // }, 10000);
-    }, 30000); // end of Meteor.setInterval
+    }, 15000); // end of Meteor.setInterval
   } // end if if(array)
 }

@@ -53,7 +53,7 @@ SyncedCron.add({
         data.push(result);
 
       }
-      console.log('result', data);
+      // console.log('result', data);
       Initiatives.update(
         {_id: init._id},
         {$set:
