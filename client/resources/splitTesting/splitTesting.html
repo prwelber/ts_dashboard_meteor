@@ -1,0 +1,45 @@
+<template name='splitTesting'>
+  <div class="container">
+    <div class="row">
+      <div class="col s12 center-align">
+        <h5>Set Up Split Testing</h5>
+      </div>
+    </div>
+    <div class="row">
+      <form class="col s12 split-form" action="">
+        <div class="col s12 center-align" style="margin-bottom: 2em;">
+          <p class="center-align">For the following form, input a Name and Description (it can be whatever you want)</p>
+          <p class="center-align">Enter a start and end time for the test (you must follow the format)</p>
+          <p class="center-align">Get the AdSet or Campaign ID for the entities you want to test and paste them in.</p>
+        </div>
+        <div class="input-field col s4">
+          <input id="test_name" type="text">
+          <label for="test_name" class="active">Test Name</label>
+        </div>
+        <div class="input-field col s8">
+          <input id="test_desc" type="text">
+          <label for="test_desc" class="active">Test Description</label>
+        </div>
+        <div class="col s5">
+          <input id="start" type="text">
+          <label for="start">Start Time (format: dd-mm-yyyy hh:mm am/pm)</label>
+        </div>
+        <div class="col s5">
+          <input id="end" type="text">
+          <label for="end">End Time (format: dd-mm-yyyy hh:mm am/pm)</label>
+        </div>
+        <div class="col s3">
+          <input id='item_a' type="text">
+          <label for="item_a">AdSet/Campaign A</label>
+        </div>
+        <div class="col s3">
+          <input id='item_b' type="text">
+          <label for="item_b">AdSet/Campaign B</label>
+        </div>
+        <div class="col s12 center-align" style="margin-top: 2em;">
+          <input type="submit" value="Create Test">
+        </div>
+      </form>
+    </div>
+  </div>
+</template>

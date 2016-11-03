@@ -298,6 +298,17 @@ FlowRouter.route('/admin/campaigns', {
     }
 });
 
+FlowRouter.route('/admin/split_testing', {
+    subscriptions: function () {
+
+    },
+    name: "splitTesting",
+    action: function () {
+        Session.set("route", "admin");
+        BlazeLayout.render('index', {main: 'splitTesting'});
+    }
+});
+
 
 // ---------------------- USERS ------------------------ //
 
