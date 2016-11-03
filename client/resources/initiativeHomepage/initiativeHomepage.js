@@ -208,7 +208,6 @@ Template.initiativeHomepage.helpers({
     }, 0)
 
     Session.set('spendTotal', spendTotal);
-    console.log('objArr from getClientNumbers', objArr);
     return objArr;
   },
   'isTabDisabled': (num) => {
@@ -393,6 +392,9 @@ Template.initiativeHomepage.helpers({
     } else if (initiative.lineItems[0].dealType === "CPL") {
       type = "like";
       actionType = "cpl";
+    } else if (initiative.lineItems[0].dealType === "CPE") {
+      type = "engagements";
+      actionType = "cpe";
     }
 
     let chart = [],
@@ -911,6 +913,9 @@ Template.initiativeHomepage.helpers({
     } else if (dealType === 'CPL') {
       title = 'Likes';
       action = 'like';
+    } else if (dealType === 'CPE') {
+      title = 'Enagements';
+      action = 'engagements';
     }
 
     const days = InsightsBreakdownsByDays.find(
@@ -935,7 +940,6 @@ Template.initiativeHomepage.helpers({
         }
       }
     ).fetch();
-    console.log('0 action days len', days.length, start, end)
     const reducedActions = days.map(day => {
       return parseInt(day.data[action]);
     }).reduce((a,b) => {
@@ -1078,6 +1082,9 @@ Template.initiativeHomepage.helpers({
     } else if (dealType === 'CPL') {
       title = 'Likes';
       action = 'like';
+    } else if (dealType === 'CPE') {
+      title = 'Engagements';
+      action = 'engagements';
     }
 
     const days = InsightsBreakdownsByDays.find(
@@ -1102,7 +1109,6 @@ Template.initiativeHomepage.helpers({
         }
       }
     ).fetch();
-    console.log('1 action days len', days.length, start, end)
     let daysTotal = 0;
     const reducedActions = days.map(day => {
       return parseInt(day.data[action]);
@@ -1202,14 +1208,12 @@ Template.initiativeHomepage.helpers({
   },
   platformData: () => {
     const init = Template.instance().templateDict.get('initiative');
-    console.log(init.platforms)
     const data = [];
     init.platforms.forEach(el => {
       if (el) {
         data.push(el)
       }
     });
-    console.log(data)
     return data;
   },
   capitalizeFirstChar: (s) => {

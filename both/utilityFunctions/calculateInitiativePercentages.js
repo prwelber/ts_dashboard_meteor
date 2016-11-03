@@ -14,6 +14,8 @@ export const initiativesFunctionObject = {
       type = "impressions";
     } else if (initiative.lineItems[index].dealType === "CPVV") {
       type = "videoViews";
+    } else if (initiative.lineItems[index].dealType === "CPE") {
+      type = "engagements";
     }
 
     const objective = initiative.lineItems[index].objective.replace(/ /g, '_').toUpperCase();

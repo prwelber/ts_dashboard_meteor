@@ -164,14 +164,16 @@ export const initiativeHomepageFunctions = {
 
           camp = CampaignInsights.findOne({'data.campaign_name': init.campaign_names[i]});
           // console.log('getDaysBreakdown', camp.data, objective, index)
-
+          console.log('from objective delivery chart', objective, camp)
           if (camp.data.objective === objective) {
-
+            // queries day by day documents that have same objective and initiative name
+            // date that gte (after) to start date and lte (before) to end date
             return InsightsBreakdownsByDays.find(
               {$and: [
                 {'data.date_start': {$gte: start}},
                 {'data.date_start': {$lte: end}},
-                {'data.campaign_name': camp.data.campaign_name}
+                {'data.objective': objective},
+                {'data.initiative': camp.data.initiative}
               ]},
               {sort: {'data.date_start': 1}}
             ).fetch();
@@ -214,10 +216,7 @@ export const initiativeHomepageFunctions = {
 
       let action;
       if (init.lineItems[index].cost_plus === true) {
-        init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
-        init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
-        init.lineItems[index].dealType === "CPL" ? action = "like" : '';
-        init.lineItems[index].dealType === "CPVV" ? action = "video_view" : '';
+        action = defineAction(init, index);
         let percent = init.lineItems[index].costPlusPercent.split('');
         percent.unshift(".");
         percent = 1 + parseFloat(percent.join(''));
@@ -228,12 +227,7 @@ export const initiativeHomepageFunctions = {
       }
 
       if (init.lineItems[index].percent_total === true) {
-
-        init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
-        init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
-        init.lineItems[index].dealType === "CPL" ? action = "like" : '';
-        init.lineItems[index].dealType === "CPVV" ? action = "video_view" : '';
-
+        action = defineAction(init, index);
         const dealType = init.lineItems[index].dealType;
         const quotedPrice = init.lineItems[index].price;
 
@@ -299,7 +293,6 @@ export const initiativeHomepageFunctions = {
         isAdmin = true;
         adminHeight = null;
       }
-
         return {
           chart: {
             // backgroundColor: '#fafafa',
@@ -463,10 +456,8 @@ export const initiativeHomepageFunctions = {
 
       let action;
       if (init.lineItems[index].cost_plus === true) {
-        init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
-        init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
-        init.lineItems[index].dealType === "CPL" ? action = "like" : '';
-        init.lineItems[index].dealType === "CPVV" ? action = "video_view" : '';
+        action = defineAction(init, index);
+
         let percent = init.lineItems[index].costPlusPercent.split('');
         percent.unshift(".");
         percent = 1 + parseFloat(percent.join(''));
@@ -477,11 +468,7 @@ export const initiativeHomepageFunctions = {
       }
 
       if (init.lineItems[index].percent_total === true) {
-
-        init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
-        init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
-        init.lineItems[index].dealType === "CPL" ? action = "like" : '';
-        init.lineItems[index].dealType === "CPVV" ? action = "video_view" : '';
+        action = defineAction(init, index);
 
         const dealType = init.lineItems[index].dealType;
         const quotedPrice = init.lineItems[index].price;
@@ -836,9 +823,7 @@ export const initiativeHomepageFunctions = {
 
     let action;
     if (init.lineItems[index].cost_plus === true) {
-      init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
-      init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
-      init.lineItems[index].dealType === "CPL" ? action = "like" : '';
+      action = defineAction(init, index);
       let percent = init.lineItems[index].costPlusPercent.split('');
       percent.unshift(".");
       percent = 1 + parseFloat(percent.join(''));
@@ -850,9 +835,7 @@ export const initiativeHomepageFunctions = {
 
     if (init.lineItems[index].percent_total === true) {
       const quotedPrice = parseFloat(init.lineItems[index].price);
-      init.lineItems[index].dealType === "CPC" ? action = "clicks" : '';
-      init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
-      init.lineItems[index].dealType === "CPL" ? action = "like" : '';
+      action = defineAction(init, index);
       spendCount = 0;
       spendArray = [];
       for (let [key, value] of typeMap) {

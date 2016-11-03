@@ -20,6 +20,7 @@ const defineAction = function defineAction (init, index) {
   init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
   init.lineItems[index].dealType === "CPL" ? action = "like" : '';
   init.lineItems[index].dealType === "CPVV" ? action = "video_view" : '';
+  init.lineItems[index].dealType === "CPE" ? action = "engagements" : '';
   return action;
 }
 
@@ -105,9 +106,7 @@ export const campaignDashboardFunctionObject = {
       deal = "percentTotal";
       const quotedPrice = init.lineItems[0].price;
       let action = defineAction(init)
-      // init.lineItems[0].dealType === "CPC" ? action = "clicks" : '';
-      // init.lineItems[0].dealType === "CPM" ? action = "impressions" : '';
-      // init.lineItems[0].dealType === "CPL" ? action = "like" : '';
+
       spend = init[objective].net.client_spend;
       return init[objective].net;
     }

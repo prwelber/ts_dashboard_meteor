@@ -24,6 +24,7 @@ const defineAction = function defineAction (init, index) {
   init.lineItems[index].dealType === "CPM" ? action = "impressions" : '';
   init.lineItems[index].dealType === "CPL" ? action = "like" : '';
   init.lineItems[index].dealType === "CPVV" ? action = "video_view" : '';
+  init.lineItems[index].dealType === "CPE" ? action = "engagements" : '';
   return action;
 }
 
@@ -67,6 +68,15 @@ const percentTotalSpend = function percentTotalSpend (dealType, quotedPrice, cam
         return (campaignData['videoViews']) * effectiveNum;
       } else if ((cpvv > effectiveNum && cpvv < quotedPrice) || cpvv >= quotedPrice) {
         return (campaignData['videoViews']) * quotedPrice;
+      }
+    } else if (action === "engagements") {
+      let cpe = accounting.unformat(campaignData['cpe']);
+      if (cpvv <= effectiveNum) {
+        cpe = parseFloat(cpe.toFixed(2));
+        effectiveNum = parseFloat((cpe / percentage).toFixed(2));
+        return (campaignData['engagements']) * effectiveNum;
+      } else if ((cpe > effectiveNum && cpe < quotedprice) || cpe >= quotedPrice) {
+        return (campaignData['engagements']) * quotedPrice;
       }
     }
   }
@@ -128,6 +138,7 @@ export const calcNet = {
           item.dealType === "CPM" ? action = "impressions" : '';
           item.dealType === "CPL" ? action = "likes" : '';
           item.dealType === "CPVV" ? action = "video_view" : '';
+          item.dealType === "CPE" ? action = "engagements" : '' ;
           try {
             numbs['deal'] = "percentTotal";
 
