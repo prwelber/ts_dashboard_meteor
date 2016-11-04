@@ -195,17 +195,18 @@ export const initiativeHomepageFunctions = {
       const typeArray = [];
       let spendArray = [];
       let spendCount = 0;
-      let typeCount;
-      try {
-        typeCount = parseFloat(insights[0].data[type]);
-      } catch (e) {
-        console.log(e)
-      }
+      let typeCount = 0;
+      // try {
+      //   typeCount = parseFloat(insights[0].data[type]);
+      // } catch (e) {
+      //   console.log(e)
+      // }
 
       insights.forEach(el => {
+        // console.log('insights for each', el.data[type])
         xAxisArray.push(moment(el.data.date_start, moment.ISO_8601).format("MM-DD"));
-        typeArray.push(parseFloat(typeCount.toFixed(2)));
         typeCount += parseFloat(el.data[type]);
+        typeArray.push(parseFloat(typeCount.toFixed(2)));
         spendArray.push(parseFloat(spendCount.toFixed(2)));
         spendCount += accounting.unformat(el.data.spend);
       });
