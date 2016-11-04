@@ -151,9 +151,6 @@ export const initiativeHomepageFunctions = {
       const start = init.lineItems[index].startDate; // is ISOString format
       const end = init.lineItems[index].endDate;
 
-
-
-
       // need to match objective with campaign that has that objective, which is in
       // the campaign_names array
 
@@ -185,6 +182,7 @@ export const initiativeHomepageFunctions = {
         }
       }
       insights = getDaysBreakdown(init, index, objective);
+      console.log('insights.length', insights.length);
 
       // console.log('length from getDaysBreakdown', insights.length, insights[0])
       // get campaign factorSpend for use later
@@ -260,7 +258,8 @@ export const initiativeHomepageFunctions = {
         avgDeliveryArray.push(parseFloat(total.toFixed(2)));
         avgSpendArray.push(parseFloat(idealSpendTotal.toFixed(2)));
       }
-
+      console.log(typeArray)
+      console.log(spendArray)
       // -------------- REMOVE CERTAIN THINGS FOR CLIENTS -------------- //
       let adminToolTip = function adminToolTip (name, data, color) {
         if (Meteor.user().admin === true) {
@@ -361,18 +360,19 @@ export const initiativeHomepageFunctions = {
               valueSuffix: ' ' + type
             }
           },
-          adminToolTip('Actual Spend', spendArray, '#b71c1c'),
-          adminToolTip('Pacing Spend', avgSpendArray, '#ef9a9a')
           // {
           //   name: 'Actual Spend',
           //   data: spendArray,
           //   color: '#b71c1c',
-          //   adminToolTip()
+          //   // adminToolTip(),
           //   tooltip: {
           //       valueSuffix: ' USD',
           //       valuePrefix: '$'
           //     }
           // },
+          adminToolTip('Actual Spend', spendArray, '#b71c1c'),
+          adminToolTip('Pacing Spend', avgSpendArray, '#ef9a9a')
+
           // {
           //   name: 'Pacing Spend',
           //   data: avgSpendArray,
@@ -416,7 +416,8 @@ export const initiativeHomepageFunctions = {
               {$and: [
                 {'data.date_start': {$gte: start}},
                 {'data.date_start': {$lte: end}},
-                {'data.campaign_name': camp.data.campaign_name}
+                {'data.objective': objective},
+                {'data.initiative': camp.data.initiative}
               ]},
               {sort: {'data.date_start': 1}}
             ).fetch();

@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { HTTP } from 'meteor/http';
+import { apiVersion } from '/server/token/token';
 const token = require('/server/token/token.js');
 
 // ------------------------ FUNCTIONS ------------------------- //
@@ -63,7 +64,7 @@ const buildQuery = function buildQuery (start, end, performance, actions, campai
 }
 
 const createQuery = function createQuery (query, time, campNum, accessToken) {
-  let string = `https://graph.facebook.com/v2.6/${campNum}/insights?fields=${query}&${time}&access_token=${accessToken}`;
+  let string = `https://graph.facebook.com/${apiVersion}/${campNum}/insights?fields=${query}&${time}&access_token=${accessToken}`;
   return string;
 }
 
