@@ -148,7 +148,7 @@ export const initiativeHomepageFunctions = {
       let camp;
 
       // -- get start and end from line item to query days collection -- //
-      const start = init.lineItems[index].startDate; // is ISOString format
+      let start = init.lineItems[index].startDate; // is ISOString format
       const end = init.lineItems[index].endDate;
 
       if (Meteor.isProduction) {
@@ -165,7 +165,7 @@ export const initiativeHomepageFunctions = {
 
           camp = CampaignInsights.findOne({'data.campaign_name': init.campaign_names[i]});
           // console.log('getDaysBreakdown', camp.data, objective, index)
-          console.log('from objective delivery chart', objective, camp)
+          // console.log('from objective delivery chart', objective, camp)
           if (camp.data.objective === objective) {
             // queries day by day documents that have same objective and initiative name
             // date that gte (after) to start date and lte (before) to end date
@@ -186,7 +186,7 @@ export const initiativeHomepageFunctions = {
         }
       }
       insights = getDaysBreakdown(init, index, objective);
-      console.log('insights.length', insights.length);
+      // console.log('insights.length', insights.length);
 
       // console.log('length from getDaysBreakdown', insights.length, insights[0])
       // get campaign factorSpend for use later
@@ -263,8 +263,8 @@ export const initiativeHomepageFunctions = {
         avgDeliveryArray.push(parseFloat(total.toFixed(2)));
         avgSpendArray.push(parseFloat(idealSpendTotal.toFixed(2)));
       }
-      console.log(typeArray)
-      console.log(spendArray)
+      // console.log(typeArray)
+      // console.log(spendArray)
       // -------------- REMOVE CERTAIN THINGS FOR CLIENTS -------------- //
       let adminToolTip = function adminToolTip (name, data, color) {
         if (Meteor.user().admin === true) {
@@ -412,7 +412,7 @@ export const initiativeHomepageFunctions = {
       if (objective) {
 
       const getDaysBreakdown = function getDaysBreakdown (init, index, objective) {
-        const start = init.lineItems[index].startDate; // is ISOString format
+        let start = init.lineItems[index].startDate; // is ISOString format
         if (Meteor.isProduction) {
           start = moment(start, moment.ISO_8601).subtract(1, 'd').toISOString();
         }
