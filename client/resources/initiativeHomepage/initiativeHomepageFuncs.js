@@ -151,6 +151,10 @@ export const initiativeHomepageFunctions = {
       const start = init.lineItems[index].startDate; // is ISOString format
       const end = init.lineItems[index].endDate;
 
+      if (Meteor.isProduction) {
+        start = moment(start, moment.ISO_8601).subtract(1, 'd').toISOString();
+      }
+
       // need to match objective with campaign that has that objective, which is in
       // the campaign_names array
 
@@ -409,6 +413,9 @@ export const initiativeHomepageFunctions = {
 
       const getDaysBreakdown = function getDaysBreakdown (init, index, objective) {
         const start = init.lineItems[index].startDate; // is ISOString format
+        if (Meteor.isProduction) {
+          start = moment(start, moment.ISO_8601).subtract(1, 'd').toISOString();
+        }
         const end = init.lineItems[index].endDate;
         for (let i = 0; i < init.campaign_names.length; i++) {
           camp = CampaignInsights.findOne({'data.campaign_name': init.campaign_names[i]})
